@@ -1,0 +1,15 @@
+# Python tooling and browser-test outputs
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+test-results/
+playwright-report/
+
+# Local machine files
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
