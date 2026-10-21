@@ -21,7 +21,7 @@ window.PixelArt=(()=>{
  function mole(c,x,y,scale=2,outfit=[],dig=false,frame=0,color='#b784cf',mood='awake',toolId=null){const colors={...defaultColors,fur:color,furLight:tint(color,.32),shadow:tint(color,-.23)};const has=id=>Array.isArray(outfit)?outfit.includes(id):outfit===id;c.save();c.translate(Math.round(x),Math.round(y));c.scale(scale,scale);const sleepScale=mood==='asleep'?.78+Math.round((Math.sin(frame*.18)+1)*1.5)*.025:1;const r=(a,b,w,h,col)=>{const top=Math.round(27+(b-27)*sleepScale),bottom=Math.round(27+(b+h-27)*sleepScale);box(c,a,top,w,Math.max(1,bottom-top),col);};const bob=dig?(frame%2):0;c.translate(0,bob);
  // The same earless, stepped head silhouette is used in every scene.
  r(7,5,12,2,colors.ink);r(4,7,18,3,colors.ink);r(2,10,22,13,colors.ink);r(4,23,18,2,colors.ink);r(4,9,18,13,colors.fur);r(6,7,14,17,colors.fur);r(4,11,18,9,colors.fur);r(6,8,4,3,colors.furLight);r(4,11,3,5,colors.furLight);r(19,13,3,9,colors.shadow);r(6,21,15,3,colors.shadow);
- r(8,16,11,7,colors.pink);r(10,15,7,9,colors.pink);r(10,17,6,5,colors.light);r(8,11,2,3,colors.ink);r(17,11,2,3,colors.ink);if(!dig&&(mood==='asleep'||mood==='rest'||mood==='drowsy'&&frame%30>8||frame%42>=39)){r(8,11,2,3,colors.fur);r(17,11,2,3,colors.fur);r(8,13,3,1,colors.ink);r(16,13,3,1,colors.ink);}r(6,15,3,2,colors.shadow);r(18,15,3,2,colors.shadow);r(11,13,6,3,colors.pink);r(12,13,3,1,colors.light);r(13,17,2,1,colors.ink);
+ r(8,16,11,7,colors.pink);r(10,15,7,9,colors.pink);r(10,17,6,5,colors.light);r(8,11,2,2,colors.ink);r(17,11,2,2,colors.ink);if(!dig&&(mood==='asleep'||mood==='rest'||mood==='drowsy'&&frame%30>8||frame%42>=39)){r(8,11,2,2,colors.fur);r(17,11,2,2,colors.fur);r(8,13,3,1,colors.ink);r(16,13,3,1,colors.ink);}r(6,15,3,2,colors.shadow);r(18,15,3,2,colors.shadow);r(11,13,6,3,colors.pink);r(12,13,3,1,colors.light);r(13,17,2,1,colors.ink);
  r(4,24,7,3,colors.ink);r(16,24,7,3,colors.ink);r(5,24,6,2,colors.shadow);r(16,24,6,2,colors.shadow);
  const arm=dig&&frame%2?2:0;r(1,17-arm,5,6,colors.ink);r(2,17-arm,4,5,colors.furLight);r(2,21-arm,3,1,colors.light);r(21,17+arm,5,6,colors.ink);r(21,17+arm,4,5,colors.furLight);r(22,21+arm,3,1,colors.light);
  const worn=Array.isArray(outfit)?outfit:[],hat=WardrobeCatalog.items.find(i=>i.category==='hats'&&worn.includes(i.id)),clothes=WardrobeCatalog.items.find(i=>i.category==='clothes'&&worn.includes(i.id)),scarf=WardrobeCatalog.items.find(i=>i.category==='scarves'&&worn.includes(i.id));
@@ -44,8 +44,8 @@ window.PixelArt=(()=>{
  function iconSVG(id){const wearable=WardrobeArt.iconSVG(id);if(wearable)return wearable;const rects=itemRects[id]||itemRects.star;return '<svg viewBox="0 0 32 32" aria-hidden="true" shape-rendering="crispEdges">'+rects.map(([x,y,w,h,col])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${col}"/>`).join('')+'</svg>';}
  function item(c,id,x,y,s=1){for(const [a,b,w,h,col] of itemRects[id]||itemRects.star)box(c,x+a*s,y+b*s,w*s,h*s,col);}
  function random(a,b){const z=Math.sin(a*127.1+b*311.7)*43758.5453;return z-Math.floor(z);}
- function digMetrics(s){const active=s.session,elapsed=active?.elapsed||0,depth=active&&Journey.eligible(active)?elapsed/Journey.rate(active):0,fraction=active?Math.min(1,elapsed/active.plannedSeconds):0;return {depth,fraction,worldDepth:(s.depth||0)+depth};}
- function renderMine(c,s,frame){const w=384,h=224,t=WorldClock.snapshot(),m=digMetrics(s),running=s.session?.status==='running'&&Journey.eligible(s.session);const end=131+m.worldDepth*6;const camera=Math.max(0,end-174);const ground=87-camera;box(c,0,0,w,h,t.sky);
+ function digMetrics(s){const active=s.session,elapsed=active?.elapsed||0,depth=active&&Journey.eligible(active)?elapsed/Journey.rate(active):0,fraction=active?Math.min(1,elapsed/active.plannedSeconds):0;return {depth,fraction,worldDepth:Math.max(0,(s.depth||0)-(s.surfaceDepth||0))+depth};}
+ function renderMine(c,s,frame){const w=384,h=224,t=WorldClock.snapshot(),m=digMetrics(s),running=s.session?.status==='running'&&Journey.eligible(s.session);const end=76+m.worldDepth*6;const camera=Math.max(0,end-174);const ground=87-camera;box(c,0,0,w,h,t.sky);
  if(t.period==='night')for(let i=0;i<22;i++){let x=Math.floor(random(i,2)*w/2)*2,y=Math.floor(random(i,7)*80/2)*2-camera;if(y>-5&&y<ground){if(i%5===0)star(c,x,y,1,i%2?'#fff3a8':'#7ee6ec');else box(c,x,y,2,2,'#778bdb');}}
  if(ground>0){cloud(c,24,31-camera,t.cloud);cloud(c,284,15-camera,t.cloudBack);celestial(c,t,camera);
  // Distant pixel mountains and rolling terrain.
@@ -57,7 +57,7 @@ window.PixelArt=(()=>{
  // Journey.rewards uses these same nodes for the backpack and settlement.
  if(s.session)for(const e of Journey.events(s.session)){
   if(e.at<=(s.session.elapsed||0)+1e-7)continue;
-  const depth=(s.session.baseDepth||0)+e.at/Journey.rate(s.session),yy=131+depth*6-camera+5,cx=192+Math.round(Math.sin(Math.max(0,depth)*.13)*3)*4;
+  const depth=Math.max(0,(s.session.baseDepth||0)-(s.surfaceDepth||0))+e.at/Journey.rate(s.session),yy=76+depth*6-camera+5,cx=192+Math.round(Math.sin(Math.max(0,depth)*.13)*3)*4;
   if(yy>-30&&yy<h){const id=e.kind==='star'?'star':['star','mushroom','crystal','fossil'][e.index];item(c,id,cx+(e.kind==='star'?-16:2),yy,e.kind==='star'?.5:.65);}
  }
  if(ground>-35){ // Surface base camp.

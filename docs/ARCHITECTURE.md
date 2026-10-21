@@ -9,7 +9,7 @@
 | `index.html` | 宠物创建、六个游戏页、对话框、图标与音频元素 |
 | `app.js` | 状态迁移、导航、计时区间、结算、报告、装备、家园与样例同伴 |
 | `journey.js` | 纯计算：奖励资格、速度、稳定路径事件、已经过节点与奖励 |
-| `terrain.js` | 世界坐标下的六段地层、色块过渡、碎石、根系藤蔓和低频生态绘制 |
+| `terrain.js` | 世界坐标下的七段地层、色块过渡、碎石、根系藤蔓和低频生态绘制 |
 | `wardrobe.js` | 7 帽/5 衣/5 围脖/6 眼镜/1 旧胸针与 6 工具的分类价格、同类互斥和存档校验 |
 | `wardrobe-art.js` | 商店图标与实际角色共用的像素模型、独立工具动画 |
 | `home.js` | 家具、价格、摆放兼容性、主题与位置元数据 |
@@ -34,6 +34,7 @@
 | 字段 | 含义 |
 | --- | --- |
 | `profile` | 名字、颜色、是否创建 |
+| `surfaceDepth` / `digDay` | 本次矿道的累计深度基准和设备日期；当前深度为 depth - surfaceDepth 加本轮进度 |
 | `depth` / `inventory` / `balance` | 已保存的累计深度（允许小数）、四种发现物数量、货币 |
 | `owned` / `equipped` | 服装拥有列表；帽/衣/围脖/眼镜各一件，Extras 可同时保留 |
 | `ownedTools` / `tool` | 已兑换工具 ID 列表与当前工具；null 表示免费默认镐子 |
@@ -68,7 +69,7 @@ HTMLAudio 播放 `assets/audio/warm-focus-3.mp3`，由用户点击启动，不�
 
 `.wardrobe-layout` 桌面高度随视窗约束，`.closet` 和 `.fitting-room` 使用 min-height:0。`#shopScroll` 为独立、可聚焦的 overflow-y:auto 区域；分类在区域外，避免滚动后找不到筛选。只在切换分类/筛选时复位滚动，购买不替换滚动容器。预览按容器宽高计算尺寸，保持 Canvas 实际宽高比和点击坐标；手机改为紧凑预览加有界商店。
 
-字体资源在 assets/fonts；CSS 全站字体统一，英文像素形状使用 Pixelify Sans，缺失字形由系统补足。构建时校验唯一字体 URL，替换为 data URI，并内嵌许可；不增加在线请求。
+常规界面使用系统字体，计时采用 tabular-nums 并移除像素阴影；Logo 的 Pixelify Sans 资源在 assets/fonts。构建时校验唯一字体 URL，替换为 data URI，并内嵌许可；不增加在线请求。
 
 ## 睡眠与宝箱
 
@@ -77,3 +78,13 @@ HTMLAudio 播放 `assets/audio/warm-focus-3.mp3`，由用户点击启动，不�
 房间使用由整像素横条组成的椭圆 Path2D 作为轮廓和裁剪，家具按各自 scale/foot 对齐基线。实际宝箱有独立 DOM 命中按钮和模态列表，避免画在 Canvas 里却不能点击。头顶展示和摆放共用存档，移动副本不扣库存。宝箱采用选择格子加详情动作，空格不可交互；只在 Home 调用 drawHeadDisplay，按帽子 headTop 调整高度，删除了原先的伸手模型。
 
 WardrobeCatalog.normalize 过滤未知或未拥有 ID，同类按最后选择保留一件；旧装备 ID 沿用，新增工具默认空拥有列表。工具选择仅从 ownedTools 校验，不进入 equipped。渲染只在 dig 为真时传入工具模型；购买和切换不触碰 Journey 奖励公式。构建顺序确保 Catalog 和 Art 在角色与应用之前加载。
+
+## 今日返地面与设备时钟
+
+`depth` 继续表示累计挖掘成果，`surfaceDepth` 是当前矿道的起点基准。旧存档缺失时基准为 0、digDay 为当前日期，保留旧矿道直到用户结束今日或日期切换。读档将基准限制在 0..depth。
+
+确认 Finish 后先结算唯一会话，再将 surfaceDepth 设为 depth 并保存；报告关闭时导航回 Focus。这样刷新不会恢复到旧矿道，查看报告或取消确认没有副作用。`ensureDigDay()` 只在无会话且设备日期改变时更新基准；跨午夜任务维持当前路径，结束后再更新。计时与奖励不依赖当前矿道位置；路径物品在渲染时减去同一个基准，继续与工具位置一致。
+
+地表角色的双脚定位在草地基线，0m 时没有已开挖矿道。角色眼睛从 2×3 缩为 2×2 原始像素，眨眼与睡眠继续共用绘制函数。
+
+时间从设备原生 Date 读取，不使用固定服务器时区；tick、visibilitychange 和 window focus 刷新。新增浏览器检查验证上海、洛杉矶的分钟边界及伦敦夏令时回拨。趋势图 viewBox 使用实际容器宽度，窗口大小改变时重绘以保持标签字号。

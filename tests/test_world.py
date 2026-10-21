@@ -26,7 +26,7 @@ def run():
    expect(page.locator('.color-swatch.selected')).to_have_count(1)
    assert page.locator('#enterGame').bounding_box()['height']>=58
    page.locator('#petName').fill('');page.locator('#enterGame').click()
-   expect(page.locator('#nameError')).to_have_text('Enter a pet name.')
+   expect(page.locator('#nameError')).to_have_text('Enter a mole name.')
    expect(page.locator('#setupScreen')).to_be_visible()
    page.locator('#petName').fill('<Pip>')
    expect(page.locator('#previewPetName')).to_have_text('<Pip>')

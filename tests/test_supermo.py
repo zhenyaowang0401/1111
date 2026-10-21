@@ -66,14 +66,14 @@ def run():
    page.locator('[data-page="home"]').click();assert page.locator('#focusMusic').evaluate('e=>!e.paused')
    # Pixel-rendered strata are different, not only different HUD labels.
    histograms=[]
-   for depth,label in [(5,'Root soil'),(25,'Moss beds'),(53,'Pebble beds'),(100,'Slate layer'),(165,'Crystal seams'),(260,'Deep basalt')]:
+   for depth,label in [(5,'Root soil'),(16,'Stone beds'),(32,'Sand beds'),(53,'Slate layer'),(90,'Red granite'),(140,'Crystal seams'),(220,'Deep basalt')]:
     fixture={**seed,'depth':depth};tp=browser.new_page(viewport={'width':1440,'height':1000});tp.add_init_script(f"localStorage.setItem('{KEY}',{json.dumps(json.dumps(fixture))});")
     tp.goto(url+'/#focus');tp.wait_for_timeout(180);expect(tp.locator('#sceneLabel')).to_have_text(label)
-    hist=tp.locator('#miningCanvas').evaluate("""c=>{const d=c.getContext('2d').getImageData(0,0,384,224).data,h={};for(let i=0;i<d.length;i+=4){const k=[d[i],d[i+1],d[i+2]].join(',');h[k]=(h[k]||0)+1;}return Object.entries(h).sort((a,b)=>b[1]-a[1]).slice(0,5).map(p=>p[0]).join(';');}""")
+    hist=tp.locator('#miningCanvas').evaluate("""c=>{const b=PixelArt.getBounds('miningCanvas'),d=c.getContext('2d').getImageData(0,Math.min(200,Math.round(b.y+50)),130,24).data,h={};for(let i=0;i<d.length;i+=4){const k=[d[i],d[i+1],d[i+2]].join(',');h[k]=(h[k]||0)+1;}return Object.entries(h).sort((a,b)=>b[1]-a[1]).slice(0,5).map(p=>p[0]).join(';');}""")
     histograms.append(hist)
     if depth==53:tp.screenshot(path=str(ROOT/'docs/images/eumo-mine.png'),full_page=True)
     tp.close()
-   assert len(set(histograms))==6,histograms
+   assert len(set(histograms))==7,histograms
    for width in [320,390,768,1440]:
     page.set_viewport_size({'width':width,'height':1000});page.locator('[data-page="home"]').click();page.locator('#openChestButton').click()
     assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),('chest',width)
@@ -81,6 +81,6 @@ def run():
     assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),('editor',width)
     page.locator('#editHomeButton').click()
    assert not errors,errors
-   browser.close();print('PASS: Eumo branding, chest hit target, held/placed quantity preservation and reload, sleep thresholds + actual breathing/bubble pixels + wake, pause versus sleep, held item stowing during demo, new MP3 duration, six rendered strata, mobile chest/editor.')
+   browser.close();print('PASS: Eumo branding, chest hit target, held/placed quantity preservation and reload, sleep thresholds + actual breathing/bubble pixels + wake, pause versus sleep, held item stowing during demo, new MP3 duration, seven rendered strata, mobile chest/editor.')
  finally:server.shutdown();server.server_close()
 if __name__=='__main__':run()

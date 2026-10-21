@@ -22,7 +22,7 @@ def run():
     app=page.frame_locator('#preview')
     expect(app.locator('#setupScreen')).to_be_visible()
     app.locator('#petName').fill('');app.locator('#enterGame').click()
-    expect(app.locator('#nameError')).to_have_text('Enter a pet name.')
+    expect(app.locator('#nameError')).to_have_text('Enter a mole name.')
     app.locator('#petName').fill('团团');app.locator('[data-color="#a9b4c6"]').click()
     app.locator('#enterGame span').click() # Includes clicks on the START arrow.
     expect(app.locator('#setupScreen')).to_be_hidden();expect(app.locator('#gameShell')).to_be_visible()

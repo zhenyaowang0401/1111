@@ -19,10 +19,12 @@ GitHub displays HTML source when browsing a file; download and open it locally, 
 - Home is the second navigation icon: a round earthen burrow with scaled furniture and four placement spots. Open the wooden, slotted treasure chest, select a find and choose Display on head. Treasures balance on the mole’s head only in Home; they never appear in the mine or fitting preview.
 - Idle blinking, drowsiness after about 90 seconds, sleep after about 5 minutes with rising pixel zzz, a nose bubble and visible breathing; pet to wake, jump, say `yeeeeee` and play two softened, voiced doo-doo syllables. No petting during sessions.
 - The newly supplied Warm Focus (3) music plays only after pressing Music, loops across navigation, remembers volume and does not autoplay on reload.
-- Optional task and outcome notes; Study/Work totals, trend, calendar, daily closing and JSON export in the top-right Today page.
+- Optional task and outcome notes; Study/Work totals, trend, calendar, a prominent Finish action in the top-right Today page.
 - Choose one of 7 hats, 5 clothes, 5 scarves and 6 glasses (five new styles plus the original goggles); mix categories with the legacy star pin. Six paid tools (45–240 stars) have distinct digging animations, with no reward or speed boost; the free default pickaxe is not a shop item. Device-local daylight changes the world. Companions are four clearly labelled sample profiles, not live players.
 
-The fitting preview stays in the left panel while the right shop scrolls independently with a mouse wheel, draggable scrollbar, keyboard or touch. Categories remain accessible. On phones the preview becomes compact above the shop. Pixelify Sans is bundled locally under SIL OFL 1.1; small UI labels are at least 12px.
+The fitting preview stays in the left panel while the right shop scrolls independently with a mouse wheel, draggable scrollbar, keyboard or touch. Categories remain accessible. On phones the preview becomes compact above the shop. Regular system fonts keep controls and timer digits readable; only the logo uses the bundled Pixelify Sans (SIL OFL 1.1). Most small labels are at least 13px. Layouts extend up to 1840px.
+
+Finish saves the daily summary and returns the mole to the surface, preserving lifetime depth, time, stars and inventory. Viewing reports alone never resets the mine. A new device-local day starts at the surface once no session is active. Seven distinct materials progress from root soil through stone, sand, slate, granite, crystal and basalt. Device time follows the local clock, including timezone and DST changes.
 
 All progress is browser-local. No account, cloud sync, real multiplayer, or attention verification is implemented.
 

@@ -5,7 +5,7 @@
 1. 修改根目录的 HTML、CSS 或 JavaScript 源码。
 2. 用本地 HTTP 服务检查界面和交互。
 3. 运行 `python scripts/build_standalone.py` 更新单文件。
-4. 运行 [测试说明](docs/TESTING.md) 中与修改相关的检查；发布前完成六套浏览器回归与奖励检查。
+4. 运行 [测试说明](docs/TESTING.md) 中与修改相关的检查；发布前完成七套浏览器回归与奖励检查。
 5. 检查 `git diff`，同时提交源码、需要的文档和新的 `dist/Eumo.html`。
 
 应用本身没有 npm 安装步骤。Python 依赖只用于自动化测试。

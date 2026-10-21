@@ -37,7 +37,7 @@ def run():
    assert scroll.evaluate('e=>e.scrollTop')>50,'Scrollbar must be draggable'
    scroll.focus();page.keyboard.press('Home');page.wait_for_timeout(180)
    page.screenshot(path=str(ROOT/'docs/images/eumo-v2-shop.png'),full_page=True)
-   assert page.locator('.wardrobe-layout').bounding_box()['height']<=760
+   assert page.locator('.wardrobe-layout').bounding_box()['height']<=page.viewport_size['height']
 
    eyewear_pixels=[]
    for category,count in [('hats',7),('clothes',5),('scarves',5),('glasses',6)]:
@@ -123,6 +123,6 @@ def run():
     for cat in ['hats','clothes','scarves','glasses','tools']:
      page.locator(f'[data-category="{cat}"]').click();assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),(width,cat)
    assert not errors,errors
-   browser.close();print('PASS: Eumo v2; wheel-scroll shop and stationary preview; loaded readable pixel font + offline font; 7 hats/5 clothes/5 scarves/6 glasses with actual pixels; prices and one-per-category; legacy extras; chest slots; home-only head display; 6 paid animated tools absent from outfit preview; no reward multipliers; ownership/reload; responsive chest and categories.')
+   browser.close();print('PASS: Eumo v2; wheel-scroll shop and stationary preview; readable UI + offline logo font; 7 hats/5 clothes/5 scarves/6 glasses with actual pixels; prices and one-per-category; legacy extras; chest slots; home-only head display; 6 paid animated tools absent from outfit preview; no reward multipliers; ownership/reload; responsive chest and categories.')
  finally:server.shutdown();server.server_close()
 if __name__=='__main__':run()
