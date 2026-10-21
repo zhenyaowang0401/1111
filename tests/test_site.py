@@ -87,35 +87,36 @@ def run():
    page.locator('[data-item="glasses"]').click()
    page.locator('[data-page="focus"]').click();page.wait_for_timeout(250)
    assert all(v>0 for v in sprite_colors('#miningCanvas').values())
-   # Partial Study time survives ending early; pause and Work do not count.
+   # Ending early keeps progress; pauses are excluded and Work is reported separately.
    page.locator('#startButton').click();page.clock.fast_forward(120000);page.locator('#startButton').click()
    page.clock.fast_forward(180000)
    page.locator('[data-page="reports"]').click();expect(page.locator('#reportToday')).to_have_text('1h 17m')
    page.locator('[data-page="focus"]').click();page.locator('#stopButton').click();page.locator('#confirmStop').click()
-   expect(page.locator('#totalDepth')).to_have_text('155')
+   expect(page.locator('#totalDepth')).to_have_text('159')
    page.locator('[data-mode="work"]').click();page.locator('#startButton').click();page.clock.fast_forward(180000)
    page.locator('#stopButton').click();page.locator('#confirmStop').click()
-   page.locator('[data-page="reports"]').click();expect(page.locator('#reportToday')).to_have_text('1h 17m')
+   page.locator('[data-page="reports"]').click();expect(page.locator('#reportToday')).to_have_text('1h 20m')
+   expect(page.locator('#todayWork')).to_have_text('3m')
    expect(page.locator('#logEntries')).to_contain_text('Ended early')
    page.locator('[data-range="30"]').click();expect(page.locator('.chart-point')).to_have_count(30)
-   page.locator('.chart-point').last.focus();expect(page.locator('#chartTooltip')).to_contain_text('1h 17m')
+   page.locator('.chart-point').last.focus();expect(page.locator('#chartTooltip')).to_contain_text('1h 20m')
    page.locator('[data-range="7"]').click();expect(page.locator('.chart-point')).to_have_count(7)
    page.locator('#previousMonth').click();page.locator('#currentMonth').click()
    expect(page.locator('.calendar-day.is-today')).to_have_attribute('aria-pressed','true')
-   page.reload();expect(page.locator('#reportToday')).to_have_text('1h 17m')
-   # Rain is a user-started stereo droplet buffer; volume persists, no autoplay.
+   page.reload();expect(page.locator('#reportToday')).to_have_text('1h 20m')
+   # Warm Focus is user-started MP3 playback; volume persists, no autoplay.
    page.locator('[data-page="focus"]').click();page.locator('#soundButton').click()
    expect(page.locator('#soundButton')).to_have_attribute('aria-pressed','true')
    assert page.evaluate('PetAudio.status().state')=='running'
-   page.locator('#rainVolume').fill('25');page.locator('#rainVolume').dispatch_event('input')
+   page.locator('#musicVolume').fill('25');page.locator('#musicVolume').dispatch_event('input')
    assert page.evaluate('PetAudio.status().volume')==.25
    page.locator('#soundButton').click();expect(page.locator('#soundButton')).to_have_attribute('aria-pressed','false')
-   page.reload();expect(page.locator('#rainVolume')).to_have_value('25')
-   assert not page.evaluate('PetAudio.status().rainOn')
+   page.reload();expect(page.locator('#musicVolume')).to_have_value('25')
+   assert not page.evaluate('PetAudio.status().musicOn')
    # All four pages work across narrow, mobile, tablet and desktop widths.
    for width in [320,390,768,1440]:
     page.set_viewport_size({'width':width,'height':900})
-    for route in ['focus','rewards','wardrobe','reports','companions']:
+    for route in ['focus','home','rewards','wardrobe','reports','companions']:
      page.locator(f'[data-page="{route}"]').click();page.wait_for_timeout(180)
      assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),(width,route)
      assert not page.locator('body').evaluate("e=>/[\u3400-\u9fff]/.test(e.innerText)")
@@ -138,7 +139,7 @@ def run():
    old.goto(url+'/#wardrobe');old.locator('#enterGame').click();expect(old.locator('#equippedCount')).to_have_text('1 equipped')
    old.locator('[data-item="glasses"]').click();expect(old.locator('#equippedCount')).to_have_text('2 equipped')
    assert not errors,errors
-   print('PASS: English UI; idle blinking; targeted pet + jump + sound; no petting in sessions; multi-equip rendered and persisted; Study reporting including partial sessions and midnight; trend and calendar controls; rain and volume; legacy migration; 20 responsive views; no JS errors.')
+   print('PASS: English UI; idle blinking; targeted pet + jump + sound; no petting in sessions; multi-equip rendered and persisted; Study reporting including partial sessions and midnight; trend and calendar controls; MP3 music and volume; legacy migration; 24 responsive views; no JS errors.')
    browser.close()
  finally:server.shutdown();server.server_close()
 if __name__=='__main__':run()

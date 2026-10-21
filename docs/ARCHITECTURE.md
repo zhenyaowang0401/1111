@@ -1,89 +1,60 @@
 # 技术与数据结构
 
-## 技术栈
+原生 HTML/CSS/JavaScript、Canvas 2D、HTMLAudio 与 Web Audio。没有运行时框架、CDN 或后端。Python 构建并执行浏览器测试。
 
-应用使用原生 HTML、CSS、JavaScript、Canvas 2D 与 Web Audio，无前端框架、打包器、CDN、运行时包依赖或后端。Python 用于开发服务、生成单文件和浏览器测试。
-
-```mermaid
-flowchart LR
-    HTML[index.html] --> APP[app.js]
-    CSS[style.css] --> HTML
-    APP --> STORE[(localStorage)]
-    APP --> ART[pixel-art.js / Canvas 2D]
-    APP --> CLOCK[world.js / Date + Intl]
-    APP --> AUDIO[audio.js / Web Audio]
-    SOURCE[根目录源码] --> BUILD[scripts/build_standalone.py]
-    BUILD --> DIST[dist/LOOP_PET.html]
-```
-
-## 模块职责
+## 模块
 
 | 文件 | 职责 |
 | --- | --- |
-| `index.html` | 创建页、五个游戏页、对话框、像素图标定义、无障碍名称 |
-| `style.css` | 像素边框、页面布局、响应式断点、四个时段的主题与减少动态效果 |
-| `app.js` | 单一状态对象、输入清理、导航、计时与学习记账、奖励、装备、报告、同伴资料及交互 |
-| `pixel-art.js` | 角色与物品的整数网格绘制、挖掘矿道、镜头、眨眼、跳跃和角色点击范围 |
-| `world.js` | 设备本地时间、时区和 Morning / Day / Evening / Night 色板 |
-| `audio.js` | 音频上下文、立体声雨滴循环、音量和抚摸叫声 |
+| `index.html` | 宠物创建、六个游戏页、对话框、图标与音频元素 |
+| `app.js` | 状态迁移、导航、计时区间、结算、报告、装备、家园与样例同伴 |
+| `journey.js` | 纯计算：奖励资格、速度、稳定路径事件、已经过节点与奖励 |
+| `home.js` | 家具、价格、摆放兼容性、主题与位置元数据 |
+| `pixel-art.js` | 共用无耳朵角色、地形、同一路径物品、家园、待机与跳跃 |
+| `world.js` | 设备本地时间、时区和四个昼夜色板 |
+| `audio.js` | 用户提供的 MP3 循环播放、音量及独立双音抚摸声 |
 
-## 导航与内嵌预览兼容
+## 计时与一次性结算
 
-页面标识为 `start`、`focus`、`rewards`、`wardrobe`、`reports`、`companions`。URL 片段用于直接访问与浏览器导航，页面内容本身由 JavaScript 切换显示。
+运行区间从 `trackedAt` 计算到 `min(now, deadline)`，并限制剩余计划时长；不是根据回调次数累加。每次暂停、导航、隐藏页面、保存或结束前更新。跨午夜按本地日期分别记入 Study/Work。
 
-`navigateTo()` **先渲染目标页，再尝试更新 History API**。即使预览容器禁止 URL 历史修改，界面仍可切换。普通链接被委托给这套导航；常规浏览器的前进/后退也有对应事件监听。
+当前 `session.elapsed` 保存已运行秒数；`baseEligible` 是本轮前累计的普通合格秒数。`Journey.events()` 在跨过每 300 秒/600 秒时生成星星/发现物位置。物种依据累计发现点稳定选择，不因拆轮、刷新或渲染帧率变化而重抽。Demo 为独立的第 9 秒发现物与第 15 秒星星。
 
-首次创建由显式 START 按钮触发。名字输入中的 Enter 走相同逻辑，并跳过输入法组合期间的 Enter。保留表单事件处理，但进入游戏不依赖浏览器允许原生表单提交。
+渲染和结算读取同一份事件。节点经过后隐藏，成为本轮收入；`finishSession()` 原子地保存余额、数量、深度、历史及空会话，刷新不会再结算已结束任务。提前结束也保存已经过节点。后台跨过多节点时批量补算，不要求用户看着动画。
 
-这是已确认的兼容性修复：只给 iframe `allow-scripts`、不给 `allow-forms` 时，旧的原生提交入口会被浏览器阻止。当前实现不需要放宽 iframe 权限。
+到期停止，不自动连开。设备时钟仍是时间基准，没有服务器校时或真实注意力验证；开发者 Demo 有意允许反复获得可消费资源。
 
-## 本地状态
+## 本地存储与迁移
 
-存储键保持为 `loop-pet-soft-universe-v1`，以兼容早期存档。键名中的旧名称不代表当前视觉版本。
+键仍为 `loop-pet-soft-universe-v1`；`progressVersion: 2` 标记本次迁移。
 
-| 字段 | 用途 |
+| 字段 | 含义 |
 | --- | --- |
-| `profile` | `{name, color, configured}`，宠物名字、身体颜色与创建状态 |
-| `depth` | 已完成并结算的累计深度 |
-| `inventory` | 四种发现物的数量数组，顺序见产品文档 |
-| `balance` | 星星余额 |
-| `owned` | 已购买装备 ID 数组 |
-| `equipped` | 同时穿戴的装备 ID 数组 |
-| `sessions` | 已完整完成的全部类型任务数 |
-| `totalSeconds` | 已完整完成任务的累计时长，包括非 Study 类型和试玩 |
-| `history` | 完成或提前结束的记录，包含类型、时间、结果、奖励与跨日分配 |
-| `session` | 当前任务或 `null`，包含运行/暂停状态、计划时长、截止时间、剩余时间等 |
-| `minutes` / `mode` | 下次任务设置 |
-| `reportDays` | 按本地日期聚合的 `{seconds, completed}`；只统计实际 Study 时间 |
-| `rainVolume` | 0–1 的音量设置；不保存“自动播放”意图 |
+| `profile` | 名字、颜色、是否创建 |
+| `depth` / `inventory` / `balance` | 已保存的累计深度（允许小数）、四种发现物数量、货币 |
+| `owned` / `equipped` | 装备拥有与同时穿戴 |
+| `eligibleSeconds` | 已结束普通 Study/Work 的累计秒数，用于跨轮奖励零头 |
+| `session` | 唯一 ID、类型、运行状态、计划、截止时间、实际 elapsed、baseEligible、baseDepth、任务与 daySeconds |
+| `history` | 会话 ID、任务、可选成果、实际时长、奖励、经过节点 ID、结束状态、是否 Demo、按日时间 |
+| `reportDays` | 每天 Study 的 seconds/completed 与 Work 的 workSeconds/workCompleted |
+| `home` | 当前主题、已拥有主题与家具、四个位置的物品 ID |
+| `musicVolume` | 背景音量；迁移旧 rainVolume，不保存自动播放意图 |
+| `lastTask` / `idleAt` / `simpleView` | 上次任务、最后交互时间、是否收起动画 |
 
-注意 `totalSeconds` 与报告总学习时间的口径不同。报告应读取 `reportDays`，不要把所有任务时间当成学习时间。
+旧余额、装备、背包、深度与 Study 汇总保留。旧单件装备迁移为数组；旧 Work 历史补入报告（没有区间的旧 Work 按历史结束日计入，不能重建已经丢失的暂停或跨日细节）。原先的 `totalSeconds` 曾包含 Demo，因此报告统一从 `reportDays` 读取，不用此旧字段表示正式专注总量。
 
-## 计时与学习记账
+存储不可用时以内存运行并提示不持久化；不为了启动预览要求增加 iframe 权限。名字、任务、成果使用文本或 HTML 转义。家园只读取已知 ID。
 
-- 运行中的剩余时间由 `deadline - Date.now()` 计算，不通过定时器回调次数累加。
-- 暂停时固定剩余时间；恢复时创建新的截止时间。
-- `trackStudy()` 记录上次计入点到当前时间的有效 Study 区间，并限制到任务截止时间。
-- 跨午夜的区间按设备本地日期切分，写入 `reportDays` 和任务的 `studyDays`。
-- 完成或提前结束时，历史记录保留这份按日时长，供日历日志显示。
-- 后台返回、页面离开和任务交互都会更新记录；运行中的任务定期尝试持久化。
+## 导航与家园
 
-设备时间也是计时的时间基准，当前没有独立的服务器校时或反作弊机制。
+`start`、`focus`、`home`、`rewards`、`wardrobe`、`reports`、`companions`。首次未配置时进入设置，回访根地址进入 Focus。先渲染再尝试 History API；表单受限 iframe 的 START/Enter 走显式事件。
 
-## 迁移与存储不可用
+查看页面不会暂停；Pause & decorate 才暂停。家园购买和位置更新同步保存；发现物摆放不扣数量，但不能超过背包数量。购买家具移动不重复扣费。编辑状态只在本次页面生命周期存在，刷新回到查看模式。
 
-读取时会过滤未知装备 ID，旧版单件 `equipped` 字符串会迁移为数组；旧记录缺少报告聚合时，可从仍然存在的 Study 历史重建。已经丢失的历史无法凭空恢复。
+## 声音、动画与单文件
 
-禁用存储或不提供同源存储的内嵌预览仍能以内存状态运行，但不能承诺刷新或关闭后保留。推荐固定 HTTP 地址使用；切换浏览器、站点、协议或端口可能得到独立存档。
+HTMLAudio 播放 `assets/audio/warm-focus.mp3`，由用户点击启动，不重新合成或修改歌曲。独立 Web Audio 产生两段 triangle 音符，包络峰值 0.32，经过压缩器；不随音乐音量改变。`tests/test_journey.py` 使用 OfflineAudioContext 测量两段波形和中间间隔。
 
-## 像素绘制
+角色绘制共用函数，支持眨眼、困倦、睡眠和暂停休息。requestAnimationFrame 限速；简洁视图跳过矿洞绘制；系统减少动态效果禁用跳跃并固定动画帧。
 
-角色、矿道和物品通过 Canvas 矩形与整数网格绘制；CSS 使用 `image-rendering: pixelated` 保持像素边缘。各场景调用同一个无耳朵角色函数，身体色与装备作为参数传入，避免创建页和实际游戏形象不一致。
-
-动画由 `requestAnimationFrame` 驱动并限速。抚摸通过角色绘制范围做命中检测。系统减少动态效果偏好会抑制跳跃；挖掘进度仍按计时更新。
-
-## 离线单文件
-
-构建脚本按页面既有顺序内嵌 `world.js`、`audio.js`、`pixel-art.js`、`app.js` 和 `style.css`。数据 URI 图标、程序绘制图像和合成声音无需额外资源。
-
-`dist/LOOP_PET.html` 是可重建的生成文件。请不要单独修改它；修改源码后重新构建，并一起提交。
+构建脚本内嵌 CSS、六个 JS 模块和 MP3 原始字节的 base64。`dist/LOOP_PET.html` 为生成文件，必须从源码重建，不能单独修改。

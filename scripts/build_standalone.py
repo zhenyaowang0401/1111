@@ -2,10 +2,11 @@
 """Embed the local scripts and CSS into a reproducible, offline HTML file."""
 from pathlib import Path
 import argparse
+import base64
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPTS = ('world.js', 'audio.js', 'pixel-art.js', 'app.js')
+SCRIPTS = ('world.js', 'journey.js', 'home.js', 'audio.js', 'pixel-art.js', 'app.js')
 
 
 def build(output: Path) -> Path:
@@ -15,6 +16,11 @@ def build(output: Path) -> Path:
         raise ValueError('Expected exactly one local style.css stylesheet tag')
     css = (ROOT / 'style.css').read_text(encoding='utf-8')
     page = page.replace(style_tag, '<style>\n' + css + '\n</style>')
+    audio_path = 'assets/audio/warm-focus.mp3'
+    audio_data = base64.b64encode((ROOT / audio_path).read_bytes()).decode('ascii')
+    if page.count('src="' + audio_path + '"') != 1:
+        raise ValueError('Expected one local Warm Focus audio source')
+    page = page.replace('src="' + audio_path + '"', 'src="data:audio/mpeg;base64,' + audio_data + '"')
     for name in SCRIPTS:
         tag = f'<script src="{name}"></script>'
         if page.count(tag) != 1:

@@ -1,65 +1,36 @@
 # LOOP PET
 
-An English-language pixel focus game with an earless mole: create a pet, focus while it digs, collect items, stack equipment, and review local study time.
+An English pixel focus companion. Study or work while an earless mole digs, automatically collects stars and finds, and brings discoveries home.
 
-[中文](../README.md) · [Product specification (Chinese)](PRODUCT.md) · [Architecture (Chinese)](ARCHITECTURE.md) · [Testing (Chinese)](TESTING.md)
+[中文 README](../README.md) · [Product details (Chinese)](PRODUCT.md)
 
-![Pet setup](images/setup.png)
+## Download and run
 
-## Download and play
+Download the repository ZIP from GitHub, extract it, and open **dist/LOOP_PET.html** in Chrome or Edge. The single file embeds all artwork, scripts, styles, and the creator-supplied Warm Focus MP3. No installation is required to play.
 
-On the GitHub repository page, use **Code → Download ZIP**. Extract the archive, then open **`dist/LOOP_PET.html`** in Chrome or Edge. It contains every script and style; no build tools or runtime packages are required.
+GitHub displays HTML source when browsing a file; download and open it locally, or enable GitHub Pages separately. No public deployment is claimed here.
 
-Clicking an HTML file on GitHub displays its source. That is not a playable game preview. Download and extract it, or run a local server from the repository root:
+## Features and rules
+
+- Name and recolor your mole with 12 presets or a custom color; returning players go directly to Focus.
+- Study and Work: 1 star per 5 active minutes, 1 find per 10 minutes, 1 metre per 30 seconds. Unused time carries across sessions. Pauses and Breaks do not earn rewards.
+- Pickups sit on the tool's actual route. Ending early keeps recorded time, depth and collected rewards. No daily cap or continuous-session multiplier.
+- The repeatable 15-second developer demo still earns **1 spendable star, 5 metres and 1 find**. It does not enter focus reports.
+- Home is the second navigation icon: four placement spots, furniture and room themes, including decorations made from your finds.
+- Idle blinking, drowsiness after about 90 seconds, sleep after about 5 minutes; pet to wake, jump, say `yeeeeee` and play two louder doo-doo notes. No petting during sessions.
+- Warm Focus music plays only after pressing Music, loops across navigation, remembers volume and does not autoplay on reload.
+- Optional task and outcome notes; Study/Work totals, trend, calendar, daily closing and JSON export in the top-right Today page.
+- Multiple equipment items can be worn together. Device-local daylight changes the world. Companions are four clearly labelled sample profiles, not live players.
+
+All progress is browser-local. No account, cloud sync, real multiplayer, or attention verification is implemented.
+
+## Development
 
 ```sh
 python3 -m http.server 8000
-```
-
-On Windows, `py -m http.server 8000` is also available when the Python launcher is installed. Open `http://localhost:8000/` in your browser.
-
-## Features
-
-- Name a pet and choose from 12 presets or a custom body color.
-- Focus timer with Study / Work / Break, pause/resume/end, and a 15-second demo.
-- Real pixel-terrain excavation and a camera that follows the shaft underground.
-- Idle blinking and targeted petting: a jump, a synthesized chirp, and `yeeeeee`. Petting is disabled during running and paused sessions.
-- Four discoveries, star rewards, and four simultaneously wearable accessories.
-- Actual Study time today/week/all time, 7/30-day charts, a calendar, and daily logs. Midnight-crossing sessions are split by device-local date.
-- Morning/day/evening/night scenery driven by the device's clock and timezone.
-- Four clearly labeled **sample** companions: Luka, Yun, Daniel, and Selina, with distinct colors, progress bars and expandable inventories.
-- Locally generated stereo rain, saved volume, and no audio autoplay.
-
-The companion screen is not connected to real players. There are no accounts, backend, or cloud sync. Progress is stored in this browser's `localStorage`; restricted previews may only retain in-memory state.
-
-## Build
-
-Edit the source files at repository root, then regenerate the tracked standalone version:
-
-```sh
 python3 scripts/build_standalone.py
 ```
 
-Output: `dist/LOOP_PET.html`.
+The application has no runtime package dependencies. Browser checks require Python, Playwright and Chromium; optional reward invariants use Node.js. See [testing](TESTING.md) and [validation](VALIDATION.md).
 
-## Test
-
-Python 3.10+ is recommended. In a virtual environment:
-
-```sh
-python -m pip install -r requirements-dev.txt
-python -m playwright install chromium
-python tests/test_entry.py
-python tests/test_site.py
-python tests/test_world.py
-```
-
-Tests reuse a system `chromium`/`chromium-browser` when present, fall back to Playwright's browser, or use `PLAYWRIGHT_CHROMIUM_EXECUTABLE` when set. On Linux, Playwright's `install --with-deps chromium` can install missing browser libraries.
-
-The entry regression reproduces previews that allow JavaScript but prohibit form submission. START and Enter render the destination directly, independent of form or history permissions. All views share the earless sprite.
-
-## Deployment
-
-The site can run on GitHub Pages from the `main` branch and repository root. An owner must enable it in **Settings → Pages** and use the deployment URL shown there. A code push alone does not establish a working public site. See [deployment instructions (Chinese)](DEPLOYMENT.md).
-
-![Game](images/focus.png)
+![Home](images/home.png)
