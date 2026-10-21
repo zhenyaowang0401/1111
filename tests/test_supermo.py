@@ -19,7 +19,7 @@ def run():
    page.add_init_script(f"if(!localStorage.getItem('{KEY}'))localStorage.setItem('{KEY}',{json.dumps(json.dumps(seed))});")
    url=f'http://127.0.0.1:{server.server_port}'
    page.goto(url+'/#home');page.clock.install();page.wait_for_timeout(180)
-   expect(page.locator('.header .brand')).to_have_text('Eumo');assert page.title()=='Eumo — Home'
+   expect(page.locator('.header .brand')).to_have_text('Eumo v2');assert page.title()=='Eumo v2 — Home'
    def store():return page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',KEY)
    before=store()['inventory']
    # A real hit target on the pictured chest opens a keyboard-accessible dialog.

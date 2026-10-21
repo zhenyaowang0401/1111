@@ -10,7 +10,7 @@
 | `app.js` | 状态迁移、导航、计时区间、结算、报告、装备、家园与样例同伴 |
 | `journey.js` | 纯计算：奖励资格、速度、稳定路径事件、已经过节点与奖励 |
 | `terrain.js` | 世界坐标下的六段地层、色块过渡、碎石、根系藤蔓和低频生态绘制 |
-| `wardrobe.js` | 7 帽/5 衣/5 围脖/2 旧配饰与 6 工具的分类价格、同类互斥和存档校验 |
+| `wardrobe.js` | 7 帽/5 衣/5 围脖/6 眼镜/1 旧胸针与 6 工具的分类价格、同类互斥和存档校验 |
 | `wardrobe-art.js` | 商店图标与实际角色共用的像素模型、独立工具动画 |
 | `home.js` | 家具、价格、摆放兼容性、主题与位置元数据 |
 | `pixel-art.js` | 共用无耳朵角色、地形、同一路径物品、家园、待机与跳跃 |
@@ -35,7 +35,7 @@
 | --- | --- |
 | `profile` | 名字、颜色、是否创建 |
 | `depth` / `inventory` / `balance` | 已保存的累计深度（允许小数）、四种发现物数量、货币 |
-| `owned` / `equipped` | 服装拥有列表；帽/衣/围脖各一件，Extras 可同时保留 |
+| `owned` / `equipped` | 服装拥有列表；帽/衣/围脖/眼镜各一件，Extras 可同时保留 |
 | `ownedTools` / `tool` | 已兑换工具 ID 列表与当前工具；null 表示免费默认镐子 |
 | `eligibleSeconds` | 已结束普通 Study/Work 的累计秒数，用于跨轮奖励零头 |
 | `session` | 唯一 ID、类型、运行状态、计划、截止时间、实际 elapsed、baseEligible、baseDepth、任务与 daySeconds |
@@ -62,7 +62,13 @@ HTMLAudio 播放 `assets/audio/warm-focus-3.mp3`，由用户点击启动，不�
 
 角色绘制共用函数，支持眨眼、困倦、睡眠和暂停休息。requestAnimationFrame 限速；简洁视图跳过矿洞绘制；系统减少动态效果禁用跳跃并固定动画帧。
 
-构建脚本内嵌 CSS、九个 JS 模块和 MP3 原始字节的 base64。`dist/Eumo.html` 为生成文件，必须从源码重建，不能单独修改。
+构建脚本内嵌 CSS、九个 JS 模块、Pixelify Sans TTF 与 MP3 原始字节的 base64，并附带完整 OFL 许可。`dist/Eumo.html` 为生成文件，必须从源码重建，不能单独修改。
+
+## 有界商店与字体
+
+`.wardrobe-layout` 桌面高度随视窗约束，`.closet` 和 `.fitting-room` 使用 min-height:0。`#shopScroll` 为独立、可聚焦的 overflow-y:auto 区域；分类在区域外，避免滚动后找不到筛选。只在切换分类/筛选时复位滚动，购买不替换滚动容器。预览按容器宽高计算尺寸，保持 Canvas 实际宽高比和点击坐标；手机改为紧凑预览加有界商店。
+
+字体资源在 assets/fonts；CSS 全站字体统一，英文像素形状使用 Pixelify Sans，缺失字形由系统补足。构建时校验唯一字体 URL，替换为 data URI，并内嵌许可；不增加在线请求。
 
 ## 睡眠与宝箱
 

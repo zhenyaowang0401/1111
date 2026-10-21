@@ -24,6 +24,14 @@ window.WardrobeArt=(()=>{
   bow:[[5,18,17,3,'#d38da9'],[7,20,4,4,'#eeb7cc'],[16,20,4,4,'#eeb7cc'],[11,20,5,3,'#ab688f'],[8,20,2,2,'#ffe0e1'],[18,20,2,2,'#ffe0e1'],[10,23,3,3,'#c684a5'],[15,23,3,3,'#c684a5']],
   fur:[[3,18,21,4,'#d7ccbb'],[5,17,4,2,'#f7ebd6'],[11,17,4,2,'#f7ebd6'],[18,17,4,2,'#f7ebd6'],[4,20,4,3,'#efe1c8'],[10,20,5,3,'#efe1c8'],[18,20,5,4,'#efe1c8'],[19,23,4,4,'#cfbea6'],[18,24,6,2,'#f3e5d0']]
  };
+ const glasses={
+  glasses:[[6,10,6,1,'#28214c'],[6,10,1,6,'#28214c'],[6,15,6,1,'#28214c'],[11,10,1,6,'#28214c'],[15,10,6,1,'#28214c'],[15,10,1,6,'#28214c'],[15,15,6,1,'#28214c'],[20,10,1,6,'#28214c'],[12,11,3,1,'#28214c'],[7,11,2,1,'#b4f2ed'],[16,11,2,1,'#b4f2ed']],
+  sunglasses:[[4,10,19,1,'#252a43'],[5,11,7,4,'#252a43'],[15,11,7,4,'#252a43'],[6,12,5,3,'#364359'],[16,12,5,3,'#364359'],[12,11,3,1,'#252a43'],[6,11,3,1,'#a6d4de'],[16,11,3,1,'#a6d4de'],[7,15,3,1,'#252a43'],[17,15,3,1,'#252a43']],
+  roundglasses:[[7,9,4,1,'#d7ac76'],[6,10,1,5,'#d7ac76'],[11,10,1,5,'#d7ac76'],[7,15,4,1,'#d7ac76'],[16,9,4,1,'#d7ac76'],[15,10,1,5,'#d7ac76'],[20,10,1,5,'#d7ac76'],[16,15,4,1,'#d7ac76'],[12,11,3,1,'#a8805d'],[4,11,2,1,'#d7ac76'],[21,11,2,1,'#d7ac76'],[7,10,1,2,'#fff2c7'],[16,10,1,2,'#fff2c7']],
+  squareglasses:[[5,9,8,1,'#e5e1cb'],[5,10,1,6,'#e5e1cb'],[12,10,1,6,'#b5cbbf'],[5,16,8,1,'#b5cbbf'],[15,9,8,1,'#e5e1cb'],[15,10,1,6,'#e5e1cb'],[22,10,1,6,'#b5cbbf'],[15,16,8,1,'#b5cbbf'],[13,11,2,1,'#e5e1cb'],[6,10,2,1,'#a0f0e9'],[16,10,2,1,'#a0f0e9']],
+  heartglasses:[[6,9,2,1,'#f39bb7'],[10,9,2,1,'#f39bb7'],[5,10,8,1,'#f39bb7'],[5,11,1,2,'#f39bb7'],[12,11,1,2,'#f39bb7'],[6,13,1,1,'#d86e9b'],[11,13,1,1,'#d86e9b'],[7,14,4,1,'#d86e9b'],[8,15,2,1,'#d86e9b'],[16,9,2,1,'#f39bb7'],[20,9,2,1,'#f39bb7'],[15,10,8,1,'#f39bb7'],[15,11,1,2,'#f39bb7'],[22,11,1,2,'#f39bb7'],[16,13,1,1,'#d86e9b'],[21,13,1,1,'#d86e9b'],[17,14,4,1,'#d86e9b'],[18,15,2,1,'#d86e9b'],[13,11,2,1,'#f39bb7'],[6,10,2,1,'#ffe0da'],[16,10,2,1,'#ffe0da']],
+  starglasses:[[8,8,2,2,'#f7d27c'],[6,10,6,1,'#f7d27c'],[4,11,10,2,'#f7d27c'],[6,13,6,1,'#e2ae62'],[6,14,2,2,'#e2ae62'],[10,14,2,2,'#e2ae62'],[8,11,2,3,'#8293ca'],[18,8,2,2,'#f7d27c'],[16,10,6,1,'#f7d27c'],[14,11,10,2,'#f7d27c'],[16,13,6,1,'#e2ae62'],[16,14,2,2,'#e2ae62'],[20,14,2,2,'#e2ae62'],[18,11,2,3,'#8293ca'],[13,11,2,1,'#f7d27c']]
+ };
  const tools={
   spoon:[[24,15,2,15,'#b4c2c5'],[22,6,6,2,'#e2e9df'],[20,8,10,7,'#b4c8d0'],[22,9,6,5,'#e3eeea'],[24,29,2,2,'#8d9ba8']],
   shovel:[[24,6,6,2,'#c1976c'],[23,8,2,5,'#c1976c'],[29,8,2,5,'#c1976c'],[24,12,6,2,'#c1976c'],[26,14,2,9,'#c1976c'],[22,22,10,6,'#87a8b4'],[24,28,6,3,'#72919e'],[26,23,2,5,'#c4dfe1']],
@@ -39,6 +47,6 @@ window.WardrobeArt=(()=>{
   draw((x,y,w,h,c)=>r(x+vibration,y+bob,w,h,c),tools[id]);
   if(id==='drill'||id==='crystaldrill')r(36+frame%3,17+bob,1,2,frame%2?'#607c98':'#f0fff7');
  }
- function iconSVG(id){const rs=hats[id]||clothes[id]||scarves[id]||tools[id];if(!rs)return null;const xs=rs.map(r=>r[0]),ys=rs.map(r=>r[1]),minX=Math.min(...xs),minY=Math.min(...ys),maxX=Math.max(...rs.map(r=>r[0]+r[2])),maxY=Math.max(...rs.map(r=>r[1]+r[3])),size=Math.max(maxX-minX,maxY-minY)+5,x=(minX+maxX-size)/2,y=(minY+maxY-size)/2;return `<svg viewBox="${x} ${y} ${size} ${size}" aria-hidden="true" shape-rendering="crispEdges">`+rs.map(([x,y,w,h,color])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${color}"/>`).join('')+'</svg>';}
- return {hat:(r,id)=>draw(r,hats[id]),clothes:(r,id)=>draw(r,clothes[id]),scarf:(r,id)=>draw(r,scarves[id]),drawTool,iconSVG};
+ function iconSVG(id){const rs=hats[id]||clothes[id]||scarves[id]||glasses[id]||tools[id];if(!rs)return null;const xs=rs.map(r=>r[0]),ys=rs.map(r=>r[1]),minX=Math.min(...xs),minY=Math.min(...ys),maxX=Math.max(...rs.map(r=>r[0]+r[2])),maxY=Math.max(...rs.map(r=>r[1]+r[3])),size=Math.max(maxX-minX,maxY-minY)+5,x=(minX+maxX-size)/2,y=(minY+maxY-size)/2;return `<svg viewBox="${x} ${y} ${size} ${size}" aria-hidden="true" shape-rendering="crispEdges">`+rs.map(([x,y,w,h,color])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${color}"/>`).join('')+'</svg>';}
+ return {hat:(r,id)=>draw(r,hats[id]),clothes:(r,id)=>draw(r,clothes[id]),scarf:(r,id)=>draw(r,scarves[id]),glasses:(r,id)=>draw(r,glasses[id]),drawTool,iconSVG};
 })();

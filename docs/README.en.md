@@ -1,4 +1,4 @@
-# Eumo
+# Eumo v2
 
 An English pixel focus companion. Study or work while an earless mole digs, automatically collects stars and finds, and brings discoveries home.
 
@@ -6,7 +6,7 @@ An English pixel focus companion. Study or work while an earless mole digs, auto
 
 ## Download and run
 
-Download the repository ZIP from GitHub, extract it, and open **dist/Eumo.html** in Chrome or Edge. The single file embeds all artwork, scripts, styles, and the creator-supplied Warm Focus MP3. No installation is required to play.
+Download the repository ZIP from GitHub, extract it, and open **dist/Eumo.html** in Chrome or Edge. The single file embeds all artwork, scripts, styles, a local Pixelify Sans font, and the creator-supplied Warm Focus MP3. No installation is required to play.
 
 GitHub displays HTML source when browsing a file; download and open it locally, or enable GitHub Pages separately. No public deployment is claimed here.
 
@@ -20,7 +20,9 @@ GitHub displays HTML source when browsing a file; download and open it locally, 
 - Idle blinking, drowsiness after about 90 seconds, sleep after about 5 minutes with rising pixel zzz, a nose bubble and visible breathing; pet to wake, jump, say `yeeeeee` and play two softened, voiced doo-doo syllables. No petting during sessions.
 - The newly supplied Warm Focus (3) music plays only after pressing Music, loops across navigation, remembers volume and does not autoplay on reload.
 - Optional task and outcome notes; Study/Work totals, trend, calendar, daily closing and JSON export in the top-right Today page.
-- Choose one of 7 hats, 5 clothes and 5 scarves; mix categories, plus the two legacy extras. Six paid tools (45–240 stars) have distinct digging animations, with no reward or speed boost; the free default pickaxe is not a shop item. Device-local daylight changes the world. Companions are four clearly labelled sample profiles, not live players.
+- Choose one of 7 hats, 5 clothes, 5 scarves and 6 glasses (five new styles plus the original goggles); mix categories with the legacy star pin. Six paid tools (45–240 stars) have distinct digging animations, with no reward or speed boost; the free default pickaxe is not a shop item. Device-local daylight changes the world. Companions are four clearly labelled sample profiles, not live players.
+
+The fitting preview stays in the left panel while the right shop scrolls independently with a mouse wheel, draggable scrollbar, keyboard or touch. Categories remain accessible. On phones the preview becomes compact above the shop. Pixelify Sans is bundled locally under SIL OFL 1.1; small UI labels are at least 12px.
 
 All progress is browser-local. No account, cloud sync, real multiplayer, or attention verification is implemented.
 

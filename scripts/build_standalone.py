@@ -15,6 +15,14 @@ def build(output: Path) -> Path:
     if page.count(style_tag) != 1:
         raise ValueError('Expected exactly one local style.css stylesheet tag')
     css = (ROOT / 'style.css').read_text(encoding='utf-8')
+    font_path = 'assets/fonts/pixelify-sans.ttf'
+    font_url = f'url("{font_path}")'
+    if css.count(font_url) != 1:
+        raise ValueError('Expected one local Pixelify Sans font source')
+    font_data = base64.b64encode((ROOT / font_path).read_bytes()).decode('ascii')
+    css = css.replace(font_url, f'url("data:font/ttf;base64,{font_data}")')
+    # Preserve the font's redistribution license inside the downloadable file.
+    css = '/*\n' + (ROOT / 'assets/fonts/OFL.txt').read_text(encoding='utf-8') + '\n*/\n' + css
     page = page.replace(style_tag, '<style>\n' + css + '\n</style>')
     audio_path = 'assets/audio/warm-focus-3.mp3'
     audio_data = base64.b64encode((ROOT / audio_path).read_bytes()).decode('ascii')

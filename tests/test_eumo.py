@@ -13,21 +13,44 @@ def run():
  Thread(target=server.serve_forever,daemon=True).start()
  try:
   with sync_playwright() as p:
-   browser=p.chromium.launch(executable_path=os.environ.get('PLAYWRIGHT_CHROMIUM_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
+   browser=p.chromium.launch(executable_path=os.environ.get('PLAYWRIGHT_CHROMIUM_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'],ignore_default_args=['--hide-scrollbars'])
    page=browser.new_page(viewport={'width':1440,'height':1050});errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    seed={'profile':{'name':'Yami','configured':True,'color':'#b784cf'},'balance':3000,'inventory':[2,1,1,1],'owned':['hat','scarf','glasses','star'],'equipped':['hat','scarf','glasses','star'],'progressVersion':2}
    page.add_init_script(f"if(!localStorage.getItem('{KEY}'))localStorage.setItem('{KEY}',{json.dumps(json.dumps(seed))});")
    url=f'http://127.0.0.1:{server.server_port}';page.goto(url+'/#wardrobe');page.clock.install();page.wait_for_timeout(180)
-   expect(page.locator('.header .brand')).to_have_text('Eumo');assert page.title()=='Eumo — Equipment'
+   expect(page.locator('.header .brand')).to_have_text('Eumo v2');assert page.title()=='Eumo v2 — Equipment'
    def saved():return page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',KEY)
    expect(page.locator('#equippedCount')).to_have_text('4 equipped')
-   for category,count in [('hats',7),('clothes',5),('scarves',5)]:
+   page.evaluate('document.fonts.ready')
+   assert page.evaluate("Array.from(document.fonts).some(f=>f.family==='Pixelify Sans'&&f.status==='loaded')")
+   assert page.locator('.rarity-badge').first.evaluate('e=>parseFloat(getComputedStyle(e).fontSize)')>=12
+   assert 'Tools change the digging animation' not in page.locator('body').inner_text()
+   # Wheel movement stays inside the shop; preview and page stay in place.
+   scroll=page.locator('#shopScroll');assert scroll.evaluate('e=>e.scrollHeight>e.clientHeight')
+   before=page.locator('.fitting-room').bounding_box();window_y=page.evaluate('scrollY')
+   scroll.hover();page.mouse.wheel(0,600);page.wait_for_timeout(250)
+   assert scroll.evaluate('e=>e.scrollTop')>100
+   assert page.locator('.fitting-room').bounding_box()==before and page.evaluate('scrollY')==window_y
+   scroll.evaluate('e=>e.scrollTop=0');box=scroll.bounding_box()
+   page.mouse.move(box['x']+box['width']-6,box['y']+25);page.mouse.down()
+   page.mouse.move(box['x']+box['width']-6,box['y']+160,steps=12);page.mouse.up();page.wait_for_timeout(150)
+   assert scroll.evaluate('e=>e.scrollTop')>50,'Scrollbar must be draggable'
+   scroll.focus();page.keyboard.press('Home');page.wait_for_timeout(180)
+   page.screenshot(path=str(ROOT/'docs/images/eumo-v2-shop.png'),full_page=True)
+   assert page.locator('.wardrobe-layout').bounding_box()['height']<=760
+
+   eyewear_pixels=[]
+   for category,count in [('hats',7),('clothes',5),('scarves',5),('glasses',6)]:
     page.locator(f'[data-category="{category}"]').click();expect(page.locator('.outfit-card')).to_have_count(count)
     if category=='hats':page.screenshot(path=str(ROOT/'docs/images/eumo-equipment.png'),full_page=True)
     ids=page.locator('[data-item]').evaluate_all('els=>els.map(e=>e.dataset.item)')
     for id in ids:
      before=saved();button=page.locator(f'[data-item="{id}"]')
      if button.inner_text()!='Remove':button.click()
+     if category=='glasses':
+      page.wait_for_timeout(120)
+      eye=page.locator('#wardrobeCanvas').evaluate("c=>{const d=c.getContext('2d').getImageData(69,56,63,33).data;return Array.from(d).join(',');}")
+      eyewear_pixels.append(eye)
      after=saved();active=page.evaluate('(category)=>state.equipped.filter(id=>WardrobeCatalog.items.find(i=>i.id===id).category===category)',category)
      assert active==[id],(category,id,active)
      if id in before['owned']:assert after['balance']==before['balance']
@@ -35,7 +58,9 @@ def run():
       price=page.evaluate('(id)=>WardrobeCatalog.items.find(i=>i.id===id).cost',id)
       assert before['balance']-after['balance']==price
    expect(page.locator('#equippedCount')).to_have_text('5 equipped')
-   assert saved()['balance']==2496
+   assert len(set(eyewear_pixels))==6,'Glasses should visibly change the actual mole'
+   page.screenshot(path=str(ROOT/'docs/images/eumo-v2-glasses.png'),full_page=True)
+   assert saved()['balance']==2403
    page.reload();expect(page.locator('#equippedCount')).to_have_text('5 equipped')
    # Real game inventory slots, one selected item tray, no added hands.
    page.locator('[data-page="home"]').click();page.locator('#openChestButton').click()
@@ -74,21 +99,30 @@ def run():
     assert len(positions)>1,(id,'tool not animated',positions)
     tool_images.append(page.locator('#miningCanvas').screenshot())
     page.clock.fast_forward(15000);expect(page.locator('#finishStars')).to_have_text('+1 ✦');page.locator('#claimButton').click()
-   assert len(set(tool_images))==6 and saved()['balance']==1842
+   assert len(set(tool_images))==6 and saved()['balance']==1749
    page.reload();assert saved()['tool']=='crystaldrill' and len(saved()['ownedTools'])==6
    page.locator('[data-page="wardrobe"]').click();page.locator('[data-category="tools"]').click();page.locator('#resetTool').click();assert saved()['tool'] is None
    # Reusing owned equipment is free, same-category replacement remains free.
    balance=saved()['balance'];page.locator('[data-category="hats"]').click();page.locator('[data-item="bucket"]').click();page.locator('[data-item="crown"]').click();assert saved()['balance']==balance
    page.locator('[data-page="reports"]').click();expect(page.locator('#reportToday')).to_have_text('0m')
+   # The canonical standalone carries the font and new store offline.
+   offline_context=browser.new_context();offline=offline_context.new_page()
+   offline.goto(url+'/dist/Eumo.html');offline_context.set_offline(True)
+   offline.locator('#enterGame').click();offline.locator('[data-page="wardrobe"]').click()
+   offline.locator('[data-category="glasses"]').click();expect(offline.locator('[data-item]')).to_have_count(6)
+   offline.evaluate('document.fonts.ready')
+   assert offline.evaluate("Array.from(document.fonts).some(f=>f.family==='Pixelify Sans'&&f.status==='loaded')")
+   assert offline.title()=='Eumo v2 — Equipment';offline_context.close()
    # Chest and category shelves fit phones and short landscape windows.
    for width,height in [(320,844),(390,844),(768,900),(1000,600)]:
     page.set_viewport_size({'width':width,'height':height});page.locator('[data-page="home"]').click();page.locator('#openChestButton').click()
     assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),('chest overflow',width)
     box=page.locator('#chestDialog').bounding_box();assert box['height']<=height,('chest too tall',width,box)
     page.locator('#chestDoneButton').click();page.locator('[data-page="wardrobe"]').click()
-    for cat in ['hats','clothes','scarves','tools']:
+    if width==390:page.screenshot(path=str(ROOT/'docs/images/eumo-v2-mobile.png'),full_page=True)
+    for cat in ['hats','clothes','scarves','glasses','tools']:
      page.locator(f'[data-category="{cat}"]').click();assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),(width,cat)
    assert not errors,errors
-   browser.close();print('PASS: Eumo branding; 7 hats/5 clothes/5 scarves; prices and one-per-category; legacy extras; chest slots; home-only head display; 6 paid animated tools absent from outfit preview; no reward multipliers; ownership/reload; responsive chest and categories.')
+   browser.close();print('PASS: Eumo v2; wheel-scroll shop and stationary preview; loaded readable pixel font + offline font; 7 hats/5 clothes/5 scarves/6 glasses with actual pixels; prices and one-per-category; legacy extras; chest slots; home-only head display; 6 paid animated tools absent from outfit preview; no reward multipliers; ownership/reload; responsive chest and categories.')
  finally:server.shutdown();server.server_close()
 if __name__=='__main__':run()

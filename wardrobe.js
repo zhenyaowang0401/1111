@@ -19,7 +19,12 @@ window.WardrobeCatalog=(()=>{
   {id:'checkered',name:'Checkered scarf',category:'scarves',cost:14,rarity:'Uncommon'},
   {id:'bow',name:'Ribbon scarf',category:'scarves',cost:22,rarity:'Uncommon'},
   {id:'fur',name:'Fluffy scarf',category:'scarves',cost:38,rarity:'Rare'},
-  {id:'glasses',name:'Goggles',category:'extras',cost:2,rarity:'Common'},
+  {id:'glasses',name:'Goggles',category:'glasses',cost:2,rarity:'Common'},
+  {id:'sunglasses',name:'Sunglasses',category:'glasses',cost:6,rarity:'Common'},
+  {id:'roundglasses',name:'Round glasses',category:'glasses',cost:8,rarity:'Common'},
+  {id:'squareglasses',name:'Square frames',category:'glasses',cost:10,rarity:'Uncommon'},
+  {id:'heartglasses',name:'Heart frames',category:'glasses',cost:24,rarity:'Rare'},
+  {id:'starglasses',name:'Star shades',category:'glasses',cost:45,rarity:'Epic'},
   {id:'star',name:'Star pin',category:'extras',cost:5,rarity:'Uncommon'}
  ];
  const tools=[
@@ -30,7 +35,7 @@ window.WardrobeCatalog=(()=>{
   {id:'jackhammer',name:'Jackhammer',cost:150,rarity:'Epic'},
   {id:'crystaldrill',name:'Crystal drill',cost:240,rarity:'Legendary'}
  ];
- const categories=[{id:'all',label:'All'},{id:'hats',label:'Hats'},{id:'clothes',label:'Clothes'},{id:'scarves',label:'Scarves'},{id:'tools',label:'Tools'},{id:'extras',label:'Extras'}];
+ const categories=[{id:'all',label:'All'},{id:'hats',label:'Hats'},{id:'clothes',label:'Clothes'},{id:'scarves',label:'Scarves'},{id:'glasses',label:'Glasses'},{id:'tools',label:'Tools'},{id:'extras',label:'Extras'}];
  function equip(current,id){const item=items.find(i=>i.id===id);if(!item)return [...current];return [...current.filter(old=>old!==id&&(item.category==='extras'||items.find(i=>i.id===old)?.category!==item.category)),id];}
  function normalize(current,owned){let result=[];for(const id of current)if(owned.includes(id)&&items.some(i=>i.id===id))result=equip(result,id);return result;}
  function headTop(current){return items.find(i=>i.category==='hats'&&current.includes(i.id))?.headTop??5;}

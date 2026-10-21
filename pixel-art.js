@@ -28,7 +28,7 @@ window.PixelArt=(()=>{
  if(clothes)WardrobeArt.clothes(r,clothes.id);
  if(dig)WardrobeArt.drawTool(r,toolId,frame);
  if(hat)WardrobeArt.hat(r,hat.id);
- if(has('glasses')){r(6,10,6,1,colors.ink);r(6,10,1,6,colors.ink);r(6,15,6,1,colors.ink);r(11,10,1,6,colors.ink);r(15,10,6,1,colors.ink);r(15,10,1,6,colors.ink);r(15,15,6,1,colors.ink);r(20,10,1,6,colors.ink);r(12,11,3,1,colors.ink);r(7,11,2,1,'#b4f2ed');r(16,11,2,1,'#b4f2ed');}
+ const eyewear=WardrobeCatalog.items.find(i=>i.category==='glasses'&&worn.includes(i.id));if(eyewear)WardrobeArt.glasses(r,eyewear.id);
  if(scarf)WardrobeArt.scarf(r,scarf.id);
  if(has('star')){star(c,20,17,.6,colors.yellow);r(21,18,1,1,'#fffce0');}
  c.restore();if(mood==='asleep')sleepEffects(c,x,y,scale,frame,colors.furLight);}

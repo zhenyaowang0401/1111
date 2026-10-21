@@ -1,6 +1,6 @@
 # 产品与交互说明
 
-Eumo 是英文界面的本地像素专注应用。一个无耳朵鼹鼠陪你挖掘；Study 与 Work 的实际运行时间产生星星和发现物，成果可以布置家园。当前没有服务器或真实联机。
+Eumo v2 是英文界面的本地像素专注应用。一个无耳朵鼹鼠陪你挖掘；Study 与 Work 的实际运行时间产生星星和发现物，成果可以布置家园。当前没有服务器或真实联机。
 
 ## 页面与进入
 
@@ -59,13 +59,14 @@ Demo 保留在 Focus 中，可反复测试：每 3 秒 1 米，完成一轮固�
 
 ## 分类服装与工具
 
-帽子、衣服、围脖各自同时装备一件；选择同类另一件会替换旧件，旧件仍归玩家所有。类别之间可叠穿；旧 Goggles（2 星）和 Star pin（5 星）放在 Extras，继续保留原存档、价格和搭配。星星胸针作为胸前配饰，不占用帽子位。
+帽子、衣服、围脖、眼镜各自同时装备一件；选择同类另一件会替换旧件，旧件仍归玩家所有。类别之间可叠穿；原 Goggles（2 星）归入 Glasses，Star pin（5 星）留在 Extras；继续保留原存档、价格和搭配。星星胸针作为胸前配饰，不占用帽子位。
 
 | 类别 | 物品与星星价格 |
 | --- | --- |
 | 帽子（7） | Explorer hat 3；Sun hat 6；Bucket hat 9；Baseball cap 30；Bunny hat 65；Space helmet 80；Little crown 120 |
 | 衣服（5） | Cream sweater 12；Honey coat 15；Lilac hoodie 20；Brown school uniform 25；Peach puffer 40 |
 | 围脖（5） | Mint scarf 3；Striped scarf 8；Checkered scarf 14；Ribbon scarf 22；Fluffy scarf 38 |
+| 眼镜（6，新增 5） | Goggles 2；Sunglasses 6；Round glasses 8；Square frames 10；Heart frames 24；Star shades 45 |
 | 工具（6） | Giant spoon 45；Garden shovel 60；Garden fork 75；Electric drill 90；Jackhammer 150；Crystal drill 240 |
 
 日常帽子和围脖较易兑换，稀有帽子与工具需要较多星星；用 Common / Uncommon / Rare / Epic / Legendary 标记及边框区分。购买直接选中，已拥有物品切换免费；所有价格固定，没有抽奖或限时商品。
@@ -81,6 +82,12 @@ Demo 保留在 Focus 中，可反复测试：每 3 秒 1 米，完成一轮固�
 - 点击角色可唤醒、跳一下、显示 `yeeeeee`，发出两声柔化起音与尾音的“嘟嘟”：基音、轻泛音与微弱气声组成，不再是相同的三角波提示音。背景点击不触发。
 - 正在运行或暂停的任务中不能抚摸；运行中不会因为没动鼠标而睡着。暂停或 Break 时表现为 Resting，仅闭眼休息，不出现睡眠 zzz 和鼻涕泡。
 - Hide animation 收起矿洞画面，Show animation 恢复；偏好保留。系统减少动态效果会抑制跳跃。
+
+## 商店布局与字体
+
+桌面采用固定高度的左右面板：左侧鼹鼠与穿戴信息，右侧 Shop。只有商品列表可以纵向滚动；支持滚轮、可拖动的原生滚动条、键盘 Home/PageDown 等操作与触摸。购买时保持当前位置，切换分类或 All/Owned 时回到列表顶部。分类栏在列表外固定，窄宽度可以横向滚动。工具区仅保留当前选择与恢复默认按钮，移除动画说明文案。
+
+手机将角色压缩为商店上方的小预览，商品区仍为独立滚动面板，避免把所有卡片展开成很长的页面。像素字体为本地 Pixelify Sans，小字至少 12px，商品名称 14–15px、按钮 13px；中文宠物名字使用系统字体补足。字体和许可一起内嵌单文件，离线无需 Google Fonts。
 
 ## 音乐
 
