@@ -39,10 +39,11 @@ python tests/test_entry.py
 python tests/test_site.py
 python tests/test_world.py
 python tests/test_journey.py
+python tests/test_supermo.py
 node tests/test_rewards.js
 ```
 
-四个 Python 脚本各自启动随机本地端口、运行浏览器断言并关闭测试服务。成功会输出 `PASS:`；断言失败会以非零状态退出。当前不是 pytest 测试套件，不应以“pytest 找不到用例”当作验证完成。
+五个 Python 脚本各自启动随机本地端口、运行浏览器断言并关闭测试服务。成功会输出 `PASS:`；断言失败会以非零状态退出。当前不是 pytest 测试套件，不应以“pytest 找不到用例”当作验证完成。
 
 ## 覆盖范围
 
@@ -60,6 +61,8 @@ node tests/test_rewards.js
 
 `node tests/test_rewards.js` 验证拆轮与连续计时收入一致、阈值边界、零头、无每日封顶、Demo、休息排除、事件 ID 与刷新稳定性。Node.js 只用于此开发检查，不是运行游戏的依赖。
 
+`test_supermo.py` 验证 Supermo 标题、宝箱实际命中、拿起/摆放/放回的副本数量与刷新、90 秒/5 分钟边界、真实呼吸和鼻涕泡像素、唤醒、暂停与睡眠区分、挖掘中收起物品、新歌曲时长、六种实际渲染的地层、手机宝箱与编辑布局。
+
 ## 手工检查清单
 
 1. 首次打开显示创建页；选择颜色、输入名字、点击 START。
@@ -69,9 +72,11 @@ node tests/test_rewards.js
 5. 有足够星星时购买多件装备，确认装备页与矿洞中同时显示。
 6. 展开四张同伴卡片，确认“sample”标签及物品数量。
 7. 第二个小房子进入家园，购买灯、摆放发现物；运行中布置会暂停。
-8. 点击 Music 播放 Warm Focus，换页不断；空闲抚摸听两声嘟嘟。
-9. 右上角查看任务和时长，Finish today 需要确认结束进行中任务。
-10. 刷新后确认进度、家具和音量保留，音乐不自动开始。
+8. 点房间里的宝箱，Hold 一件发现物，确认伸手展示，Put back 后数量不变。
+9. 空闲 90 秒看 Drowsy，5 分钟看 Sleeping、zzz、鼻涕泡和身体起伏；点击角色唤醒。
+10. 点击 Music 播放新的 Warm Focus (3)，换页不断；空闲抚摸听柔化的两声嘟嘟。
+11. 右上角查看任务和时长，Finish today 需要确认结束进行中任务。
+12. 刷新后确认进度、家具和音量保留，音乐不自动开始。
 
 ## 验证记录
 

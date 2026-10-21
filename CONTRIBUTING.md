@@ -6,7 +6,7 @@
 2. 用本地 HTTP 服务检查界面和交互。
 3. 运行 `python scripts/build_standalone.py` 更新单文件。
 4. 运行 `tests/test_entry.py`、`tests/test_site.py`、`tests/test_world.py`。
-5. 检查 `git diff`，同时提交源码、需要的文档和新的 `dist/LOOP_PET.html`。
+5. 检查 `git diff`，同时提交源码、需要的文档和新的 `dist/Supermo.html`。
 
 应用本身没有 npm 安装步骤。Python 依赖只用于自动化测试。
 

@@ -100,10 +100,10 @@ def run():
    page.clock.fast_forward(301000);page.wait_for_timeout(180)
    b=page.evaluate("PixelArt.getBounds('miningCanvas')");r=page.locator('#miningCanvas').bounding_box()
    page.locator('#miningCanvas').click(position={'x':(b['x']+b['w']/2)*r['width']/384,'y':(b['y']+b['h']/2)*r['height']/224})
-   expect(page.locator('#petSpeech')).to_be_visible();assert page.evaluate('PetAudio.status().petPattern')=='doo-doo'
+   expect(page.locator('#petSpeech')).to_be_visible();assert page.evaluate('PetAudio.status().petPattern')=='soft-doo-doo'
    # Managed browser blocks file://. Serve the exact standalone HTML once,
    # then disconnect networking to verify embedded audio and navigation.
-   offline=browser.new_page();offline.goto(url+'/dist/LOOP_PET.html');offline.context.set_offline(True);offline.locator('#enterGame').click()
+   offline=browser.new_page();offline.goto(url+'/dist/Supermo.html');offline.context.set_offline(True);offline.locator('#enterGame').click()
    assert offline.locator('#focusMusic').get_attribute('src').startswith('data:audio/mpeg;base64,')
    offline.locator('#soundButton').click();offline.wait_for_function("document.querySelector('#focusMusic').currentTime>0")
    offline.locator('[data-page="home"]').click();expect(offline.locator('#home')).to_be_visible()

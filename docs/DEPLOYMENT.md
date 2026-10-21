@@ -5,7 +5,7 @@
 本仓库包含：
 
 1. 根目录的静态源码入口 `index.html`。
-2. 已生成、可下载后离线打开的 `dist/LOOP_PET.html`。
+2. 已生成、可下载后离线打开的 `dist/Supermo.html`。
 3. 可重复生成单文件的构建脚本。
 
 应用没有后端部署步骤、数据库、环境变量或 API Key 要求。提交仓库内容不等于自动获得公网游戏网址。
@@ -54,4 +54,4 @@ python3 tests/test_site.py
 python3 tests/test_world.py
 ```
 
-提交源码与 `dist/LOOP_PET.html`。如果 Pages 已绑定相同分支，GitHub 会按仓库配置执行更新；仍应检查实际部署结果。
+提交源码与 `dist/Supermo.html`。如果 Pages 已绑定相同分支，GitHub 会按仓库配置执行更新；仍应检查实际部署结果。

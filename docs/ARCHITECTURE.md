@@ -9,6 +9,7 @@
 | `index.html` | 宠物创建、六个游戏页、对话框、图标与音频元素 |
 | `app.js` | 状态迁移、导航、计时区间、结算、报告、装备、家园与样例同伴 |
 | `journey.js` | 纯计算：奖励资格、速度、稳定路径事件、已经过节点与奖励 |
+| `terrain.js` | 世界坐标下的六段地层、色块过渡、碎石、根系藤蔓和低频生态绘制 |
 | `home.js` | 家具、价格、摆放兼容性、主题与位置元数据 |
 | `pixel-art.js` | 共用无耳朵角色、地形、同一路径物品、家园、待机与跳跃 |
 | `world.js` | 设备本地时间、时区和四个昼夜色板 |
@@ -39,6 +40,7 @@
 | `reportDays` | 每天 Study 的 seconds/completed 与 Work 的 workSeconds/workCompleted |
 | `home` | 当前主题、已拥有主题与家具、四个位置的物品 ID |
 | `musicVolume` | 背景音量；迁移旧 rainVolume，不保存自动播放意图 |
+| `heldItem` | 发现物 ID 或 null，与家园摆放共用库存约束；迁移时校验可用副本 |
 | `lastTask` / `idleAt` / `simpleView` | 上次任务、最后交互时间、是否收起动画 |
 
 旧余额、装备、背包、深度与 Study 汇总保留。旧单件装备迁移为数组；旧 Work 历史补入报告（没有区间的旧 Work 按历史结束日计入，不能重建已经丢失的暂停或跨日细节）。原先的 `totalSeconds` 曾包含 Demo，因此报告统一从 `reportDays` 读取，不用此旧字段表示正式专注总量。
@@ -53,8 +55,14 @@
 
 ## 声音、动画与单文件
 
-HTMLAudio 播放 `assets/audio/warm-focus.mp3`，由用户点击启动，不重新合成或修改歌曲。独立 Web Audio 产生两段 triangle 音符，包络峰值 0.32，经过压缩器；不随音乐音量改变。`tests/test_journey.py` 使用 OfflineAudioContext 测量两段波形和中间间隔。
+HTMLAudio 播放 `assets/audio/warm-focus-3.mp3`，由用户点击启动，不重新合成或修改歌曲。独立 Web Audio 产生两段带轻泛音、气声和音高弯曲的 sine 基音，包络峰值 0.30，经过压缩器；不随音乐音量改变。`tests/test_journey.py` 使用 OfflineAudioContext 测量两段波形和中间间隔。
 
 角色绘制共用函数，支持眨眼、困倦、睡眠和暂停休息。requestAnimationFrame 限速；简洁视图跳过矿洞绘制；系统减少动态效果禁用跳跃并固定动画帧。
 
-构建脚本内嵌 CSS、六个 JS 模块和 MP3 原始字节的 base64。`dist/LOOP_PET.html` 为生成文件，必须从源码重建，不能单独修改。
+构建脚本内嵌 CSS、七个 JS 模块和 MP3 原始字节的 base64。`dist/Supermo.html` 为生成文件，必须从源码重建，不能单独修改。
+
+## 睡眠与宝箱
+
+`petMood()` 根据无会话时的 idleAt 决定 awake / drowsy / asleep，暂停或 Break 为 rest。状态写入 body 的 data-pet-state 供可访问状态与验证使用。睡眠矩形坐标在整数网格压缩，形成多级呼吸；zzz 与鼻涕泡单独绘制。
+
+房间使用由整像素横条组成的椭圆 Path2D 作为轮廓和裁剪，家具按各自 scale/foot 对齐基线。实际宝箱有独立 DOM 命中按钮和模态列表，避免画在 Canvas 里却不能点击。手持动作和摆放共用存档，移动副本不扣库存。

@@ -1,38 +1,37 @@
-# 本次验证记录
+# Supermo v6 验证记录
 
-验证日期：2026-10-22（Asia/Shanghai）。对象为 v5 源码与重新生成的 `dist/LOOP_PET.html`，不代表 GitHub Pages 已部署。
+验证日期：2026-10-22（Asia/Shanghai）。对象是当前源码与 `dist/Supermo.html`，不是 GitHub Pages 部署。
 
-## 环境
+环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0（仅开发检查）。
 
-Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57（Debian Linux）；Node.js v24.19.0 用于语法和纯奖励规则检查，不是游戏运行依赖。
-
-## 实际结果
+## 实际执行
 
 | 检查 | 结果 | 范围 |
 | --- | --- | --- |
-| `python scripts/build_standalone.py` | 通过 | 六个脚本、CSS 与完整 MP3 内嵌；重复生成字节相同 |
-| 六个源码 JS 的 `node --check` | 通过 | 语法检查 |
-| `node tests/test_rewards.js` | 通过 | 阈值、连续与拆轮等价、零头、无封顶、Demo、Break、事件唯一与刷新稳定 |
-| `python tests/test_entry.py` | 通过 | 两种禁止表单的 iframe、中文与 Enter、受限 History、无耳朵像素回归 |
-| `python tests/test_site.py` | 通过 | 眨眼、抚摸/跳跃/禁摸、叠穿、提前结束、Study/Work、跨午夜、图表与日历、MP3 与音量、迁移、24 个响应式游戏视图 |
-| `python tests/test_world.py` | 通过 | 创建、颜色与名字、编辑保存/取消、四时段、手机时区、示例同伴、24 个响应式视图 |
-| `python tests/test_journey.py` | 通过 | 部分任务与跨轮奖励、刷新去重、路径拾取、Demo 连续领奖、休息排除、日终确认、家具购买和持久摆放、暂停布置、简洁视图、旧运行中存档/Work/音量迁移、断网单文件播放、两段叫声波形、唤醒和手机编辑布局 |
-| MP3 校验 | 通过 | 资源文件与上传的 Warm Focus (1).mp3 字节一致；单文件中解码的 base64 也一致 |
-| `git diff --check` | 通过 | 无补丁空白错误 |
+| `python scripts/build_standalone.py` | 通过 | CSS、七个 JS、新 MP3 内嵌；重复生成内容一致 |
+| 七个源码 JS 的 `node --check` | 通过 | JavaScript 语法 |
+| `node tests/test_rewards.js` | 通过 | 阈值、跨轮等价、零头、Demo、Break 与稳定事件 |
+| `python tests/test_entry.py` | 通过 | 受限 iframe、按钮/Enter、中文名称、History 限制和无耳朵像素 |
+| `python tests/test_site.py` | 通过 | 眨眼、抚摸/跳跃/禁摸、叠穿、Study/Work、跨午夜、音频、报告和响应式 |
+| `python tests/test_world.py` | 通过 | 创建/颜色、编辑、进度保留、四时段、时区与示例同伴 |
+| `python tests/test_journey.py` | 通过 | 部分结算、刷新去重、Demo、家园、旧数据迁移、日终确认、断网单文件和双音节波形 |
+| `python tests/test_supermo.py` | 通过 | 品牌、宝箱命中与手持副本、刷新、困倦/睡眠边界、真实呼吸/鼻涕泡像素、唤醒、暂停区分、新歌时长、六种实际地层、手机宝箱和编辑 |
+| 音频及兼容副本 | 通过 | 上传原件、资源和 base64 解码字节一致；旧入口与新入口内容完全相同 |
 
-浏览器脚本均实际完成断言并返回退出码 0；视图组合不是独立测试用例计数。时钟加速验证逻辑，不证明用户真正学习。
+五个浏览器脚本均实际执行断言并以退出码 0 结束。时钟加速验证程序行为，不验证现实中的专注。
 
-## 单文件校验
+## 下载文件
 
 ```text
-文件: dist/LOOP_PET.html
-字节数: 5004759
-SHA-256: 0b7820d04b20c7222137273d09df9f219f19e09707751d81bc6326918f9e4b85
+主入口: dist/Supermo.html
+兼容入口: dist/LOOP_PET.html
+字节数: 5960449
+SHA-256: 72623d79ef65188d96c775b8dc7a751b6a332a3d0013868e3255b09534e94357
+MP3: Warm Focus (3).mp3, 194.520 秒
 ```
 
-## 边界
+旧入口供替换同一路径文件时使用；界面均为 Supermo。同一浏览器同一站点沿用原存储键；不同文件地址/文件夹的本地存储是否共享仍由浏览器决定，没有云同步。
 
-- 单文件测试先通过本地 HTTP 读取生成的 HTML，再断开网络；内嵌音乐继续播放、家园导航正常，无需外部资源。
-- 当前受管理 Chromium 拒绝 `file://` 导航，返回 `ERR_BLOCKED_BY_ADMINISTRATOR`，因此未宣称在本环境通过双击文件测试。普通电脑的文件存储规则仍取决于浏览器。
-- 没有启用或验证 GitHub Pages 公网部署，也没有真实联机。
-- 未测试所有实体手机、Safari 或所有浏览器。开发者 Demo 按用户要求仍可刷测试资源。
+## 验证边界
+
+离线测试先由本地 HTTP 载入单文件，再断开网络，确认音乐与页面仍可使用。当前受管理 Chromium 禁止 file:// 导航，因此没有声称在此环境验证双击文件。没有部署或验证公网 Pages、实体手机全机型、所有浏览器，也没有真人联机。

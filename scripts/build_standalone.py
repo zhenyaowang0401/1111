@@ -6,7 +6,7 @@ import base64
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPTS = ('world.js', 'journey.js', 'home.js', 'audio.js', 'pixel-art.js', 'app.js')
+SCRIPTS = ('world.js', 'journey.js', 'home.js', 'terrain.js', 'audio.js', 'pixel-art.js', 'app.js')
 
 
 def build(output: Path) -> Path:
@@ -16,7 +16,7 @@ def build(output: Path) -> Path:
         raise ValueError('Expected exactly one local style.css stylesheet tag')
     css = (ROOT / 'style.css').read_text(encoding='utf-8')
     page = page.replace(style_tag, '<style>\n' + css + '\n</style>')
-    audio_path = 'assets/audio/warm-focus.mp3'
+    audio_path = 'assets/audio/warm-focus-3.mp3'
     audio_data = base64.b64encode((ROOT / audio_path).read_bytes()).decode('ascii')
     if page.count('src="' + audio_path + '"') != 1:
         raise ValueError('Expected one local Warm Focus audio source')
@@ -38,9 +38,13 @@ def build(output: Path) -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, default=ROOT / 'dist' / 'LOOP_PET.html')
+    parser.add_argument('--output', type=Path, default=ROOT / 'dist' / 'Supermo.html')
     args = parser.parse_args()
     output = build(args.output)
+    # Keep the old filename current for players who replace their existing
+    # local file. Both entry files contain exactly the same Supermo build.
+    if output.resolve() == (ROOT / 'dist' / 'Supermo.html').resolve():
+        (ROOT / 'dist' / 'LOOP_PET.html').write_bytes(output.read_bytes())
     print(f'Built {output} ({output.stat().st_size:,} bytes)')
 
 
