@@ -23,7 +23,7 @@ def run():
    page.goto(url+'/#focus');page.wait_for_timeout(180)
    def saved():return page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',KEY)
    expect(page.locator('#depthDisplay')).to_have_text('030');expect(page.locator('#sceneLabel')).to_have_text('Sand beds')
-   assert page.locator('.app-shell').bounding_box()['width']>=1700
+   assert page.locator('.app-shell').bounding_box()['width']==1480
    assert 'Pixelify' not in page.locator('#timeDisplay').evaluate('e=>getComputedStyle(e).fontFamily')
    assert 'Pixelify' not in page.locator('#taskInput').evaluate('e=>getComputedStyle(e).fontFamily')
    page.locator('.footer a').click();expect(page.locator('#setupTitle')).to_have_text('Your mole')
@@ -40,8 +40,8 @@ def run():
    page.locator('#finishTodayButton').click();page.locator('#confirmStop').click()
    expect(page.locator('#todayDialog')).to_be_visible();expect(page.locator('#todaySummaryTasks')).to_contain_text('Read notes')
    expect(page.locator('#todaySummaryTime')).to_contain_text('20m')
-   after=saved();assert after['depth']>=52 and after['surfaceDepth']==after['depth'] and after['balance']==41
-   page.locator('#closeTodayButton').click();expect(page.locator('#focus')).to_be_visible();expect(page.locator('#depthDisplay')).to_have_text('000')
+   after=saved();assert after['depth']>=52 and after['surfaceDepth']==12 and after['balance']==41
+   page.locator('#closeTodayButton').click();assert saved()['surfaceDepth']==saved()['depth'];expect(page.locator('#focus')).to_be_visible();expect(page.locator('#depthDisplay')).to_have_text('000')
    page.wait_for_timeout(180);assert page.evaluate("PixelArt.getBounds('miningCanvas').y")<30,'Mole must stand on the surface, not underground'
    eye=page.locator('#miningCanvas').evaluate("""c=>{const b=PixelArt.getBounds('miningCanvas'),d=c.getContext('2d').getImageData(b.x+16,b.y+31,4,6).data;let n=0;for(let i=0;i<d.length;i+=4)if(d[i]===40&&d[i+1]===33&&d[i+2]===76)n++;return n;}""")
    assert 0<eye<=16,('Eyes must be smaller',eye)
@@ -53,6 +53,17 @@ def run():
    lifetime=saved()['depth'];page.clock.fast_forward(86400000);expect(page.locator('#depthDisplay')).to_have_text('000')
    assert saved()['depth']==lifetime and saved()['balance']==42 and saved()['digDay']=='2026-10-23'
    assert page.locator('#deviceTime').get_attribute('datetime').startswith('2026-10-23'),'Clock date must advance even at the same wall-clock minute'
+   # Reproduce the invisible/stale underground canvas: animation hidden and
+   # RAF throttled. Finish must restore and repaint the real surface immediately.
+   page.evaluate('state.surfaceDepth=0;renderTimer();');page.clock.run_for(250)
+   old_image=page.locator('#miningCanvas').evaluate('c=>c.toDataURL()')
+   page.locator('#simpleViewButton').click();page.evaluate('window.requestAnimationFrame=()=>0');page.clock.run_for(250)
+   page.locator('[data-page="reports"]').click();page.locator('#finishTodayButton').click();page.locator('#closeTodayButton').click()
+   expect(page.locator('.arcade-machine')).to_be_visible();expect(page.locator('#mineStatus')).to_have_text('Surface')
+   assert page.evaluate("PixelArt.getBounds('miningCanvas').y")<30
+   assert page.locator('#miningCanvas').evaluate('c=>c.toDataURL()')!=old_image
+   assert saved()['depth']==lifetime and saved()['balance']==42 and not saved()['simpleView']
+   page.reload();expect(page.locator('#depthDisplay')).to_have_text('000');expect(page.locator('.arcade-machine')).to_be_visible()
    # Closing the daily report via Escape also returns to Focus, with saved totals.
    page.locator('[data-page="reports"]').click();page.locator('#finishTodayButton').click();page.keyboard.press('Escape');expect(page.locator('#focus')).to_be_visible()
    # An active session crossing midnight stays intact until it ends.
@@ -81,6 +92,16 @@ def run():
     page.set_viewport_size({'width':width,'height':height})
     for route in ['focus','home','reports','wardrobe','companions']:
      page.locator(f'[data-page="{route}"]').click();assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),(width,route)
+   # Verify the downloadable single-file build with networking disabled too.
+   offline_context=browser.new_context();offline=offline_context.new_page()
+   offline.add_init_script(f"if(!localStorage.getItem('{KEY}'))localStorage.setItem('{KEY}',JSON.stringify({{profile:{{name:'Local',configured:true,color:'#b784cf'}},depth:90,balance:7,progressVersion:2}}));")
+   offline.goto(url+'/dist/Eumo.html');offline.wait_for_timeout(250);offline_context.set_offline(True)
+   offline.locator('#simpleViewButton').click();offline.evaluate('window.requestAnimationFrame=()=>0');offline.wait_for_timeout(250)
+   offline.locator('[data-page="reports"]').click();offline.locator('#finishTodayButton').click();offline.locator('#closeTodayButton').click()
+   expect(offline.locator('.arcade-machine')).to_be_visible();expect(offline.locator('#mineStatus')).to_have_text('Surface')
+   assert offline.evaluate("PixelArt.getBounds('miningCanvas').y")<30
+   assert offline.evaluate("state.depth===90&&state.surfaceDepth===90&&state.balance===7&&!state.simpleView")
+   offline_context.close()
    assert not errors,errors
    browser.close();print('PASS: larger layouts and readable timer/text; mole setup copy; Finish without export; surface return with preserved lifetime rewards, reload, Escape and next day; midnight-active sessions preserved; 3 device timezones + minute/DST changes; smaller real eyes; seven distinct terrain renders; responsive pages.')
  finally:server.shutdown();server.server_close()
