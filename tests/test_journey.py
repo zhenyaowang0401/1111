@@ -103,7 +103,7 @@ def run():
    expect(page.locator('#petSpeech')).to_be_visible();assert page.evaluate('PetAudio.status().petPattern')=='soft-doo-doo'
    # Managed browser blocks file://. Serve the exact standalone HTML once,
    # then disconnect networking to verify embedded audio and navigation.
-   offline=browser.new_page();offline.goto(url+'/dist/Supermo.html');offline.context.set_offline(True);offline.locator('#enterGame').click()
+   offline=browser.new_page();offline.goto(url+'/dist/Eumo.html');offline.context.set_offline(True);offline.locator('#enterGame').click()
    assert offline.locator('#focusMusic').get_attribute('src').startswith('data:audio/mpeg;base64,')
    offline.locator('#soundButton').click();offline.wait_for_function("document.querySelector('#focusMusic').currentTime>0")
    offline.locator('[data-page="home"]').click();expect(offline.locator('#home')).to_be_visible()

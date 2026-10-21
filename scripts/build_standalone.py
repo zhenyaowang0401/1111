@@ -6,7 +6,7 @@ import base64
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPTS = ('world.js', 'journey.js', 'home.js', 'terrain.js', 'audio.js', 'pixel-art.js', 'app.js')
+SCRIPTS = ('world.js', 'journey.js', 'home.js', 'wardrobe.js', 'wardrobe-art.js', 'terrain.js', 'audio.js', 'pixel-art.js', 'app.js')
 
 
 def build(output: Path) -> Path:
@@ -38,13 +38,14 @@ def build(output: Path) -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, default=ROOT / 'dist' / 'Supermo.html')
+    parser.add_argument('--output', type=Path, default=ROOT / 'dist' / 'Eumo.html')
     args = parser.parse_args()
     output = build(args.output)
     # Keep the old filename current for players who replace their existing
-    # local file. Both entry files contain exactly the same Supermo build.
-    if output.resolve() == (ROOT / 'dist' / 'Supermo.html').resolve():
-        (ROOT / 'dist' / 'LOOP_PET.html').write_bytes(output.read_bytes())
+    # local file. All three entry files contain exactly the same Eumo build.
+    if output.resolve() == (ROOT / 'dist' / 'Eumo.html').resolve():
+        for name in ['Supermo.html', 'LOOP_PET.html']:
+            (ROOT / 'dist' / name).write_bytes(output.read_bytes())
     print(f'Built {output} ({output.stat().st_size:,} bytes)')
 
 

@@ -1,10 +1,10 @@
-# Supermo
+# Eumo
 
 一个英文界面的像素专注小游戏：创建自己的无耳朵鼹鼠，专注时向下挖洞，收集宝物、叠穿装备，布置洞穴家园，并查看每日任务报告。
 
 [English](docs/README.en.md) · [功能说明](docs/PRODUCT.md) · [技术与数据结构](docs/ARCHITECTURE.md) · [测试方法](docs/TESTING.md) · [常见问题](docs/TROUBLESHOOTING.md)
 
-![Supermo 宠物创建界面](docs/images/setup.png)
+![Eumo 宠物创建界面](docs/images/setup.png)
 
 ## 下载到电脑并打开
 
@@ -12,10 +12,10 @@
 
 1. 点击绿色 **Code → Download ZIP**。
 2. 将下载的 ZIP **解压到电脑文件夹**。
-3. 在解压后的文件夹里进入 `dist`，找到 **`Supermo.html`**。
+3. 在解压后的文件夹里进入 `dist`，找到 **`Eumo.html`**。
 4. 用 Chrome 或 Edge 打开它，填写宠物名字、选择颜色，再点击 **START**。
 
-`dist/Supermo.html` 已包含完整样式、脚本、像素绘制和声音，不需要安装 Node.js、npm 或其他运行依赖。
+`dist/Eumo.html` 已包含完整样式、脚本、像素绘制和声音，不需要安装 Node.js、npm 或其他运行依赖。
 
 > GitHub 中点击 HTML 文件会看到源码，这是正常的源码浏览界面。请下载、解压后在浏览器中打开文件，或按下面的方法运行本地服务。聊天里的文件预览器也不等于下载到电脑。
 
@@ -42,8 +42,8 @@ py -m http.server 8000
 | 宠物创建 | 命名、12 种大块颜色预设、自选颜色、实时像素预览；修改外观不重置进度 |
 | 专注与挖洞 | Study / Work / Break，5–120 分钟，增减时间、暂停、继续、提前结束；矿道随计时挖深，镜头向下跟随 |
 | 宠物互动 | 无耳朵造型、待机眨眼、困倦、带 zzz/鼻涕泡/呼吸的睡觉；空闲时点击角色会跳跃、发出两声“嘟嘟”并显示 `yeeeeee`；进行中和暂停的任务都不能抚摸 |
-| 宝库与装备 | 星星结算、四种发现物、背包数量；四件装备可同时穿戴，并显示在实际矿洞中 |
-| 家园 | 第二个小房子入口、圆形土洞、四个摆放位、家具购买、可点击宝箱、手持发现物、四种房间主题 |
+| 宝库与装备 | 星星结算、四种发现物、背包数量；帽子 7 款、衣服 5 款、围脖 5 款，分类搭配；6 种付费工具只在挖掘时显示 |
+| 家园 | 第二个小房子入口、圆形土洞、四个摆放位、家具购买、可点击宝箱、头顶展示发现物（仅家园）、四种房间主题 |
 | 今日报告 | Study / Work 分类时间、任务与可选成果、7 / 30 日趋势、日历、今天结束和 JSON 导出 |
 | 时间联动 | 自动读取设备本地时间和时区；清晨、白天、傍晚、夜晚四种背景 |
 | 同伴 | Luka、Yun、Daniel、Selina 四个不同配色的示例玩家，学习进度条、学习时长、可展开的发现物 |
@@ -51,7 +51,7 @@ py -m http.server 8000
 
 **同伴目前是明确标注的示例资料，尚未连接真实玩家、账号或在线状态。** 全部个人进度保存在当前浏览器的 `localStorage`，没有云同步。
 
-![分层地质与像素矿洞](docs/images/supermo-mine.png)
+![分层地质与像素矿洞](docs/images/eumo-mine.png)
 
 ## 玩法与结算
 
@@ -62,7 +62,24 @@ py -m http.server 8000
 - 家园有免费地垫、6 件可购买家具和 3 个付费星星主题，发现物可直接摆放。
 - 右上角 Today 可查看报告或选择 Finish today。单纯打开报告不会停止计时。
 
-![圆形鼹鼠洞与手持展示](docs/images/supermo-home.png)
+![圆形鼹鼠洞与头顶展示](docs/images/eumo-home.png)
+
+## 分类穿戴与工具
+
+| 分类 | 数量 | 星星价格 |
+| --- | ---: | --- |
+| 帽子 | 7 | 3–120 |
+| 衣服 | 5 | 12–40 |
+| 围脖 | 5 | 3–38 |
+| 付费工具 | 6 | 45–240 |
+
+帽子、衣服、围脖各选一件，可跨类别搭配；旧眼镜和胸针保留在 Extras。工具单独选择，不出现在试衣预览里，默认镐子无需购买。工具只有造型和动画差异，不改变奖励或挖掘速度。已购买物品重新选择不收费。
+
+家园宝箱采用木箱、金属搭扣和物品格子：点物品，再点 **Display on head**；发现物不会在矿洞或试衣页面显示。
+
+![游戏宝箱](docs/images/eumo-chest.png)
+
+![分类装备](docs/images/eumo-equipment.png)
 
 ## 修改源码后生成单文件
 
@@ -70,7 +87,7 @@ py -m http.server 8000
 python3 scripts/build_standalone.py
 ```
 
-这会重新生成 `dist/Supermo.html`，并更新内容完全相同的旧文件名 `dist/LOOP_PET.html` 作为兼容入口。请同时提交源码与更新后的单文件，避免下载版落后于开发版。
+这会重新生成 `dist/Eumo.html`，并更新内容完全相同的旧文件名 `dist/Supermo.html` 和 `dist/LOOP_PET.html` 作为兼容入口。请同时提交源码与更新后的单文件，避免下载版落后于开发版。
 
 ## 自动化测试
 
@@ -90,6 +107,7 @@ python tests/test_site.py
 python tests/test_world.py
 python tests/test_journey.py
 python tests/test_supermo.py
+python tests/test_eumo.py
 node tests/test_rewards.js
 ```
 
@@ -115,11 +133,13 @@ Linux 系统若缺少浏览器系统库，可使用 Playwright 官方安装命�
 ├── audio.js                   # MP3 播放与两声宠物叫声
 ├── journey.js                 # 路径、累计奖励与拾取事件
 ├── home.js                    # 家具、主题和摆放位置
+├── wardrobe.js                # 分类、价格与装备存档校验
+├── wardrobe-art.js            # 穿戴与六种工具的共用像素模型
 ├── terrain.js                 # 土层色块、石子、根系与地下生态
 ├── assets/audio/              # 原始 Warm Focus MP3
-├── dist/Supermo.html          # 可离线打开的单文件
+├── dist/Eumo.html          # 可离线打开的单文件
 ├── scripts/build_standalone.py # 可重复的单文件构建
-├── tests/                     # 五套浏览器测试与奖励规则检查
+├── tests/                     # 六套浏览器测试与奖励规则检查
 ├── docs/                      # 产品、技术、部署和问题排查
 ├── requirements-dev.txt        # 仅测试使用
 └── 349f8aa35697822105fd0040f35a68bd.mp4  # 仓库原有视频，保留

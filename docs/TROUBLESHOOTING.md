@@ -4,16 +4,16 @@
 
 先确认打开位置：
 
-- **GitHub 文件页面**默认显示源码。请用仓库页面的 **Code → Download ZIP** 下载，解压，再用浏览器打开 `dist/Supermo.html`。
+- **GitHub 文件页面**默认显示源码。请用仓库页面的 **Code → Download ZIP** 下载，解压，再用浏览器打开 `dist/Eumo.html`。
 - **聊天文件侧栏**可能只是源码或 ZIP 预览，并不是本地游戏。请使用 GitHub 的下载入口，而不是把云环境内部文件路径当下载地址。
-- **已经保存到电脑**时，确认完整名称没有变成 `Supermo.html.txt`。使用浏览器的“打开文件”（Windows/Linux：Ctrl+O；Mac：⌘O）选择 HTML 文件。
+- **已经保存到电脑**时，确认完整名称没有变成 `Eumo.html.txt`。使用浏览器的“打开文件”（Windows/Linux：Ctrl+O；Mac：⌘O）选择 HTML 文件。
 - 用记事本或代码编辑器打开 HTML 本来就会显示代码；运行游戏应使用浏览器或本地 HTTP 服务。
 
 如果仍不确定，应检查文件完整后缀、浏览器地址栏和打开方式，不要反复复制未知内容。
 
 ## ZIP 预览提示不支持
 
-ZIP 需要先下载到电脑并解压，不能在源码预览里直接运行。解压后打开 `dist/Supermo.html`。如果希望直接点网址运行，请由仓库所有者启用 GitHub Pages。
+ZIP 需要先下载到电脑并解压，不能在源码预览里直接运行。解压后打开 `dist/Eumo.html`。如果希望直接点网址运行，请由仓库所有者启用 GitHub Pages。
 
 ## START 点了没有反应
 
