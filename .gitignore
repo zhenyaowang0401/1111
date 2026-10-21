@@ -13,3 +13,7 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# Node and local deployment metadata
+node_modules/
+.vercel/

@@ -2,7 +2,7 @@
 
 一个英文界面的像素专注小游戏：创建自己的无耳朵鼹鼠，专注时向下挖洞，收集宝物、叠穿装备，布置洞穴家园，并查看每日任务报告。
 
-[English](docs/README.en.md) · [功能说明](docs/PRODUCT.md) · [技术与数据结构](docs/ARCHITECTURE.md) · [测试方法](docs/TESTING.md) · [常见问题](docs/TROUBLESHOOTING.md) · [开发记录](docs/DEVLOG.md)
+[AI 云端接入](docs/AI_SETUP.md) · [模型选型](docs/AI_RESEARCH.md) · [鼹鼠提示词](docs/AI_PROMPTS.md) · [English](docs/README.en.md) · [功能说明](docs/PRODUCT.md) · [技术与数据结构](docs/ARCHITECTURE.md) · [测试方法](docs/TESTING.md) · [常见问题](docs/TROUBLESHOOTING.md) · [开发记录](docs/DEVLOG.md)
 
 ![Eumo 宠物创建界面](docs/images/setup.png)
 
@@ -33,7 +33,7 @@ Windows 如果使用 Python 启动器：
 py -m http.server 8000
 ```
 
-然后在浏览器访问 `http://localhost:8000/`。开发时修改根目录源码；运行应用无需安装 Python 包。固定使用同一个浏览器和服务地址，便于保留本地进度。
+然后在浏览器访问 `http://localhost:8000/`。开发时修改根目录源码；运行应用无需安装 Python 包。这个 Python 服务只提供静态游戏；AI 开发使用 `npm run dev`，云端需按 [AI 接入步骤](docs/AI_SETUP.md) 配置 Vercel 服务端 Key。固定使用同一个浏览器和服务地址，便于保留本地进度。
 
 ## 当前功能
 
@@ -44,6 +44,7 @@ py -m http.server 8000
 | 宠物互动 | 无耳朵造型、待机眨眼、困倦、带 zzz/鼻涕泡/呼吸的睡觉；空闲时点击角色会跳跃、发出两声“嘟嘟”并显示 `yeeeeee`；进行中和暂停的任务都不能抚摸 |
 | 宝库与装备 | 星星结算、四种发现物、背包数量；帽子 7 款、衣服 5 款、围脖 5 款、眼镜 6 款，分类搭配；6 种付费工具只在挖掘时显示 |
 | 家园 | 第二个小房子入口、圆形土洞、四个摆放位、家具购买、可点击宝箱、头顶展示发现物（仅家园）、四种房间主题 |
+| 鼹鼠 AI | 可部署的 Qwen 云端聊天接口、真实任务/时长/装备上下文、答疑与规划提示词、可选共享、完整对话窗口与本地历史；尚需配置服务端 Key 才能真实聊天 |
 | 今日报告 | Study / Work 分类时间、任务与可选成果、7 / 30 日趋势、日历、醒目的 Finish 与今日返地面 |
 | 时间联动 | 自动读取设备本地时间和时区；清晨、白天、傍晚、夜晚四种背景 |
 | 同伴 | Luka、Yun、Daniel、Selina 四个不同配色的示例玩家，学习进度条、学习时长、可展开的发现物 |
@@ -53,7 +54,7 @@ py -m http.server 8000
 
 ![100% 缩放下完整显示的桌面布局](docs/images/eumo-fit-desktop.png)
 
-Focus 桌面采用约 72:28 的左右面板，两块上下对齐；左侧矿洞下方嵌入紫色复古 Windows 风格的 Mole chat：窄标题栏、斜边、像素头像和内凹输入栏，可收起、展开。当前展示预写陪伴语，输入栏标明 Chat is coming soon、暂不能发送，尚未连接 AI。矮屏优先保留可读的计时与完整操作。
+Focus 桌面采用约 72:28 的左右面板，两块上下对齐；左侧矿洞下方是紫色复古 Windows 风格的 Mole chat：可收起、展开，点击方框打开完整对话，支持闲聊、学习答疑和日程建议。换装/共学台词本地即时触发；主动发消息才请求云端 AI。接口已写好，真实聊天需要在 Vercel 配置服务商 Key，当前没有宣称已完成真实模型验证。矮屏优先保留可读的计时与完整操作。
 
 普通挖掘前 2 小时（240 米前）一直是泥土，浅层有藤蔓和树根，深一些土色略变。2 小时才见柔和的淡紫灰石层，2.5 小时进入沙层，之后依次经过板岩、粉褐花岗岩、晶矿和玄武岩。镜头不会提前露出未到达的地层。
 
@@ -124,6 +125,8 @@ python tests/test_eumo.py
 python tests/test_daily.py
 python tests/test_viewport.py
 python tests/test_geology.py
+python tests/test_chat.py
+node --test tests/test_ai.cjs
 node tests/test_rewards.js
 ```
 
@@ -144,6 +147,9 @@ Linux 系统若缺少浏览器系统库，可使用 Playwright 官方安装命�
 ├── index.html                 # 多文件网页入口
 ├── style.css                  # 像素风与响应式界面
 ├── app.js                     # 状态、计时、导航、报告与同伴
+├── chat.js                    # 聊天窗口、上下文与本地陪伴反应
+├── api/chat.js                # Vercel 服务端模型代理
+├── ai/                        # 系统提示词、示范、SFT 种子与评测场景
 ├── pixel-art.js               # 无耳朵角色、矿道、动画与配色
 ├── world.js                   # 设备时间与昼夜背景
 ├── audio.js                   # MP3 播放与两声宠物叫声
@@ -156,7 +162,7 @@ Linux 系统若缺少浏览器系统库，可使用 Playwright 官方安装命�
 ├── assets/fonts/              # Pixelify Sans 字体与 OFL 许可
 ├── dist/Eumo.html          # 可离线打开的单文件
 ├── scripts/build_standalone.py # 可重复的单文件构建
-├── tests/                     # 九套浏览器测试与奖励规则检查
+├── tests/                     # 十套浏览器测试与奖励规则检查
 ├── docs/                      # 产品、技术、部署和问题排查
 ├── requirements-dev.txt        # 仅测试使用
 └── 349f8aa35697822105fd0040f35a68bd.mp4  # 仓库原有视频，保留
@@ -164,7 +170,7 @@ Linux 系统若缺少浏览器系统库，可使用 Playwright 官方安装命�
 
 ## 当前限制
 
-- 没有真实联机、登录、跨设备同步或排行榜服务。
+- 没有真实联机、登录、跨设备同步或排行榜服务。AI 接口是单独的可选功能，服务商会收到主动发送的聊天及所共享摘要；Key 仅放服务端，云端调用可能收费。
 - 浏览器清理站点数据会清除本地记录；直接打开 `file://` 时的存储行为取决于浏览器。
 - 限制存储的内嵌预览仍可交互，但关闭后可能不保留记录。
 - 音乐为用户提供的 MP3，宠物叫声为程序合成；只有用户操作后才启动音频。

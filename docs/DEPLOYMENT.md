@@ -8,7 +8,7 @@
 2. 已生成、可下载后离线打开的 `dist/Eumo.html`。
 3. 可重复生成单文件的构建脚本。
 
-应用没有后端部署步骤、数据库、环境变量或 API Key 要求。提交仓库内容不等于自动获得公网游戏网址。
+静态游戏不需要数据库或 Key。新增的 AI 聊天是可选 Node 后端，需要服务端环境变量；Vercel 的部署和最后一步 Key 配置见 [AI_SETUP](AI_SETUP.md)。提交仓库内容不等于自动获得公网游戏网址。
 
 ## 本地服务
 
@@ -58,6 +58,8 @@ python3 tests/test_eumo.py
 python3 tests/test_daily.py
 python3 tests/test_viewport.py
 python3 tests/test_geology.py
+python3 tests/test_chat.py
+node --test tests/test_ai.cjs
 node tests/test_rewards.js
 ```
 

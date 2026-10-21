@@ -1,52 +1,61 @@
-# Eumo v2 · 复古聊天窗口与紧凑计时栏验证记录
+# Eumo v2 · 云端鼹鼠 AI 接口验证记录
 
-验证日期：2026-10-22（Asia/Shanghai）。对象是当前源码与 `dist/Eumo.html`，不是 GitHub Pages 部署。
+验证日期：2026-10-22（Asia/Shanghai）。对象为当前源码、Node 接口和 `dist/Eumo.html`。环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0；Vercel 配置目标为 Node 22。
 
-环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0（仅开发检查）。
-
-本轮布局修改重新执行了 `test_viewport.py`、`test_daily.py`、`test_eumo.py`、奖励检查、九个 JS 语法、单文件重建及资源一致性检查。其余项目保留上一轮的实际通过记录，未重复执行。
+**真实服务商 Key 不存在，真实 Qwen 首聊、线上部署与模型质量评测尚未完成。** 下表的模型服务使用本地测试 fixture；它验证软件行为，不验证真实模型语气、解题正确性或建议质量。
 
 ## 实际执行
 
 | 检查 | 结果 | 范围 |
 | --- | --- | --- |
-| `python scripts/build_standalone.py` | 通过 | CSS、九个 JS、原 MP3 与 Pixelify Sans 字体/许可内嵌；重复生成内容一致 |
-| 九个源码 JS 的 `node --check` | 通过 | JavaScript 语法 |
-| `node tests/test_rewards.js` | 通过 | 阈值、跨轮等价、零头、Demo、Break 与稳定事件 |
-| `python tests/test_entry.py` | 上一轮通过 | 受限 iframe、按钮/Enter、中文名称、History 限制和无耳朵像素 |
-| `python tests/test_site.py` | 上一轮通过 | 眨眼、抚摸/跳跃/禁摸、叠穿、Study/Work、跨午夜、音频、报告和响应式 |
-| `python tests/test_world.py` | 上一轮通过 | 创建/颜色、编辑、进度保留、四时段、时区与示例同伴 |
-| `python tests/test_journey.py` | 上一轮通过 | 部分结算、刷新去重、Demo、家园、旧数据迁移、日终确认、断网单文件和双音节波形 |
-| `python tests/test_supermo.py` | 上一轮通过 | 品牌、宝箱命中与头顶副本、刷新、困倦/睡眠边界、真实呼吸/鼻涕泡像素、唤醒、暂停区分、新歌时长、七种实际地层、手机宝箱和编辑 |
-| `python tests/test_eumo.py` | 通过 | 7/5/5/6 件服装逐件价格与购买、分类互斥、旧配饰、家园专属头顶像素、木箱格子、6 工具逐件购买和实际动画像素、免费复用与默认工具、Demo 奖励和报告隔离、手机与矮屏、实际滚轮/拖动滚动条且左侧位置不变、眼镜实际像素、最小字号、离线字体 |
-| `python tests/test_daily.py` | 通过 | 大屏与手机布局、常规计时文字、Mole 文案、移除 Export、大 Finish、取消/查看不重置、返地面及刷新、成果保留、次日/跨午夜、三时区分钟与 DST、真实较小眼睛、更新后的七种脚下材质；隐藏动画且 RAF 暂停后完成总结，真实 Canvas 立即返地面，恢复显示和刷新保存；断网单文件同样验证 |
-| `python tests/test_viewport.py` | 通过 | 默认 100% 缩放，13 组桌面窗口/DPI × 待机/运行/暂停；整页无纵横滚动溢出，画面、计时、Start/End、底部控制和页脚完整可见；Canvas 比例不变，计时最低 44px；左右面板上下对齐，正常桌面 2.55:1，聊天区域至少 108px；窗口、输入及发送栏无溢出；正常桌面计时上间隙 ≤40px、下间隙 ≤24px；运行中鼠标/键盘收起展开不暂停，禁用发送，320/390/768px 和断网下载版 |
-| `python tests/test_geology.py` | 上一轮通过 | 实际运行 120 分钟 Study 程序流程，119:59 前实际画面仍为泥土，240 米才出现石层；0/120/230/239.999 米无提前露石，后续地层边界、24 星/12 件结算不变，日终仍返地面 |
-| 音频及兼容副本 | 通过 | MP3 上传原件、资源和 base64 解码字节一致；TTF 与内嵌字体字节一致，完整 OFL 许可在单文件内；三个入口内容相同 |
+| `python scripts/build_standalone.py` | 通过 | CSS、十个 JS、原 MP3、字体和许可内嵌；重复生成一致，三个入口相同 |
+| 十个浏览器 JS 与新增服务端/开发脚本的 `node --check` | 通过 | JavaScript 语法 |
+| `node --test tests/test_ai.cjs` | 13 项通过 | 真实规则与物品目录、上下文关闭、Demo/Break 排除、system/tool 过滤、地址/模型不可由客户端更改、Key 隔离、限流、超时、错误和思考块处理 |
+| `python tests/test_chat.py` | 通过 | 浏览器 → Node 代理 → 本地协议 fixture；换装无暗中调用、真实时间/任务/装备、多轮、IME、共享关闭、失败重试、纯文本 XSS、历史/清空、计时不中断、同源下载版和缺 Key 提示 |
+| `python tests/test_entry.py` | 通过 | 两种受限 iframe、START/Enter、中文名称、受限 History、真实计时与无耳朵像素 |
+| `python tests/test_site.py` | 通过 | 眨眼、抚摸/禁摸、叠穿与刷新、Study/Work/提前结束/跨午夜、报告、声音、旧存档与响应式 |
+| `python tests/test_world.py` | 通过 | 实际角色颜色、命名、创建/取消/修改/刷新、四时段、设备时区、同伴和响应式 |
+| `python tests/test_journey.py` | 通过 | 跨轮奖励与去重、真实路径拾取、Demo/Break 口径、家园、今日确认、音频波形与断网单文件 |
+| `python tests/test_supermo.py` | 通过 | 宝箱数量/刷新、睡眠阈值/呼吸/鼻涕泡/唤醒、暂停、歌曲时长、实际地层与手机编辑 |
+| `python tests/test_eumo.py` | 通过 | 服装分类/购买/互斥、旧存档、家园头顶展示、6 工具、奖励不变、商店独立滚动和字体 |
+| `python tests/test_daily.py` | 通过 | Today 完成后返地面与立即重绘、取消/刷新/隐藏动画、保留成果、午夜/时区/DST、真实材质与响应式 |
+| `python tests/test_viewport.py` | 通过 | 13 组桌面窗口/DPI × 三种状态，完整画面/计时/按钮/页脚，2.55:1 对齐与聊天窗口边界、紧凑间距、手机及断网交互 |
+| `python tests/test_geology.py` | 通过 | 普通 120 分钟真实程序流程，119:59 前泥土、240m 才见石层、24 星/12 件结算、后续地层与返地面 |
+| `node tests/test_rewards.js` | 通过 | 奖励阈值、拆轮等价、零头、无硬上限、Demo、Break、稳定事件 |
+| `node scripts/export_sft.cjs` | 通过 | 20 条原创示范导出为 JSONL；系统提示词文本与真实服务端规则一致；不是权重训练 |
+| `node scripts/evaluate_ai.cjs new-glasses` | 缺 Key，预期退出码 1 | 明确输出未执行真实模型评测；不创建假的质量报告 |
+| 资源一致性与文档链接 | 通过 | 原 MP3/TTF 的 base64 解码字节一致、完整 OFL、无 Key/Authorization 头进入客户端、相对文档链接存在 |
 
-上一轮九个浏览器脚本均已实际执行并获得退出码 0；本轮复测的三个浏览器脚本也均以退出码 0 结束。`test_world.py` 首次并发执行在固定 200ms 等待后的颜色像素断言失败，单独完整复跑通过；这项旧测试仍依赖固定动画等待。时钟加速验证程序行为，不验证现实中的专注。
+十个浏览器脚本均获得退出码 0。长计时和日期变化使用加速时钟，只验证程序行为，不证明用户现实中专注。接口测试中的 13 项不能解读为“模型质量通过 13 项”。
 
-桌面窗口包含 2560×1320、2048×1050、1920×960、1680×860、1600×780、1536×730、1440×768、1366×650、1280×600、1024×640；另在 DPR 1.5 下复测 1680×860、1536×730、1280×600。手机和平板允许正常纵向滚动，不强行压缩到一屏。
+## 界面证据
 
-![完整桌面布局与聊天窗口](images/eumo-fit-desktop.png)
+![完整布局](images/eumo-fit-desktop.png)
 
-![手机聊天窗口](images/eumo-chat-mobile.png)
+![完整对话窗口（回复来自测试 fixture，不是 Qwen 实测）](images/eumo-ai-conversation.png)
 
-![达到两小时后的石层](images/eumo-two-hour-stone.png)
+![手机聊天框](images/eumo-chat-mobile.png)
+
+桌面窗口包含 2560×1320、2048×1050、1920×960、1680×860、1600×780、1536×730、1440×768、1366×650、1280×600、1024×640，另在 DPR 1.5 下复测三组。手机允许正常纵向滚动。
 
 ## 下载文件
 
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 6113852
-SHA-256: d7eed7aa5386d2280b6c37c085e69f19eb56335ffa8cc3278551d133b198d6d3
+字节数: 6130378
+SHA-256: f4b57b623934d0989dfb41f381d1274c3d35ecc454270aaefe91a4eb8d19240c
 MP3: Warm Focus (3).mp3, 194.520 秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```
 
-旧入口供替换同一路径文件时使用；界面均为 Eumo v2。同一浏览器同一站点沿用原存储键；不同文件地址/文件夹的本地存储是否共享仍由浏览器决定，没有云同步。
+同站提供的单文件可以访问该站 /api/chat；直接 file:// 不具有 Node 接口。游戏存储键沿用 loop-pet-soft-universe-v1，聊天使用独立键 eumo-mole-chat-v1；没有账号云同步或服务端聊天数据库。
 
-## 验证边界
+## 尚未完成的外部验证
 
-离线测试先由本地 HTTP 载入单文件，再断开网络，确认音乐与页面仍可使用。当前受管理 Chromium 禁止 file:// 导航，因此没有声称在此环境验证双击文件。访问用户提供的 Vercel 地址时，执行环境的出站代理返回 CONNECT 403，因此未核验该站的部署状态；不能据此判断站点是否可用。没有验证公网 Pages、实体手机全机型、所有浏览器，也没有真人联机。
+- 配置服务商真实 Key、核验模型 ID/账号额度、完成首次真实回复。
+- 按独立的 16 条 rubric 人工评估真实模型的角色、事实、答题与日程质量。
+- 核验 Vercel 线上部署。当前环境访问该域名的出站代理返回 CONNECT 403，不能据此判断网站是否可用。
+- 未进行模型权重训练或 LoRA/SFT。当前只是系统提示、few-shot 示例与导出的种子数据。
+
+离线测试通过本地 HTTP 加载后断网；受管理 Chromium 禁止 file:// 导航，没有声称在此环境验证双击文件。实例内限流不构成分布式全局成本上限，部署配置与边界见 [AI_SETUP](AI_SETUP.md)。

@@ -6,7 +6,7 @@ import base64
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPTS = ('world.js', 'journey.js', 'home.js', 'wardrobe.js', 'wardrobe-art.js', 'terrain.js', 'audio.js', 'pixel-art.js', 'app.js')
+SCRIPTS = ('world.js', 'journey.js', 'home.js', 'wardrobe.js', 'wardrobe-art.js', 'terrain.js', 'audio.js', 'pixel-art.js', 'chat.js', 'app.js')
 
 
 def build(output: Path) -> Path:

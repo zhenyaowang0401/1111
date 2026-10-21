@@ -1,0 +1,12 @@
+{
+  "name": "eumo-companion",
+  "private": true,
+  "version": "2.0.0",
+  "engines": { "node": "22.x" },
+  "scripts": {
+    "dev": "node scripts/dev_server.cjs",
+    "test:ai": "node --test tests/test_ai.cjs",
+    "eval:ai": "node scripts/evaluate_ai.cjs",
+    "export:sft": "node scripts/export_sft.cjs"
+  }
+}

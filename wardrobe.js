@@ -1,6 +1,6 @@
 /* Prices are fixed star exchanges; cosmetics never change reward rates. */
 'use strict';
-window.WardrobeCatalog=(()=>{
+(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.WardrobeCatalog=factory();})(typeof window==='undefined'?globalThis:window,()=>{
  const items=[
   {id:'hat',name:'Explorer hat',category:'hats',cost:3,rarity:'Common',headTop:-1},
   {id:'sunhat',name:'Sun hat',category:'hats',cost:6,rarity:'Common',headTop:-2},
@@ -40,4 +40,4 @@ window.WardrobeCatalog=(()=>{
  function normalize(current,owned){let result=[];for(const id of current)if(owned.includes(id)&&items.some(i=>i.id===id))result=equip(result,id);return result;}
  function headTop(current){return items.find(i=>i.category==='hats'&&current.includes(i.id))?.headTop??5;}
  return {items,tools,categories,equip,normalize,headTop};
-})();
+});

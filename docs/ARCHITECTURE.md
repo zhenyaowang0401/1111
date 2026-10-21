@@ -1,12 +1,15 @@
 # 技术与数据结构
 
-原生 HTML/CSS/JavaScript、Canvas 2D、HTMLAudio 与 Web Audio。没有运行时框架、CDN 或后端。Python 构建并执行浏览器测试。
+原生 HTML/CSS/JavaScript、Canvas 2D、HTMLAudio 与 Web Audio。静态游戏没有运行时框架或 CDN；可选 AI 使用 Node 22 Vercel Function，不使用运行时 npm 包。Python 构建并执行浏览器测试。
 
 ## 模块
 
 | 文件 | 职责 |
 | --- | --- |
 | `index.html` | 宠物创建、六个游戏页、对话框、图标与音频元素 |
+| `chat.js` | 有界聊天记录、消息发送、可选上下文、完整窗口与无模型调用的事件台词 |
+| `api/chat.js` | 同站请求校验、限流、服务端 Key、OpenAI 兼容模型转发、受控错误与超时 |
+| `ai/persona.cjs` | 鼹鼠规则、事实清洗、服装目录解析与少量场景示范 |
 | `app.js` | 状态迁移、导航、计时区间、结算、报告、装备、家园与样例同伴 |
 | `journey.js` | 纯计算：奖励资格、速度、稳定路径事件、已经过节点与奖励 |
 | `terrain.js` | 世界坐标下的七段地层、色块过渡、碎石、根系藤蔓和低频生态绘制 |
@@ -63,11 +66,11 @@ HTMLAudio 播放 `assets/audio/warm-focus-3.mp3`，由用户点击启动，不�
 
 角色绘制共用函数，支持眨眼、困倦、睡眠和暂停休息。requestAnimationFrame 限速；简洁视图跳过矿洞绘制；系统减少动态效果禁用跳跃并固定动画帧。
 
-构建脚本内嵌 CSS、九个 JS 模块、Pixelify Sans TTF 与 MP3 原始字节的 base64，并附带完整 OFL 许可。`dist/Eumo.html` 为生成文件，必须从源码重建，不能单独修改。
+构建脚本内嵌 CSS、十个 JS 模块、Pixelify Sans TTF 与 MP3 原始字节的 base64，并附带完整 OFL 许可。`dist/Eumo.html` 为生成文件，必须从源码重建，不能单独修改。
 
 ## 有界商店与字体
 
-桌面宽度至少 960px、可用高度至少 600px 时，主容器同时受视窗宽高约束。先取对话留白 `R = clamp(108px, 14dvh, 144px)`，再计算左栏宽度上限 `L = (100dvh - 306px - R) × 384/224 + 36px`；主容器上限为 `min(1400px, L + max(270px, L/2.55) + 20px)`，为导航、标题、画框和页脚预留空间。Grid 使用 `2.55fr minmax(270px, 1fr)` 并拉齐高度；左栏 flex 列中的 `#moleDialogueSpace` 包含带命名区域语义的复古聊天窗口；`#toggleMoleChat` 更新 aria-expanded 和内容 hidden 状态，不更改计时或存档。renderProfile 用 textContent 和 CSS 颜色变量同步头像与名字。输入及 Send 暂时禁用，没有 AI 依赖、网络调用或新增存储字段。右栏计时区 flex:0，以固定间距按顺序排列，避免多余高度集中堆在倒计时上下。短屏进一步收紧间距，720px 以下将时长调整放到计时旁，音乐与动画按钮同排。Canvas 保持原始比例，不通过 zoom、transform 或裁剪模拟适配；计时数字最低 44px。手机仍采用纵向布局和正常滚动。
+桌面宽度至少 960px、可用高度至少 600px 时，主容器同时受视窗宽高约束。先取对话留白 `R = clamp(108px, 14dvh, 144px)`，再计算左栏宽度上限 `L = (100dvh - 306px - R) × 384/224 + 36px`；主容器上限为 `min(1400px, L + max(270px, L/2.55) + 20px)`，为导航、标题、画框和页脚预留空间。Grid 使用 `2.55fr minmax(270px, 1fr)` 并拉齐高度；左栏 flex 列中的 `#moleDialogueSpace` 包含带命名区域语义的复古聊天窗口；`#toggleMoleChat` 更新 aria-expanded 和内容 hidden 状态，不更改计时或存档。renderProfile 用 textContent 和 CSS 颜色变量同步头像与名字。输入经 chat.js 发送到同站 /api/chat；只有用户发送才调用模型。独立存储键 eumo-mole-chat-v1 保留最近 24 条消息与共享偏好，不改变原游戏存档。右栏计时区 flex:0，以固定间距按顺序排列，避免多余高度集中堆在倒计时上下。短屏进一步收紧间距，720px 以下将时长调整放到计时旁，音乐与动画按钮同排。Canvas 保持原始比例，不通过 zoom、transform 或裁剪模拟适配；计时数字最低 44px。手机仍采用纵向布局和正常滚动。
 
 `.wardrobe-layout` 桌面高度随视窗约束，`.closet` 和 `.fitting-room` 使用 min-height:0。`#shopScroll` 为独立、可聚焦的 overflow-y:auto 区域；分类在区域外，避免滚动后找不到筛选。只在切换分类/筛选时复位滚动，购买不替换滚动容器。预览按容器宽高计算尺寸，保持 Canvas 实际宽高比和点击坐标；手机改为紧凑预览加有界商店。
 
@@ -94,3 +97,11 @@ Today 页 Finish 先结算唯一会话并打开总结；完成总结时 finishTo
 地表角色的双脚定位在草地基线，0m 时没有已开挖矿道。角色眼睛从 2×3 缩为 2×2 原始像素，眨眼与睡眠继续共用绘制函数。
 
 时间从设备原生 Date 读取，不使用固定服务器时区；tick、visibilitychange 和 window focus 刷新。新增浏览器检查验证上海、洛杉矶的分钟边界及伦敦夏令时回拨。趋势图 viewBox 使用实际容器宽度，窗口大小改变时重绘以保持标签字号。
+
+## 云端模型与客户端事件
+
+`chat.js` 在 app 初始化完成后注入只读快照函数，发送前 trackStudy 以对齐真实时间，之后仅映射必要字段。当前日的跨午夜历史按 daySeconds 读取；Demo 和 Break 排除。服装购买/穿戴、普通会话结束和今日总结在成功保存后触发本地事件台词，不自动调用模型；购买失败不触发。API 根据共享开关清空相关上下文，用 Node 与浏览器共用的 WardrobeCatalog（UMD）校验物品 ID，不信任客户端名称。
+
+`api/chat.js` 从服务端环境读取地址、模型与 Key，用户输入不能覆盖它们。角色规则仅为 server system 消息；用户传来的 system/tool 角色被过滤，GAME_CONTEXT 放在用户数据消息里。提示注入不能仅靠这些手段保证完全消除；真实模型仍需专项评测。请求体上限 48KB，单条输入 2000 字符，上游限时 40 秒；按意图限制输出 400/900 tokens。实例内 IP 限流不是分布式全局额度。
+
+前端只以 textContent 绘制模型文本。请求失败撤回未发送成功的用户气泡并恢复草稿；不伪造回复。完整聊天窗口不暂停计时；清空聊天不改游戏。AI 需要云端接口/网络与 Key，直接 file:// 的游戏仍能运行但无法调用相对的云端 API。`scripts/dev_server.cjs` 提供零依赖静态服务与相同接口；真实模型验收脚本独立于 mock 契约测试。

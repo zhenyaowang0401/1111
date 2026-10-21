@@ -42,7 +42,7 @@ def run():
     for width,height in views:
      page.set_viewport_size({'width':width,'height':height});check('idle',width,height)
      page.locator('#taskInput').fill('Read notes');page.locator('#startButton').click();check('running',width,height)
-     expect(page.locator('#chatMoleName')).to_have_text('Yami');expect(page.locator('#moleChatInput')).to_be_disabled()
+     expect(page.locator('#chatMoleName')).to_have_text('Yami');expect(page.locator('#moleChatInput')).to_be_enabled()
      page.locator('#toggleMoleChat').click();expect(page.locator('#moleChatContent')).to_be_hidden();expect(page.locator('#toggleMoleChat')).to_have_attribute('aria-expanded','false')
      expect(page.locator('#timerLabel')).to_have_text('Running')
      page.locator('#toggleMoleChat').focus();page.keyboard.press('Enter');expect(page.locator('#moleChatContent')).to_be_visible();expect(page.locator('#toggleMoleChat')).to_have_attribute('aria-expanded','true')
@@ -63,6 +63,6 @@ def run():
    offline=browser.new_context();download=offline.new_page();download.goto(url+'/dist/Eumo.html');download.locator('#enterGame').click();offline.set_offline(True)
    download.locator('#toggleMoleChat').click();expect(download.locator('#moleChatContent')).to_be_hidden();download.locator('#toggleMoleChat').click();expect(download.locator('#moleChatContent')).to_be_visible();offline.close()
    assert not errors,errors
-   browser.close();print('PASS: 13 desktop viewport/DPI combinations at browser 100%; idle/running/paused; full canvas, timer, Start/End and bottom controls + footer visible without page scrolling; aligned 2.55:1 panels; inset chat, keyboard collapse/expand without pausing, no premature sending, mobile/offline UI, compact timer gaps; undistorted canvas and readable digits.')
+   browser.close();print('PASS: 13 desktop viewport/DPI combinations at browser 100%; idle/running/paused; full canvas, timer, Start/End and bottom controls + footer visible without page scrolling; aligned 2.55:1 panels; inset chat, keyboard collapse/expand without pausing, user-initiated sending, mobile/offline UI, compact timer gaps; undistorted canvas and readable digits.')
  finally:server.shutdown();server.server_close()
 if __name__=='__main__':run()
