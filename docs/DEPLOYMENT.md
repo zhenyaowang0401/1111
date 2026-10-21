@@ -56,6 +56,8 @@ python3 tests/test_journey.py
 python3 tests/test_supermo.py
 python3 tests/test_eumo.py
 python3 tests/test_daily.py
+python3 tests/test_viewport.py
+python3 tests/test_geology.py
 node tests/test_rewards.js
 ```
 

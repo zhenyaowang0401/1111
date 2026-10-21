@@ -51,9 +51,13 @@ py -m http.server 8000
 
 **同伴目前是明确标注的示例资料，尚未连接真实玩家、账号或在线状态。** 全部个人进度保存在当前浏览器的 `localStorage`，没有云同步。
 
-![泥土、石层与沙层](docs/images/eumo-layer-32.png)
+![100% 缩放下完整显示的桌面布局](docs/images/eumo-fit-desktop.png)
 
-每天从有藤蔓、树根的棕色泥土出发，再进入石层、沙层、板岩、红色花岗岩、晶矿和玄武岩；材质纹理和颜色随深度改变。
+普通挖掘前 2 小时（240 米前）一直是泥土，浅层有藤蔓和树根，深一些土色略变。2 小时才见柔和的淡紫灰石层，2.5 小时进入沙层，之后依次经过板岩、粉褐花岗岩、晶矿和玄武岩。镜头不会提前露出未到达的地层。
+
+![延长的土层](docs/images/eumo-soft-layer-60.png)
+
+![柔和的石层](docs/images/eumo-soft-layer-270.png)
 
 ## 玩法与结算
 
@@ -86,7 +90,7 @@ py -m http.server 8000
 
 ![固定预览与可滚动商店](docs/images/eumo-v2-shop.png)
 
-商店左侧固定预览鼹鼠，右侧商品区独立滚动；支持鼠标滚轮、拖动滚动条、键盘滚动和触摸滑动，分类栏一直可见。手机将预览压缩到商店上方。正文、按钮和数字使用清晰的系统字体，小字一般至少 13px，计时使用等宽数字、取消像素阴影；仅 Logo 保留本地 Pixelify Sans，使用 [SIL OFL 1.1 许可](assets/fonts/OFL.txt)。页面最大宽度扩至 1480px，同时适配手机与平板。
+商店左侧固定预览鼹鼠，右侧商品区独立滚动；支持鼠标滚轮、拖动滚动条、键盘滚动和触摸滑动，分类栏一直可见。手机将预览压缩到商店上方。正文、按钮和数字使用清晰的系统字体，小字一般为 12–14px，计时使用等宽数字、取消像素阴影；仅 Logo 保留本地 Pixelify Sans，使用 [SIL OFL 1.1 许可](assets/fonts/OFL.txt)。桌面同时按浏览器的可用宽度和高度控制画面：100% 缩放下完整显示游戏、侧栏和底部按钮，避免只按宽度铺大。短屏收紧间距并调整控制排列，计时仍至少 44px，Canvas 保持比例；手机与平板保留纵向滚动。
 
 ## 修改源码后生成单文件
 
@@ -116,6 +120,8 @@ python tests/test_journey.py
 python tests/test_supermo.py
 python tests/test_eumo.py
 python tests/test_daily.py
+python tests/test_viewport.py
+python tests/test_geology.py
 node tests/test_rewards.js
 ```
 
@@ -148,7 +154,7 @@ Linux 系统若缺少浏览器系统库，可使用 Playwright 官方安装命�
 ├── assets/fonts/              # Pixelify Sans 字体与 OFL 许可
 ├── dist/Eumo.html          # 可离线打开的单文件
 ├── scripts/build_standalone.py # 可重复的单文件构建
-├── tests/                     # 七套浏览器测试与奖励规则检查
+├── tests/                     # 九套浏览器测试与奖励规则检查
 ├── docs/                      # 产品、技术、部署和问题排查
 ├── requirements-dev.txt        # 仅测试使用
 └── 349f8aa35697822105fd0040f35a68bd.mp4  # 仓库原有视频，保留

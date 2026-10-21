@@ -42,10 +42,12 @@ python tests/test_journey.py
 python tests/test_supermo.py
 python tests/test_eumo.py
 python tests/test_daily.py
+python tests/test_viewport.py
+python tests/test_geology.py
 node tests/test_rewards.js
 ```
 
-七个 Python 脚本各自启动随机本地端口、运行浏览器断言并关闭测试服务。成功会输出 `PASS:`；断言失败会以非零状态退出。当前不是 pytest 测试套件，不应以“pytest 找不到用例”当作验证完成。
+九个 Python 脚本各自启动随机本地端口、运行浏览器断言并关闭测试服务。成功会输出 `PASS:`；断言失败会以非零状态退出。当前不是 pytest 测试套件，不应以“pytest 找不到用例”当作验证完成。
 
 ## 覆盖范围
 
@@ -69,6 +71,10 @@ node tests/test_rewards.js
 
 `test_daily.py` 验证大屏宽度、常规计时/文本字体、Mole 创建文案、无 Export 的大 Finish、只查看与取消不返地面、确认后保存成果并返地面、刷新和 Escape、次日与跨午夜任务、三时区/分钟/DST 切换、真实较小眼睛像素、鼹鼠脚下七种不同地层及 320–2048px 页面；额外复现隐藏动画与暂停 requestAnimationFrame 后完成总结，检查矿洞重新可见、真实 Canvas 当即返地面、刷新持久化，并在断网单文件中重复验证。
 
+`test_viewport.py` 以浏览器默认 100% 缩放测试 13 组桌面宽高及 DPR 1 / 1.5，覆盖 1280×600 的矮屏和 2560×1320 大屏；待机、运行、暂停三种状态都要求整页无纵横溢出，画面、计时、Start/End、底部控制及页脚完整可见，Canvas 比例不变、数字不小于 44px。
+
+`test_geology.py` 加速一次真实的 120 分钟 Study 程序流程，119:59 前检查实际 Canvas 没有石层颜色，120 分钟才出现石层，并核对 24 星和 12 件发现物。另测 0/120/230/239.999 米的画面不提前显示深层、后续地层阈值和日终返地面。
+
 ## 手工检查清单
 
 1. 首次打开显示创建页；选择颜色、输入名字、点击 START。
@@ -83,6 +89,8 @@ node tests/test_rewards.js
 10. 点击 Music 播放新的 Warm Focus (3)，换页不断；空闲抚摸听柔化的两声嘟嘟。
 11. 右上角查看任务和时长，Finish 需要确认结束进行中任务，完成今日总结后回地面且保留所有累计成果。
 12. 刷新后确认进度、家具和音量保留，音乐不自动开始。
+13. 桌面浏览器 100% 缩放，在不同窗口高度检查画面、侧栏和底部按钮完整可见；手机允许正常纵向滚动。
+14. 普通挖掘累计 2 小时前保持泥土，2 小时才见柔和石层，2.5 小时进入沙层；暂停不推进地层，返地面后重新从泥土开始。
 
 ## 验证记录
 

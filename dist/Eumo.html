@@ -160,6 +160,22 @@ body[data-period=morning] .fitting-pet{background:#c2b9d6}body[data-period=day] 
 @media(max-width:700px){.wardrobe-layout{height:auto}.header{height:auto;min-height:116px}.setup-header{height:80px}.header .brand{font-size:23px}.setup-heading h1{font-size:32px}.setup-heading{margin-top:26px}.setup-controls{padding:22px 18px}.app-shell,.setup-screen{width:calc(100% - 32px)}.page-heading h1{font-size:25px}.page-meta{font-size:13px}.home-shop{padding:18px}.today-details{padding:16px;gap:14px}.finish-today-button{width:100%;margin:6px 0 0;min-height:56px}.calendar-day small{font-size:12px}.panel-heading h2{font-size:17px}.focus-meta{font-size:13px}.device-time{font-size:16px}.outfit-card h3{font-size:15px}.category-tabs button{font-size:13px}.closet{height:clamp(430px,65dvh,600px)}}
 .play-symbol{font-size:0;display:block;width:16px;height:18px;position:relative;flex-shrink:0}.play-symbol:before{content:'';position:absolute;left:3px;top:3px;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:9px solid currentColor}.running .play-symbol:before{border:0;left:2px;top:3px;width:4px;height:12px;background:currentColor;box-shadow:7px 0 currentColor}.start-button>span:last-child{font-family:'DejaVu Sans','Segoe UI Symbol',sans-serif}
 @media(max-width:700px){.timer-card{display:block}.timer-digits{font-size:64px;text-align:center}.duration-controls{margin:14px 0;justify-content:center}.control-panel{padding-left:20px;padding-right:20px}.focus-modes{gap:8px}}
+/* Fit the desktop board to the browser's usable height, not just its width. */
+@media(min-width:960px) and (min-height:600px){
+ .app-shell,.setup-screen{--sidebar-width:clamp(270px,21vw,310px);width:calc(100% - clamp(32px,6vw,96px));max-width:min(1400px,calc((100dvh - 306px)*1.7142857 + var(--sidebar-width) + 56px))}
+ .header,.setup-header{height:68px}.brand{font-size:26px}.nav a{width:42px;height:42px}.nav svg{width:23px;height:23px}.report-link{width:36px;height:36px}.page-heading{padding:14px 0 12px}.page-heading h1{font-size:24px;line-height:1.25}.footer{margin-top:14px;padding:10px 0;font-size:12px;line-height:18px}.footer button{font-size:12px}
+ .game-layout{grid-template-columns:minmax(0,1fr) var(--sidebar-width);gap:20px;align-items:start}.arcade-machine{padding:10px 12px 0}.machine-top{font-size:12px;line-height:18px;margin:0 0 8px}.screen-hud{padding:6px 10px;font-size:12px;line-height:18px}.screen-hud>span:last-child{font-size:12px}.screen-hud #depthDisplay{font-size:16px}.machine-footer{min-height:36px;font-size:12px;line-height:18px}.machine-footer button{min-height:26px;padding:3px 8px;font-size:12px}.scene-label{font-size:12px}
+ .control-panel{padding:0 16px 10px}.control-heading{font-size:12px;line-height:18px;padding:9px 0}.task-label{font-size:13px;line-height:18px;margin:10px 0 5px}.task-input{padding:8px 10px;font-size:14px;line-height:20px}.timer-card{padding:12px 0 8px}.timer-digits{font-size:clamp(48px,6dvh,60px);line-height:1.1;letter-spacing:.5px}.duration-controls{margin-top:8px;gap:16px;font-size:13px}.focus-modes{margin:12px 0 10px;gap:6px}.focus-modes button{padding:6px 4px;font-size:13px;line-height:20px}.start-button{min-height:44px;padding:9px 12px;font-size:15px}.stop-button{font-size:13px;padding-top:8px;line-height:18px}
+ .mission-stats{padding:12px 0;gap:12px}.mission-stats>div>span{font-size:12px;line-height:18px}.mission-stats>div+div{padding-left:12px}.mission-stats strong{font-size:22px;line-height:1.2;margin-top:4px}.depth-progress{padding:10px 0 6px}.depth-progress>div:first-child{font-size:12px;line-height:18px}.progress-track{height:6px;margin-top:7px}.rain-controls{padding:8px 0;gap:10px}.sound-button{font-size:13px;line-height:20px;padding:4px 0}.control-panel>#simpleViewButton{font-size:12px;line-height:18px;min-height:30px;padding:5px 10px}.wardrobe-layout{height:clamp(360px,calc(100dvh - 184px),740px)}.setup-heading{margin:24px 0 20px}
+}
+@media(min-width:960px) and (min-height:600px) and (max-height:800px){
+ .control-heading{padding:6px 0}.control-panel{padding-bottom:8px}.task-label{font-size:12px;line-height:16px;margin:6px 0 4px}.task-input{padding:5px 9px;font-size:13px;line-height:20px}.timer-card{padding:8px 0 4px}.timer-digits{font-size:48px;line-height:1.05}.duration-controls{margin-top:6px;font-size:12px;gap:12px}.focus-modes{margin:8px 0;gap:5px}.focus-modes button{font-size:12px;line-height:18px;padding:5px 3px}.start-button{min-height:38px;padding:6px 10px;font-size:14px}.stop-button{font-size:12px;line-height:18px;padding-top:6px}.mission-stats{padding:8px 0}.mission-stats>div>span{line-height:16px}.mission-stats strong{font-size:20px;line-height:22px}.depth-progress{padding:6px 0 4px}.depth-progress>div:first-child{line-height:16px}.progress-track{margin-top:5px}.rain-controls{padding:6px 0}.sound-button{font-size:12px;line-height:18px;padding:2px 0}.control-panel>#simpleViewButton{min-height:28px;padding:4px 9px}
+}
+@media(min-width:960px) and (min-height:600px) and (max-height:720px){
+ .header,.setup-header{height:56px}.page-heading{padding:9px 0}.page-heading h1{font-size:22px;line-height:26px}.footer{margin-top:10px;padding:7px 0;line-height:18px}.control-panel{position:relative;padding-bottom:6px}.control-panel>.task-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;margin:0}.control-panel>.task-input{margin-top:8px}
+ .timer-card{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:0 8px}.timer-digits{font-size:44px;text-align:left}.duration-controls{margin:0;gap:6px}.duration-controls button{width:22px;height:24px}.focus-modes,.start-button,.stop-button{grid-column:1/-1}.focus-modes{margin:8px 0}.stop-button{justify-self:center;padding-top:4px}.mission-stats>div{display:flex;align-items:baseline;justify-content:space-between;gap:5px;min-width:0}.mission-stats>div>span{min-width:0}.mission-stats strong{margin:0;white-space:nowrap}.mission-stats small{font-size:11px}.depth-progress{padding:7px 0}.depth-progress>div:first-child{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.progress-track{margin:0}
+ .rain-controls{padding-right:112px;margin:0;gap:6px;min-height:36px;flex-wrap:nowrap}.rain-controls .sound-button{flex:0 0 auto;gap:5px}.rain-controls #musicVolume{width:45px;min-width:30px}.control-panel>#simpleViewButton{position:absolute;right:16px;bottom:7px;font-size:12px;padding:4px 8px}
+}
 
 </style></head><body>
 <svg class="svg-defs" aria-hidden="true"><defs><symbol id="i-pickaxe" viewBox="0 0 24 24"><path d="M3 3h12v3h4v3h3v5h-3v-3h-4V8h-3l-2 3 2 2-9 9-3-3 9-9-2-2H3z"/></symbol><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10h3V7h3V4h6v3h3v3h3v11h-7v-7h-4v7H3Z"/></symbol><symbol id="i-gift" viewBox="0 0 24 24"><path d="M3 10h18v4H3zm2 4v7h14v-7h-5v7h-4v-7M10 3h4v4h-4zm-6 0h4v4H4zm12 0h4v4h-4z"/></symbol><symbol id="i-shirt" viewBox="0 0 24 24"><path d="M8 3H5v3H2v6h5v9h10v-9h5V6h-3V3h-3v4H8Z"/></symbol><symbol id="i-friends" viewBox="0 0 24 24"><path d="M5 3h5v6H5zm9 2h5v5h-5zM2 12h11v8H2zm12 1h8v7h-8z"/></symbol><symbol id="i-report" viewBox="0 0 24 24"><path d="M3 3h2v17h17v2H3zm5 9h3v5H8zm5-5h3v10h-3zm5-4h3v14h-3z"/></symbol><symbol id="i-sound" viewBox="0 0 24 24"><path d="M3 9h5V5h5v14H8v-4H3zm14-3h3v12h-3m-2-9h2v6h-2"/></symbol></defs></svg>
@@ -352,38 +368,42 @@ window.WardrobeArt=(()=>{
 'use strict';
 window.Terrain=(()=>{
  const layers=[
-  {from:0,name:'Root soil',id:'roots',soil:['#8d573b','#9c6543','#7d4c34'],stone:['#c39262','#684632'],moss:'#78a34d'},
-  {from:10,name:'Stone beds',id:'stone',soil:['#909c91','#a5ad9d','#7e8c85'],stone:['#d0d1b7','#596c66'],moss:'#76955d'},
-  {from:24,name:'Sand beds',id:'sand',soil:['#d5b16f','#e3c184','#c49c5d'],stone:['#f1d79d','#a6804b'],moss:'#9ba269'},
-  {from:40,name:'Slate layer',id:'slate',soil:['#526c85','#607d96','#435d77'],stone:['#8faabd','#30475e'],moss:'#78a9a1'},
-  {from:70,name:'Red granite',id:'granite',soil:['#9f6661','#b37d71','#8e5755'],stone:['#ddb79a','#573e47'],moss:'#b99887'},
-  {from:110,name:'Crystal seams',id:'crystal',soil:['#685485','#796296','#574676'],stone:['#c7abd8','#8fd5dc'],moss:'#92c5c0'},
-  {from:170,name:'Deep basalt',id:'basalt',soil:['#303b46','#3d4955','#26313c'],stone:['#72818b','#d59c61'],moss:'#85afa9'}
+  // Normal Study/Work digs one metre per 30 seconds: 240m = two hours.
+  {from:0,name:'Root soil',id:'roots',soil:['#947565','#a38270','#876b60'],stone:['#b99b7c','#7e675e'],moss:'#9bac76'},
+  {from:240,name:'Stone beds',id:'stone',soil:['#9690aa','#a69bb6','#88829c'],stone:['#c7b9d1','#77718d'],moss:'#a1b29e'},
+  {from:300,name:'Sand beds',id:'sand',soil:['#d5b590','#e3c8a4','#c7a783'],stone:['#f2dfbb','#b79b78'],moss:'#b0b38a'},
+  {from:360,name:'Slate layer',id:'slate',soil:['#6e7f9d','#7c8da7','#62738f'],stone:['#a1b7c6','#53667f'],moss:'#8db8ac'},
+  {from:480,name:'Red granite',id:'granite',soil:['#a47c8a','#b68d98','#926f81'],stone:['#dbc1b4','#806472'],moss:'#bba496'},
+  {from:600,name:'Crystal seams',id:'crystal',soil:['#77648f','#86749f','#695a82'],stone:['#cfbbdf','#9ed6d6'],moss:'#a4c5bd'},
+  {from:720,name:'Deep basalt',id:'basalt',soil:['#484459','#555168','#3d3d52'],stone:['#817e96','#d6a78c'],moss:'#99b5b1'}
  ];
  const rnd=(a,b)=>{const z=Math.sin(a*127.1+b*311.7)*43758.5453;return z-Math.floor(z);};
  function layerAt(depth){let layer=layers[0];for(const next of layers)if(depth>=next.from)layer=next;return layer;}
- function paint(c,camera,height,frame){
+ function paint(c,camera,height,frame,progressDepth=Infinity){
   const box=(x,y,w,h,color)=>{c.fillStyle=color;c.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));};
   const first=Math.max(0,Math.floor((camera-87)/16)),last=Math.ceil((camera+height-87)/16);
   for(let row=first;row<last;row++)for(let col=0;col<24;col++){
-   const wy=87+row*16,y=wy-camera,x=col*16,depth=(wy-87)/6,r=rnd(col,row),current=layerAt(depth),next=layers[layers.indexOf(current)+1];
-   const layer=next&&depth>next.from-1.5&&rnd(col+41,row)<(depth-next.from+1.5)/1.5?next:current;
-   const patch=rnd(Math.floor(col/3),Math.floor(row/3));box(x,y,16,16,layer.soil[Math.floor(patch*3)]);
-   if(r>.55){const offset=Math.floor(rnd(col+3,row+7)*4)*2;box(x+offset,y+2,12,4,layer.soil[(Math.floor(patch*3)+1)%3]);box(x+offset+2,y+6,8,2,layer.soil[(Math.floor(patch*3)+1)%3]);}
+   const wy=87+row*16,y=wy-camera,x=col*16,depth=(wy-87)/6,r=rnd(col,row),revealed=Math.min(depth,progressDepth),current=layerAt(revealed),index=layers.indexOf(current);
+   // The viewport shows ground below the mole. Never preview locked strata
+   // ahead of actual progress, especially in the first two hours.
+   const layer=index>0&&revealed<current.from+2&&rnd(col+41,row)<.3?layers[index-1]:current;
+   const soil=layer.id==='roots'&&depth>=120?['#8d6d70','#9a7a78','#806268']:layer.soil;
+   const patch=rnd(Math.floor(col/3),Math.floor(row/3));box(x,y,16,16,soil[Math.floor(patch*3)]);
+   if(r>.55){const offset=Math.floor(rnd(col+3,row+7)*4)*2;box(x+offset,y+2,12,4,soil[(Math.floor(patch*3)+1)%3]);box(x+offset+2,y+6,8,2,soil[(Math.floor(patch*3)+1)%3]);}
    // Material-specific geometry: loose grains, chunky stone, angled slate,
    // speckled granite, crystal clusters, then dark basalt columns.
    if(layer.id==='sand'){
     const sy=y+5+Math.floor(r*3);box(x,sy,8,1,layer.stone[1]);box(x+8,sy+1,8,1,layer.stone[1]);
     for(let k=0;k<4;k++)box(x+Math.floor(rnd(col+k,row+13)*14),y+Math.floor(rnd(col+k+7,row)*14),1+(k%2),1,layer.stone[k%2]);
    }else if(layer.id==='stone'){
-    if(r<.7){box(x+2,y+3,12,9,layer.stone[1]);box(x+3,y+2,10,8,layer.soil[1]);box(x+4,y+2,8,1,layer.stone[0]);box(x+12,y+4,1,5,layer.soil[0]);}
+    if(r<.28){const sx=x+2,sy=y+4;box(sx+2,sy,7,2,layer.soil[1]);box(sx,sy+2,11,4,layer.soil[1]);box(sx+2,sy+6,8,2,layer.soil[1]);box(sx+3,sy+1,4,1,layer.stone[0]);if(r<.08)box(sx+6,sy+4,2,1,layer.stone[1]);}
    }else if(layer.id==='slate'){
-    if(r<.6){box(x,y+4,13,2,layer.stone[1]);box(x+5,y+6,11,1,layer.stone[0]);box(x+4,y+10,12,2,layer.stone[1]);box(x+2,y+8,3,2,layer.stone[1]);}
+    if(r<.4){box(x,y+4,11,1,layer.stone[1]);box(x+5,y+6,9,1,layer.stone[0]);box(x+4,y+10,10,1,layer.stone[1]);}
    }else if(layer.id==='granite'){
-    for(let k=0;k<5;k++)box(x+Math.floor(rnd(col+k,row+19)*14),y+Math.floor(rnd(col+k+31,row)*14),2,2,layer.stone[k%2]);
+    for(let k=0;k<2;k++)box(x+Math.floor(rnd(col+k,row+19)*14),y+Math.floor(rnd(col+k+31,row)*14),2,2,layer.stone[k%2]);
    }else if(layer.id==='basalt'){
     if(r<.5){box(x+4,y,1,12,layer.stone[0]);box(x+5,y+12,7,1,layer.stone[0]);box(x+11,y+13,1,3,layer.stone[0]);}if(r>.94)box(x+8,y+5,3,2,layer.stone[1]);
-   }else if(r<.22){const sx=x+3,sy=y+5,w=r<.06?10:6;box(sx+2,sy,w-2,2,layer.stone[0]);box(sx,sy+2,w,4,layer.stone[1]);box(sx+2,sy+2,w-4,2,layer.stone[0]);}
+   }else if(layer.id==='roots'&&r<.25){box(x+3,y+5,3,2,soil[1]);box(x+9,y+11,2,1,soil[2]);}
    if(layer.id==='crystal'&&r>.81){box(x+4,y+3,3,10,layer.stone[0]);box(x+7,y+7,4,6,layer.stone[1]);box(x+5,y+2,1,3,'#e8d8ed');box(x+10,y+5,2,6,layer.stone[0]);}
    if(layer.id==='roots'&&r>.8){box(x+2,y+3,3,8,layer.moss);box(x+5,y+7,4,2,'#a6bb66');}
    // Worms and beetles are sparse and move only a pixel at a time.
@@ -492,7 +512,7 @@ window.PixelArt=(()=>{
  if(ground>0){cloud(c,24,31-camera,t.cloud);cloud(c,284,15-camera,t.cloudBack);celestial(c,t,camera);
  // Distant pixel mountains and rolling terrain.
  for(let x=0;x<w;x+=8){const hh=10+Math.floor(Math.sin(x*.04)*8+Math.cos(x*.083)*5);box(c,x,ground-hh,8,hh,t.mountain);}box(c,0,ground-5,w,5,t.grass);box(c,0,ground,w,4,t.grassShadow);for(let x=0;x<w;x+=12)box(c,x,ground-7,4,4,x%24?t.grass:tint(t.grass,.2));}
- Terrain.paint(c,camera,h,frame);
+ Terrain.paint(c,camera,h,frame,m.worldDepth);
  // Excavated shaft is real cleared terrain, not an animation overlay.
  for(let wy=87;wy<end+7;wy+=4){const d=(wy-131)/6;const cx=192+Math.round(Math.sin(Math.max(0,d)*.13)*3)*4;const sy=wy-camera;if(sy>h||sy<-8)continue;box(c,cx-37,sy,74,5,'#24203f');box(c,cx-32,sy,64,5,'#1c1b37');box(c,cx-39,sy,3,5,'#aa799b');box(c,cx+36,sy,3,5,'#4e365c');box(c,cx-22,sy,2,4,'#ad8a7e');box(c,cx-10,sy,2,4,'#ad8a7e');if(wy%16===7)box(c,cx-23,sy,15,2,'#e0b490');}
  // Pending objects sit on the actual tool route. Crossed nodes are removed;

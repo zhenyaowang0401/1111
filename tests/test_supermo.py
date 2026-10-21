@@ -66,12 +66,12 @@ def run():
    page.locator('[data-page="home"]').click();assert page.locator('#focusMusic').evaluate('e=>!e.paused')
    # Pixel-rendered strata are different, not only different HUD labels.
    histograms=[]
-   for depth,label in [(5,'Root soil'),(16,'Stone beds'),(32,'Sand beds'),(53,'Slate layer'),(90,'Red granite'),(140,'Crystal seams'),(220,'Deep basalt')]:
+   for depth,label in [(20,'Root soil'),(270,'Stone beds'),(330,'Sand beds'),(420,'Slate layer'),(540,'Red granite'),(660,'Crystal seams'),(800,'Deep basalt')]:
     fixture={**seed,'depth':depth};tp=browser.new_page(viewport={'width':1440,'height':1000});tp.add_init_script(f"localStorage.setItem('{KEY}',{json.dumps(json.dumps(fixture))});")
     tp.goto(url+'/#focus');tp.wait_for_timeout(180);expect(tp.locator('#sceneLabel')).to_have_text(label)
     hist=tp.locator('#miningCanvas').evaluate("""c=>{const b=PixelArt.getBounds('miningCanvas'),d=c.getContext('2d').getImageData(0,Math.min(200,Math.round(b.y+50)),130,24).data,h={};for(let i=0;i<d.length;i+=4){const k=[d[i],d[i+1],d[i+2]].join(',');h[k]=(h[k]||0)+1;}return Object.entries(h).sort((a,b)=>b[1]-a[1]).slice(0,5).map(p=>p[0]).join(';');}""")
     histograms.append(hist)
-    if depth==53:tp.screenshot(path=str(ROOT/'docs/images/eumo-mine.png'),full_page=True)
+    if depth==420:tp.screenshot(path=str(ROOT/'docs/images/eumo-mine.png'),full_page=True)
     tp.close()
    assert len(set(histograms))==7,histograms
    for width in [320,390,768,1440]:

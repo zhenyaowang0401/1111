@@ -50,7 +50,7 @@ window.PixelArt=(()=>{
  if(ground>0){cloud(c,24,31-camera,t.cloud);cloud(c,284,15-camera,t.cloudBack);celestial(c,t,camera);
  // Distant pixel mountains and rolling terrain.
  for(let x=0;x<w;x+=8){const hh=10+Math.floor(Math.sin(x*.04)*8+Math.cos(x*.083)*5);box(c,x,ground-hh,8,hh,t.mountain);}box(c,0,ground-5,w,5,t.grass);box(c,0,ground,w,4,t.grassShadow);for(let x=0;x<w;x+=12)box(c,x,ground-7,4,4,x%24?t.grass:tint(t.grass,.2));}
- Terrain.paint(c,camera,h,frame);
+ Terrain.paint(c,camera,h,frame,m.worldDepth);
  // Excavated shaft is real cleared terrain, not an animation overlay.
  for(let wy=87;wy<end+7;wy+=4){const d=(wy-131)/6;const cx=192+Math.round(Math.sin(Math.max(0,d)*.13)*3)*4;const sy=wy-camera;if(sy>h||sy<-8)continue;box(c,cx-37,sy,74,5,'#24203f');box(c,cx-32,sy,64,5,'#1c1b37');box(c,cx-39,sy,3,5,'#aa799b');box(c,cx+36,sy,3,5,'#4e365c');box(c,cx-22,sy,2,4,'#ad8a7e');box(c,cx-10,sy,2,4,'#ad8a7e');if(wy%16===7)box(c,cx-23,sy,15,2,'#e0b490');}
  // Pending objects sit on the actual tool route. Crossed nodes are removed;

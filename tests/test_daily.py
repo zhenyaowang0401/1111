@@ -22,8 +22,8 @@ def run():
    page.add_init_script(f"if(!localStorage.getItem('{KEY}'))localStorage.setItem('{KEY}',{json.dumps(json.dumps(seed))});")
    page.goto(url+'/#focus');page.wait_for_timeout(180)
    def saved():return page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',KEY)
-   expect(page.locator('#depthDisplay')).to_have_text('030');expect(page.locator('#sceneLabel')).to_have_text('Sand beds')
-   assert page.locator('.app-shell').bounding_box()['width']==1480
+   expect(page.locator('#depthDisplay')).to_have_text('030');expect(page.locator('#sceneLabel')).to_have_text('Root soil')
+   assert page.locator('.app-shell').bounding_box()['width']<=1400
    assert 'Pixelify' not in page.locator('#timeDisplay').evaluate('e=>getComputedStyle(e).fontFamily')
    assert 'Pixelify' not in page.locator('#taskInput').evaluate('e=>getComputedStyle(e).fontFamily')
    page.locator('.footer a').click();expect(page.locator('#setupTitle')).to_have_text('Your mole')
@@ -83,10 +83,10 @@ def run():
     ctx.close()
    # Each material has a distinct actual palette/texture, not just a label.
    counts=[]
-   for depth in [5,16,32,53,90,140,220]:
+   for depth in [20,270,330,420,540,660,800]:
     page.evaluate('(depth)=>{state.surfaceDepth=0;state.depth=depth;renderTimer();}',depth);page.clock.run_for(250)
     counts.append(page.locator('#miningCanvas').evaluate("c=>{const b=PixelArt.getBounds('miningCanvas'),d=c.getContext('2d').getImageData(0,Math.min(200,Math.round(b.y+50)),130,24).data,h={};for(let i=0;i<d.length;i+=4){const k=[d[i],d[i+1],d[i+2]].join(',');h[k]=(h[k]||0)+1;}return Object.entries(h).sort((a,b)=>b[1]-a[1]).slice(0,4).map(a=>a[0]).join(';');}"))
-    if depth in [5,32,90]:page.screenshot(path=str(ROOT/f'docs/images/eumo-layer-{depth}.png'),full_page=True)
+    if depth in [20,330,540]:page.screenshot(path=str(ROOT/f'docs/images/eumo-layer-{depth}.png'),full_page=True)
    assert len(set(counts))==7,counts
    for width,height in [(320,844),(390,844),(768,900),(1440,900),(2048,1152)]:
     page.set_viewport_size({'width':width,'height':height})
