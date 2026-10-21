@@ -67,7 +67,7 @@ HTMLAudio 播放 `assets/audio/warm-focus-3.mp3`，由用户点击启动，不�
 
 ## 有界商店与字体
 
-桌面宽度至少 960px、可用高度至少 600px 时，主容器同时受视窗宽高约束。先取对话留白 `R = clamp(64px, 12dvh, 132px)`，再计算左栏宽度上限 `L = (100dvh - 306px - R) × 384/224 + 36px`；主容器上限为 `min(1400px, L + max(270px, L/2.55) + 20px)`，为导航、标题、画框和页脚预留空间。Grid 使用 `2.55fr minmax(270px, 1fr)` 并拉齐高度；左栏 flex 列中的 `#moleDialogueSpace` 预留未来 AI 对话位置，当前是空的、无交互且不进入可访问树。右栏通过弹性计时区吸收额外高度。短屏进一步收紧间距，720px 以下将时长调整放到计时旁，音乐与动画按钮同排。Canvas 保持原始比例，不通过 zoom、transform 或裁剪模拟适配；计时数字最低 44px。手机仍采用纵向布局和正常滚动。
+桌面宽度至少 960px、可用高度至少 600px 时，主容器同时受视窗宽高约束。先取对话留白 `R = clamp(108px, 14dvh, 144px)`，再计算左栏宽度上限 `L = (100dvh - 306px - R) × 384/224 + 36px`；主容器上限为 `min(1400px, L + max(270px, L/2.55) + 20px)`，为导航、标题、画框和页脚预留空间。Grid 使用 `2.55fr minmax(270px, 1fr)` 并拉齐高度；左栏 flex 列中的 `#moleDialogueSpace` 包含带命名区域语义的复古聊天窗口；`#toggleMoleChat` 更新 aria-expanded 和内容 hidden 状态，不更改计时或存档。renderProfile 用 textContent 和 CSS 颜色变量同步头像与名字。输入及 Send 暂时禁用，没有 AI 依赖、网络调用或新增存储字段。右栏计时区 flex:0，以固定间距按顺序排列，避免多余高度集中堆在倒计时上下。短屏进一步收紧间距，720px 以下将时长调整放到计时旁，音乐与动画按钮同排。Canvas 保持原始比例，不通过 zoom、transform 或裁剪模拟适配；计时数字最低 44px。手机仍采用纵向布局和正常滚动。
 
 `.wardrobe-layout` 桌面高度随视窗约束，`.closet` 和 `.fitting-room` 使用 min-height:0。`#shopScroll` 为独立、可聚焦的 overflow-y:auto 区域；分类在区域外，避免滚动后找不到筛选。只在切换分类/筛选时复位滚动，购买不替换滚动容器。预览按容器宽高计算尺寸，保持 Canvas 实际宽高比和点击坐标；手机改为紧凑预览加有界商店。
 

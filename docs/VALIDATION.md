@@ -1,17 +1,17 @@
-# Eumo v2 · 对话留白与屏幕适配验证记录
+# Eumo v2 · 复古聊天窗口与紧凑计时栏验证记录
 
 验证日期：2026-10-22（Asia/Shanghai）。对象是当前源码与 `dist/Eumo.html`，不是 GitHub Pages 部署。
 
 环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0（仅开发检查）。
 
-本轮布局修改重新执行了 `test_viewport.py`、`test_daily.py`、`test_eumo.py`、奖励检查、单文件重建及资源一致性检查。其余项目保留上一轮的实际通过记录，未重复执行。
+本轮布局修改重新执行了 `test_viewport.py`、`test_daily.py`、`test_eumo.py`、奖励检查、九个 JS 语法、单文件重建及资源一致性检查。其余项目保留上一轮的实际通过记录，未重复执行。
 
 ## 实际执行
 
 | 检查 | 结果 | 范围 |
 | --- | --- | --- |
 | `python scripts/build_standalone.py` | 通过 | CSS、九个 JS、原 MP3 与 Pixelify Sans 字体/许可内嵌；重复生成内容一致 |
-| 九个源码 JS 的 `node --check` | 上一轮通过 | JavaScript 语法 |
+| 九个源码 JS 的 `node --check` | 通过 | JavaScript 语法 |
 | `node tests/test_rewards.js` | 通过 | 阈值、跨轮等价、零头、Demo、Break 与稳定事件 |
 | `python tests/test_entry.py` | 上一轮通过 | 受限 iframe、按钮/Enter、中文名称、History 限制和无耳朵像素 |
 | `python tests/test_site.py` | 上一轮通过 | 眨眼、抚摸/跳跃/禁摸、叠穿、Study/Work、跨午夜、音频、报告和响应式 |
@@ -20,7 +20,7 @@
 | `python tests/test_supermo.py` | 上一轮通过 | 品牌、宝箱命中与头顶副本、刷新、困倦/睡眠边界、真实呼吸/鼻涕泡像素、唤醒、暂停区分、新歌时长、七种实际地层、手机宝箱和编辑 |
 | `python tests/test_eumo.py` | 通过 | 7/5/5/6 件服装逐件价格与购买、分类互斥、旧配饰、家园专属头顶像素、木箱格子、6 工具逐件购买和实际动画像素、免费复用与默认工具、Demo 奖励和报告隔离、手机与矮屏、实际滚轮/拖动滚动条且左侧位置不变、眼镜实际像素、最小字号、离线字体 |
 | `python tests/test_daily.py` | 通过 | 大屏与手机布局、常规计时文字、Mole 文案、移除 Export、大 Finish、取消/查看不重置、返地面及刷新、成果保留、次日/跨午夜、三时区分钟与 DST、真实较小眼睛、更新后的七种脚下材质；隐藏动画且 RAF 暂停后完成总结，真实 Canvas 立即返地面，恢复显示和刷新保存；断网单文件同样验证 |
-| `python tests/test_viewport.py` | 通过 | 默认 100% 缩放，13 组桌面窗口/DPI × 待机/运行/暂停；整页无纵横滚动溢出，画面、计时、Start/End、底部控制和页脚完整可见；Canvas 比例不变，计时最低 44px；左右面板上下对齐，正常桌面 2.55:1，对话留白至少 64px |
+| `python tests/test_viewport.py` | 通过 | 默认 100% 缩放，13 组桌面窗口/DPI × 待机/运行/暂停；整页无纵横滚动溢出，画面、计时、Start/End、底部控制和页脚完整可见；Canvas 比例不变，计时最低 44px；左右面板上下对齐，正常桌面 2.55:1，聊天区域至少 108px；窗口、输入及发送栏无溢出；正常桌面计时上间隙 ≤40px、下间隙 ≤24px；运行中鼠标/键盘收起展开不暂停，禁用发送，320/390/768px 和断网下载版 |
 | `python tests/test_geology.py` | 上一轮通过 | 实际运行 120 分钟 Study 程序流程，119:59 前实际画面仍为泥土，240 米才出现石层；0/120/230/239.999 米无提前露石，后续地层边界、24 星/12 件结算不变，日终仍返地面 |
 | 音频及兼容副本 | 通过 | MP3 上传原件、资源和 base64 解码字节一致；TTF 与内嵌字体字节一致，完整 OFL 许可在单文件内；三个入口内容相同 |
 
@@ -28,7 +28,9 @@
 
 桌面窗口包含 2560×1320、2048×1050、1920×960、1680×860、1600×780、1536×730、1440×768、1366×650、1280×600、1024×640；另在 DPR 1.5 下复测 1680×860、1536×730、1280×600。手机和平板允许正常纵向滚动，不强行压缩到一屏。
 
-![完整桌面布局](images/eumo-fit-desktop.png)
+![完整桌面布局与聊天窗口](images/eumo-fit-desktop.png)
+
+![手机聊天窗口](images/eumo-chat-mobile.png)
 
 ![达到两小时后的石层](images/eumo-two-hour-stone.png)
 
@@ -37,8 +39,8 @@
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 6108764
-SHA-256: 0ff590ad083a1fa601fd9c299ca79b2b40bd8b8a199ca9c4c094dc4db8b69be1
+字节数: 6113852
+SHA-256: d7eed7aa5386d2280b6c37c085e69f19eb56335ffa8cc3278551d133b198d6d3
 MP3: Warm Focus (3).mp3, 194.520 秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```
