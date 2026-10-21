@@ -1,5 +1,11 @@
 # Eumo v2
 
+**[在线打开 Eumo →](https://1111-phi-ten.vercel.app/#focus)**
+
+当前使用的 Vercel 项目网址是 **https://1111-phi-ten.vercel.app**，AI 密钥配置在这个项目中。旧入口 `1111-alpha-nine.vercel.app` 使用另一份部署配置；更新 GitHub 代码不会把新项目的密钥同步到旧站。
+
+游戏进度保存在各网址自己的浏览器存储里，切换网址不会自动迁移旧站进度。
+
 一个英文界面的像素专注小游戏：创建自己的无耳朵鼹鼠，专注时向下挖洞，收集宝物、叠穿装备，布置洞穴家园，并查看每日任务报告。
 
 [AI 云端接入](docs/AI_SETUP.md) · [模型选型](docs/AI_RESEARCH.md) · [鼹鼠提示词](docs/AI_PROMPTS.md) · [English](docs/README.en.md) · [功能说明](docs/PRODUCT.md) · [技术与数据结构](docs/ARCHITECTURE.md) · [测试方法](docs/TESTING.md) · [常见问题](docs/TROUBLESHOOTING.md) · [开发记录](docs/DEVLOG.md)

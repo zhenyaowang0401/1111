@@ -1,5 +1,9 @@
 # Eumo v2
 
+**[Open Eumo online →](https://1111-phi-ten.vercel.app/#focus)**
+
+The configured Vercel project uses **https://1111-phi-ten.vercel.app**. The older `1111-alpha-nine.vercel.app` deployment has separate environment settings; pushing code does not copy API keys between projects. Browser-local progress does not automatically move between website origins.
+
 An English pixel focus companion. Study or work while an earless mole digs, automatically collects stars and finds, and brings discoveries home.
 
 [中文 README](../README.md) · [Product details (Chinese)](PRODUCT.md)
@@ -8,7 +12,7 @@ An English pixel focus companion. Study or work while an earless mole digs, auto
 
 Download the repository ZIP from GitHub, extract it, and open **dist/Eumo.html** in Chrome or Edge. The single file embeds all artwork, scripts, styles, a local Pixelify Sans font, and the creator-supplied Warm Focus MP3. No installation is required to play.
 
-GitHub displays HTML source when browsing a file; download and open it locally, or enable GitHub Pages separately. No public deployment is claimed here.
+GitHub displays HTML source when browsing a file; use the online link above, or download and open the game locally. Cloud chat requires the configured server; opening a local file supports offline gameplay.
 
 ## Features and rules
 
