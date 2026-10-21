@@ -45,11 +45,12 @@ python tests/test_daily.py
 python tests/test_viewport.py
 python tests/test_geology.py
 python tests/test_chat.py
+python tests/test_companion.py
 node --test tests/test_ai.cjs
 node tests/test_rewards.js
 ```
 
-十个 Python 脚本各自启动随机本地端口、运行浏览器断言并关闭测试服务。成功会输出 `PASS:`；断言失败会以非零状态退出。当前不是 pytest 测试套件，不应以“pytest 找不到用例”当作验证完成。
+十一个 Python 脚本各自启动随机本地端口、运行浏览器断言并关闭测试服务。成功会输出 `PASS:`；断言失败会以非零状态退出。当前不是 pytest 测试套件，不应以“pytest 找不到用例”当作验证完成。
 
 ## 覆盖范围
 
@@ -79,7 +80,9 @@ node tests/test_rewards.js
 
 `test_chat.py` 使用真实浏览器和 Node API，再转到本地 OpenAI 协议测试服务：核对真实换装/时长上下文、Demo 排除、多轮、IME、共享关闭、服务故障/重试、纯文本 XSS、历史/清空、计时不中断、下载版调用以及缺配置提示。它不证明真实 Qwen 回复质量。
 
-`node --test tests/test_ai.cjs` 检查服务端角色构造、物品 ID、共享关闭、角色/地址注入过滤、请求限制、限流、Key 隔离、超时及错误处理。真实模型的 16 条评测另用 `npm run eval:ai`；需要服务商 Key，会产生推理调用，结果必须人工按 rubric 验收。
+`node --test tests/test_ai.cjs` 检查服务端角色构造、物品 ID、共享关闭、角色/地址注入过滤、请求限制、限流、Key 隔离、超时及错误处理。真实模型的 28 条评测另用 `npm run eval:ai`；需要服务商 Key，会产生推理调用，结果必须人工按 rubric 验收。
+
+`test_companion.py` 通过真实按钮检查同开工/同休息的完整顺序：Study/Work、暂停/继续、取消结束、提前结束和自然到时、Today 总结后返地面、再次开工、Break/Demo；还验证旧人设历史不回传、换装和刷新不丢最近活动、迟到回复取消及草稿恢复、共享关闭。使用本地协议 fixture，不把测试回复当作真实模型质量证明。
 
 ## 手工检查清单
 

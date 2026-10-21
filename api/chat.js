@@ -39,7 +39,7 @@ function createHandler({env=process.env,fetchImpl=globalThis.fetch,now=Date.now,
   let prompt;try{prompt=buildMessages(input);}catch{return send(res,400,{error:'INVALID_REQUEST'});}
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
   try{
-   const payload={model:config.model,messages:prompt.messages,stream:false,temperature:prompt.mode==='study'?.35:.75,max_tokens:['study','plan'].includes(prompt.mode)?900:400};
+   const payload={model:config.model,messages:prompt.messages,stream:false,temperature:['study','plan','companion'].includes(prompt.mode)?.35:.75,max_tokens:['study','plan'].includes(prompt.mode)?900:400};
    if(config.disableThinking)payload.enable_thinking=false;
    const upstream=await fetchImpl(config.base+'/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+config.key,'Content-Type':'application/json'},body:JSON.stringify(payload),signal:controller.signal});
    if(!upstream.ok)return send(res,upstream.status===429?429:502,{error:upstream.status===429?'PROVIDER_BUSY':'AI_UNAVAILABLE'});

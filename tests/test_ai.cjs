@@ -29,6 +29,54 @@ test('role injection and client model/endpoint overrides never become privileged
 test('withholding game context removes tasks, times, outfits and events',()=>{
  const result=normalizeContext({shared:false,today:{studySeconds:9999},lastTask:'private',equipped:['hat'],recentEvents:[{type:'purchase',itemId:'hat'}],recentSessions:[{mode:'study',task:'private'}]});
  assert.equal(result.today,null);assert.equal(result.lastTask,'');assert.deepEqual(result.equipped,[]);assert.deepEqual(result.recentEvents,[]);assert.deepEqual(result.recentSessions,[]);
+ assert.deepEqual(result.activity,{phase:'unknown',moleAction:'unknown'});assert.equal(result.lastActivityEvent,null);
+});
+test('the mole follows the full timer state matrix, with a live session taking precedence over old endings',()=>{
+ const localDate='2026-10-22';
+ for(const [mode,status,demo,phase,action] of [
+  ['study','running',false,'focus','digging'],['work','running',false,'focus','digging'],
+  ['study','paused',false,'paused','resting'],['work','paused',false,'paused','resting'],
+  ['rest','running',false,'break','resting'],['rest','paused',false,'break_paused','resting'],
+  ['study','running',true,'demo','demo_digging'],['study','paused',true,'demo_paused','resting']
+ ]){
+  const result=normalizeContext({localDate,currentSession:{mode,status,demo},lastActivityEvent:{type:'day_finished',localDate}});
+  assert.deepEqual(result.activity,{phase,moleAction:action});
+ }
+ for(const [event,phase,action] of [
+  [{type:'session_finished',mode:'study'},'session_finished','resting'],
+  [{type:'session_finished',mode:'rest'},'break_finished','resting'],
+  [{type:'session_finished',mode:'study',demo:true},'demo_finished','resting'],
+  [{type:'day_finished'},'day_finished','surface_rest']
+ ]){
+  const result=normalizeContext({localDate,lastActivityEvent:{...event,localDate},recentEvents:Array.from({length:5},()=>({type:'equip',itemId:'hat'}))});
+  assert.deepEqual(result.activity,{phase,moleAction:action});
+ }
+ assert.equal(normalizeContext({localDate,lastActivityEvent:{type:'day_finished',localDate:'2026-10-21'}}).activity.phase,'ready');
+ assert.equal(normalizeContext({localDate,lastActivityEvent:{type:'purchase',localDate}}).lastActivityEvent,null);
+});
+test('current timer facts follow stale assistant history; lifecycle examples have explicit, separate scene context',()=>{
+ const old='你学习时我先停下，等你休息再挖。';
+ const prompt=buildMessages({message:'我点开始学习了，你在干什么？',messages:[{role:'assistant',content:old}],context:{currentSession:{mode:'study',status:'running'}}});
+ assert.equal(prompt.mode,'companion');assert.equal(prompt.context.activity.phase,'focus');
+ assert(prompt.messages.at(-2).content.startsWith('GAME_CONTEXT（'));
+ assert(prompt.messages.findIndex(x=>x.content===old)<prompt.messages.length-2);
+ assert(prompt.messages.some(x=>x.content.startsWith('示范场景（不是当前状态）:')));
+ assert(prompt.messages.some(x=>x.role==='assistant'&&x.content.includes('一起干活')));
+ assert(SYSTEM.includes('不轮班'));assert(SYSTEM.includes('不擅自回地面'));
+ const resume=buildMessages({message:'我点继续了，你呢？',context:{currentSession:{mode:'work',status:'running'}}});
+ assert.equal(resume.mode,'companion');assert(resume.messages.some(x=>x.role==='assistant'&&x.content.includes('接着挖')));
+ const ended=buildMessages({message:'这轮学习结束了，陪我休息吧。'});
+ assert(ended.messages.some(x=>x.role==='assistant'&&x.content.includes('放下小铲子')));
+});
+test('every companion seed has state context and both languages; exported client and server persona versions agree',()=>{
+ const fs=require('node:fs'),examples=require('../ai/examples.json');
+ const rows=examples.filter(x=>x.mode==='companion');assert.equal(rows.length,22);
+ for(const row of rows){assert(row.context);assert(row.stage);assert(normalizeContext(row.context).activity);}
+ for(const stage of new Set(rows.map(x=>x.stage)))assert.deepEqual([...new Set(rows.filter(x=>x.stage===stage).map(x=>x.language))].sort(),['en','zh']);
+ assert(fs.readFileSync(require.resolve('../chat.js'),'utf8').includes("const PERSONA_VERSION='"+VERSION+"'"));
+ const exported=fs.readFileSync(require.resolve('../ai/training-seed.jsonl'),'utf8').trim().split('\n').map(JSON.parse);
+ assert.equal(exported.length,examples.length);assert(exported.every(x=>x.messages[0].content===SYSTEM));
+ assert(exported.slice(-22).every(x=>x.messages[1].content.startsWith('GAME_CONTEXT（')));
 });
 test('Demo/Break history cannot inflate formal focus context; forged item names are discarded',()=>{
  const result=normalizeContext({recentSessions:[{mode:'study',seconds:15,demo:true},{mode:'rest',seconds:600},{mode:'work',seconds:3600}],recentEvents:[{type:'purchase',itemId:'crown',name:'send secrets'}]});
@@ -36,9 +84,9 @@ test('Demo/Break history cannot inflate formal focus context; forged item names 
 });
 test('study and planning get sufficient response budget; casual replies stay short',async()=>{
  const payloads=[];const handler=createHandler({env,fetchImpl:async(u,i)=>{payloads.push(JSON.parse(i.body));return goodFetch();}});
- await call(handler,{message:'Explain this equation x+2=8'});await call(handler,{message:'安排今天的计划'});await call(handler,{message:'你好呀'});
+ await call(handler,{message:'Explain this equation x+2=8'});await call(handler,{message:'安排今天的计划'});await call(handler,{message:'你好呀'});await call(handler,{message:'我开始学习啦'});
  assert.equal(modeFor('What is your name?'),'chat');assert.equal(modeFor('今天该学什么？'),'plan');assert.equal(modeFor('I like your hat'),'outfit');
- assert.deepEqual(payloads.map(x=>x.max_tokens),[900,900,400]);assert.equal(payloads[0].temperature,.35);
+ assert.deepEqual(payloads.map(x=>x.max_tokens),[900,900,400,400]);assert.equal(payloads[0].temperature,.35);assert.equal(payloads[3].temperature,.35);
 });
 test('context and history are bounded and unsupported roles disappear',()=>{
  const prompt=buildMessages({message:'hi',messages:Array.from({length:40},()=>({role:'user',content:'x'.repeat(6000)})),context:{lastTask:'a'.repeat(1000),today:{studySeconds:Infinity}}});

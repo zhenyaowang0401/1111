@@ -59,6 +59,7 @@ python3 tests/test_daily.py
 python3 tests/test_viewport.py
 python3 tests/test_geology.py
 python3 tests/test_chat.py
+python3 tests/test_companion.py
 node --test tests/test_ai.cjs
 node tests/test_rewards.js
 ```

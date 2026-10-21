@@ -10,7 +10,7 @@ async function main(){
  if(!selected.length)throw new Error('Unknown evaluation case');
  const output=[];
  for(const example of selected){
-  const prompt=buildMessages({message:example.message,context:example.context});
+  const prompt=buildMessages({message:example.message,context:example.context,messages:example.messages});
   const payload={model:config.model,messages:prompt.messages,temperature:.4,max_tokens:900,stream:false};if(config.disableThinking)payload.enable_thinking=false;
   const response=await fetch(config.base+'/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+config.key},body:JSON.stringify(payload),signal:AbortSignal.timeout(45000)});
   if(!response.ok)throw new Error('Provider returned HTTP '+response.status+' for '+example.id);

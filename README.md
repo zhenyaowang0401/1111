@@ -126,6 +126,7 @@ python tests/test_daily.py
 python tests/test_viewport.py
 python tests/test_geology.py
 python tests/test_chat.py
+python tests/test_companion.py
 node --test tests/test_ai.cjs
 node tests/test_rewards.js
 ```
