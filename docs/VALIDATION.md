@@ -1,12 +1,33 @@
-# Eumo v2 · 功能与接口验证记录
+# Eumo v3 · 功能与接口验证记录
 
 最新验证日期：2026-10-26；此前同步陪伴与接口记录为 2026-10-22（Asia/Shanghai）。对象为当前源码、Node 接口和 `dist/Eumo.html`。环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0；Vercel 配置目标为 Node 22。
 
 **以下自动化检查使用本地协议 fixture，不代表真实 Qwen 语义质量评测已通过。** 用户已在 Vercel 配置 Key 并提供线上模型回复截图；当前执行环境没有服务商 Key，也无法直接访问该部署，因此没有把用户截图当成完整模型评测。 下表的模型服务使用本地测试 fixture；它验证软件行为，不验证真实模型语气、解题正确性或建议质量。
 
-## 本轮真实好友模块（2026-10-26）
+## 本轮 V3（2026-10-26）
 
-**生产 Supabase 项目尚未创建/配置；以下是本地真实 PostgreSQL 和双浏览器验证，不代表线上已经联网。** 用户已选择由助手引导创建免费项目；代码、数据库脚本和 Vercel 变量说明已准备好。
+用户已反馈生产好友联网成功；本轮沿用同一个后端，不读取生产密钥或重新建表。以下新功能在本地服务、真实浏览器与离线下载版验证，不能代替 Vercel 新构建的生产检查。
+
+| 实际执行 | 结果 | 范围 |
+| --- | --- | --- |
+| `node --test tests/test_treasures.cjs` | 4 项通过 | 十万节点 3% 采样、十种物品、拆轮等价、固定刷新结果、结算去重、Demo/Break 排除、展示预留、99 星销售不重复 |
+| `python tests/test_v3.py` | 通过 | 真实鼠标拖动/键盘、暂停/运行镜头约束、不改进度；三连点击旋转画布/装备与减少动态效果；真实计时金色奖励/刷新、壁柜像素和出售；四首实际分类、时长、播放和离线原始字节；手机边界 |
+| `python tests/test_music.py` | 通过 | 五首可用目录，音量/进度/循环/下一首、刷新无自动播放、失败重试、窗口/手机、未来扩充与缺文件构建保护 |
+| `python tests/test_viewport.py` | 通过 | 13 组桌面/DPI、空闲/运行/暂停，完整侧栏与底部按钮，无需缩放，手机与离线布局 |
+| `python tests/test_daily.py` / `tests/test_geology.py` | 通过 | 每日返地面、保留累计、跨午夜、时钟/DST；真实两小时的地层与 24 星/12 普通发现物不变 |
+| `python tests/test_eumo.py` / `tests/test_supermo.py` | 通过 | 旧装备/工具、普通宝箱、家园家具与摆放、睡眠呼吸、抚摸和历史存档 |
+| `python tests/test_site.py` / `tests/test_entry.py` | 通过 | 英文界面、实际画布、暂停继续计时、报告、午夜、旧存档、24 个响应式视图、受限 iframe |
+| `python tests/test_journey.py` / `tests/test_companion.py` | 通过 | 奖励累计/重载去重、MP3 和双音宠物声、日程报告；学习/暂停/继续/结束同步陪伴顺序不变 |
+| `node --test tests/test_ai.cjs tests/test_friends.cjs` / `python tests/test_friends_browser.py` | 16 + 6 项 / 浏览器通过 | 原模型代理契约、隐私、安全、状态；真实 PostgreSQL 和两个独立好友浏览器，非生产服务验证 |
+| 构建、15 个脚本语法、音频与文件对比 | 通过 | 三个 HTML 字节相同；四个上传文件原样匹配，原 Warm Focus 不变；五首内嵌且默认曲目只存一次 |
+
+测试发现旧计时浮点边界会把完成的 Demo 深度写成 4.999999… 米，界面取整成 4 米；现按输入时钟的毫秒精度累计任务及每天时间。暂停继续、正式累计、跨午夜和日常回归通过。睡眠边界测试先对齐测试时钟的 idleAt，避免测试操作耗时影响 90 秒断言。
+
+新增界面图片 `eumo-v3-*.png` 使用测试存档，收藏/星星数不是玩家生产数据。新金色元数据保留中文名，游戏可见名称继续使用英文。
+
+## 上一轮真实好友模块（2026-10-26，接入前记录）
+
+**此段为接入前的历史验证记录。** 随后用户完成 Supabase 项目、建表与 Vercel 变量并反馈联网成功；本环境没有独立访问生产数据库。
 
 | 本轮实际执行 | 结果 | 范围 |
 | --- | --- | --- |
@@ -95,9 +116,9 @@
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 6182704
-SHA-256: e4e97c8f5a718d821ec43940d074cc3db52f08f8d2879030fd4640f70bae8ac1
-MP3: Warm Focus (3).mp3, 194.520 秒
+字节数: 21955909
+SHA-256: 34a0f61d8b480dd602c0bbbbd5656ad798cea04aaea1526bcbf9ddc3c568bd83
+MP3: Warm Focus 194.520秒；Winter bonfire 12.168秒；Tropical rainforest 13.416秒；botanicore 213.552秒；Litte ridge 222.840秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```
 

@@ -1,4 +1,4 @@
-# Eumo v2
+# Eumo v3
 
 **[Open Eumo online →](https://1111-phi-ten.vercel.app/#focus)**
 
@@ -10,13 +10,19 @@ An English pixel focus companion. Study or work while an earless mole digs, auto
 
 ## Download and run
 
-Download the repository ZIP from GitHub, extract it, and open **dist/Eumo.html** in Chrome or Edge. The single file embeds all artwork, scripts, styles, a local Pixelify Sans font, and the creator-supplied Warm Focus MP3. No installation is required to play.
+Download the repository ZIP from GitHub, extract it, and open **dist/Eumo.html** in Chrome or Edge. The single file embeds all artwork, scripts, styles, a local Pixelify Sans font, and all five creator-supplied MP3s. No installation is required to play.
 
 GitHub displays HTML source when browsing a file; use the online link above, or download and open the game locally. Cloud chat requires the configured server; opening a local file supports offline gameplay.
 
 ## Music room
 
-Use the four-square icon beside Music to open the lavender retro player. Soft music contains the original Warm Focus track; Groove and White noise reserve space for future audio. Unfinished tracks are clearly disabled. The player has shared volume, seeking, repeat and available-track navigation. Browsing the library does not interrupt a focus timer or start audio automatically. See [the music catalog guide](MUSIC.md) for adding files.
+Use the four-square icon beside Music to open the lavender retro player. Soft music contains Warm Focus and Litte ridge; Groove contains botanicore; White noise contains Winter bonfire and Tropical rainforest. All five tracks are ready to play. The player has shared volume, seeking, repeat and available-track navigation. Browsing the library does not interrupt a focus timer or start audio automatically. See [the music catalog guide](MUSIC.md) for adding files.
+
+## V3 interactions and golden finds
+
+Triple-click the idle mole within 1.1 seconds for a jump and full spin. Pause or end a session to drag through the already-dug mine; arrows, Home/End and Surface/Mole buttons also work. Running locks the camera to the mole.
+
+Each formal ten-minute discovery has a **3% total bonus chance** for one of ten equally likely golden collectibles. Keep it, display it in the dedicated home cabinet, or sell one for **99 existing stars**. A displayed copy is reserved until put back; duplicate copies can be sold. Demo and Break do not roll. Stable per-save discovery rolls, a settlement highwater and persisted counts prevent rerolls or double claims after reload. Original progress is preserved. See [the V3 guide](V3.md).
 
 ## Features and rules
 

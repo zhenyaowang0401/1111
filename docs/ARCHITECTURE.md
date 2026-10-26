@@ -11,6 +11,8 @@
 | `api/chat.js` | 同站请求校验、限流、服务端 Key、OpenAI 兼容模型转发、受控错误与超时 |
 | `ai/persona.cjs` | 鼹鼠规则、事实清洗、服装目录解析与少量场景示范 |
 | `app.js` | 状态迁移、导航、计时区间、结算、报告、装备、家园与样例同伴 |
+| `treasures.js` | 十种原创金色像素画、固定 3% 额外判定、结算序号、99 星出售约束 |
+| `mine-view.js` | 临时镜头、拖拽/滚轮/键盘、暂停结束可查与运行跟随，不写进度 |
 | `journey.js` | 纯计算：奖励资格、速度、稳定路径事件、已经过节点与奖励 |
 | `terrain.js` | 世界坐标下的七段地层、色块过渡、碎石、根系藤蔓和低频生态绘制 |
 | `wardrobe.js` | 7 帽/5 衣/5 围脖/6 眼镜/1 旧胸针与 6 工具的分类价格、同类互斥和存档校验 |
@@ -120,3 +122,7 @@ Today 页 Finish 先结算唯一会话并打开总结；完成总结时 finishTo
 FriendsClient 使用独立的 eumo-friends-preferences-v1 保存启用偏好和目标；认证随机值仅由服务端 HttpOnly cookie 保存，数据库仅存 SHA-256。好友码是公开联系入口，不是认证。服务器通过 SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY 调用 eumo_friends_action，事务内检查参与人、请求方向和接受状态。RLS + 权限撤销阻止浏览器角色直接访问，服务角色 key 只在 Node 环境中。
 
 好友摘要仅白名单数值和装扮，不包含聊天/任务。Friends 页面15秒、其他页面30秒更新；last_seen由数据库生成，前端用serverTime + performance.now判断90秒过期。暂停共享返回仅名字/颜色，且移除在线时间。原样本独立于服务器列表；PixelArt 由真实 availability、activity、moleMood、tool 驱动画布，不把离线记录当作继续挖掘。详细部署及当前浏览器身份限制见 FRIENDS_SETUP。
+
+## V3 存档增量
+
+保留原存档 key 和 progressVersion。新增 rareSeed（128 位随机种子）、rareInventory（已知金色 id 到数量）、rareClaimed（已结算十分钟序号）、displayedTreasure（家中展示 id 或 null）。正式 Session 携带同一 rareSeed，普通 Journey 公式不变。销售使用原 balance；展示保留一个库存副本。镜头和三连点击为临时状态。具体概率与迁移见 [V3](V3.md)。

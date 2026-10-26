@@ -12,6 +12,7 @@ def test_future_bundle():
   data=io.BytesIO()
   with wave.open(data,'wb') as audio:audio.setnchannels(1);audio.setsampwidth(2);audio.setframerate(8000);audio.writeframes(b'\0\0'*800)
   fixture=data.getvalue();(target/'assets/audio/future.wav').write_bytes(fixture)
+  for track in catalog['tracks'][1:]:track['src']=None
   catalog['tracks'][2]['src']='assets/audio/future.wav'
   (target/'music-catalog.js').write_text(code[:start]+json.dumps(catalog)+code[end:]);builder.ROOT=target
   bundled,default=builder.embed_music();embedded=json.loads(bundled[start:bundled.index(';\n catalog.tracks.find',start)])
@@ -42,15 +43,14 @@ def run():
    page.goto(url+'/#focus');expect(page.locator('#musicMiniPlayer')).to_be_visible();assert page.evaluate('document.querySelector("#focusMusic").paused')
    assert not media,'No audio should download simply from opening the game'
    page.locator('#openMusicLibrary').focus();page.keyboard.press('Enter');expect(page.locator('#musicDialog')).to_be_visible()
-   expect(page.locator('.music-category')).to_have_count(3);expect(page.locator('.music-track')).to_have_count(2);expect(page.locator('[data-music-track="soft-next"]')).to_be_disabled();assert not media
-   for category in ['groove','noise']:
-    page.locator('[data-music-category="'+category+'"]').click();expect(page.locator('.music-track')).to_have_count(2);assert page.locator('.music-track:enabled').count()==0
-    expect(page.locator('#musicCategoryCount')).to_have_text('New sounds are on their way');expect(page.locator('.music-track-state').first).to_have_text('Not added yet')
-    page.locator('.music-track').first.dispatch_event('click');assert page.evaluate('document.querySelector("#focusMusic").paused') and not media
+   expect(page.locator('.music-category')).to_have_count(3);expect(page.locator('.music-track')).to_have_count(2);expect(page.locator('[data-music-track="soft-next"]')).to_be_enabled();assert not media
+   for category,count in [('groove',1),('noise',2)]:
+    page.locator('[data-music-category="'+category+'"]').click();expect(page.locator('.music-track')).to_have_count(count);assert page.locator('.music-track:enabled').count()==count
+    expect(page.locator('#musicCategoryCount')).to_have_text(str(count)+' ready to play');assert not media
    page.locator('[data-music-category="soft"]').click();page.locator('[data-music-track="warm-focus"]').click()
    page.wait_for_function('document.querySelector("#focusMusic").currentTime>0');expect(page.locator('#musicPlayButton')).to_have_attribute('aria-pressed','true');expect(page.locator('#soundButton')).to_have_attribute('aria-pressed','true')
    assert abs(page.evaluate('document.querySelector("#focusMusic").duration')-194.52)<.2
-   expect(page.locator('#musicNext')).to_be_disabled();expect(page.locator('#musicPrevious')).to_be_disabled()
+   expect(page.locator('#musicNext')).to_be_enabled();expect(page.locator('#musicPrevious')).to_be_enabled()
    page.locator('#musicLibraryVolume').fill('0');page.locator('#musicLibraryVolume').dispatch_event('input');expect(page.locator('#musicVolume')).to_have_value('0');assert page.evaluate('PetAudio.status().volume')==0
    page.locator('#musicLibraryVolume').fill('25');page.locator('#musicLibraryVolume').dispatch_event('input');assert page.evaluate('state.musicVolume')==.25
    page.locator('#musicSeek').fill('400');page.wait_for_function('document.querySelector("#focusMusic").currentTime>77 && document.querySelector("#focusMusic").currentTime<80')
@@ -63,10 +63,9 @@ def run():
    page.locator('#soundButton').click();expect(page.locator('#soundButton')).to_have_attribute('aria-pressed','false');assert not page.evaluate('PetAudio.status().musicOn')
    page.screenshot(path=str(ROOT/'docs/images/eumo-music-player.png'),full_page=True)
    page.reload();expect(page.locator('#musicVolume')).to_have_value('25');assert not page.evaluate('PetAudio.status().musicOn');page.locator('#openMusicLibrary').click();expect(page.locator('#musicLibraryVolume')).to_have_value('25');page.keyboard.press('Escape')
-   # Future files join the same transport; changing track does not create another audio player.
-   extension=(ROOT/'music-catalog.js').read_text().replace('"src": null','"src": "assets/audio/warm-focus-3.mp3"',1)
-   future=ctx.new_page();future.route('**/music-catalog.js',lambda r:r.fulfill(content_type='text/javascript',body=extension));future.goto(url+'/#focus');future.locator('#openMusicLibrary').click()
-   future.locator('[data-music-track="soft-next"]').click();future.wait_for_function('PetAudio.status().trackId==="soft-next" && document.querySelector("#focusMusic").currentTime>0');expect(future.locator('#musicNowTitle')).to_have_text('More soft music');expect(future.locator('#musicNext')).to_be_enabled();assert future.locator('audio').count()==1
+   # The new soft track joins the same transport and keeps its selection after reload.
+   future=ctx.new_page();future.goto(url+'/#focus');future.locator('#openMusicLibrary').click()
+   future.locator('[data-music-track="soft-next"]').click();future.wait_for_function('PetAudio.status().trackId==="soft-next" && document.querySelector("#focusMusic").currentTime>0');expect(future.locator('#musicNowTitle')).to_have_text('Litte ridge');expect(future.locator('#musicNext')).to_be_enabled();assert future.locator('audio').count()==1
    future.locator('#musicPrevious').click();future.wait_for_function('PetAudio.status().trackId==="warm-focus" && document.querySelector("#focusMusic").currentTime>0')
    future.locator('#musicRepeat').click();assert not future.evaluate('document.querySelector("#focusMusic").loop')
    future.evaluate('document.querySelector("#focusMusic").currentTime=document.querySelector("#focusMusic").duration-.15');future.wait_for_function('PetAudio.status().trackId==="soft-next"')
@@ -80,7 +79,7 @@ def run():
    for width,height in [(320,640),(390,844),(844,390)]:
     page.set_viewport_size({'width':width,'height':height});page.locator('#openMusicLibrary').click();page.wait_for_timeout(100)
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
-    for selector in ['#musicDialog','.music-window-bar','.music-player-footer','#musicPlayButton','#musicLibraryVolume']:
+    for selector in ['#musicDialog','#musicDialog .music-window-bar','.music-player-footer','#musicPlayButton','#musicLibraryVolume']:
      box=page.locator(selector).bounding_box();assert box['x']>=0 and box['y']>=0 and box['x']+box['width']<=width+1 and box['y']+box['height']<=height+1,(selector,box,width,height)
     assert page.locator('#musicDialog').evaluate('e=>e.scrollWidth<=e.clientWidth')
     if width==390:page.screenshot(path=str(ROOT/'docs/images/eumo-music-mobile.png'),full_page=True)
@@ -91,7 +90,7 @@ def run():
    download.locator('#openMusicLibrary').click();download.locator('[data-music-track="warm-focus"]').click();download.wait_for_function('document.querySelector("#focusMusic").currentTime>0')
    assert not errors,errors
    browser.close()
-  print('PASS: actual MP3 transport, 3 categories/5 honest placeholders, no initial media requests, keyboard/mobile bounds, volume/seek/repeat/next, future track selection and natural play-all transition, restore without autoplay, uninterrupted timer/navigation, failure/retry, offline shared MP3, future-file build and missing-file guard.')
+  print('PASS: actual MP3 transport, 3 categories/5 playable tracks, no initial media requests, keyboard/mobile bounds, volume/seek/repeat/next, future track selection and natural play-all transition, restore without autoplay, uninterrupted timer/navigation, failure/retry, offline shared MP3, future-file build and missing-file guard.')
  finally:
   proc.terminate()
   try:proc.wait(timeout=5)

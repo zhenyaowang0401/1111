@@ -19,7 +19,7 @@ def run():
    page.add_init_script(f"if(!localStorage.getItem('{KEY}'))localStorage.setItem('{KEY}',{json.dumps(json.dumps(seed))});")
    url=f'http://127.0.0.1:{server.server_port}'
    page.goto(url+'/#home');page.clock.install();page.wait_for_timeout(180)
-   expect(page.locator('.header .brand')).to_have_text('Eumo v2');assert page.title()=='Eumo v2 — Home'
+   expect(page.locator('.header .brand')).to_have_text('Eumo v3');assert page.title()=='Eumo v3 — Home'
    def store():return page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',KEY)
    before=store()['inventory']
    # A real hit target on the pictured chest opens a keyboard-accessible dialog.
@@ -35,6 +35,7 @@ def run():
    page.locator('[data-chest-slot="mushroom"]').click();page.locator('[data-hold="mushroom"]').click();assert store()['home']['slots']['wall'] is None and store()['heldItem']=='mushroom'
    page.locator('#putBackButton').click();assert store()['heldItem'] is None and store()['inventory']==before
    # Exact idle boundaries are visible; pause is a separate rest state.
+   page.evaluate('state.idleAt=Date.now();renderTimer();')
    page.clock.fast_forward(89900);expect(page.locator('body')).to_have_attribute('data-pet-state','awake')
    page.clock.fast_forward(600);expect(page.locator('body')).to_have_attribute('data-pet-state','drowsy')
    page.clock.fast_forward(210000);expect(page.locator('body')).to_have_attribute('data-pet-state','asleep')

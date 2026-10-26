@@ -4,18 +4,70 @@
  const catalog = {
   "defaultTrack": "warm-focus",
   "categories": [
-   {"id": "soft", "name": "Soft music", "description": "A softer place to focus", "icon": "note", "color": "#dbb6e8"},
-   {"id": "groove", "name": "Groove", "description": "A little rhythm for your day", "icon": "rhythm", "color": "#e8aed2"},
-   {"id": "noise", "name": "White noise", "description": "Room to breathe and settle in", "icon": "cloud", "color": "#a8d4d0"}
+    {
+      "id": "soft",
+      "name": "Soft music",
+      "description": "A softer place to focus",
+      "icon": "note",
+      "color": "#dbb6e8"
+    },
+    {
+      "id": "groove",
+      "name": "Groove",
+      "description": "A little rhythm for your day",
+      "icon": "rhythm",
+      "color": "#e8aed2"
+    },
+    {
+      "id": "noise",
+      "name": "White noise",
+      "description": "Room to breathe and settle in",
+      "icon": "cloud",
+      "color": "#a8d4d0"
+    }
   ],
   "tracks": [
-   {"id": "warm-focus", "category": "soft", "title": "Warm Focus", "description": "A familiar little focus companion", "src": "assets/audio/warm-focus-3.mp3", "durationSeconds": 194.52},
-   {"id": "soft-next", "category": "soft", "title": "More soft music", "src": null},
-   {"id": "groove-one", "category": "groove", "title": "Groove 01", "src": null},
-   {"id": "groove-two", "category": "groove", "title": "Groove 02", "src": null},
-   {"id": "noise-one", "category": "noise", "title": "White noise 01", "src": null},
-   {"id": "noise-two", "category": "noise", "title": "White noise 02", "src": null}
+    {
+      "id": "warm-focus",
+      "category": "soft",
+      "title": "Warm Focus",
+      "description": "A familiar little focus companion",
+      "src": "assets/audio/warm-focus-3.mp3",
+      "durationSeconds": 194.52
+    },
+    {
+      "id": "soft-next",
+      "category": "soft",
+      "title": "Litte ridge",
+      "src": "assets/audio/litte-ridge.mp3",
+      "description": "A gentle trail through your focus time",
+      "durationSeconds": 222.84
+    },
+    {
+      "id": "groove-one",
+      "category": "groove",
+      "title": "botanicore",
+      "src": "assets/audio/botanicore.mp3",
+      "description": "A little rhythm, a little green",
+      "durationSeconds": 213.552
+    },
+    {
+      "id": "noise-one",
+      "category": "noise",
+      "title": "Winter bonfire",
+      "src": "assets/audio/winter-bonfire.mp3",
+      "description": "A quiet winter fire",
+      "durationSeconds": 12.168
+    },
+    {
+      "id": "noise-two",
+      "category": "noise",
+      "title": "Tropical rainforest",
+      "src": "assets/audio/tropical-rainforest.mp3",
+      "description": "Settle into a rainforest soundscape",
+      "durationSeconds": 13.416
+    }
   ]
- };
+};
  return catalog;
 });

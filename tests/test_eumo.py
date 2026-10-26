@@ -18,7 +18,7 @@ def run():
    seed={'profile':{'name':'Yami','configured':True,'color':'#b784cf'},'balance':3000,'inventory':[2,1,1,1],'owned':['hat','scarf','glasses','star'],'equipped':['hat','scarf','glasses','star'],'progressVersion':2}
    page.add_init_script(f"if(!localStorage.getItem('{KEY}'))localStorage.setItem('{KEY}',{json.dumps(json.dumps(seed))});")
    url=f'http://127.0.0.1:{server.server_port}';page.goto(url+'/#wardrobe');page.clock.install();page.wait_for_timeout(180)
-   expect(page.locator('.header .brand')).to_have_text('Eumo v2');assert page.title()=='Eumo v2 — Equipment'
+   expect(page.locator('.header .brand')).to_have_text('Eumo v3');assert page.title()=='Eumo v3 — Equipment'
    def saved():return page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',KEY)
    expect(page.locator('#equippedCount')).to_have_text('4 equipped')
    page.evaluate('document.fonts.ready')
@@ -112,7 +112,7 @@ def run():
    offline.locator('[data-category="glasses"]').click();expect(offline.locator('[data-item]')).to_have_count(6)
    offline.evaluate('document.fonts.ready')
    assert offline.evaluate("Array.from(document.fonts).some(f=>f.family==='Pixelify Sans'&&f.status==='loaded')")
-   assert offline.title()=='Eumo v2 — Equipment';offline_context.close()
+   assert offline.title()=='Eumo v3 — Equipment';offline_context.close()
    # Chest and category shelves fit phones and short landscape windows.
    for width,height in [(320,844),(390,844),(768,900),(1000,600)]:
     page.set_viewport_size({'width':width,'height':height});page.locator('[data-page="home"]').click();page.locator('#openChestButton').click()
@@ -123,6 +123,6 @@ def run():
     for cat in ['hats','clothes','scarves','glasses','tools']:
      page.locator(f'[data-category="{cat}"]').click();assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),(width,cat)
    assert not errors,errors
-   browser.close();print('PASS: Eumo v2; wheel-scroll shop and stationary preview; readable UI + offline logo font; 7 hats/5 clothes/5 scarves/6 glasses with actual pixels; prices and one-per-category; legacy extras; chest slots; home-only head display; 6 paid animated tools absent from outfit preview; no reward multipliers; ownership/reload; responsive chest and categories.')
+   browser.close();print('PASS: Eumo v3; wheel-scroll shop and stationary preview; readable UI + offline logo font; 7 hats/5 clothes/5 scarves/6 glasses with actual pixels; prices and one-per-category; legacy extras; chest slots; home-only head display; 6 paid animated tools absent from outfit preview; no reward multipliers; ownership/reload; responsive chest and categories.')
  finally:server.shutdown();server.server_close()
 if __name__=='__main__':run()

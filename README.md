@@ -1,4 +1,4 @@
-# Eumo v2
+# Eumo v3
 
 **[在线打开 Eumo →](https://1111-phi-ten.vercel.app/#focus)**
 
@@ -8,7 +8,7 @@
 
 一个英文界面的像素专注小游戏：创建自己的无耳朵鼹鼠，专注时向下挖洞，收集宝物、叠穿装备，布置洞穴家园，并查看每日任务报告。
 
-[联网好友配置](docs/FRIENDS_SETUP.md) · [音乐库与添加音频](docs/MUSIC.md) · [AI 云端接入](docs/AI_SETUP.md) · [模型选型](docs/AI_RESEARCH.md) · [鼹鼠提示词](docs/AI_PROMPTS.md) · [English](docs/README.en.md) · [功能说明](docs/PRODUCT.md) · [技术与数据结构](docs/ARCHITECTURE.md) · [测试方法](docs/TESTING.md) · [常见问题](docs/TROUBLESHOOTING.md) · [开发记录](docs/DEVLOG.md)
+[V3 新玩法](docs/V3.md) · [联网好友配置](docs/FRIENDS_SETUP.md) · [音乐库与添加音频](docs/MUSIC.md) · [AI 云端接入](docs/AI_SETUP.md) · [模型选型](docs/AI_RESEARCH.md) · [鼹鼠提示词](docs/AI_PROMPTS.md) · [English](docs/README.en.md) · [功能说明](docs/PRODUCT.md) · [技术与数据结构](docs/ARCHITECTURE.md) · [测试方法](docs/TESTING.md) · [常见问题](docs/TROUBLESHOOTING.md) · [开发记录](docs/DEVLOG.md)
 
 ![Eumo 宠物创建界面](docs/images/setup.png)
 
@@ -46,15 +46,15 @@ py -m http.server 8000
 | 页面 / 系统 | 已实现的内容 |
 | --- | --- |
 | 宠物创建 | 命名、12 种大块颜色预设、自选颜色、实时像素预览；修改外观不重置进度 |
-| 专注与挖洞 | Study / Work / Break，5–120 分钟，增减时间、暂停、继续、提前结束；矿道随计时挖深，镜头向下跟随 |
-| 宠物互动 | 无耳朵造型、待机眨眼、困倦、带 zzz/鼻涕泡/呼吸的睡觉；空闲时点击角色会跳跃、发出两声“嘟嘟”并显示 `yeeeeee`；进行中和暂停的任务都不能抚摸 |
-| 宝库与装备 | 星星结算、四种发现物、背包数量；帽子 7 款、衣服 5 款、围脖 5 款、眼镜 6 款，分类搭配；6 种付费工具只在挖掘时显示 |
+| 专注与挖洞 | Study / Work / Break，5–120 分钟，增减时间、暂停、继续、提前结束；矿道随计时挖深；运行跟随，暂停/结束后可上下拖动查看已挖区域 |
+| 宠物互动 | 无耳朵造型、待机眨眼、困倦、带 zzz/鼻涕泡/呼吸的睡觉；空闲时点击角色会跳跃、发出两声“嘟嘟”并显示 `yeeeeee`；1.1 秒内三连点击会跳起转一整圈；进行中和暂停的任务都不能抚摸 |
+| 宝库与装备 | 星星结算、四种普通发现物，十种 3% 额外掉落的金色收藏（可展示或卖 99 星）；帽子 7 款、衣服 5 款、围脖 5 款、眼镜 6 款，分类搭配；6 种付费工具只在挖掘时显示 |
 | 家园 | 第二个小房子入口、圆形土洞、四个摆放位、家具购买、可点击宝箱、头顶展示发现物（仅家园）、四种房间主题 |
 | 鼹鼠 AI | 可部署的 Qwen 云端聊天接口、真实任务/时长/装备上下文、答疑与规划提示词、可选共享、完整对话窗口与本地历史；尚需配置服务端 Key 才能真实聊天 |
 | 今日报告 | Study / Work 分类时间、任务与可选成果、7 / 30 日趋势、日历、醒目的 Finish 与今日返地面 |
 | 时间联动 | 自动读取设备本地时间和时区；清晨、白天、傍晚、夜晚四种背景 |
 | 好友 | 好友码、双向请求/接受、删除、真实状态与鼹鼠同步、共享开关；需配置 Supabase 后上线。原四只演示鼹鼠独立保留 |
-| 声音 | 紫色复古 Music room，轻音乐/律动/白噪音分类；播放、进度、上下首、循环与音量；现有 Warm Focus 可播放，其余留作后续音频；不会自动播放 |
+| 声音 | 紫色复古 Music room，轻音乐/律动/白噪音分类；播放、进度、上下首、循环与音量；Warm Focus、Litte ridge、botanicore、Winter bonfire、Tropical rainforest 五首可播放；不会自动播放 |
 
 **真实好友功能需先完成 [Supabase 配置](docs/FRIENDS_SETUP.md)。** 原来的四只示例鼹鼠保留在 Demo moles 区域，明确不是在线玩家。好友关系和已同意共享的摘要在数据库中；游戏进度仍保存在当前浏览器，没有账号云存档。浏览器好友身份用 HttpOnly cookie 保留，好友码不能当作登录凭据。
 
@@ -68,6 +68,12 @@ Focus 桌面采用约 72:28 的左右面板，两块上下对齐；左侧矿洞�
 
 ![柔和的石层](docs/images/eumo-soft-layer-270.png)
 
+## V3 新玩法
+
+空闲三连点击鼹鼠，它会跳起来转一圈。暂停或结束一轮后拖动矿洞，可以查看已经挖过的深度；继续学习会自动跟回鼹鼠。每次正式十分钟发现物有额外 3% 概率挖出金色收藏，十种合计 3%；可收入收藏、在家中金色壁柜展示，或每件出售得 99 星。[完整规则](docs/V3.md)。
+
+![V3 金色收藏（测试存档展示）](docs/images/eumo-v3-collection.png)
+
 ## 真实好友
 
 Friends 页右上角的加好友按钮提供自己的可复制好友码、发送/接受/拒绝/撤回请求和删除好友。成为双向好友后，卡片显示真实专注时间、在线/离线/暂停/休息状态及鼹鼠颜色、装备、工具和睡眠情况。任务和 AI 对话不共享；可暂停状态共享。
@@ -78,9 +84,9 @@ Friends 页右上角的加好友按钮提供自己的可复制好友码、发送
 
 ## 音乐库
 
-点击 Music 右边的四格图标打开紫色复古音乐窗口。Soft music（轻音乐）里已有 Warm Focus；Groove（律动）和 White noise（白噪音）已留好分类和曲目位置，音频完成后再添加。未添加的内容显示 Coming soon，不能误点播放。
+点击 Music 右边的四格图标打开紫色复古音乐窗口。Soft music（轻音乐）：Warm Focus、Litte ridge；Groove（律动）：botanicore；White noise（白噪音）：Winter bonfire、Tropical rainforest。四首新上传的音频保持原样，五首都可播放，下载版也已内嵌。
 
-![紫色复古音乐库](docs/images/eumo-music-library.png)
+![V3 紫色复古音乐库](docs/images/eumo-v3-music.png)
 
 播放器支持共享音量、可用曲目的上下首、进度和循环；关闭窗口、浏览分类和切换页面都不打断学习。新增音频的配置与打包方法见 [音乐说明](docs/MUSIC.md)。
 

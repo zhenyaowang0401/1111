@@ -111,3 +111,12 @@ node tests/test_rewards.js
 ## 验证记录
 
 本次整理的实际执行结果和单文件校验见 [VALIDATION.md](VALIDATION.md)。该记录只说明当前源码在测试环境中的结果，不表示 GitHub Pages 已部署或真实联机已实现。
+
+## V3 增量检查
+
+```sh
+node --test tests/test_treasures.cjs
+python tests/test_v3.py
+```
+
+纯逻辑覆盖十万次节点采样、十种物品、正式累计/拆轮等价、暂停刷新稳定、结算去重、Demo/Break 排除、展示保留与 99 星出售。浏览器覆盖实际画布旋转、拖拽/运行锁定、暂停不推进、真实计时金色入包、收藏展示/出售/刷新、四首上传音频实际时长和离线原字节、减少动态效果与手机边界。样本种子与库存只存在测试 fixture，不加入生产调试入口。

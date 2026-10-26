@@ -45,29 +45,29 @@ window.PixelArt=(()=>{
  function item(c,id,x,y,s=1){for(const [a,b,w,h,col] of itemRects[id]||itemRects.star)box(c,x+a*s,y+b*s,w*s,h*s,col);}
  function random(a,b){const z=Math.sin(a*127.1+b*311.7)*43758.5453;return z-Math.floor(z);}
  function digMetrics(s){const active=s.session,elapsed=active?.elapsed||0,depth=active&&Journey.eligible(active)?elapsed/Journey.rate(active):0,fraction=active?Math.min(1,elapsed/active.plannedSeconds):0;return {depth,fraction,worldDepth:Math.max(0,(s.depth||0)-(s.surfaceDepth||0))+depth};}
- function renderMine(c,s,frame){const w=384,h=224,t=WorldClock.snapshot(),m=digMetrics(s),running=s.session?.status==='running'&&Journey.eligible(s.session);const end=76+m.worldDepth*6;const camera=Math.max(0,end-174);const ground=87-camera;box(c,0,0,w,h,t.sky);
+ function renderMine(c,s,frame){const w=384,h=224,t=WorldClock.snapshot(),m=digMetrics(s),running=s.session?.status==='running'&&Journey.eligible(s.session);const end=76+m.worldDepth*6;const camera=MineView.cameraFor(s);const ground=87-camera;box(c,0,0,w,h,t.sky);
  if(t.period==='night')for(let i=0;i<22;i++){let x=Math.floor(random(i,2)*w/2)*2,y=Math.floor(random(i,7)*80/2)*2-camera;if(y>-5&&y<ground){if(i%5===0)star(c,x,y,1,i%2?'#fff3a8':'#7ee6ec');else box(c,x,y,2,2,'#778bdb');}}
  if(ground>0){cloud(c,24,31-camera,t.cloud);cloud(c,284,15-camera,t.cloudBack);celestial(c,t,camera);
  // Distant pixel mountains and rolling terrain.
  for(let x=0;x<w;x+=8){const hh=10+Math.floor(Math.sin(x*.04)*8+Math.cos(x*.083)*5);box(c,x,ground-hh,8,hh,t.mountain);}box(c,0,ground-5,w,5,t.grass);box(c,0,ground,w,4,t.grassShadow);for(let x=0;x<w;x+=12)box(c,x,ground-7,4,4,x%24?t.grass:tint(t.grass,.2));}
  Terrain.paint(c,camera,h,frame,m.worldDepth);
  // Excavated shaft is real cleared terrain, not an animation overlay.
- for(let wy=87;wy<end+7;wy+=4){const d=(wy-131)/6;const cx=192+Math.round(Math.sin(Math.max(0,d)*.13)*3)*4;const sy=wy-camera;if(sy>h||sy<-8)continue;box(c,cx-37,sy,74,5,'#24203f');box(c,cx-32,sy,64,5,'#1c1b37');box(c,cx-39,sy,3,5,'#aa799b');box(c,cx+36,sy,3,5,'#4e365c');box(c,cx-22,sy,2,4,'#ad8a7e');box(c,cx-10,sy,2,4,'#ad8a7e');if(wy%16===7)box(c,cx-23,sy,15,2,'#e0b490');}
+ for(let wy=Math.max(87,87+Math.floor((camera-95)/4)*4);wy<Math.min(end+7,camera+h+8);wy+=4){const d=(wy-131)/6;const cx=192+Math.round(Math.sin(Math.max(0,d)*.13)*3)*4;const sy=wy-camera;if(sy>h||sy<-8)continue;box(c,cx-37,sy,74,5,'#24203f');box(c,cx-32,sy,64,5,'#1c1b37');box(c,cx-39,sy,3,5,'#aa799b');box(c,cx+36,sy,3,5,'#4e365c');box(c,cx-22,sy,2,4,'#ad8a7e');box(c,cx-10,sy,2,4,'#ad8a7e');if(wy%16===7)box(c,cx-23,sy,15,2,'#e0b490');}
  // Pending objects sit on the actual tool route. Crossed nodes are removed;
  // Journey.rewards uses these same nodes for the backpack and settlement.
  if(s.session)for(const e of Journey.events(s.session)){
   if(e.at<=(s.session.elapsed||0)+1e-7)continue;
   const depth=Math.max(0,(s.session.baseDepth||0)-(s.surfaceDepth||0))+e.at/Journey.rate(s.session),yy=76+depth*6-camera+5,cx=192+Math.round(Math.sin(Math.max(0,depth)*.13)*3)*4;
-  if(yy>-30&&yy<h){const id=e.kind==='star'?'star':['star','mushroom','crystal','fossil'][e.index];item(c,id,cx+(e.kind==='star'?-16:2),yy,e.kind==='star'?.5:.65);}
+  if(yy>-30&&yy<h){const gold=RareTreasures.forEvent(e,s.session);if(gold)RareTreasures.draw(c,gold.id,cx+20,yy-5,.55);const id=e.kind==='star'?'star':['star','mushroom','crystal','fossil'][e.index];item(c,id,cx+(e.kind==='star'?-16:2),yy,e.kind==='star'?.5:.65);}
  }
  if(ground>-35){ // Surface base camp.
  box(c,45,ground-31,2,26,'#b58a91');box(c,47,ground-32,28,14,'#fa9ccc');box(c,51,ground-28,15,2,'#fff0d7');box(c,64,ground-26,4,4,'#fff0d7');box(c,36,ground-4,25,4,'#42526a');
  for(let i=0;i<3;i++){box(c,310+i*13,ground-13-i%2*5,3,13+i%2*5,'#619fa5');box(c,306+i*13,ground-15-i%2*5,11,5,'#a2dcc7');}box(c,82,ground-12,24,12,'#bc8e79');box(c,84,ground-15,20,3,'#e7b79a');box(c,91,ground-13,4,13,'#4c395b');}
- const cx=192+Math.round(Math.sin(Math.max(0,m.worldDepth)*.13)*3)*4;const my=end-camera-43-jump(s);box(c,cx-22,end-camera+7,48,4,'#13162d');mole(c,cx-25,my,2,s.equipped,running,frame,s.profile?.color,s.idleMood,s.tool);bounds.miningCanvas={x:cx-25,y:my-9,w:60,h:64};positionSpeech('petSpeech',bounds.miningCanvas,384,224);
+ const cx=192+Math.round(Math.sin(Math.max(0,m.worldDepth)*.13)*3)*4;const my=end-camera-43-(s.petSpinAt?Math.min(20,jump(s)):jump(s));box(c,cx-22,end-camera+7,48,4,'#13162d');const rotation=playerMole(c,s,cx-25,my,2,running,frame);bounds.miningCanvas={x:cx-25,y:my-9,w:60,h:64,rotation};positionSpeech('petSpeech',bounds.miningCanvas,384,224);
  if(running){for(let i=0;i<5;i++){const k=(frame+i*3)%12;const dir=i%2?1:-1;const xx=cx+dir*(14+k*3),yy=end-camera-5-Math.floor(Math.sin(k/12*Math.PI)*18);box(c,xx,yy,3+(i%2)*2,3,'#c68aab');}if(frame%16<3)star(c,cx+32,my+26,.6,'#fff2b4');}
  // A subtle CRT edge; no blurry resampling.
  box(c,0,h-2,w,2,'#0c122f');}
- function renderWardrobe(c,s,frame){const t=WorldClock.snapshot();box(c,0,0,192,160,t.sky);if(t.period!=='night'){cloud(c,8,24,t.cloud);cloud(c,142,13,t.cloudBack);}if(t.period==='night')for(let i=0;i<15;i++){const x=Math.floor(random(i,1)*186),y=Math.floor(random(i,6)*116);if(i%4===0)star(c,x,y,.5,'#7c8bd2');else box(c,x,y,1,1,'#6775ae');}box(c,20,116,152,5,'#51447d');box(c,26,121,140,9,'#393361');box(c,32,130,128,5,'#27264d');box(c,18,116,4,5,'#a17cb7');box(c,170,116,4,5,'#a17cb7');mole(c,57,32-jump(s),3,s.equipped,false,frame,s.profile?.color,s.idleMood);bounds.wardrobeCanvas={x:57,y:23-jump(s),w:87,h:94};positionSpeech('wardrobeSpeech',bounds.wardrobeCanvas,192,160);star(c,28,55,1,'#fff0a9');star(c,151,34,.5,'#f6a6d2');}
+ function renderWardrobe(c,s,frame){const t=WorldClock.snapshot();box(c,0,0,192,160,t.sky);if(t.period!=='night'){cloud(c,8,24,t.cloud);cloud(c,142,13,t.cloudBack);}if(t.period==='night')for(let i=0;i<15;i++){const x=Math.floor(random(i,1)*186),y=Math.floor(random(i,6)*116);if(i%4===0)star(c,x,y,.5,'#7c8bd2');else box(c,x,y,1,1,'#6775ae');}box(c,20,116,152,5,'#51447d');box(c,26,121,140,9,'#393361');box(c,32,130,128,5,'#27264d');box(c,18,116,4,5,'#a17cb7');box(c,170,116,4,5,'#a17cb7');const lift=Math.min(18,jump(s)),rotation=playerMole(c,s,57,32-lift,3,false,frame);bounds.wardrobeCanvas={x:57,y:23-lift,w:87,h:94,rotation};positionSpeech('wardrobeSpeech',bounds.wardrobeCanvas,192,160);star(c,28,55,1,'#fff0a9');star(c,151,34,.5,'#f6a6d2');}
  const furniture={
  rug:[[0,12,32,10,'#ac8064'],[2,14,28,6,'#d9bc91'],[4,16,24,2,'#f2d8b2'],[5,14,2,6,'#b58667'],[25,14,2,6,'#b58667']],
  lamp:[[12,26,12,3,'#e7bd7d'],[17,10,3,16,'#af825f'],[9,3,20,12,'#ffd485'],[11,2,16,3,'#fff0af'],[12,15,14,2,'#a87674']],
@@ -118,11 +118,17 @@ window.PixelArt=(()=>{
   // Floor and objects share a baseline and remain inside the round silhouette.
   box(c,54,205,276,65,theme.floor);for(let row=0;row<5;row++){const yy=208+row*14;box(c,54,yy,276,1,tint(theme.floor,-.15));for(let x=60+(row%2)*35;x<330;x+=70)box(c,x,yy,1,14,tint(theme.floor,-.1));}box(c,58,203,268,3,tint(theme.floor,.15));
   for(const key of ['floor','wall','left','right']){const spot=HomeCatalog.slots[key],id=s.home.slots[key];if(id)drawHomeItem(c,id,spot);if(s.homeEditing){const w=key==='floor'?70:key==='wall'?38:64,h=key==='floor'?20:key==='wall'?38:58,x=spot.x-w/2,y=spot.y-h,col=key===s.selectedSlot?'#ffe0a0':'#c4b798';for(let xx=x;xx<x+w;xx+=8){box(c,xx,y,4,1,col);box(c,xx,spot.y+3,4,1,col);}for(let yy=y;yy<spot.y;yy+=8){box(c,x,yy,1,4,col);box(c,x+w,yy,1,4,col);}}}
-  const y=190-jump(s);mole(c,166,y,2,s.equipped,false,frame,s.profile?.color,s.idleMood);drawHeadDisplay(c,s,166,y,2,frame);bounds.homeCanvas={x:166,y:y-3,w:56,h:60};positionSpeech('homeSpeech',bounds.homeCanvas,384,288);chest(c,s.chestOpen);c.restore();
+  // A dedicated wall cabinet does not consume ordinary furniture or chest slots.
+  box(c,238,119,49,52,'#574031');box(c,240,121,45,46,'#b28c53');box(c,243,124,39,40,'#30283c');box(c,242,164,42,4,'#ffe1a0');box(c,246,168,34,3,'#846033');
+  if(s.displayedTreasure){RareTreasures.draw(c,s.displayedTreasure,247,130,1);star(c,278,126,.4,'#ffedb4');}else{box(c,255,142,12,1,'#91764f');box(c,260,137,1,11,'#91764f');}
+  const y=190-jump(s),rotation=playerMole(c,s,166,y,2,false,frame,()=>drawHeadDisplay(c,s,166,y,2,frame));bounds.homeCanvas={x:166,y:y-3,w:56,h:60,rotation};positionSpeech('homeSpeech',bounds.homeCanvas,384,288);chest(c,s.chestOpen);c.restore();
   // Small moss patches on the rim make the cave feel grown rather than built.
   for(const [x,y] of [[74,61],[304,66],[59,149],[316,153]]){box(c,x,y,9,3,'#829165');box(c,x+3,y+3,7,4,'#637953');}
  }
- function jump(s){if(s.session||!s.petAt||matchMedia('(prefers-reduced-motion: reduce)').matches)return 0;const t=(Date.now()-s.petAt)/850;return t>=0&&t<1?Math.round(Math.sin(t*Math.PI)*18):0;}
+ function jump(s){if(s.session||!s.petAt||matchMedia('(prefers-reduced-motion: reduce)').matches)return 0;const t=(Date.now()-s.petAt)/(s.petSpinAt?1200:850);return t>=0&&t<1?Math.round(Math.sin(t*Math.PI)*(s.petSpinAt?28:18)):0;}
+ function playerMole(c,s,x,y,scale,dig,frame,extra){const progress=s.petSpinAt?Math.max(0,Math.min(1,(Date.now()-s.petSpinAt)/1200)):0,rotation=!s.session&&s.petSpinAt&&!matchMedia('(prefers-reduced-motion: reduce)').matches?2*Math.PI*(1-Math.pow(1-progress,2)):0;
+  c.save();c.translate(x+13.5*scale,y+16*scale);c.rotate(rotation);c.translate(-x-13.5*scale,-y-16*scale);mole(c,x,y,scale,s.equipped,dig,frame,s.profile?.color,s.idleMood,s.tool);if(extra)extra();c.restore();return rotation;
+ }
  function positionSpeech(id,b,w,h){const e=document.getElementById(id);if(e&&!e.hidden){e.style.left=((b.x+b.w/2)/w*100)+'%';e.style.top=(Math.max(5,b.y-3)/h*100)+'%';}}
  function celestial(c,t,camera=0){if(t.period==='night'){box(c,322,20-camera,18,18,t.sun);box(c,328,16-camera,10,26,t.sun);box(c,328,18-camera,12,17,t.sky);}else{const x=Math.round(30+Math.max(0,Math.min(14,t.hour-6))/14*290),y=(t.period==='day'?17:36)-camera;box(c,x,y,20,20,t.sun);box(c,x-3,y+4,26,12,t.sun);box(c,x+5,y-5,10,4,tint(t.sun,.2));box(c,x+5,y+22,10,3,t.sun);box(c,x-8,y+8,3,5,t.sun);box(c,x+27,y+8,3,5,t.sun);}}
  function renderSetup(c,s,frame){const t=WorldClock.snapshot();box(c,0,0,240,208,t.sky);if(t.period==='night'){for(let i=0;i<16;i++){const x=Math.floor(random(i,4)*230),y=Math.floor(random(i,9)*105);if(i%3===0)star(c,x,y,.5,'#fff3b4');else box(c,x,y,1,1,'#8e9edf');}box(c,196,22,12,17,t.sun);box(c,202,20,8,21,t.sun);box(c,203,21,9,15,t.sky);}else{box(c,184,25,20,20,t.sun);box(c,188,21,12,28,t.sun);}
