@@ -4,6 +4,12 @@
 
 **以下自动化检查使用本地协议 fixture，不代表真实 Qwen 语义质量评测已通过。** 用户已在 Vercel 配置 Key 并提供线上模型回复截图；当前执行环境没有服务商 Key，也无法直接访问该部署，因此没有把用户截图当成完整模型评测。 下表的模型服务使用本地测试 fixture；它验证软件行为，不验证真实模型语气、解题正确性或建议质量。
 
+## V3 矿洞点击修复
+
+按用户提供的空闲 120 米矿洞场景复现：修复前真实鼠标点击后 petSpeech 仍隐藏。原因是 pointerdown 立即捕获到矿洞父容器，将 click 从鼹鼠按钮改派出去。现仅在超过 6 像素拖拽阈值时捕获，释放监听覆盖画面外。
+
+`python tests/test_mine_pet.py` 已通过：真实鼠标和触屏单击/三连点击、实际画布旋转、从角色开始拖动不触发抚摸、返回角色后再点击、奖励不变与运行锁定。另执行 V3 回归，更新三个离线入口。
+
 ## 本轮 V3（2026-10-26）
 
 用户已反馈生产好友联网成功；本轮沿用同一个后端，不读取生产密钥或重新建表。以下新功能在本地服务、真实浏览器与离线下载版验证，不能代替 Vercel 新构建的生产检查。
@@ -116,8 +122,8 @@
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 21955909
-SHA-256: 34a0f61d8b480dd602c0bbbbd5656ad798cea04aaea1526bcbf9ddc3c568bd83
+字节数: 21956028
+SHA-256: 4641dd5863c6b5b3eea731f34a7f8255e1f6e7d957a1bd6e911e0c9a04678f3c
 MP3: Warm Focus 194.520秒；Winter bonfire 12.168秒；Tropical rainforest 13.416秒；botanicore 213.552秒；Litte ridge 222.840秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```
