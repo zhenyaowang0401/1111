@@ -66,6 +66,7 @@ python3 tests/test_viewport.py
 python3 tests/test_geology.py
 python3 tests/test_chat.py
 python3 tests/test_companion.py
+python3 tests/test_music.py
 node --test tests/test_ai.cjs
 node tests/test_rewards.js
 ```

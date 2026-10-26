@@ -18,7 +18,9 @@
 | `home.js` | 家具、价格、摆放兼容性、主题与位置元数据 |
 | `pixel-art.js` | 共用无耳朵角色、地形、同一路径物品、家园、待机与跳跃 |
 | `world.js` | 设备本地时间、时区和四个昼夜色板 |
-| `audio.js` | 用户提供的 MP3 循环播放、音量及独立双音抚摸声 |
+| `music-catalog.js` | 可扩充的分类与曲目目录；未完成音频使用 src: null |
+| `audio.js` | 单一 HTMLAudio 的曲目、音量、循环与独立双音抚摸声 |
+| `music.js` | 侧栏播放器、复古音乐库、分类、进度与状态同步 |
 
 ## 计时与一次性结算
 
@@ -47,6 +49,7 @@
 | `reportDays` | 每天 Study 的 seconds/completed 与 Work 的 workSeconds/workCompleted |
 | `home` | 当前主题、已拥有主题与家具、四个位置的物品 ID |
 | `musicVolume` | 背景音量；迁移旧 rainVolume，不保存自动播放意图 |
+| `musicTrack` / `musicRepeat` | 可用曲目 ID 与 one/all 循环偏好；失效 ID 回退默认曲目 |
 | `heldItem` | 沿用旧字段名，现表示仅家园的头顶发现物 ID 或 null；与摆放共用库存约束 |
 | `lastTask` / `idleAt` / `simpleView` | 上次任务、最后交互时间、是否收起动画 |
 
@@ -62,11 +65,13 @@
 
 ## 声音、动画与单文件
 
+MusicLibrary 使用同一 HTMLAudio 和 PetAudio 接口：浏览分类不选择或启动音频，点击可用曲目才播放；侧栏和音乐库的音量、播放状态、选中曲目同步。one 为原生单曲循环，all 在 ended 后切换到目录中下一首可用曲目。元数据、进度与错误由实际 audio 事件驱动，不能跳转时禁用进度拖动。设置写入原存档，刷新仅恢复偏好。Node 开发服务支持单段音频 Range 请求，目录入口与提示见 [MUSIC](MUSIC.md)。
+
 HTMLAudio 播放 `assets/audio/warm-focus-3.mp3`，由用户点击启动，不重新合成或修改歌曲。独立 Web Audio 产生两段带轻泛音、气声和音高弯曲的 sine 基音，包络峰值 0.30，经过压缩器；不随音乐音量改变。`tests/test_journey.py` 使用 OfflineAudioContext 测量两段波形和中间间隔。
 
 角色绘制共用函数，支持眨眼、困倦、睡眠和暂停休息。requestAnimationFrame 限速；简洁视图跳过矿洞绘制；系统减少动态效果禁用跳跃并固定动画帧。
 
-构建脚本内嵌 CSS、十个 JS 模块、Pixelify Sans TTF 与 MP3 原始字节的 base64，并附带完整 OFL 许可。`dist/Eumo.html` 为生成文件，必须从源码重建，不能单独修改。
+构建脚本内嵌 CSS、十二个 JS 模块、Pixelify Sans TTF 与所有已配置音频的原始字节，并附带完整 OFL 许可。目录以严格 JSON 数据声明分类与曲目，空 src 不参与打包。默认曲目在 HTMLAudio 中仅内嵌一次，目录在运行时读取同一数据源；其他音频放入内嵌目录。文件缺失会终止构建。`dist/Eumo.html` 为生成文件，必须从源码重建，不能单独修改。
 
 ## 有界商店与字体
 

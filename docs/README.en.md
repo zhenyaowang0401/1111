@@ -14,6 +14,10 @@ Download the repository ZIP from GitHub, extract it, and open **dist/Eumo.html**
 
 GitHub displays HTML source when browsing a file; use the online link above, or download and open the game locally. Cloud chat requires the configured server; opening a local file supports offline gameplay.
 
+## Music room
+
+Use the four-square icon beside Music to open the lavender retro player. Soft music contains the original Warm Focus track; Groove and White noise reserve space for future audio. Unfinished tracks are clearly disabled. The player has shared volume, seeking, repeat and available-track navigation. Browsing the library does not interrupt a focus timer or start audio automatically. See [the music catalog guide](MUSIC.md) for adding files.
+
 ## Features and rules
 
 - Name and recolor your mole with 12 presets or a custom color; returning players go directly to Focus.

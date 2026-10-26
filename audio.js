@@ -1,10 +1,22 @@
 'use strict';
 window.PetAudio=(()=>{
- let context,volume=.45,petVoices=0;
+ let context,volume=.45,petVoices=0,trackId=MusicCatalog.defaultTrack,repeat='one';
  const music=()=>document.getElementById('focusMusic');
+ const tracks=()=>MusicCatalog.tracks.filter(t=>typeof t.src==='string'&&t.src.trim());
  function ctx(){const C=window.AudioContext||window.webkitAudioContext;if(!C)throw Error('Audio unavailable');return context||(context=new C());}
- async function toggleMusic(){const player=music();player.volume=volume;if(player.paused)await player.play();else player.pause();return !player.paused;}
+ async function toggleMusic(){const player=music();player.volume=volume;if(player.paused){if(player.error)player.load();await player.play();}else player.pause();return !player.paused;}
  function setVolume(value){volume=Math.max(0,Math.min(1,Number(value)||0));music().volume=volume;}
+ function setRepeat(value){repeat=value==='all'?'all':'one';music().loop=repeat==='one';}
+ async function selectTrack(id,play=false){
+  const track=tracks().find(t=>t.id===id);if(!track)throw Error('Track unavailable');
+  const player=music();
+  if(trackId!==id||player.getAttribute('src')!==track.src){player.pause();trackId=id;player.src=track.src;player.load();}
+  if(play)await player.play();return track;
+ }
+ async function stepTrack(direction=1,play=!music().paused){
+  const list=tracks(),index=list.findIndex(t=>t.id===trackId);if(!list.length)throw Error('Track unavailable');
+  return selectTrack(list[(index+direction+list.length)%list.length].id,play);
+ }
  async function pet(){
   const c=ctx();await c.resume();const at=c.currentTime,limiter=c.createDynamicsCompressor();
   limiter.threshold.value=-10;limiter.ratio.value=4;limiter.connect(c.destination);
@@ -28,5 +40,5 @@ window.PetAudio=(()=>{
   }
   petVoices++;
  }
- return {toggleMusic,setVolume,pet,status:()=>({musicOn:!music().paused,volume,petVoices,petPattern:'soft-doo-doo',petPeak:.30,state:context?.state||(!music().paused?'running':'uninitialized')})};
+ return {toggleMusic,setVolume,setRepeat,selectTrack,stepTrack,tracks,pet,status:()=>({musicOn:!music().paused,volume,trackId,repeat,petVoices,petPattern:'soft-doo-doo',petPeak:.30,state:context?.state||(!music().paused?'running':'uninitialized')})};
 })();

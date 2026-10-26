@@ -1,10 +1,26 @@
 # Eumo v2 · 云端鼹鼠 AI 接口验证记录
 
-验证日期：2026-10-22（Asia/Shanghai）。对象为当前源码、Node 接口和 `dist/Eumo.html`。环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0；Vercel 配置目标为 Node 22。
+最新验证日期：2026-10-26；此前同步陪伴与接口记录为 2026-10-22（Asia/Shanghai）。对象为当前源码、Node 接口和 `dist/Eumo.html`。环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0；Vercel 配置目标为 Node 22。
 
 **以下自动化检查使用本地协议 fixture，不代表真实 Qwen 语义质量评测已通过。** 用户已在 Vercel 配置 Key 并提供线上模型回复截图；当前执行环境没有服务商 Key，也无法直接访问该部署，因此没有把用户截图当成完整模型评测。 下表的模型服务使用本地测试 fixture；它验证软件行为，不验证真实模型语气、解题正确性或建议质量。
 
-## 本轮同步陪伴修正（mole-companion-1.1）
+## 本轮音乐模块（2026-10-26）
+
+| 本轮实际执行 | 结果 | 范围 |
+| --- | --- | --- |
+| `python tests/test_music.py` | 通过 | 真实原 MP3 播放、暂停、进度、音量、循环；三分类与五个不可点占位；无初始音频请求；未来曲目上下首及自然顺序切换；刷新不自动播放；404 重试；计时与页面切换不中断；手机/横屏与断网下载版；新增音频打包、缺文件失败及 Range 读取 |
+| `python tests/test_viewport.py` | 通过 | 13 组桌面窗口/DPI × 待机/运行/暂停，100% 完整显示；新图标不撑大主页面 |
+| `python tests/test_site.py` | 通过 | 原计时、宠物、装备、报告、音频与响应式回归 |
+| `python tests/test_journey.py` | 通过 | 奖励与暂停、跨页面音乐、原 MP3、独立宠物声音及断网单文件 |
+| `python tests/test_chat.py` | 通过 | 现有聊天、隐私、API、静态服务访问限制与下载版 |
+| `node --test tests/test_ai.cjs` | 16 项通过 | 原服务端人设与接口契约 |
+| 构建、语法与资源检查 | 通过 | 12 个 JS 内嵌，三份下载文件相同；原 MP3 字节不变且只存一次，目录共享默认源；缺失的新音频不静默跳过 |
+
+此次没有生成新的用户音乐。新增的 Groove/White noise 卡片仅为未添加的曲目位置；未来音频使用测试临时文件验证扩充，不随游戏发布。测试发现普通 Python 静态服务不能保证音频跳转，因此 Node 开发服务补充 Range，播放器按实际 seekable 状态启用拖动。音乐小卡片在矮屏隐藏，分类和完整控制仍可从图标打开。
+
+![真实音乐库界面](images/eumo-music-library.png)
+
+## 上一轮同步陪伴修正（mole-companion-1.1）
 
 | 本轮实际执行 | 结果 | 说明 |
 | --- | --- | --- |
@@ -59,8 +75,8 @@
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 6133280
-SHA-256: c8470fb9b0dfd2303a675e9f80f9305e0d313752d202af51d391544ba1938cbf
+字节数: 6157914
+SHA-256: 4addc90cf0666cfcf0caf7df72b3cd14e59a1d4cc7b0b8c8c4184582365ecc0a
 MP3: Warm Focus (3).mp3, 194.520 秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```

@@ -8,7 +8,7 @@
 
 一个英文界面的像素专注小游戏：创建自己的无耳朵鼹鼠，专注时向下挖洞，收集宝物、叠穿装备，布置洞穴家园，并查看每日任务报告。
 
-[AI 云端接入](docs/AI_SETUP.md) · [模型选型](docs/AI_RESEARCH.md) · [鼹鼠提示词](docs/AI_PROMPTS.md) · [English](docs/README.en.md) · [功能说明](docs/PRODUCT.md) · [技术与数据结构](docs/ARCHITECTURE.md) · [测试方法](docs/TESTING.md) · [常见问题](docs/TROUBLESHOOTING.md) · [开发记录](docs/DEVLOG.md)
+[音乐库与添加音频](docs/MUSIC.md) · [AI 云端接入](docs/AI_SETUP.md) · [模型选型](docs/AI_RESEARCH.md) · [鼹鼠提示词](docs/AI_PROMPTS.md) · [English](docs/README.en.md) · [功能说明](docs/PRODUCT.md) · [技术与数据结构](docs/ARCHITECTURE.md) · [测试方法](docs/TESTING.md) · [常见问题](docs/TROUBLESHOOTING.md) · [开发记录](docs/DEVLOG.md)
 
 ![Eumo 宠物创建界面](docs/images/setup.png)
 
@@ -54,7 +54,7 @@ py -m http.server 8000
 | 今日报告 | Study / Work 分类时间、任务与可选成果、7 / 30 日趋势、日历、醒目的 Finish 与今日返地面 |
 | 时间联动 | 自动读取设备本地时间和时区；清晨、白天、傍晚、夜晚四种背景 |
 | 同伴 | Luka、Yun、Daniel、Selina 四个不同配色的示例玩家，学习进度条、学习时长、可展开的发现物 |
-| 声音 | 用户最新提供的 Warm Focus (3) MP3 循环、音量调节、两声抚摸叫声；不会自动播放 |
+| 声音 | 紫色复古 Music room，轻音乐/律动/白噪音分类；播放、进度、上下首、循环与音量；现有 Warm Focus 可播放，其余留作后续音频；不会自动播放 |
 
 **同伴目前是明确标注的示例资料，尚未连接真实玩家、账号或在线状态。** 全部个人进度保存在当前浏览器的 `localStorage`，没有云同步。
 
@@ -67,6 +67,14 @@ Focus 桌面采用约 72:28 的左右面板，两块上下对齐；左侧矿洞�
 ![延长的土层](docs/images/eumo-soft-layer-60.png)
 
 ![柔和的石层](docs/images/eumo-soft-layer-270.png)
+
+## 音乐库
+
+点击 Music 右边的四格图标打开紫色复古音乐窗口。Soft music（轻音乐）里已有 Warm Focus；Groove（律动）和 White noise（白噪音）已留好分类和曲目位置，音频完成后再添加。未添加的内容显示 Coming soon，不能误点播放。
+
+![紫色复古音乐库](docs/images/eumo-music-library.png)
+
+播放器支持共享音量、可用曲目的上下首、进度和循环；关闭窗口、浏览分类和切换页面都不打断学习。新增音频的配置与打包方法见 [音乐说明](docs/MUSIC.md)。
 
 ## 玩法与结算
 
@@ -133,6 +141,7 @@ python tests/test_viewport.py
 python tests/test_geology.py
 python tests/test_chat.py
 python tests/test_companion.py
+python tests/test_music.py
 node --test tests/test_ai.cjs
 node tests/test_rewards.js
 ```

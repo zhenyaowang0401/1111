@@ -46,11 +46,12 @@ python tests/test_viewport.py
 python tests/test_geology.py
 python tests/test_chat.py
 python tests/test_companion.py
+python tests/test_music.py
 node --test tests/test_ai.cjs
 node tests/test_rewards.js
 ```
 
-十一个 Python 脚本各自启动随机本地端口、运行浏览器断言并关闭测试服务。成功会输出 `PASS:`；断言失败会以非零状态退出。当前不是 pytest 测试套件，不应以“pytest 找不到用例”当作验证完成。
+十二个 Python 脚本各自启动随机本地端口、运行浏览器断言并关闭测试服务。成功会输出 `PASS:`；断言失败会以非零状态退出。当前不是 pytest 测试套件，不应以“pytest 找不到用例”当作验证完成。
 
 ## 覆盖范围
 
@@ -83,6 +84,8 @@ node tests/test_rewards.js
 `node --test tests/test_ai.cjs` 检查服务端角色构造、物品 ID、共享关闭、角色/地址注入过滤、请求限制、限流、Key 隔离、超时及错误处理。真实模型的 28 条评测另用 `npm run eval:ai`；需要服务商 Key，会产生推理调用，结果必须人工按 rubric 验收。
 
 `test_companion.py` 通过真实按钮检查同开工/同休息的完整顺序：Study/Work、暂停/继续、取消结束、提前结束和自然到时、Today 总结后返地面、再次开工、Break/Demo；还验证旧人设历史不回传、换装和刷新不丢最近活动、迟到回复取消及草稿恢复、共享关闭。使用本地协议 fixture，不把测试回复当作真实模型质量证明。
+
+`test_music.py` 使用真实 MP3 检查分类占位、不预加载音频、真实播放和拖动、共享音量、循环、扩充后上下首及自然切换、刷新不自动播放、音频故障重试、计时/导航不中断、手机横竖屏，以及下载版断网播放和新增文件打包；同时核对本地音频 Range 与缺文件构建失败。
 
 ## 手工检查清单
 

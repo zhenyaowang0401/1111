@@ -21,11 +21,14 @@ def run():
     url=f'http://127.0.0.1:{server.server_port}';page.goto(url+'/#focus')
     def check(mode,width,height):
      page.wait_for_timeout(180)
-     info=page.evaluate("""()=>({viewport:[innerWidth,innerHeight],scroll:[document.documentElement.scrollWidth,document.documentElement.scrollHeight],items:Object.fromEntries(['.header','.arcade-machine','.control-panel','#timeDisplay','#startButton','#simpleViewButton','#moleDialogueSpace','.mole-chat-window','#moleChatContent','#moleChatInput','.chat-send-button','#taskInput','.mission-stats','.footer',...(document.querySelector('#stopButton').hidden?[]:['#stopButton'])].map(s=>{const r=document.querySelector(s).getBoundingClientRect();return [s,{top:r.top,bottom:r.bottom,left:r.left,right:r.right}]})),canvasRatio:(()=>{const r=document.querySelector('#miningCanvas').getBoundingClientRect();return r.width/r.height})()})""")
+     info=page.evaluate("""()=>({viewport:[innerWidth,innerHeight],scroll:[document.documentElement.scrollWidth,document.documentElement.scrollHeight],items:Object.fromEntries(['.header','.arcade-machine','.control-panel','#timeDisplay','#startButton','#simpleViewButton','#openMusicLibrary','#musicVolume','#soundButton','.music-module',...(document.querySelector('#musicMiniPlayer').getClientRects().length?['#musicMiniPlayer']:[]),'#moleDialogueSpace','.mole-chat-window','#moleChatContent','#moleChatInput','.chat-send-button','#taskInput','.mission-stats','.footer',...(document.querySelector('#stopButton').hidden?[]:['#stopButton'])].map(s=>{const r=document.querySelector(s).getBoundingClientRect();return [s,{top:r.top,bottom:r.bottom,left:r.left,right:r.right}]})),canvasRatio:(()=>{const r=document.querySelector('#miningCanvas').getBoundingClientRect();return r.width/r.height})()})""")
      assert info['scroll'][0]<=width,(dpr,mode,width,height,'horizontal',info)
      assert info['scroll'][1]<=height+1,(dpr,mode,width,height,'vertical',info)
      for selector,r in info['items'].items():assert r['top']>=0 and r['bottom']<=height+1 and r['right']<=width+1,(dpr,mode,width,height,selector,r)
      left=info['items']['.arcade-machine'];right=info['items']['.control-panel'];reserve=info['items']['#moleDialogueSpace']
+     for selector in ['#openMusicLibrary','#musicVolume','#soundButton']:
+      item=info['items'][selector];assert item['left']>=right['left'] and item['right']<=right['right'],('music controls overflow the timer panel',selector,info)
+     if height<=720:assert info['items']['#openMusicLibrary']['right']<=info['items']['#simpleViewButton']['left']-2,('music library overlaps animation button',info)
      assert abs(left['top']-right['top'])<1 and abs(left['bottom']-right['bottom'])<1,(dpr,mode,width,height,'panels must align',info)
      assert reserve['bottom']-reserve['top']>=108 and reserve['top']>left['top'],('dialogue reserve',info)
      left_width=left['right']-left['left'];right_width=right['right']-right['left']
