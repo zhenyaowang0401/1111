@@ -2,13 +2,14 @@
 const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..');
 if(fs.existsSync(path.join(root,'.env')))process.loadEnvFile(path.join(root,'.env'));
-const chat=require('../api/chat.js');
+const chat=require('../api/chat.js'),friends=require('../api/friends.js');
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.mp3':'audio/mpeg','.wav':'audio/wav','.ogg':'audio/ogg','.m4a':'audio/mp4','.ttf':'font/ttf','.png':'image/png','.svg':'image/svg+xml','.md':'text/plain; charset=utf-8'};
 const server=http.createServer(async(req,res)=>{
  let pathname;try{pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);}catch{res.writeHead(400).end();return;}
  if(pathname==='/api/chat')return chat(req,res);
+ if(pathname==='/api/friends')return friends(req,res);
  // Serve the app, never server prompts, source credentials or Git metadata.
- if(pathname.split('/').some(s=>s.startsWith('.'))||/^\/(ai|api|scripts|tests)(\/|$)/.test(pathname)||!['GET','HEAD'].includes(req.method)){res.writeHead(404).end();return;}
+ if(pathname.split('/').some(s=>s.startsWith('.'))||/^\/(ai|api|database|scripts|tests)(\/|$)/.test(pathname)||!['GET','HEAD'].includes(req.method)){res.writeHead(404).end();return;}
  const file=path.resolve(root,'.'+(pathname==='/'?'/index.html':pathname));
  if(!file.startsWith(root+path.sep)){res.writeHead(404).end();return;}
  try{

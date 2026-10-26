@@ -20,6 +20,9 @@
 | `world.js` | 设备本地时间、时区和四个昼夜色板 |
 | `music-catalog.js` | 可扩充的分类与曲目目录；未完成音频使用 src: null |
 | `audio.js` | 单一 HTMLAudio 的曲目、音量、循环与独立双音抚摸声 |
+| `friends.js` | 浏览器好友码、请求、真实状态和像素卡片；仅同源接口 |
+| `api/friends.js` | HttpOnly 随机身份、摘要白名单与 Supabase RPC 服务端代理 |
+| `database/friends.sql` | PostgreSQL 双向好友关系、RLS/角色权限、原子操作与摘要存储 |
 | `music.js` | 侧栏播放器、复古音乐库、分类、进度与状态同步 |
 
 ## 计时与一次性结算
@@ -71,7 +74,7 @@ HTMLAudio 播放 `assets/audio/warm-focus-3.mp3`，由用户点击启动，不�
 
 角色绘制共用函数，支持眨眼、困倦、睡眠和暂停休息。requestAnimationFrame 限速；简洁视图跳过矿洞绘制；系统减少动态效果禁用跳跃并固定动画帧。
 
-构建脚本内嵌 CSS、十二个 JS 模块、Pixelify Sans TTF 与所有已配置音频的原始字节，并附带完整 OFL 许可。目录以严格 JSON 数据声明分类与曲目，空 src 不参与打包。默认曲目在 HTMLAudio 中仅内嵌一次，目录在运行时读取同一数据源；其他音频放入内嵌目录。文件缺失会终止构建。`dist/Eumo.html` 为生成文件，必须从源码重建，不能单独修改。
+构建脚本内嵌 CSS、十三个 JS 模块、Pixelify Sans TTF 与所有已配置音频的原始字节，并附带完整 OFL 许可。目录以严格 JSON 数据声明分类与曲目，空 src 不参与打包。默认曲目在 HTMLAudio 中仅内嵌一次，目录在运行时读取同一数据源；其他音频放入内嵌目录。文件缺失会终止构建。`dist/Eumo.html` 为生成文件，必须从源码重建，不能单独修改。
 
 ## 有界商店与字体
 
@@ -110,3 +113,10 @@ Today 页 Finish 先结算唯一会话并打开总结；完成总结时 finishTo
 `api/chat.js` 从服务端环境读取地址、模型与 Key，用户输入不能覆盖它们。角色规则仅为 server system 消息；用户传来的 system/tool 角色被过滤，GAME_CONTEXT 放在用户数据消息里。提示注入不能仅靠这些手段保证完全消除；真实模型仍需专项评测。请求体上限 48KB，单条输入 2000 字符，上游限时 40 秒；按意图限制输出 400/900 tokens。实例内 IP 限流不是分布式全局额度。
 
 前端只以 textContent 绘制模型文本。请求失败撤回未发送成功的用户气泡并恢复草稿；不伪造回复。完整聊天窗口不暂停计时；清空聊天不改游戏。AI 需要云端接口/网络与 Key，直接 file:// 的游戏仍能运行但无法调用相对的云端 API。`scripts/dev_server.cjs` 提供零依赖静态服务与相同接口；真实模型验收脚本独立于 mock 契约测试。
+
+
+## 联网好友
+
+FriendsClient 使用独立的 eumo-friends-preferences-v1 保存启用偏好和目标；认证随机值仅由服务端 HttpOnly cookie 保存，数据库仅存 SHA-256。好友码是公开联系入口，不是认证。服务器通过 SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY 调用 eumo_friends_action，事务内检查参与人、请求方向和接受状态。RLS + 权限撤销阻止浏览器角色直接访问，服务角色 key 只在 Node 环境中。
+
+好友摘要仅白名单数值和装扮，不包含聊天/任务。Friends 页面15秒、其他页面30秒更新；last_seen由数据库生成，前端用serverTime + performance.now判断90秒过期。暂停共享返回仅名字/颜色，且移除在线时间。原样本独立于服务器列表；PixelArt 由真实 availability、activity、moleMood、tool 驱动画布，不把离线记录当作继续挖掘。详细部署及当前浏览器身份限制见 FRIENDS_SETUP。

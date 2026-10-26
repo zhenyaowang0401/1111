@@ -6,7 +6,7 @@ Eumo v2 是英文界面的本地像素专注应用。一个无耳朵鼹鼠陪你
 
 创建页使用 Your mole、Mole name、Mole setup，无 PREVIEW 标签。首次创建名字和颜色，默认值可直接 START。配置过的用户再次打开根地址直接进入 Focus。Pet setup 保留在页脚，可以取消编辑，也不会丢失游戏进度。
 
-导航顺序：Focus（镐子）→ Home（小房子，第二个）→ Inventory → Equipment → Companions。右上角进入 Today：今日汇总、趋势、日历与日志。
+导航顺序：Focus（镐子）→ Home（小房子，第二个）→ Inventory → Equipment → Friends。右上角进入 Today：今日汇总、趋势、日历与日志。
 
 ## Focus 面板与对话留白
 
@@ -134,3 +134,8 @@ Luka、Yun、Daniel、Selina 仍是明确标注的四位示例玩家，不是在
 ## AI 陪伴与学习帮助
 
 实际角色遵循 [鼹鼠提示词](AI_PROMPTS.md)：积极肯定具体尝试，不羞辱短时学习或休息，不诱导买装备，不伪造完成内容。共享数据仅含今日 Study/Work、当前任务、最近四条今日记录、当前装备与最近五个事件；Demo/Break 排除在正式时间之外。完整聊天支持 Plan today、Study help、Take a break、Tiny story 草稿入口、上下文共享开关与清空历史。模型只能给建议，不能改奖励、日历或任务。部署方法、开源选型和实际验证边界见 [AI_SETUP](AI_SETUP.md) 与 [AI_RESEARCH](AI_RESEARCH.md)。
+
+
+## 真实好友
+
+原 Companions 页改为 Friends。加好友图标打开可复制的本人好友码与请求管理；双方接受后显示真实卡片，可删除、拒绝或撤回。卡片沿用原布局，含实际专注摘要、鼹鼠颜色/装备/工具和当前状态，15–30 秒刷新，超时离线；四只演示角色另置 Demo moles。支持暂停共享，不传任务/笔记/AI 对话。线上需要配置 Supabase；浏览器身份不是邮箱账号或进度云存档，具体范围见 FRIENDS_SETUP。

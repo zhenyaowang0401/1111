@@ -1,10 +1,30 @@
-# Eumo v2 · 云端鼹鼠 AI 接口验证记录
+# Eumo v2 · 功能与接口验证记录
 
 最新验证日期：2026-10-26；此前同步陪伴与接口记录为 2026-10-22（Asia/Shanghai）。对象为当前源码、Node 接口和 `dist/Eumo.html`。环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0；Vercel 配置目标为 Node 22。
 
 **以下自动化检查使用本地协议 fixture，不代表真实 Qwen 语义质量评测已通过。** 用户已在 Vercel 配置 Key 并提供线上模型回复截图；当前执行环境没有服务商 Key，也无法直接访问该部署，因此没有把用户截图当成完整模型评测。 下表的模型服务使用本地测试 fixture；它验证软件行为，不验证真实模型语气、解题正确性或建议质量。
 
-## 本轮音乐模块（2026-10-26）
+## 本轮真实好友模块（2026-10-26）
+
+**生产 Supabase 项目尚未创建/配置；以下是本地真实 PostgreSQL 和双浏览器验证，不代表线上已经联网。** 用户已选择由助手引导创建免费项目；代码、数据库脚本和 Vercel 变量说明已准备好。
+
+| 本轮实际执行 | 结果 | 范围 |
+| --- | --- | --- |
+| `node --test tests/test_friends.cjs` | 6 项通过 | 执行真实 PostgreSQL 建表与 RPC；双方同意、反向/重复请求、第三人越权拒绝、删除/拒绝/撤回、暂停共享与在线时间隐藏、持久化请求限流、表/RPC 角色权限、随机 HttpOnly 身份/哈希、摘要白名单、现代 secret key 头部、接口限流/超时/私密错误 |
+| `python tests/test_friends_browser.py` | 通过 | 两个独立浏览器 → Node API → 本地 RPC 传输 → 真实 PostgreSQL；复制代码、请求/接受、正式学习/暂停、名字颜色/工具/装备、真实空闲睡眠、共享暂停恢复、身份刷新、Away/Offline、断线标为最后更新、删除双方同步、拒绝/撤回、XSS、手机窗口、缺配置不造假与恢复、离线演示 |
+| `python tests/test_world.py` | 通过 | 原命名/配色/时钟、四只演示鼹鼠画布、展开库存和响应式 |
+| `python tests/test_entry.py` | 通过 | 受限 iframe、创建、导航、无耳朵图形与演示好友 |
+| `python tests/test_chat.py` | 通过 | 原聊天接口、隐私、故障恢复、静态服务私有路径与下载版 |
+| `python tests/test_companion.py` | 通过 | 开始/暂停/继续/结束/返地面的陪伴状态不被新模块改变 |
+| `python tests/test_viewport.py` | 通过 | 13 组桌面/DPI 和三状态的 100% 适配；原音乐/聊天布局保持可见 |
+| `node --test tests/test_ai.cjs` / `node tests/test_rewards.js` | 16 项 / 奖励检查通过 | 原 AI 接口契约和奖励口径不变 |
+| 单文件构建、13 个浏览器模块语法与资源检查 | 通过 | 三个 HTML 相同，原 MP3 不变且只内嵌一次；服务端 Supabase key 和认证随机值不进入浏览器代码 |
+
+真实好友由服务端随机 Cookie 身份和数据库关系决定，四只演示角色没有注册为假用户。测试的 PGlite 数据库仅存在开发进程中，不作为生产数据库；Supabase 网络、项目权限和 Vercel 环境变量仍需按 [FRIENDS_SETUP](FRIENDS_SETUP.md) 完成后实测。
+
+![本地双浏览器的真实好友卡片](images/eumo-friends-live.png)
+
+## 上一轮音乐模块（2026-10-26）
 
 | 本轮实际执行 | 结果 | 范围 |
 | --- | --- | --- |
@@ -75,8 +95,8 @@
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 6157914
-SHA-256: 4addc90cf0666cfcf0caf7df72b3cd14e59a1d4cc7b0b8c8c4184582365ecc0a
+字节数: 6182704
+SHA-256: e4e97c8f5a718d821ec43940d074cc3db52f08f8d2879030fd4640f70bae8ac1
 MP3: Warm Focus (3).mp3, 194.520 秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```

@@ -8,7 +8,7 @@
 
 一个英文界面的像素专注小游戏：创建自己的无耳朵鼹鼠，专注时向下挖洞，收集宝物、叠穿装备，布置洞穴家园，并查看每日任务报告。
 
-[音乐库与添加音频](docs/MUSIC.md) · [AI 云端接入](docs/AI_SETUP.md) · [模型选型](docs/AI_RESEARCH.md) · [鼹鼠提示词](docs/AI_PROMPTS.md) · [English](docs/README.en.md) · [功能说明](docs/PRODUCT.md) · [技术与数据结构](docs/ARCHITECTURE.md) · [测试方法](docs/TESTING.md) · [常见问题](docs/TROUBLESHOOTING.md) · [开发记录](docs/DEVLOG.md)
+[联网好友配置](docs/FRIENDS_SETUP.md) · [音乐库与添加音频](docs/MUSIC.md) · [AI 云端接入](docs/AI_SETUP.md) · [模型选型](docs/AI_RESEARCH.md) · [鼹鼠提示词](docs/AI_PROMPTS.md) · [English](docs/README.en.md) · [功能说明](docs/PRODUCT.md) · [技术与数据结构](docs/ARCHITECTURE.md) · [测试方法](docs/TESTING.md) · [常见问题](docs/TROUBLESHOOTING.md) · [开发记录](docs/DEVLOG.md)
 
 ![Eumo 宠物创建界面](docs/images/setup.png)
 
@@ -53,10 +53,10 @@ py -m http.server 8000
 | 鼹鼠 AI | 可部署的 Qwen 云端聊天接口、真实任务/时长/装备上下文、答疑与规划提示词、可选共享、完整对话窗口与本地历史；尚需配置服务端 Key 才能真实聊天 |
 | 今日报告 | Study / Work 分类时间、任务与可选成果、7 / 30 日趋势、日历、醒目的 Finish 与今日返地面 |
 | 时间联动 | 自动读取设备本地时间和时区；清晨、白天、傍晚、夜晚四种背景 |
-| 同伴 | Luka、Yun、Daniel、Selina 四个不同配色的示例玩家，学习进度条、学习时长、可展开的发现物 |
+| 好友 | 好友码、双向请求/接受、删除、真实状态与鼹鼠同步、共享开关；需配置 Supabase 后上线。原四只演示鼹鼠独立保留 |
 | 声音 | 紫色复古 Music room，轻音乐/律动/白噪音分类；播放、进度、上下首、循环与音量；现有 Warm Focus 可播放，其余留作后续音频；不会自动播放 |
 
-**同伴目前是明确标注的示例资料，尚未连接真实玩家、账号或在线状态。** 全部个人进度保存在当前浏览器的 `localStorage`，没有云同步。
+**真实好友功能需先完成 [Supabase 配置](docs/FRIENDS_SETUP.md)。** 原来的四只示例鼹鼠保留在 Demo moles 区域，明确不是在线玩家。好友关系和已同意共享的摘要在数据库中；游戏进度仍保存在当前浏览器，没有账号云存档。浏览器好友身份用 HttpOnly cookie 保留，好友码不能当作登录凭据。
 
 ![100% 缩放下完整显示的桌面布局](docs/images/eumo-fit-desktop.png)
 
@@ -67,6 +67,14 @@ Focus 桌面采用约 72:28 的左右面板，两块上下对齐；左侧矿洞�
 ![延长的土层](docs/images/eumo-soft-layer-60.png)
 
 ![柔和的石层](docs/images/eumo-soft-layer-270.png)
+
+## 真实好友
+
+Friends 页右上角的加好友按钮提供自己的可复制好友码、发送/接受/拒绝/撤回请求和删除好友。成为双向好友后，卡片显示真实专注时间、在线/离线/暂停/休息状态及鼹鼠颜色、装备、工具和睡眠情况。任务和 AI 对话不共享；可暂停状态共享。
+
+![好友界面（本地双浏览器与真实 PostgreSQL 测试）](docs/images/eumo-friends-live.png)
+
+需要一次数据库配置才能在线使用；详见 [好友接入步骤与身份范围](docs/FRIENDS_SETUP.md)。
 
 ## 音乐库
 
@@ -119,7 +127,7 @@ python3 scripts/build_standalone.py
 
 ## 自动化测试
 
-测试依赖与游戏运行依赖分开。使用 Python 3.10+：
+测试依赖与游戏运行依赖分开。好友数据库测试先运行 `npm ci` 安装开发用 PostgreSQL 引擎；浏览器测试使用 Python 3.10+：
 
 ```sh
 python3 -m venv .venv
@@ -142,6 +150,8 @@ python tests/test_geology.py
 python tests/test_chat.py
 python tests/test_companion.py
 python tests/test_music.py
+python tests/test_friends_browser.py
+npm run test:friends
 node --test tests/test_ai.cjs
 node tests/test_rewards.js
 ```
