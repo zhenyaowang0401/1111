@@ -1,8 +1,16 @@
 # Eumo v3 · 功能与接口验证记录
 
-最新验证日期：2026-10-26；此前同步陪伴与接口记录为 2026-10-22（Asia/Shanghai）。对象为当前源码、Node 接口和 `dist/Eumo.html`。环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0；Vercel 配置目标为 Node 22。
+最新验证日期：2026-10-27；此前同步陪伴与接口记录为 2026-10-22（Asia/Shanghai）。对象为当前源码、Node 接口和 `dist/Eumo.html`。环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0；Vercel 配置目标为 Node 22。
 
 **以下自动化检查使用本地协议 fixture，不代表真实 Qwen 语义质量评测已通过。** 用户已在 Vercel 配置 Key 并提供线上模型回复截图；当前执行环境没有服务商 Key，也无法直接访问该部署，因此没有把用户截图当成完整模型评测。 下表的模型服务使用本地测试 fixture；它验证软件行为，不验证真实模型语气、解题正确性或建议质量。
+
+## V3 金色宝箱修复
+
+原因是房间宝箱只渲染普通 discoveries/inventory，而金色收藏已存入 rareInventory。现两种库存均在宝箱显示，金色操作与图鉴使用同一处理逻辑；不更改掉落率、存档键或已有收藏。
+
+`python tests/test_golden_chest.py` 通过：固定种子下通过真实计时器获得金色面具，宝箱数量、房间 Canvas 金色像素、刷新保留、收回不丢失、取消出售、确认出售仅加 99 星一次、图鉴同步、全部十类、运行/暂停限制、普通头顶展示及手机滚动。测试种子只在隔离浏览器中使用。
+
+`python tests/test_eumo.py` 普通宝箱及原有装扮回归通过；`python tests/test_v3.py` 音频、矿洞、旋转、金色结算及离线版回归通过。V3 测试时钟改在页面初始化前安装，避免存档日期与随后安装的模拟时钟不同步。三个离线入口同步重建。Vercel 生产构建仍需部署后核验。
 
 ## V3 矿洞点击修复
 
@@ -122,8 +130,8 @@
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 21956028
-SHA-256: 4641dd5863c6b5b3eea731f34a7f8255e1f6e7d957a1bd6e911e0c9a04678f3c
+字节数: 21958854
+SHA-256: de71f5ff6a90dd7236a9c285db90f2dbcc9be1dddb01807eec72815c8771821a
 MP3: Warm Focus 194.520秒；Winter bonfire 12.168秒；Tropical rainforest 13.416秒；botanicore 213.552秒；Litte ridge 222.840秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```

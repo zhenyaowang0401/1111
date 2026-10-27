@@ -10,7 +10,7 @@ def run():
    browser=p.chromium.launch(executable_path=shutil.which('chromium'),args=['--no-sandbox']);ctx=browser.new_context(viewport={'width':1536,'height':960});page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    seed={'profile':{'name':'Momo','color':'#b784cf','configured':True},'depth':140,'balance':20,'inventory':[3,2,1,1],'owned':['hat','glasses'],'equipped':['hat','glasses'],'rareSeed':'0123456789abcdef0123456789abcdef','rareInventory':{'sanxingdui':1,'mole-statue':2,'iphone18':1,'rog-laptop':1},'displayedTreasure':'mole-statue'}
    page.add_init_script(f"if(!localStorage.getItem('{KEY}'))localStorage.setItem('{KEY}',{json.dumps(json.dumps(seed))});")
-   page.goto(url+'/#focus');page.clock.install();page.clock.run_for(250);assert page.title()=='Eumo v3 — Focus'
+   page.clock.install();page.goto(url+'/#focus');page.clock.run_for(250);assert page.title()=='Eumo v3 — Focus'
    # Pause/stop exploration is a camera operation. Running always follows the mole.
    assert page.evaluate('MineView.cameraFor(state)')>700
    original=page.evaluate('JSON.stringify([state.depth,state.balance,state.inventory,state.eligibleSeconds])')
