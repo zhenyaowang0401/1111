@@ -137,9 +137,16 @@ window.PixelArt=(()=>{
  function renderFriend(c,f,frame){box(c,0,0,96,88,tint(f.color,-.65));for(let i=0;i<6;i++)box(c,Math.floor(random(i,3)*90),Math.floor(random(i,5)*65),1,1,tint(f.color,.25));box(c,12,72,72,3,tint(f.color,-.2));box(c,17,75,62,3,tint(f.color,-.45));mole(c,22,18,2,f.equipped,f.live?f.availability==='online'&&['studying','working','demo'].includes(f.activity):f.status==='Studying',frame,f.color,f.moleMood||'awake',f.tool||null);}
  // Independent small scene: it keeps drawing in the visible PiP window even when the main tab's RAF sleeps.
  function renderFloating(c,s,frame){const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,f=reduced?0:frame,running=s.session?.status==='running'&&Journey.eligible(s.session);
-  c.imageSmoothingEnabled=false;box(c,0,0,112,112,'#29223f');box(c,4,4,104,104,'#332b4b');
-  box(c,0,91,112,21,'#786052');box(c,0,91,112,3,'#b09077');for(let i=0;i<7;i++)box(c,5+i*16,99+i%2*5,5,2,'#9c7f67');
-  const lift=s.petSpinAt?Math.min(12,jump(s)):Math.min(9,jump(s));playerMole(c,s,29,35-lift,2,running,f);
+  c.imageSmoothingEnabled=false;c.clearRect(0,0,112,112);
+  // Transparent sprite over the rounded bubble, with a small oval ground instead of a square tile.
+  oval(c,15,89,86,12,'#211a303d',2);oval(c,23,86,70,9,'#977462',2);box(c,32,86,52,2,'#c5a58b');
+  for(let i=0;i<4;i++)box(c,33+i*13,90+i%2*2,4,1,'#b38c72');
+  const lift=s.petSpinAt?Math.min(8,jump(s)):Math.min(8,jump(s));
+  // Keep long hats inside the canvas during the full spin by gently fitting the rotating sprite.
+  const spinning=!s.session&&s.petSpinAt&&Date.now()-s.petSpinAt<1200&&!reduced;
+  if(spinning){c.save();c.translate(56,56);c.scale(.82,.82);c.translate(-56,-56);}
+  playerMole(c,s,29,35-lift,2,running,f);
+  if(spinning)c.restore();
   if(running)for(let i=0;i<3;i++){const n=(f+i*4)%12;box(c,78+n*2,80-Math.round(Math.sin(n/12*Math.PI)*14),3,3,'#c5a382');}
  }
  let getState,frame=0,last=0;

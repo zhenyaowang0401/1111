@@ -22,13 +22,23 @@ def run():
             def open_pip():
                 page.evaluate("navigateTo('focus')")
                 with ctx.expect_page() as event:page.locator('#floatMoleButton').click()
-                child=event.value;child.wait_for_selector('#mole');child.set_viewport_size({'width':320,'height':310})
+                child=event.value;child.wait_for_selector('#mole');child.set_viewport_size({'width':300,'height':440})
                 expect(page.locator('#floatMoleButton')).to_have_attribute('aria-pressed','true')
                 assert page.evaluate('documentPictureInPicture.window!==null')
                 return child
-            mini=open_pip();expect(mini.locator('#name')).to_have_text('Momo <3 · Eumo')
+            mini=open_pip();expect(mini.locator('#name')).to_have_text('Momo <3')
             assert mini.evaluate('document.documentElement.scrollWidth<=innerWidth')
             assert mini.evaluate('document.documentElement.scrollHeight<=innerHeight')
+            # Bubble scales down without cropping the timer or creating horizontal scrolling.
+            for width,height in [(300,440),(320,310),(240,340)]:
+                mini.set_viewport_size({'width':width,'height':height})
+                assert mini.evaluate('document.documentElement.scrollWidth<=innerWidth')
+                assert mini.evaluate('document.documentElement.scrollHeight<=innerHeight')
+                expect(mini.locator('#time')).to_be_in_viewport()
+                expect(mini.locator('#toggle')).to_be_in_viewport()
+            mini.set_viewport_size({'width':300,'height':440})
+            assert mini.locator('#pet').bounding_box()['width']>=200
+            assert mini.locator('.bubble').evaluate("e=>parseFloat(getComputedStyle(e).borderRadius)")>=30
             initial=page.evaluate('JSON.stringify([state.depth,state.balance,state.inventory])')
             # Idle petting uses the same sprite/animation state; no extra rewards.
             mini.locator('#pet').click();expect(mini.locator('#line')).to_have_text('yeeeeee')
