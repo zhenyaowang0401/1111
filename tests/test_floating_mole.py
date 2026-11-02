@@ -22,7 +22,7 @@ def run():
             def open_pip():
                 page.evaluate("navigateTo('focus')")
                 with ctx.expect_page() as event:page.locator('#floatMoleButton').click()
-                child=event.value;child.wait_for_selector('#mole');child.set_viewport_size({'width':300,'height':440})
+                child=event.value;child.wait_for_selector('#mole');child.set_viewport_size({'width':240,'height':320})
                 expect(page.locator('#floatMoleButton')).to_have_attribute('aria-pressed','true')
                 assert page.evaluate('documentPictureInPicture.window!==null')
                 return child
@@ -30,7 +30,7 @@ def run():
             assert mini.evaluate('document.documentElement.scrollWidth<=innerWidth')
             assert mini.evaluate('document.documentElement.scrollHeight<=innerHeight')
             # Bubble scales down without cropping the timer or creating horizontal scrolling.
-            for width,height in [(300,440),(320,310),(240,340)]:
+            for width,height in [(240,320),(300,440),(320,310),(240,340)]:
                 mini.set_viewport_size({'width':width,'height':height})
                 assert mini.evaluate('document.documentElement.scrollWidth<=innerWidth')
                 assert mini.evaluate('document.documentElement.scrollHeight<=innerHeight')
@@ -39,6 +39,7 @@ def run():
             mini.set_viewport_size({'width':300,'height':440})
             assert mini.locator('#pet').bounding_box()['width']>=200
             assert mini.locator('.bubble').evaluate("e=>parseFloat(getComputedStyle(e).borderRadius)")>=30
+            mini.set_viewport_size({'width':240,'height':320})
             initial=page.evaluate('JSON.stringify([state.depth,state.balance,state.inventory])')
             # Idle petting uses the same sprite/animation state; no extra rewards.
             mini.locator('#pet').click();expect(mini.locator('#line')).to_have_text('yeeeeee')
@@ -46,7 +47,7 @@ def run():
             assert page.evaluate('petSpinAt>0')
             assert page.evaluate('JSON.stringify([state.depth,state.balance,state.inventory])')==initial
             mini.locator('#toggle').click();expect(page.locator('#startText')).to_have_text('Pause')
-            expect(mini.locator('#line')).to_contain_text('dig alongside')
+            expect(mini.locator('#line')).to_be_hidden()
             expect(mini.locator('#pet')).to_be_disabled()
             # Navigate the original app away from Focus and switch to another real browser tab.
             page.evaluate("navigateTo('home')")

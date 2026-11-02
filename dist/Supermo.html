@@ -1121,8 +1121,9 @@ window.FloatingMole=(()=>{
   d.getElementById('mode').textContent=t?(t.demo?'Demo':rest?'Break':t.mode==='work'?'Work':'Study')+' · '+(running?'Running':'Paused'):finished?'Session saved':'Ready';
   d.getElementById('time').textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');
   d.getElementById('depth').textContent=Math.floor(PixelArt.digMetrics(s).worldDepth)+' m dug';
-  const line=finished?'All saved. Let’s rest together.':!t?'Ready whenever you are.':!running?'A little pause together.':rest?'I’m resting with you.':'You focus. I’ll dig alongside you.';
+  const line=finished?'All saved. Let’s rest together.':!t?'Ready whenever you are.':!running?'A little pause together.':rest?'I’m resting with you.':'';
   d.getElementById('line').textContent=!t&&s.petAt&&Date.now()-s.petAt<1400?(s.petSpinAt?'Wheee! One happy spin!':'yeeeeee'):line;
+  d.getElementById('line').hidden=!d.getElementById('line').textContent;
   d.getElementById('toggle').textContent=t?(running?'Pause':'Resume'):'Start';
   d.getElementById('end').hidden=!t;d.getElementById('pet').disabled=!!t;
   d.getElementById('pet').setAttribute('aria-label','Pet '+s.profile.name);
@@ -1136,7 +1137,7 @@ window.FloatingMole=(()=>{
   if(!supported()){document.getElementById('floatingHelpDialog').showModal();return;}
   opening=true;button().disabled=true;
   try{
-   const w=await window.documentPictureInPicture.requestWindow({width:300,height:440});pip=w;
+   const w=await window.documentPictureInPicture.requestWindow({width:240,height:320,preferInitialWindowPlacement:true});pip=w;
    w.addEventListener('pagehide',()=>cleanup(w),{once:true});
    const d=w.document;d.documentElement.lang='en';d.title='Eumo · Floating mole';
    const style=d.createElement('style');style.textContent=css;d.head.append(style);
