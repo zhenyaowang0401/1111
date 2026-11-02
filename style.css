@@ -123,3 +123,9 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
 .chest-golden-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px}
 .chest-golden-actions button{flex:1 1 130px}
 .chest-golden-note{grid-column:1/-1;line-height:1.5}
+
+.focus-meta{flex-wrap:wrap;justify-content:flex-end}
+.focus-meta .float-mole-button{margin:0;padding:5px 9px;min-height:30px;font-size:12px;line-height:18px;color:var(--pink);white-space:nowrap}
+.float-mole-button[aria-pressed=true]{border-color:var(--pink);background:#503c62}
+#floatingHelpDialog p{line-height:1.7;font-size:14px}
+@media(max-width:600px){.focus-meta{gap:6px}.focus-meta .float-mole-button{flex-basis:100%;font-size:12px}}

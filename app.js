@@ -237,3 +237,13 @@ let reportResize;window.addEventListener('resize',()=>{clearTimeout(reportResize
 MoleChat.init(()=>{trackStudy();return {...state,remaining:remaining()};});
 
 FriendsClient.init(()=>{trackStudy();return {...state,remaining:remaining()};});
+
+// The floating view shares this tab's timer, rewards and pet interaction; it never owns a second game loop.
+FloatingMole.init({
+ snapshot(){tick();return {...state,remaining:remaining(),idleMood:petMood(),petAt,petSpinAt};},
+ visual(){return {...state,idleMood:petMood(),petAt,petSpinAt};},
+ toggle(){if($('#finishDialog').open)$('#finishDialog').close();$('#startButton').click();},
+ end(id){trackStudy();if(state.session?.id===id)finishSession(remaining()===0?'complete':'stopped',false);},
+ pet(){pet({detail:0},'#miningCanvas','#petSpeech');},
+ returnToFocus(){navigateTo('focus');},notify:toast
+});

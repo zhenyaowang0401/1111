@@ -1,8 +1,18 @@
 # Eumo v3 · 功能与接口验证记录
 
-最新验证日期：2026-10-27；此前同步陪伴与接口记录为 2026-10-22（Asia/Shanghai）。对象为当前源码、Node 接口和 `dist/Eumo.html`。环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0；Vercel 配置目标为 Node 22。
+最新验证日期：2026-11-02；此前同步陪伴与接口记录为 2026-10-22（Asia/Shanghai）。对象为当前源码、Node 接口和 `dist/Eumo.html`。环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0；Vercel 配置目标为 Node 22。
 
 **以下自动化检查使用本地协议 fixture，不代表真实 Qwen 语义质量评测已通过。** 用户已在 Vercel 配置 Key 并提供线上模型回复截图；当前执行环境没有服务商 Key，也无法直接访问该部署，因此没有把用户截图当成完整模型评测。 下表的模型服务使用本地测试 fixture；它验证软件行为，不验证真实模型语气、解题正确性或建议质量。
+
+## V3 浮动陪伴窗（2026-11-02）
+
+`python tests/test_floating_mole.py` 通过。使用 Chromium 真正的 `documentPictureInPicture.requestWindow()` 创建独立文档窗口，不用普通弹窗 mock 冒充画中画。验证当前名字/外观、空闲三连互动、切换原应用页面及打开另一标签后仍有倒计时和不同动画帧、双向暂停/继续、Break 休息、取消/确认结束、自然到点只结算一次、关闭重开不改变会话、返回主页面、原页面关闭时清理、请求拒绝恢复、接口不支持提示及断网构建。
+
+`python tests/test_viewport.py` 通过：13 组桌面窗口/DPI 与手机、紧凑视图和离线入口。没有另建计时或奖励状态；小窗回调继续使用原 deadline、trackStudy 与 finishSession。
+
+![浮动窗内部视图（测试角色）](images/eumo-floating-mole.png)
+
+该截图为真实画中画文档在无头 Chromium 中按 320×310 尺寸绘制的内容，不包含操作系统窗口装饰。系统标题栏拖动、物理屏幕左下角位置、跨桌面程序置顶/最小化体验仍需在用户的 Chrome / Edge 和操作系统上验收；浏览器负责这些行为，网页不强制指定位置。原标签页必须保持打开，网页不能替代常驻后台的原生桌面应用。当前环境未验证新 Vercel 生产构建。
 
 ## V3 金色宝箱修复
 
@@ -130,8 +140,8 @@
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 21958854
-SHA-256: de71f5ff6a90dd7236a9c285db90f2dbcc9be1dddb01807eec72815c8771821a
+字节数: 21969069
+SHA-256: 5c7c0bd34518aef45a9f2670ef9f56d028745fa17ed2b09c505b3c3325578e3c
 MP3: Warm Focus 194.520秒；Winter bonfire 12.168秒；Tropical rainforest 13.416秒；botanicore 213.552秒；Litte ridge 222.840秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```
