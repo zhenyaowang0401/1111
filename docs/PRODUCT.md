@@ -69,7 +69,7 @@ Demo 保留在 Focus 中，可反复测试：每 3 秒 1 米，完成一轮固�
 
 | 类别 | 物品与星星价格 |
 | --- | --- |
-| 帽子（7） | Explorer hat 3；Sun hat 6；Bucket hat 9；Baseball cap 30；Bunny hat 65；Space helmet 80；Little crown 120 |
+| 帽子（13） | Explorer hat 3；Sun hat 6；Bucket hat 9；Baseball cap 30；Bunny hat 65；Kitten hat 24；Puppy hat 28；Frog hat 32；Panda hat 45；Fox hat 50；Lion hat 60；Space helmet 80；Little crown 120 |
 | 衣服（5） | Cream sweater 12；Honey coat 15；Lilac hoodie 20；Brown school uniform 25；Peach puffer 40 |
 | 围脖（5） | Mint scarf 3；Striped scarf 8；Checkered scarf 14；Ribbon scarf 22；Fluffy scarf 38 |
 | 眼镜（6，新增 5） | Goggles 2；Sunglasses 6；Round glasses 8；Square frames 10；Heart frames 24；Star shades 45 |

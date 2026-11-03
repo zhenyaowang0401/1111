@@ -39,14 +39,17 @@ def run():
    page.screenshot(path=str(ROOT/'docs/images/eumo-v2-shop.png'),full_page=True)
    assert page.locator('.wardrobe-layout').bounding_box()['height']<=page.viewport_size['height']
 
-   eyewear_pixels=[]
-   for category,count in [('hats',7),('clothes',5),('scarves',5),('glasses',6)]:
+   eyewear_pixels=[];hat_pixels=[]
+   for category,count in [('hats',13),('clothes',5),('scarves',5),('glasses',6)]:
     page.locator(f'[data-category="{category}"]').click();expect(page.locator('.outfit-card')).to_have_count(count)
     if category=='hats':page.screenshot(path=str(ROOT/'docs/images/eumo-equipment.png'),full_page=True)
     ids=page.locator('[data-item]').evaluate_all('els=>els.map(e=>e.dataset.item)')
     for id in ids:
      before=saved();button=page.locator(f'[data-item="{id}"]')
      if button.inner_text()!='Remove':button.click()
+     if category=='hats':
+      page.wait_for_timeout(150)
+      hat_pixels.append(page.locator('#wardrobeCanvas').evaluate("c=>Array.from(c.getContext('2d').getImageData(40,0,112,83).data).join(',')"))
      if category=='glasses':
       page.wait_for_timeout(120)
       eye=page.locator('#wardrobeCanvas').evaluate("c=>{const d=c.getContext('2d').getImageData(69,56,63,33).data;return Array.from(d).join(',');}")
@@ -58,9 +61,10 @@ def run():
       price=page.evaluate('(id)=>WardrobeCatalog.items.find(i=>i.id===id).cost',id)
       assert before['balance']-after['balance']==price
    expect(page.locator('#equippedCount')).to_have_text('5 equipped')
+   assert len(set(hat_pixels))==13,'Every hat must change actual rendered pixels'
    assert len(set(eyewear_pixels))==6,'Glasses should visibly change the actual mole'
    page.screenshot(path=str(ROOT/'docs/images/eumo-v2-glasses.png'),full_page=True)
-   assert saved()['balance']==2403
+   assert saved()['balance']==2164
    page.reload();expect(page.locator('#equippedCount')).to_have_text('5 equipped')
    # Real game inventory slots, one selected item tray, no added hands.
    page.locator('[data-page="home"]').click();page.locator('#openChestButton').click()
@@ -99,7 +103,7 @@ def run():
     assert len(positions)>1,(id,'tool not animated',positions)
     tool_images.append(page.locator('#miningCanvas').screenshot())
     page.clock.fast_forward(15000);expect(page.locator('#finishStars')).to_have_text('+1 ✦');page.locator('#claimButton').click()
-   assert len(set(tool_images))==6 and saved()['balance']==1749
+   assert len(set(tool_images))==6 and saved()['balance']==1510
    page.reload();assert saved()['tool']=='crystaldrill' and len(saved()['ownedTools'])==6
    page.locator('[data-page="wardrobe"]').click();page.locator('[data-category="tools"]').click();page.locator('#resetTool').click();assert saved()['tool'] is None
    # Reusing owned equipment is free, same-category replacement remains free.
@@ -109,6 +113,7 @@ def run():
    offline_context=browser.new_context();offline=offline_context.new_page()
    offline.goto(url+'/dist/Eumo.html');offline_context.set_offline(True)
    offline.locator('#enterGame').click();offline.locator('[data-page="wardrobe"]').click()
+   offline.locator('[data-category="hats"]').click();expect(offline.locator('[data-item]')).to_have_count(13)
    offline.locator('[data-category="glasses"]').click();expect(offline.locator('[data-item]')).to_have_count(6)
    offline.evaluate('document.fonts.ready')
    assert offline.evaluate("Array.from(document.fonts).some(f=>f.family==='Pixelify Sans'&&f.status==='loaded')")
@@ -123,6 +128,6 @@ def run():
     for cat in ['hats','clothes','scarves','glasses','tools']:
      page.locator(f'[data-category="{cat}"]').click();assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),(width,cat)
    assert not errors,errors
-   browser.close();print('PASS: Eumo v3; wheel-scroll shop and stationary preview; readable UI + offline logo font; 7 hats/5 clothes/5 scarves/6 glasses with actual pixels; prices and one-per-category; legacy extras; chest slots; home-only head display; 6 paid animated tools absent from outfit preview; no reward multipliers; ownership/reload; responsive chest and categories.')
+   browser.close();print('PASS: Eumo v3; wheel-scroll shop and stationary preview; readable UI + offline logo font; 13 hats/5 clothes/5 scarves/6 glasses with actual pixels; prices and one-per-category; legacy extras; chest slots; home-only head display; 6 paid animated tools absent from outfit preview; no reward multipliers; ownership/reload; responsive chest and categories.')
  finally:server.shutdown();server.server_close()
 if __name__=='__main__':run()

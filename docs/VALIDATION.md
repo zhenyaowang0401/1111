@@ -1,8 +1,18 @@
 # Eumo v3 · 功能与接口验证记录
 
-最新验证日期：2026-11-02；此前同步陪伴与接口记录为 2026-10-22（Asia/Shanghai）。对象为当前源码、Node 接口和 `dist/Eumo.html`。环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0；Vercel 配置目标为 Node 22。
+最新验证日期：2026-11-03；此前同步陪伴与接口记录为 2026-10-22（Asia/Shanghai）。对象为当前源码、Node 接口和 `dist/Eumo.html`。环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0；Vercel 配置目标为 Node 22。
 
 **以下自动化检查使用本地协议 fixture，不代表真实 Qwen 语义质量评测已通过。** 用户已在 Vercel 配置 Key 并提供线上模型回复截图；当前执行环境没有服务商 Key，也无法直接访问该部署，因此没有把用户截图当成完整模型评测。 下表的模型服务使用本地测试 fixture；它验证软件行为，不验证真实模型语气、解题正确性或建议质量。
+
+## 动物帽扩充（2026-11-03）
+
+新增小猫、狗狗、青蛙、熊猫、狐狸、狮子六款帽子，帽子总数为 13。沿用现有星星购买、分类互斥、存档与动态好友外观目录。
+
+`python tests/test_eumo.py` 通过：13 顶帽子均生成不同实际试衣像素，逐件购买按目录价格扣星；拥有后切换免费，眼镜等跨类搭配保留，刷新恢复，普通宝箱/工具回归、手机分类与离线目录通过。人工查看六款新帽子搭配眼镜的真实画布，耳朵、鬃毛和镜框均可辨认。`node --test tests/test_ai.cjs tests/test_friends.cjs` 的 22 项通过，包含真实 PostgreSQL 与后端输入验证；没有把本地测试视为生产部署验证。
+
+![动物帽实际试衣画布（隔离测试存档）](images/eumo-animal-hats.png)
+
+三个下载入口重建后字节相同；当前新增材料兑换仅有设计文档，尚未实施。
 
 ## 隧道陪伴窗
 
@@ -154,8 +164,8 @@
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 21972155
-SHA-256: 850fe551f89723b0b32dc4eae097a214e026b3b302fde91628881c944b9e94fc
+字节数: 21975152
+SHA-256: 80f41c5526d9347fcacfe079ceeca02bfea2988cf0f3d9a5f7cad05ae03f2798
 MP3: Warm Focus 194.520秒；Winter bonfire 12.168秒；Tropical rainforest 13.416秒；botanicore 213.552秒；Litte ridge 222.840秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```
