@@ -136,19 +136,31 @@ window.PixelArt=(()=>{
   for(const x of [24,203]){box(c,x,100,5,49,'#806379');box(c,x-12,98,30,17,t.grassShadow);box(c,x-7,87,21,12,t.grass);box(c,x-3,80,13,9,tint(t.grass,.15));}box(c,72,151,96,4,'#c5a38b');box(c,77,155,86,6,'#8f6d74');mole(c,78,70,3,[],false,frame,s.draftColor||s.profile?.color);star(c,55,132,.5,t.sun);star(c,178,142,.5,t.sun);}
  function renderFriend(c,f,frame){box(c,0,0,96,88,tint(f.color,-.65));for(let i=0;i<6;i++)box(c,Math.floor(random(i,3)*90),Math.floor(random(i,5)*65),1,1,tint(f.color,.25));box(c,12,72,72,3,tint(f.color,-.2));box(c,17,75,62,3,tint(f.color,-.45));mole(c,22,18,2,f.equipped,f.live?f.availability==='online'&&['studying','working','demo'].includes(f.activity):f.status==='Studying',frame,f.color,f.moleMood||'awake',f.tool||null);}
  // Independent small scene: it keeps drawing in the visible PiP window even when the main tab's RAF sleeps.
- function renderFloating(c,s,frame){const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,f=reduced?0:frame,running=s.session?.status==='running'&&Journey.eligible(s.session);
-  c.imageSmoothingEnabled=false;c.clearRect(0,0,112,112);
-  // Transparent sprite over the rounded bubble, with a small oval ground instead of a square tile.
-  oval(c,15,89,86,12,'#211a303d',2);oval(c,23,86,70,9,'#977462',2);box(c,32,86,52,2,'#c5a58b');
-  for(let i=0;i<4;i++)box(c,33+i*13,90+i%2*2,4,1,'#b38c72');
-  const lift=s.petSpinAt?Math.min(8,jump(s)):Math.min(8,jump(s));
-  // Keep long hats inside the canvas during the full spin by gently fitting the rotating sprite.
-  const spinning=!s.session&&s.petSpinAt&&Date.now()-s.petSpinAt<1200&&!reduced;
-  if(spinning){c.save();c.translate(56,56);c.scale(.82,.82);c.translate(-56,-56);}
-  playerMole(c,s,29,35-lift,2,running,f);
-  if(spinning)c.restore();
-  if(running)for(let i=0;i<3;i++){const n=(f+i*4)%12;box(c,78+n*2,80-Math.round(Math.sin(n/12*Math.PI)*14),3,3,'#c5a382');}
+ function renderFloating(c,s,frame){
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,f=reduced?0:frame,running=s.session?.status==='running'&&Journey.eligible(s.session),w=c.canvas.width,h=c.canvas.height,depth=digMetrics(s).worldDepth;
+  c.imageSmoothingEnabled=false;
+  // The entire little window is a cross-section of the current mine. Texture follows actual depth,
+  // capped to the unlocked stratum; browsing the main mine never moves this companion camera.
+  const camera=87+depth*6,front=h-30;
+  c.save();c.translate(-128,0);Terrain.paint(c,camera,h,f,depth);c.restore();
+  const center=y=>64+Math.round(Math.sin((front-y)*.045+depth*.035)*2)*2;
+  for(let y=0;y<front;y+=4){const cx=center(y),wide=y>front-20?43:39;
+   box(c,cx-wide-5,y,5,4,'#6b4e76');box(c,cx-wide,y,5,4,'#3c2c51');box(c,cx-wide+5,y,wide*2-10,4,'#1c1b37');box(c,cx+wide-5,y,5,4,'#2c2342');box(c,cx+wide,y,3,4,'#50384f');
+  }
+  // Ladder disappears behind the mole and continues upward beyond the viewport.
+  const ladderX=center(front)-25,offset=Math.floor(depth*6)%17;
+  box(c,ladderX,0,2,front-2,'#a58b80');box(c,ladderX+14,0,2,front-2,'#b39a87');
+  for(let y=-offset;y<front-3;y+=17)box(c,ladderX-2,y,20,2,'#ddbea0');
+  const cx=center(front);box(c,cx-32,front,64,3,'#b18f7b');box(c,cx-24,front+3,48,2,'#7f655e');
+  // Reserve clear space for the top timer and bottom controls, even in a short, wide window.
+  const ratio=(c.canvas.clientWidth||w)/w,scale=Math.min(2,Math.max(.4,(front-118/ratio)/40)),spinning=!s.session&&s.petSpinAt&&Date.now()-s.petSpinAt<1200&&!reduced;
+  let size=scale,x=cx-13.5*size,y=front-27*size-Math.min(5,jump(s));
+  if(spinning){size=scale*.75;x=cx-13.5*size;y=(40+front)/2-16*size-Math.min(3,jump(s));}
+  const rotation=playerMole(c,s,x,y,size,running,f);
+  if(running)for(let i=0;i<4;i++){const n=(f+i*3)%12,dir=i%2?1:-1;box(c,cx+dir*(16+n*2),front-3-Math.round(Math.sin(n/12*Math.PI)*12),2,2,'#c8a38a');}
+  return {x:x-3*size,y:y-14*size,w:34*size,h:42*size,rotation};
  }
+
  let getState,frame=0,last=0;
  function loop(now){if(now-last>120){last=now;frame++;if(getState){const s=getState(),f=matchMedia('(prefers-reduced-motion: reduce)').matches?0:frame;if(!document.getElementById('setupScreen').hidden)renderSetup(document.getElementById('setupCanvas').getContext('2d'),s,f);if(!document.getElementById('home').hidden)renderHome(document.getElementById('homeCanvas').getContext('2d'),s,f);if(!document.getElementById('focus').hidden&&!s.simpleView)renderMine(document.getElementById('miningCanvas').getContext('2d'),s,f);if(!document.getElementById('wardrobe').hidden)renderWardrobe(document.getElementById('wardrobeCanvas').getContext('2d'),s,f);if(!document.getElementById('companions').hidden)for(const friend of s.companions||[]){const canvas=document.getElementById('friend-'+friend.id);if(canvas)renderFriend(canvas.getContext('2d'),friend,f);}}}requestAnimationFrame(loop);}
  return {iconSVG,homeIcon,digMetrics,renderFloating,refreshFocus(){if(getState)renderMine(document.getElementById('miningCanvas').getContext('2d'),getState(),matchMedia('(prefers-reduced-motion: reduce)').matches?0:frame);},hitTest(id,x,y){const b=bounds[id];return !!b&&x>=b.x&&x<=b.x+b.w&&y>=b.y&&y<=b.y+b.h;},getBounds:id=>bounds[id]?{...bounds[id]}:null,init(get){getState=get;requestAnimationFrame(loop);}};

@@ -29,16 +29,17 @@ def run():
             mini=open_pip();expect(mini.locator('#name')).to_have_text('Momo <3')
             assert mini.evaluate('document.documentElement.scrollWidth<=innerWidth')
             assert mini.evaluate('document.documentElement.scrollHeight<=innerHeight')
-            # Bubble scales down without cropping the timer or creating horizontal scrolling.
-            for width,height in [(240,320),(300,440),(320,310),(240,340)]:
+            # Tunnel fills the window while controls remain readable at every supported size.
+            for width,height in [(240,320),(300,440),(320,310),(240,340),(400,260)]:
                 mini.set_viewport_size({'width':width,'height':height})
                 assert mini.evaluate('document.documentElement.scrollWidth<=innerWidth')
                 assert mini.evaluate('document.documentElement.scrollHeight<=innerHeight')
                 expect(mini.locator('#time')).to_be_in_viewport()
                 expect(mini.locator('#toggle')).to_be_in_viewport()
             mini.set_viewport_size({'width':300,'height':440})
-            assert mini.locator('#pet').bounding_box()['width']>=200
-            assert mini.locator('.bubble').evaluate("e=>parseFloat(getComputedStyle(e).borderRadius)")>=30
+            assert mini.locator('#mole').bounding_box()['width']==300
+            assert mini.locator('#mole').bounding_box()['height']==440
+            assert mini.locator('.tunnel-window').evaluate("e=>parseFloat(getComputedStyle(e).borderRadius)")==0
             mini.set_viewport_size({'width':240,'height':320})
             initial=page.evaluate('JSON.stringify([state.depth,state.balance,state.inventory])')
             # Idle petting uses the same sprite/animation state; no extra rewards.
@@ -63,6 +64,7 @@ def run():
             elapsed=page.evaluate('state.session.elapsed');page.wait_for_timeout(500)
             assert page.evaluate('state.session.elapsed')==elapsed
             expect(mini.locator('#line')).to_contain_text('pause together')
+            expect(mini.locator('#pet')).to_be_in_viewport()
             mini.screenshot(path='/tmp/eumo-floating-paused.png')
             # Main -> mini synchronization, closing/reopening never settles or pauses a session.
             page.evaluate("document.getElementById('startButton').click()")

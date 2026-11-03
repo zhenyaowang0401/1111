@@ -4,6 +4,12 @@
 
 **以下自动化检查使用本地协议 fixture，不代表真实 Qwen 语义质量评测已通过。** 用户已在 Vercel 配置 Key 并提供线上模型回复截图；当前执行环境没有服务商 Key，也无法直接访问该部署，因此没有把用户截图当成完整模型评测。 下表的模型服务使用本地测试 fixture；它验证软件行为，不验证真实模型语气、解题正确性或建议质量。
 
+## 隧道陪伴窗
+
+浮动窗整个内容区使用像素矿洞画布，不再是圆角卡片内放置角色。Terrain.paint 使用实际挖掘深度并限制未解锁地层；梯子、泥土边缘和洞底配合固定跟随角色的取景。独立渲染返回角色点击区域，时间和操作分别在顶部/底部，长帽子根据可用高度缩放。原页面镜头浏览不会移动小窗镜头。
+
+`python tests/test_floating_mole.py` 通过，覆盖真实 Document PiP、240×320 / 300×440 / 320×310 / 240×340 / 400×260 无溢出、完整画布、跨标签动画、点击旋转、共享计时/奖励及离线构建。另在真实 PiP 文档查看了兔耳帽 + 眼镜的默认/横向/较大窗口截图，时间、兔耳、角色和按钮可见；下方截图来自隔离测试存档的 120 米场景。
+
 ## 更小的默认浮动窗
 
 默认请求 240×320，并设置 preferInitialWindowPlacement；实际窗口尺寸和最小限制由浏览器控制。专注运行时去掉固定台词及空气泡。`python tests/test_floating_mole.py` 通过，包含新默认尺寸的无溢出检查、运行时气泡隐藏、暂停提示恢复和共享计时全流程。
@@ -148,8 +154,8 @@
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 21971933
-SHA-256: 25b05ec49ecb9981d120f55c05e3b734db8a793dd2f9640ff01a4591f814f2be
+字节数: 21972155
+SHA-256: 850fe551f89723b0b32dc4eae097a214e026b3b302fde91628881c944b9e94fc
 MP3: Warm Focus 194.520秒；Winter bonfire 12.168秒；Tropical rainforest 13.416秒；botanicore 213.552秒；Litte ridge 222.840秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```
