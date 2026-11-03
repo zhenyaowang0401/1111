@@ -8,6 +8,7 @@
   {id:'baseball',name:'Baseball cap',category:'hats',cost:30,rarity:'Rare',headTop:-2},
   {id:'bunny',name:'Bunny hat',category:'hats',cost:65,rarity:'Rare',headTop:-13},
   {id:'cat',name:'Kitten hat',category:'hats',cost:24,rarity:'Uncommon',headTop:-7},
+  {id:'cowcat',name:'Tuxedo cat hat',category:'hats',cost:15,rarity:'Uncommon',headTop:-8},
   {id:'dog',name:'Puppy hat',category:'hats',cost:28,rarity:'Uncommon',headTop:-2},
   {id:'frog',name:'Frog hat',category:'hats',cost:32,rarity:'Uncommon',headTop:-5},
   {id:'panda',name:'Panda hat',category:'hats',cost:45,rarity:'Rare',headTop:-6},

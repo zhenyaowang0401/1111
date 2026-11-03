@@ -69,6 +69,11 @@ window.PixelArt=(()=>{
  box(c,0,h-2,w,2,'#0c122f');}
  function renderWardrobe(c,s,frame){const t=WorldClock.snapshot();box(c,0,0,192,160,t.sky);if(t.period!=='night'){cloud(c,8,24,t.cloud);cloud(c,142,13,t.cloudBack);}if(t.period==='night')for(let i=0;i<15;i++){const x=Math.floor(random(i,1)*186),y=Math.floor(random(i,6)*116);if(i%4===0)star(c,x,y,.5,'#7c8bd2');else box(c,x,y,1,1,'#6775ae');}box(c,20,116,152,5,'#51447d');box(c,26,121,140,9,'#393361');box(c,32,130,128,5,'#27264d');box(c,18,116,4,5,'#a17cb7');box(c,170,116,4,5,'#a17cb7');const lift=Math.min(18,jump(s)),rotation=playerMole(c,s,57,32-lift,3,false,frame);bounds.wardrobeCanvas={x:57,y:23-lift,w:87,h:94,rotation};positionSpeech('wardrobeSpeech',bounds.wardrobeCanvas,192,160);star(c,28,55,1,'#fff0a9');star(c,151,34,.5,'#f6a6d2');}
  const furniture={
+ mushroomPlanter:[[4,20,24,3,'#b98269'],[6,23,20,6,'#98654f'],[9,29,14,2,'#6c4b49'],[7,21,18,2,'#e3ac83'],[8,18,16,2,'#6f8c65'],[13,8,4,11,'#f5dfb5'],[7,6,16,3,'#f1b5cd'],[5,9,20,5,'#b875a1'],[7,9,16,3,'#d88db3'],[10,7,3,2,'#fff0d0'],[18,9,3,2,'#ffe7c3'],[23,15,3,5,'#e6cca4'],[20,14,9,3,'#f0b3c4'],[21,13,7,2,'#ffe0c9'],[3,18,3,4,'#a6c48a']],
+ mushroomLamp:[[10,27,16,3,'#ba9470'],[12,25,12,3,'#e6be91'],[15,13,5,12,'#f5e4b3'],[15,15,2,9,'#fff3ce'],[5,11,25,4,'#975c91'],[7,14,21,3,'#ffdf91'],[8,5,19,6,'#df94bc'],[11,3,13,3,'#f8c3d8'],[5,9,25,4,'#d781ac'],[11,6,4,3,'#fff2ce'],[21,8,4,3,'#ffe3bd'],[5,20,2,2,'#ffdc85'],[26,20,2,2,'#ffdc85']],
+ crystalChime:[[15,0,2,5,'#d3b18c'],[3,5,27,3,'#b58673'],[5,4,23,2,'#e6bd98'],[7,8,1,8,'#c7c1c0'],[15,8,1,12,'#c7c1c0'],[24,8,1,6,'#c7c1c0'],[5,16,5,9,'#73b7d0'],[6,14,3,2,'#abeced'],[6,16,2,7,'#c7f5ef'],[6,25,3,2,'#5f80b2'],[13,20,5,9,'#899bd2'],[14,18,3,2,'#b3e3f0'],[14,20,2,7,'#caedf5'],[14,29,3,2,'#666f9f'],[22,14,5,7,'#86cccb'],[23,12,3,2,'#c3f1de'],[23,14,2,5,'#e3fff0'],[23,21,3,2,'#5f9fad']],
+ fossilFrame:[[14,0,4,2,'#ba9573'],[2,2,28,28,'#674d4b'],[3,3,26,26,'#c69972'],[5,5,22,22,'#e4c5a0'],[7,7,18,18,'#796b77'],[10,9,12,3,'#e2d0b5'],[9,12,3,9,'#e2d0b5'],[12,20,10,3,'#c6b69e'],[20,12,3,8,'#c6b69e'],[13,12,7,3,'#f3dfbd'],[13,14,3,5,'#f3dfbd'],[16,17,3,2,'#e2d0b5'],[4,4,23,1,'#f4d3a2']],
+ starMobile:[[15,0,2,5,'#bda3b6'],[3,5,26,2,'#b99ac9'],[5,7,1,9,'#d4c6cf'],[15,7,1,13,'#d4c6cf'],[25,7,1,6,'#d4c6cf'],[4,15,3,9,'#ffe8a3'],[1,18,9,3,'#ffe8a3'],[5,17,1,4,'#fff6d0'],[14,20,3,10,'#edc779'],[11,23,9,4,'#ffe8a3'],[15,22,1,5,'#fff6d0'],[24,12,3,9,'#f6d99c'],[21,15,9,3,'#f6d99c'],[25,14,1,4,'#fff6d0'],[6,5,20,1,'#e8c8e4']],
  rug:[[0,12,32,10,'#ac8064'],[2,14,28,6,'#d9bc91'],[4,16,24,2,'#f2d8b2'],[5,14,2,6,'#b58667'],[25,14,2,6,'#b58667']],
  lamp:[[12,26,12,3,'#e7bd7d'],[17,10,3,16,'#af825f'],[9,3,20,12,'#ffd485'],[11,2,16,3,'#fff0af'],[12,15,14,2,'#a87674']],
  cushion:[[3,15,26,12,'#b96999'],[5,12,22,12,'#f1a1c2'],[8,14,16,3,'#ffd1dd'],[6,26,20,2,'#704869']],
@@ -86,7 +91,7 @@ window.PixelArt=(()=>{
  }
  function drawHomeItem(c,id,spot){
   const find=id.startsWith('find:'),definition=HomeCatalog.items.find(i=>i.id===id),scale=find?.85:definition.scale,foot=find?32:definition.foot,x=spot.x-16*scale,y=spot.y-foot*scale;
-  if(id!=='art'&&id!=='rug')oval(c,spot.x-18*scale,spot.y-2,36*scale,5,'#322c2944',2);
+  if(!definition?.slots.includes('wall')&&id!=='rug')oval(c,spot.x-18*scale,spot.y-2,36*scale,5,'#322c2944',2);
   if(find){box(c,x+4*scale,spot.y,24*scale,3,'#b29674');box(c,x+6*scale,spot.y+3,20*scale,3,'#795f4d');item(c,id.slice(5),x,y,scale);}
   else{for(const [a,b,w,h,color] of furniture[id]||[])box(c,x+a*scale,y+b*scale,w*scale,h*scale,color);
    // Shared contact shadows, wood grain and highlights give furniture weight.

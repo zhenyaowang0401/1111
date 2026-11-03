@@ -55,6 +55,22 @@ Demo 保留在 Focus 中，可反复测试：每 3 秒 1 米，完成一轮固�
 
 普通查看不停止计时；运行中点击 Pause & decorate 会先暂停再编辑。结束布置不会自动恢复，需要回到 Focus 点击 Resume。
 
+## 材料制作家具
+
+Home 的 Craft decor、宝箱底部和 Inventory 都可打开制作窗口。窗口显示实际像素成品、摆放位置、所需材料、可用数量和收集进度。运行中入口明确标为 Pause & craft，点击后暂停；暂停及空闲时可制作。确认窗口再检查库存和会话状态。
+
+| 成品 | 配方 | 位置 |
+| --- | --- | --- |
+| Mushroom planter（蘑菇盆栽） | 1 个 Glow mushroom | 左右角落 |
+| Mushroom lamp（蘑菇灯） | 2 个 Glow mushroom | 左右角落 |
+| Crystal wind chime（水晶风铃） | 2 个 Stardust crystal | 墙面 |
+| Fossil frame（化石画框） | 1 个 Spiral fossil | 墙面 |
+| Starry mobile（星空挂饰） | 2 个 Star fragment | 墙面 |
+
+只扣除未摆放且未顶在头上的副本；星星碎片与星星余额独立，制作不扣星星。每件成品只制作一次，永久保存在原 home.owned 中；之后通过 Decorate 自选位置、免费移动或收起，不自动覆盖当前家具。原有基础家具价格不变。
+
+普通发现记录保存为 foundDiscoveries，旧存档从已有背包迁移；材料消耗完仍是已发现，图鉴显示剩余 ×0。金色收藏不参与材料制作，继续沿用现有展示与 99 星出售。五款装饰使用原有四个摆放位，没有增加生产或收益倍率。
+
 ## 游戏宝箱与头顶展示
 
 点击房间里的宝箱或 Open chest，打开木箱、金属搭扣和背包格子的游戏界面。四种发现物显示实际拥有数量；其余空格是装饰，不表示限制容量。选择物品后，下方显示名称、库存和摆放数，再点击 Display on head。已展示的物品显示 On head，也可以在家园点击 Put back 收起。
@@ -69,7 +85,7 @@ Demo 保留在 Focus 中，可反复测试：每 3 秒 1 米，完成一轮固�
 
 | 类别 | 物品与星星价格 |
 | --- | --- |
-| 帽子（13） | Explorer hat 3；Sun hat 6；Bucket hat 9；Baseball cap 30；Bunny hat 65；Kitten hat 24；Puppy hat 28；Frog hat 32；Panda hat 45；Fox hat 50；Lion hat 60；Space helmet 80；Little crown 120 |
+| 帽子（14） | Explorer hat 3；Sun hat 6；Bucket hat 9；Baseball cap 30；Bunny hat 65；Kitten hat 24；Tuxedo cat hat 15；Puppy hat 28；Frog hat 32；Panda hat 45；Fox hat 50；Lion hat 60；Space helmet 80；Little crown 120 |
 | 衣服（5） | Cream sweater 12；Honey coat 15；Lilac hoodie 20；Brown school uniform 25；Peach puffer 40 |
 | 围脖（5） | Mint scarf 3；Striped scarf 8；Checkered scarf 14；Ribbon scarf 22；Fluffy scarf 38 |
 | 眼镜（6，新增 5） | Goggles 2；Sunglasses 6；Round glasses 8；Square frames 10；Heart frames 24；Star shades 45 |

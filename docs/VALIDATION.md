@@ -4,6 +4,22 @@
 
 **以下自动化检查使用本地协议 fixture，不代表真实 Qwen 语义质量评测已通过。** 用户已在 Vercel 配置 Key 并提供线上模型回复截图；当前执行环境没有服务商 Key，也无法直接访问该部署，因此没有把用户截图当成完整模型评测。 下表的模型服务使用本地测试 fixture；它验证软件行为，不验证真实模型语气、解题正确性或建议质量。
 
+## 材料制作与奶牛猫帽（2026-11-03）
+
+五款材料装饰接入 Home、宝箱和 Inventory，制作前预览配方并确认；共用原家园拥有列表与摆放位。新增奶牛猫帽 15 星，当前帽子共 14 顶。以下为本地源码与离线构建验证，尚未直接验证 Vercel 新部署。
+
+- `node --test tests/test_crafting.cjs tests/test_treasures.cjs`：9 项通过。覆盖预留头顶及摆放副本、准确扣除、重复/无效/不足/运行中拒绝、确认期间库存变化、序列化持久发现记录；原金色掉落和 99 星出售逻辑回归。
+- `python tests/test_crafting_browser.py`：通过。真实点击入口、取消及 Escape 不扣材料、确认后成品保存、移动/替换家具、材料用完的图鉴与宝箱状态、刷新、原星星家具、运行入口暂停及确认时再次运行/库存变化、320～1000 像素窗口、离线制作均通过。比较实际墙面像素并查看真实家园中的五款装饰及奶牛猫帽。
+- `python tests/test_eumo.py`：通过。14 顶帽子的逐件扣星、不同实际像素、跨类搭配、拥有后免费换装、保存及断网目录；普通宝箱与工具回归。
+- `python tests/test_supermo.py`：通过。原家园、普通发现物顶头/摆放、睡眠/抚摸、矿洞地层、音乐和手机布局回归。
+- 三个单文件入口重新构建后字节相同；修改的 JavaScript 通过语法检查。
+
+新界面截图使用隔离测试存档；材料数量、帽子和家具是测试 fixture，不是生产玩家账户数据。初始配方为 1～2 个材料，仍需后续用户测试评估长期收集节奏。
+
+![用发现物制作装饰](images/eumo-crafting.png)
+
+![新装饰与奶牛猫帽的实际家园画布](images/eumo-crafting-home.png)
+
 ## 动物帽扩充（2026-11-03）
 
 新增小猫、狗狗、青蛙、熊猫、狐狸、狮子六款帽子，帽子总数为 13。沿用现有星星购买、分类互斥、存档与动态好友外观目录。
@@ -164,8 +180,8 @@
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 21975152
-SHA-256: 80f41c5526d9347fcacfe079ceeca02bfea2988cf0f3d9a5f7cad05ae03f2798
+字节数: 21991102
+SHA-256: 093b7d57cb5546f8e58347da0dafa0e104e8d8161b968f6b9b3c3332b4f5ace5
 MP3: Warm Focus 194.520秒；Winter bonfire 12.168秒；Tropical rainforest 13.416秒；botanicore 213.552秒；Litte ridge 222.840秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```
