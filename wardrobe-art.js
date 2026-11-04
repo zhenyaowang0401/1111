@@ -17,13 +17,6 @@ window.WardrobeArt=(()=>{
   astronaut:[[4,-3,18,2,'#d5e1e7'],[1,-1,24,4,'#b8cbd7'],[0,3,3,14,'#9bafbf'],[23,3,3,14,'#8199b0'],[3,1,20,2,'#edf3ed'],[3,3,2,12,'#c4e2e3'],[21,3,2,12,'#b0cbd3'],[2,16,22,3,'#a7bdcb'],[5,17,16,3,'#dce4e3'],[-2,7,3,6,'#d9b782'],[25,7,3,6,'#d9b782'],[8,-5,10,2,'#f4eee0'],[5,4,3,2,'#e8fffa']],
   crown:[[4,-5,4,9,'#e6b14b'],[11,-7,4,11,'#f7cf6c'],[18,-5,4,9,'#d99d3d'],[4,2,18,4,'#c68e3c'],[5,2,16,2,'#ffe299'],[6,-4,2,2,'#e87b9c'],[12,-6,2,2,'#a5dcdf'],[19,-4,2,2,'#b5cf8b'],[11,3,3,2,'#e87b9c']]
  };
- const clothes={
-  sweater:[[1,18,5,6,'#cfb997'],[21,18,5,6,'#cfb997'],[4,21,18,5,'#e9d4b4'],[5,21,16,1,'#f9ead1'],[5,24,16,1,'#c3a88b'],[7,22,2,1,'#d0bb9c'],[11,22,2,1,'#d0bb9c'],[15,22,2,1,'#d0bb9c'],[1,23,5,1,'#f6e4c9'],[21,23,5,1,'#f6e4c9']],
-  coat:[[0,18,6,6,'#c49b6c'],[21,18,6,6,'#c49b6c'],[4,21,18,5,'#dfba84'],[5,20,4,3,'#f5d8a5'],[18,20,3,3,'#f0d09d'],[13,22,1,4,'#ac8159'],[14,22,1,1,'#785740'],[14,24,1,1,'#785740'],[6,24,4,1,'#a9815b'],[17,24,3,1,'#a9815b']],
-  hoodie:[[0,18,6,6,'#a18abb'],[21,18,6,6,'#a18abb'],[4,21,18,5,'#bba3d2'],[6,20,3,2,'#d6c6e5'],[18,20,2,2,'#d6c6e5'],[9,23,9,2,'#927aab'],[10,23,7,1,'#cbb7dd'],[7,20,1,3,'#eee1df'],[18,20,1,3,'#eee1df'],[1,23,4,1,'#d2bee2'],[22,23,4,1,'#d2bee2']],
-  uniform:[[0,18,6,6,'#805b47'],[21,18,6,6,'#805b47'],[4,21,18,5,'#9f7455'],[6,20,4,3,'#f0d9b8'],[17,20,4,3,'#f0d9b8'],[12,21,3,3,'#c2a77e'],[13,23,1,3,'#634733'],[15,23,1,1,'#e2bc74'],[18,23,3,1,'#5c473b'],[1,23,4,1,'#dfc19b'],[22,23,4,1,'#dfc19b']],
-  puffer:[[0,17,6,8,'#d49e9d'],[21,17,6,8,'#d49e9d'],[4,21,18,5,'#e6b5a8'],[0,19,6,1,'#b88087'],[21,19,6,1,'#b88087'],[0,22,6,1,'#b88087'],[21,22,6,1,'#b88087'],[5,23,16,1,'#c08d92'],[5,25,16,1,'#c08d92'],[13,21,1,5,'#fff0ce'],[5,20,4,2,'#f5d2bb'],[18,20,3,2,'#f5d2bb']]
- };
  const scarves={
   scarf:[[5,18,17,3,'#69cac5'],[8,20,13,2,'#3e9eac'],[17,21,4,6,'#7ce5d4'],[17,25,4,1,'#c2ffdf']],
   striped:[[4,18,19,3,'#d7ab82'],[5,19,18,1,'#f6dfb6'],[17,20,4,7,'#bc8f70'],[17,21,4,2,'#f4d4a3'],[17,25,4,1,'#f4d4a3']],
@@ -39,6 +32,7 @@ window.WardrobeArt=(()=>{
   heartglasses:[[6,9,2,1,'#f39bb7'],[10,9,2,1,'#f39bb7'],[5,10,8,1,'#f39bb7'],[5,11,1,2,'#f39bb7'],[12,11,1,2,'#f39bb7'],[6,13,1,1,'#d86e9b'],[11,13,1,1,'#d86e9b'],[7,14,4,1,'#d86e9b'],[8,15,2,1,'#d86e9b'],[16,9,2,1,'#f39bb7'],[20,9,2,1,'#f39bb7'],[15,10,8,1,'#f39bb7'],[15,11,1,2,'#f39bb7'],[22,11,1,2,'#f39bb7'],[16,13,1,1,'#d86e9b'],[21,13,1,1,'#d86e9b'],[17,14,4,1,'#d86e9b'],[18,15,2,1,'#d86e9b'],[13,11,2,1,'#f39bb7'],[6,10,2,1,'#ffe0da'],[16,10,2,1,'#ffe0da']],
   starglasses:[[8,8,2,2,'#f7d27c'],[6,10,6,1,'#f7d27c'],[4,11,10,2,'#f7d27c'],[6,13,6,1,'#e2ae62'],[6,14,2,2,'#e2ae62'],[10,14,2,2,'#e2ae62'],[8,11,2,3,'#8293ca'],[18,8,2,2,'#f7d27c'],[16,10,6,1,'#f7d27c'],[14,11,10,2,'#f7d27c'],[16,13,6,1,'#e2ae62'],[16,14,2,2,'#e2ae62'],[20,14,2,2,'#e2ae62'],[18,11,2,3,'#8293ca'],[13,11,2,1,'#f7d27c']]
  };
+ const extras={"star":[[22,18,2,2,"#ffe59b"],[20,20,6,2,"#ffe59b"],[22,22,2,2,"#e1b568"],[22,20,1,1,"#fff9d9"]],"heartpin":[[20,18,2,2,"#ef94b8"],[23,18,2,2,"#ef94b8"],[20,19,5,2,"#ef94b8"],[21,21,3,1,"#d56c9b"],[22,22,1,1,"#d56c9b"],[21,19,1,1,"#ffe2eb"]],"leafpin":[[23,18,2,1,"#c3df9d"],[21,19,4,2,"#95c793"],[20,21,4,2,"#70a77e"],[20,23,1,1,"#e0c291"],[21,21,1,1,"#e3edb5"],[22,20,1,1,"#e3edb5"]],"flowerpin":[[22,18,2,2,"#fff0d7"],[20,20,2,2,"#fff0d7"],[24,20,2,2,"#fff0d7"],[22,22,2,2,"#e7d8cd"],[22,20,2,2,"#e8bb60"]],"moonpin":[[22,18,3,1,"#ffe4a5"],[21,19,2,1,"#ffe4a5"],[20,20,2,3,"#eac580"],[21,23,4,1,"#eac580"],[23,22,2,1,"#ffe4a5"],[21,20,1,2,"#fff3cd"]],"mushroompin":[[21,18,4,1,"#d58db4"],[20,19,6,3,"#d58db4"],[21,19,1,1,"#ffe6dc"],[24,20,1,1,"#ffe6dc"],[22,22,2,2,"#f3dbb3"]],"bellpin":[[22,18,2,1,"#c1e4d5"],[21,19,4,3,"#e4bc72"],[20,22,6,1,"#ffe4a4"],[22,23,2,1,"#b68b5d"],[22,19,1,2,"#fff0be"]],"crystalpin":[[22,18,2,1,"#c9faf2"],[21,19,4,3,"#93d9e4"],[22,22,2,2,"#8499d0"],[21,20,2,2,"#c9faf2"],[24,20,1,2,"#6eafcd"]]};
  const tools={
   spoon:[[24,15,2,15,'#b4c2c5'],[22,6,6,2,'#e2e9df'],[20,8,10,7,'#b4c8d0'],[22,9,6,5,'#e3eeea'],[24,29,2,2,'#8d9ba8']],
   shovel:[[24,6,6,2,'#c1976c'],[23,8,2,5,'#c1976c'],[29,8,2,5,'#c1976c'],[24,12,6,2,'#c1976c'],[26,14,2,9,'#c1976c'],[22,22,10,6,'#87a8b4'],[24,28,6,3,'#72919e'],[26,23,2,5,'#c4dfe1']],
@@ -54,6 +48,6 @@ window.WardrobeArt=(()=>{
   draw((x,y,w,h,c)=>r(x+vibration,y+bob,w,h,c),tools[id]);
   if(id==='drill'||id==='crystaldrill')r(36+frame%3,17+bob,1,2,frame%2?'#607c98':'#f0fff7');
  }
- function iconSVG(id){const rs=hats[id]||clothes[id]||scarves[id]||glasses[id]||tools[id];if(!rs)return null;const xs=rs.map(r=>r[0]),ys=rs.map(r=>r[1]),minX=Math.min(...xs),minY=Math.min(...ys),maxX=Math.max(...rs.map(r=>r[0]+r[2])),maxY=Math.max(...rs.map(r=>r[1]+r[3])),size=Math.max(maxX-minX,maxY-minY)+5,x=(minX+maxX-size)/2,y=(minY+maxY-size)/2;return `<svg viewBox="${x} ${y} ${size} ${size}" aria-hidden="true" shape-rendering="crispEdges">`+rs.map(([x,y,w,h,color])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${color}"/>`).join('')+'</svg>';}
- return {hat:(r,id)=>draw(r,hats[id]),clothes:(r,id)=>draw(r,clothes[id]),scarf:(r,id)=>draw(r,scarves[id]),glasses:(r,id)=>draw(r,glasses[id]),drawTool,iconSVG};
+ function iconSVG(id){const rs=hats[id]||extras[id]||scarves[id]||glasses[id]||tools[id];if(!rs)return null;const xs=rs.map(r=>r[0]),ys=rs.map(r=>r[1]),minX=Math.min(...xs),minY=Math.min(...ys),maxX=Math.max(...rs.map(r=>r[0]+r[2])),maxY=Math.max(...rs.map(r=>r[1]+r[3])),size=Math.max(maxX-minX,maxY-minY)+5,x=(minX+maxX-size)/2,y=(minY+maxY-size)/2;return `<svg viewBox="${x} ${y} ${size} ${size}" aria-hidden="true" shape-rendering="crispEdges">`+rs.map(([x,y,w,h,color])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${color}"/>`).join('')+'</svg>';}
+ return {hat:(r,id)=>draw(r,hats[id]),extra:(r,id)=>draw(r,extras[id]),scarf:(r,id)=>draw(r,scarves[id]),glasses:(r,id)=>draw(r,glasses[id]),drawTool,iconSVG};
 })();

@@ -4,6 +4,15 @@
 
 **以下自动化检查使用本地协议 fixture，不代表真实 Qwen 语义质量评测已通过。** 用户已在 Vercel 配置 Key 并提供线上模型回复截图；当前执行环境没有服务商 Key，也无法直接访问该部署，因此没有把用户截图当成完整模型评测。 下表的模型服务使用本地测试 fixture；它验证软件行为，不验证真实模型语气、解题正确性或建议质量。
 
+## 小配饰与衣服下架（2026-11-04）
+
+`python tests/test_accessories.py` 通过：含重复旧衣服 ID 的存档准确返还 112 星，自动卸下，刷新不重复退款；保留帽子、库存、深度；8 款配饰实际像素均不同，购买准确扣星、同槽替换、重载与中文名称均正确，离线包也完成迁移。独立语言预览的选择、关闭和移动布局通过。`node --test tests/test_friends.cjs` 6 项通过，确认共用装备目录后的好友接口回归。
+
+`python tests/test_eumo.py` 回归通过：14 帽子、5 围巾、6 眼镜、8 配饰，拥有/换装/保存，商店滚动，宝箱，6 款工具动画与原奖励，320/390/768/1000 布局，离线目录。已查看实际小配饰与语言方案截图。语言图标选择尚待用户确认，生产按钮没有替换；未验证 Vercel 新部署。
+
+![小配饰商店](images/eumo-small-accessories.png)
+![语言入口方案](images/eumo-language-options.png)
+
 ## 可选新手指引（2026-11-04）
 
 `python tests/test_onboarding.py` 通过：首次设置后可选欢迎、四步和音乐/AI 高亮切换、1440×960 / 390×844 / 320×640 / 1000×550 布局、跳过与 Escape、完成聚焦 Start、刷新不再弹出、Help 重看、键盘焦点限制、中文切换、运行中禁用以及从其他窗口恢复时关闭指引。比较指引前后计时、余额、库存、深度和拥有列表，均未改动；禁用本地存储仍可关闭，离线包仍可首次使用。
@@ -201,8 +210,8 @@
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 22027539
-SHA-256: 3addae79d40e8beebf25b8b117249c7d11a7cfb959e6e28fc26b627634e89833
+字节数: 22028131
+SHA-256: e3fbbd02b37f85a4686cde8a7c212fc15d3fa24fd2d91f483cdc1d74c257b4d2
 MP3: Warm Focus 194.520秒；Winter bonfire 12.168秒；Tropical rainforest 13.416秒；botanicore 213.552秒；Litte ridge 222.840秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```

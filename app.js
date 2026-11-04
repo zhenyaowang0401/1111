@@ -21,13 +21,14 @@ function duration(seconds,withSeconds=false){seconds=Math.max(0,Math.floor(secon
 let state={profile:{name:'Momo',color:'#b784cf',configured:false},depth:0,surfaceDepth:0,digDay:todayKey(),inventory:[0,0,0,0],balance:0,owned:[],equipped:[],ownedTools:[],tool:null,sessions:0,totalSeconds:0,history:[],session:null,minutes:25,mode:'study',reportDays:{},musicVolume:.45,musicTrack:MusicCatalog.defaultTrack,musicRepeat:'one',eligibleSeconds:0,lastTask:'',idleAt:Date.now(),heldItem:null,simpleView:false,home:{theme:'cave',ownedThemes:['cave'],owned:['rug'],slots:{floor:'rug',left:null,right:null,wall:null}}};
 state.progressVersion=2;
 state.rareSeed=Array.from(crypto.getRandomValues(new Uint8Array(16)),v=>v.toString(16).padStart(2,'0')).join('');state.rareInventory={};state.rareClaimed=0;state.displayedTreasure=null;
-let canSave=true,storageWarning=false;
+let canSave=true,storageWarning=false,retiredClothingRefund=0;
 try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));if(saved&&typeof saved==='object'){
  if(saved.profile&&typeof saved.profile==='object'){const name=cleanPetName(saved.profile.name);state.profile={name:name||'Momo',color:cleanPetColor(saved.profile.color),configured:!!saved.profile.configured&&!!name};}
  for(const key of ['depth','balance','sessions','totalSeconds'])state[key]=Math.max(0,Number(saved[key])||0);
  state.surfaceDepth=Math.max(0,Math.min(state.depth,Number(saved.surfaceDepth)||0));state.digDay=/^\d{4}-\d{2}-\d{2}$/.test(saved.digDay)?saved.digDay:todayKey();
  state.foundDiscoveries=Array.isArray(saved.foundDiscoveries)?saved.foundDiscoveries.filter(id=>discoveries.some(d=>d.id===id)):[];
  state.inventory=Array.from({length:4},(_,i)=>Math.max(0,Math.floor(Number(saved.inventory?.[i])||0)));
+ retiredClothingRefund=WardrobeCatalog.clothingRefund(saved.owned);state.balance+=retiredClothingRefund;
  state.owned=Array.isArray(saved.owned)?[...new Set(saved.owned.filter(id=>outfits.some(o=>o.id===id)))]:[];
  const equipped=Array.isArray(saved.equipped)?saved.equipped:(typeof saved.equipped==='string'?[saved.equipped]:[]);state.equipped=WardrobeCatalog.normalize(equipped,state.owned);state.ownedTools=Array.isArray(saved.ownedTools)?[...new Set(saved.ownedTools.filter(id=>tools.some(t=>t.id===id)))]:[];state.tool=state.ownedTools.includes(saved.tool)?saved.tool:null;
  state.history=Array.isArray(saved.history)?saved.history.filter(h=>h&&Number.isFinite(h.at)&&Number.isFinite(h.seconds)&&Number.isFinite(h.stars)&&modes[h.mode]).map(h=>({...h,demo:h.demo??h.seconds===15,outcome:h.outcome||'complete'})):[];
@@ -297,3 +298,5 @@ EumoI18n.observe(document);
 document.getElementById("languageSwitch").addEventListener("click",()=>EumoI18n.set(EumoI18n.language==='en'?'zh':'en'));
 
 Onboarding.init({read:()=>state,navigate:navigateTo});
+
+if(retiredClothingRefund){save();toast(EumoI18n.language==='zh'?`已下架衣服，退回 ${retiredClothingRefund} 星。`:`Retired clothes refunded: ${retiredClothingRefund} stars.`);}

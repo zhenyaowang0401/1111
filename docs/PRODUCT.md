@@ -79,14 +79,14 @@ Home 的 Craft decor、宝箱底部和 Inventory 都可打开制作窗口。窗�
 
 唯一副本已经摆放时，Take & display 会先清空对应位置，再顶到头上；将头顶物品摆入房间则自动收起展示。拥有数量不变；摆放与头顶副本合计不超过库存。展示选择会保存，刷新后恢复，不增加奖励。
 
-## 分类服装与工具
+## 分类装扮与工具
 
-帽子、衣服、围脖、眼镜各自同时装备一件；选择同类另一件会替换旧件，旧件仍归玩家所有。类别之间可叠穿；原 Goggles（2 星）归入 Glasses，Star pin（5 星）留在 Extras；继续保留原存档、价格和搭配。星星胸针作为胸前配饰，不占用帽子位。
+帽子、配饰、围脖、眼镜各自同时装备一件；选择同类另一件会替换旧件，旧件仍归玩家所有。类别之间可叠穿；原 Goggles（2 星）归入 Glasses，Star pin（5 星）留在 Extras；继续保留原存档、价格和搭配。胸针位只选一个，不占用帽子位；所有配饰使用最多 6×6 像素的小图形。五款衣服已下架，加载旧存档时移除拥有和穿戴中的衣服，并按原价一次性返还星星。存档保存后不会再次退款。
 
 | 类别 | 物品与星星价格 |
 | --- | --- |
 | 帽子（14） | Explorer hat 3；Sun hat 6；Bucket hat 9；Baseball cap 30；Bunny hat 65；Kitten hat 24；Tuxedo cat hat 15；Puppy hat 28；Frog hat 32；Panda hat 45；Fox hat 50；Lion hat 60；Space helmet 80；Little crown 120 |
-| 衣服（5） | Cream sweater 12；Honey coat 15；Lilac hoodie 20；Brown school uniform 25；Peach puffer 40 |
+| 配饰（8） | Star pin 5；Heart pin 6；Leaf pin 8；Daisy pin 10；Moon pin 12；Mushroom pin 15；Little bell 18；Crystal pin 22 |
 | 围脖（5） | Mint scarf 3；Striped scarf 8；Checkered scarf 14；Ribbon scarf 22；Fluffy scarf 38 |
 | 眼镜（6，新增 5） | Goggles 2；Sunglasses 6；Round glasses 8；Square frames 10；Heart frames 24；Star shades 45 |
 | 工具（6） | Giant spoon 45；Garden shovel 60；Garden fork 75；Electric drill 90；Jackhammer 150；Crystal drill 240 |

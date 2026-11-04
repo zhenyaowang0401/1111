@@ -40,7 +40,7 @@ def run():
    assert page.locator('.wardrobe-layout').bounding_box()['height']<=page.viewport_size['height']
 
    eyewear_pixels=[];hat_pixels=[]
-   for category,count in [('hats',14),('clothes',5),('scarves',5),('glasses',6)]:
+   for category,count in [('hats',14),('scarves',5),('glasses',6),('extras',8)]:
     page.locator(f'[data-category="{category}"]').click();expect(page.locator('.outfit-card')).to_have_count(count)
     if category=='hats':page.screenshot(path=str(ROOT/'docs/images/eumo-equipment.png'),full_page=True)
     ids=page.locator('[data-item]').evaluate_all('els=>els.map(e=>e.dataset.item)')
@@ -60,12 +60,12 @@ def run():
      else:
       price=page.evaluate('(id)=>WardrobeCatalog.items.find(i=>i.id===id).cost',id)
       assert before['balance']-after['balance']==price
-   expect(page.locator('#equippedCount')).to_have_text('5 equipped')
+   expect(page.locator('#equippedCount')).to_have_text('4 equipped')
    assert len(set(hat_pixels))==14,'Every hat must change actual rendered pixels'
    assert len(set(eyewear_pixels))==6,'Glasses should visibly change the actual mole'
    page.screenshot(path=str(ROOT/'docs/images/eumo-v2-glasses.png'),full_page=True)
-   assert saved()['balance']==2149
-   page.reload();expect(page.locator('#equippedCount')).to_have_text('5 equipped')
+   assert saved()['balance']==2170
+   page.reload();expect(page.locator('#equippedCount')).to_have_text('4 equipped')
    # Real game inventory slots, one selected item tray, no added hands.
    page.locator('[data-page="home"]').click();page.locator('#openChestButton').click()
    expect(page.locator('[data-chest-slot]')).to_have_count(4);expect(page.locator('.empty-slot')).to_have_count(8)
@@ -91,7 +91,7 @@ def run():
     page.locator('[data-page="wardrobe"]').click();page.locator('[data-category="tools"]').click()
     balance=saved()['balance'];price=page.evaluate('(id)=>WardrobeCatalog.tools.find(t=>t.id===id).cost',id)
     page.locator(f'[data-tool="{id}"]').click();assert balance-saved()['balance']==price
-    expect(page.locator(f'[data-tool="{id}"]')).to_have_text('Using');expect(page.locator('#equippedCount')).to_have_text('5 equipped')
+    expect(page.locator(f'[data-tool="{id}"]')).to_have_text('Using');expect(page.locator('#equippedCount')).to_have_text('4 equipped')
     page.wait_for_timeout(160);assert pixels('#wardrobeCanvas',color)==0,(id,'tool shown as clothing')
     page.locator('[data-page="focus"]').click();page.locator('#demoButton').click();page.locator('#startButton').click()
     positions=set()
@@ -103,14 +103,14 @@ def run():
     assert len(positions)>1,(id,'tool not animated',positions)
     tool_images.append(page.locator('#miningCanvas').screenshot())
     page.clock.fast_forward(15000);expect(page.locator('#finishStars')).to_have_text('+1 ✦');page.locator('#claimButton').click()
-   assert len(set(tool_images))==6 and saved()['balance']==1495
+   assert len(set(tool_images))==6 and saved()['balance']==1516
    page.reload();assert saved()['tool']=='crystaldrill' and len(saved()['ownedTools'])==6
    page.locator('[data-page="wardrobe"]').click();page.locator('[data-category="tools"]').click();page.locator('#resetTool').click();assert saved()['tool'] is None
    # Reusing owned equipment is free, same-category replacement remains free.
    balance=saved()['balance'];page.locator('[data-category="hats"]').click();page.locator('[data-item="bucket"]').click();page.locator('[data-item="crown"]').click();assert saved()['balance']==balance
    page.locator('[data-page="reports"]').click();expect(page.locator('#reportToday')).to_have_text('0m')
    # The canonical standalone carries the font and new store offline.
-   offline_context=browser.new_context();offline=offline_context.new_page()
+   offline_context=browser.new_context();offline_context.add_init_script("localStorage.setItem('eumo-tour-v1','seen')");offline=offline_context.new_page()
    offline.goto(url+'/dist/Eumo.html');offline_context.set_offline(True)
    offline.locator('#enterGame').click();offline.locator('[data-page="wardrobe"]').click()
    offline.locator('[data-category="hats"]').click();expect(offline.locator('[data-item]')).to_have_count(14)
@@ -125,9 +125,9 @@ def run():
     box=page.locator('#chestDialog').bounding_box();assert box['height']<=height,('chest too tall',width,box)
     page.locator('#chestDoneButton').click();page.locator('[data-page="wardrobe"]').click()
     if width==390:page.screenshot(path=str(ROOT/'docs/images/eumo-v2-mobile.png'),full_page=True)
-    for cat in ['hats','clothes','scarves','glasses','tools']:
+    for cat in ['hats','scarves','glasses','extras','tools']:
      page.locator(f'[data-category="{cat}"]').click();assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),(width,cat)
    assert not errors,errors
-   browser.close();print('PASS: Eumo v3; wheel-scroll shop and stationary preview; readable UI + offline logo font; 14 hats/5 clothes/5 scarves/6 glasses with actual pixels; prices and one-per-category; legacy extras; chest slots; home-only head display; 6 paid animated tools absent from outfit preview; no reward multipliers; ownership/reload; responsive chest and categories.')
+   browser.close();print('PASS: Eumo v3; wheel-scroll shop and stationary preview; readable UI + offline logo font; 14 hats/5 scarves/6 glasses/8 small pins with actual pixels; prices and one-per-category; one accessory slot; chest slots; home-only head display; 6 paid animated tools absent from outfit preview; no reward multipliers; ownership/reload; responsive chest and categories.')
  finally:server.shutdown();server.server_close()
 if __name__=='__main__':run()
