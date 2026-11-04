@@ -250,3 +250,33 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
 @media (prefers-reduced-motion: reduce) {
  .language-menu:not([hidden]), #musicDialog[open], #musicDialog[open]::backdrop { animation: none; }
 }
+
+/* Give the former reward-strip space to the conversation. Demo stays in the title bar. */
+#focus .machine-top { align-items: center; gap: 10px; min-height: 22px; }
+#focus #minePetName { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#focus .machine-top > span:last-child { margin-left: auto; }
+#focus .mine-demo-button {
+ margin-left: auto; flex-shrink: 0; padding: 1px 7px; min-height: 22px;
+ background: #44315e; border: 1px solid #b98bc6; color: #f0d5ee;
+ font-size: 12px; line-height: 18px;
+}
+#focus .machine-top > .mine-demo-button + span { margin-left: 0; }
+#focus .mine-demo-button:not(:disabled):active { transform: translateY(1px); }
+#focus .mole-dialogue-space {
+ min-height: calc(clamp(108px, 14dvh, 144px) + 72px);
+ padding-top: 8px; position: relative;
+}
+#focus .mole-chat-window { position: absolute; inset: 8px 0 10px; display: flex; flex-direction: column; min-height: 0; }
+#focus .mole-chat-window:has(#moleChatContent[hidden]) { top: auto; }
+#focus .mole-chat-titlebar { flex-shrink: 0; }
+#focus .mole-chat-content { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+#focus .chat-messages { flex: 1; height: 0; min-height: 0; margin-bottom: 8px; }
+#focus .mole-chat-compose { flex-shrink: 0; }
+#focus .mole-chat-compose :is(input, button) { height: 36px; font-size: 14px; line-height: 20px; }
+#focus .chat-entry p { font-size: 14px; line-height: 20px; }
+@media (min-width: 960px) and (min-height: 600px) {
+ .app-shell:has(#focus:not([hidden])) { --dialogue-reserve: calc(clamp(108px, 14dvh, 144px) + 40px); }
+}
+@media (max-width: 959px) {
+ #focus .mole-dialogue-space { flex: none; height: 220px; }
+}

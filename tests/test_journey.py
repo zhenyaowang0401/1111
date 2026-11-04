@@ -15,6 +15,7 @@ def run():
   with sync_playwright() as p:
    browser=p.chromium.launch(executable_path=os.environ.get('PLAYWRIGHT_CHROMIUM_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
    context=browser.new_context(viewport={'width':1440,'height':1000},timezone_id='Asia/Shanghai')
+   context.add_init_script("localStorage.setItem('eumo-tour-v1','seen')")
    page=context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    url=f'http://127.0.0.1:{server.server_port}'
    page.goto(url);page.locator('#enterGame').click();page.clock.install()
@@ -55,7 +56,7 @@ def run():
    page.locator('[data-page="focus"]').click()
    for _ in range(3):
     page.locator('#demoButton').click();page.locator('#startButton').click();page.clock.fast_forward(9100)
-    expect(page.locator('#petHint')).to_contain_text('1 find')
+    assert page.evaluate('Journey.rewards(state.session).finds.reduce((a,n)=>a+n,0)')==1
     page.clock.fast_forward(6900)
     expect(page.locator('#finishStars')).to_have_text('+1 ✦');page.locator('#claimButton').click()
    expect(page.locator('#balance')).to_have_text('5');assert sum(stored()['inventory'])==4
@@ -85,7 +86,7 @@ def run():
    expect(legacy.locator('#equippedCount')).to_have_text('1 equipped');expect(legacy.locator('#musicVolume')).to_have_value('30')
    # Quiet focus mode persists without hiding its own restore control.
    page.locator('#simpleViewButton').click();expect(page.locator('.arcade-machine')).to_be_hidden()
-   page.reload();expect(page.locator('#simpleViewButton')).to_have_text('Show animation');page.locator('#simpleViewButton').click()
+   page.reload();expect(page.locator('#simpleViewButton')).to_have_attribute('aria-label','Show animation');page.locator('#simpleViewButton').click()
    # MP3 truly plays, carries across navigation and stops on reload.
    page.locator('#soundButton').click();expect(page.locator('#soundButton')).to_have_attribute('aria-pressed','true')
    page.wait_for_function("document.querySelector('#focusMusic').currentTime>0")
@@ -103,7 +104,7 @@ def run():
    expect(page.locator('#petSpeech')).to_be_visible();assert page.evaluate('PetAudio.status().petPattern')=='soft-doo-doo'
    # Managed browser blocks file://. Serve the exact standalone HTML once,
    # then disconnect networking to verify embedded audio and navigation.
-   offline=browser.new_page();offline.goto(url+'/dist/Eumo.html');offline.context.set_offline(True);offline.locator('#enterGame').click()
+   offline=browser.new_page();offline.add_init_script("localStorage.setItem('eumo-tour-v1','seen')");offline.goto(url+'/dist/Eumo.html');offline.context.set_offline(True);offline.locator('#enterGame').click()
    assert offline.locator('#focusMusic').get_attribute('src').startswith('data:audio/mpeg;base64,')
    offline.locator('#soundButton').click();offline.wait_for_function("document.querySelector('#focusMusic').currentTime>0")
    offline.locator('[data-page="home"]').click();expect(offline.locator('#home')).to_be_visible()
