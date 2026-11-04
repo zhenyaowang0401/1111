@@ -146,3 +146,107 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
 
 /* Compact animation visibility control; status is exposed through its label and pressed state. */
 .control-panel>#simpleViewButton{display:inline-flex;align-items:center;justify-content:center;width:44px;height:40px;min-width:44px;min-height:40px;padding:7px;flex-shrink:0}.control-panel>#simpleViewButton svg{width:24px;height:24px;fill:none}.visibility-slash{display:none}.simple-view #simpleViewButton .visibility-slash{display:block}#simpleViewButton[aria-pressed=true]{border-color:var(--cyan);color:var(--cyan)}#simpleViewButton:focus-visible{outline:2px solid var(--yellow);outline-offset:3px}@media(min-width:960px) and (max-height:599px){.rain-controls{padding-right:64px}}
+
+/* Focus polish: the mine is the primary frame; controls and chat sit quietly beside it.
+   These overrides leave the responsive geometry and all game state untouched. */
+#focus {
+ --focus-edge: #545d7e;
+ --focus-divider: #444d6d;
+}
+#focus .arcade-machine {
+ background: #614d78;
+ border-color: #aa8cbd;
+ box-shadow: 3px 3px #13172e, inset 1px 1px #c8abd6;
+}
+#focus .control-panel {
+ border-color: var(--focus-edge);
+ box-shadow: 1px 1px #171b35;
+}
+#focus .control-heading,
+#focus .mission-stats,
+#focus .mission-stats > div + div { border-color: var(--focus-divider); }
+#focus .task-input { border-color: var(--focus-edge); }
+#focus .task-input::placeholder { color: var(--muted); opacity: .85; }
+#focus .machine-top { letter-spacing: .4px; }
+#focus .mole-chat-window {
+ background: #705c85;
+ border-color: #aa8dbb #443550 #443550 #aa8dbb;
+ box-shadow: 1px 1px #352a44;
+}
+#focus .mole-chat-titlebar { background: #4c3d61; }
+#focus .chat-title-trim { opacity: .35; }
+#focus .mole-chat-content { background: #594b6a; }
+#focus .mole-chat-compose input { border-color: #322a43 #897697 #897697 #322a43; }
+#focus .focus-modes button.selected {
+ border-color: #c29acb;
+ box-shadow: inset 0 -2px #c29acb;
+ color: #ffcfed;
+}
+#focus #startText { min-width: 6.5em; text-align: center; }
+#focus .start-button { min-height: 44px; }
+#focus .start-button:disabled { transform: none; }
+
+/* Short, integer-pixel presses preserve the crisp artwork and never delay clicks. */
+#focus :is(.duration-controls button, .focus-modes button, .quiet-button,
+ .machine-footer button, .music-library-button, .chat-send-button, .chat-window-button),
+.language-trigger {
+ transition: background-color 120ms ease-out, border-color 120ms ease-out,
+   color 120ms ease-out, transform 100ms ease-out, box-shadow 100ms ease-out;
+}
+#focus .start-button {
+ transition: background-color 120ms ease-out, transform 100ms ease-out, box-shadow 100ms ease-out;
+}
+#focus :is(.duration-controls button, .focus-modes button, .quiet-button,
+ .machine-footer button, .music-library-button, .chat-send-button, .chat-window-button):not(:disabled):active,
+.language-trigger:not(:disabled):active {
+ transform: translate(1px, 1px);
+ box-shadow: none;
+}
+#focus :is(.sound-button, .stop-button) {
+ transition: color 120ms ease-out;
+}
+#focus :is(.sound-button, .stop-button):not(:disabled):active { color: var(--yellow); }
+#focus button:focus-visible,
+#focus input:focus-visible {
+ outline: 2px solid var(--cyan);
+ outline-offset: 3px;
+}
+@media (hover: hover) and (pointer: fine) {
+ #focus :is(.quiet-button, .duration-controls button):not(:disabled):hover {
+  border-color: #c2a7d1;
+  color: #f6e8fa;
+ }
+ .language-trigger:hover { background: #473b5c; border-color: #c2a7d1; }
+}
+.language-trigger[aria-expanded=true] { border-color: #d8b2dc; }
+.language-menu:not([hidden]) { animation: eumo-menu-arrive 160ms cubic-bezier(.2,.8,.2,1); }
+@keyframes eumo-menu-arrive {
+ from { opacity: 0; transform: translateY(-4px); }
+ to { opacity: 1; transform: translateY(0); }
+}
+
+/* Keep the music room a native dialog: only its opening paint is animated.
+   Closing stays immediate, so Escape, focus restoration and rapid reopen remain reliable. */
+#musicDialog[open] { animation: eumo-music-arrive 180ms cubic-bezier(.2,.8,.2,1); }
+#musicDialog[open]::backdrop { animation: eumo-backdrop-arrive 160ms ease-out; }
+#musicDialog .music-window-bar { background: #513e64; }
+#musicDialog .music-window-trim { opacity: .3; }
+#musicDialog :is(.music-category, .music-track, .music-window-button, .music-repeat-button) {
+ transition: background-color 120ms ease-out, border-color 120ms ease-out,
+   color 120ms ease-out, box-shadow 100ms ease-out;
+}
+#musicDialog :is(.music-category, .music-track):not(:disabled):active {
+ box-shadow: inset 1px 1px #292234;
+}
+#musicDialog .music-category[aria-pressed=true] {
+ border-color: #e9b7de;
+ box-shadow: inset 0 -2px #e9b7de;
+}
+@keyframes eumo-music-arrive {
+ from { opacity: 0; transform: translateY(6px); }
+ to { opacity: 1; transform: translateY(0); }
+}
+@keyframes eumo-backdrop-arrive { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+ .language-menu:not([hidden]), #musicDialog[open], #musicDialog[open]::backdrop { animation: none; }
+}

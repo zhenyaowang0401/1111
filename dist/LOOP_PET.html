@@ -245,6 +245,110 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
 /* Compact animation visibility control; status is exposed through its label and pressed state. */
 .control-panel>#simpleViewButton{display:inline-flex;align-items:center;justify-content:center;width:44px;height:40px;min-width:44px;min-height:40px;padding:7px;flex-shrink:0}.control-panel>#simpleViewButton svg{width:24px;height:24px;fill:none}.visibility-slash{display:none}.simple-view #simpleViewButton .visibility-slash{display:block}#simpleViewButton[aria-pressed=true]{border-color:var(--cyan);color:var(--cyan)}#simpleViewButton:focus-visible{outline:2px solid var(--yellow);outline-offset:3px}@media(min-width:960px) and (max-height:599px){.rain-controls{padding-right:64px}}
 
+/* Focus polish: the mine is the primary frame; controls and chat sit quietly beside it.
+   These overrides leave the responsive geometry and all game state untouched. */
+#focus {
+ --focus-edge: #545d7e;
+ --focus-divider: #444d6d;
+}
+#focus .arcade-machine {
+ background: #614d78;
+ border-color: #aa8cbd;
+ box-shadow: 3px 3px #13172e, inset 1px 1px #c8abd6;
+}
+#focus .control-panel {
+ border-color: var(--focus-edge);
+ box-shadow: 1px 1px #171b35;
+}
+#focus .control-heading,
+#focus .mission-stats,
+#focus .mission-stats > div + div { border-color: var(--focus-divider); }
+#focus .task-input { border-color: var(--focus-edge); }
+#focus .task-input::placeholder { color: var(--muted); opacity: .85; }
+#focus .machine-top { letter-spacing: .4px; }
+#focus .mole-chat-window {
+ background: #705c85;
+ border-color: #aa8dbb #443550 #443550 #aa8dbb;
+ box-shadow: 1px 1px #352a44;
+}
+#focus .mole-chat-titlebar { background: #4c3d61; }
+#focus .chat-title-trim { opacity: .35; }
+#focus .mole-chat-content { background: #594b6a; }
+#focus .mole-chat-compose input { border-color: #322a43 #897697 #897697 #322a43; }
+#focus .focus-modes button.selected {
+ border-color: #c29acb;
+ box-shadow: inset 0 -2px #c29acb;
+ color: #ffcfed;
+}
+#focus #startText { min-width: 6.5em; text-align: center; }
+#focus .start-button { min-height: 44px; }
+#focus .start-button:disabled { transform: none; }
+
+/* Short, integer-pixel presses preserve the crisp artwork and never delay clicks. */
+#focus :is(.duration-controls button, .focus-modes button, .quiet-button,
+ .machine-footer button, .music-library-button, .chat-send-button, .chat-window-button),
+.language-trigger {
+ transition: background-color 120ms ease-out, border-color 120ms ease-out,
+   color 120ms ease-out, transform 100ms ease-out, box-shadow 100ms ease-out;
+}
+#focus .start-button {
+ transition: background-color 120ms ease-out, transform 100ms ease-out, box-shadow 100ms ease-out;
+}
+#focus :is(.duration-controls button, .focus-modes button, .quiet-button,
+ .machine-footer button, .music-library-button, .chat-send-button, .chat-window-button):not(:disabled):active,
+.language-trigger:not(:disabled):active {
+ transform: translate(1px, 1px);
+ box-shadow: none;
+}
+#focus :is(.sound-button, .stop-button) {
+ transition: color 120ms ease-out;
+}
+#focus :is(.sound-button, .stop-button):not(:disabled):active { color: var(--yellow); }
+#focus button:focus-visible,
+#focus input:focus-visible {
+ outline: 2px solid var(--cyan);
+ outline-offset: 3px;
+}
+@media (hover: hover) and (pointer: fine) {
+ #focus :is(.quiet-button, .duration-controls button):not(:disabled):hover {
+  border-color: #c2a7d1;
+  color: #f6e8fa;
+ }
+ .language-trigger:hover { background: #473b5c; border-color: #c2a7d1; }
+}
+.language-trigger[aria-expanded=true] { border-color: #d8b2dc; }
+.language-menu:not([hidden]) { animation: eumo-menu-arrive 160ms cubic-bezier(.2,.8,.2,1); }
+@keyframes eumo-menu-arrive {
+ from { opacity: 0; transform: translateY(-4px); }
+ to { opacity: 1; transform: translateY(0); }
+}
+
+/* Keep the music room a native dialog: only its opening paint is animated.
+   Closing stays immediate, so Escape, focus restoration and rapid reopen remain reliable. */
+#musicDialog[open] { animation: eumo-music-arrive 180ms cubic-bezier(.2,.8,.2,1); }
+#musicDialog[open]::backdrop { animation: eumo-backdrop-arrive 160ms ease-out; }
+#musicDialog .music-window-bar { background: #513e64; }
+#musicDialog .music-window-trim { opacity: .3; }
+#musicDialog :is(.music-category, .music-track, .music-window-button, .music-repeat-button) {
+ transition: background-color 120ms ease-out, border-color 120ms ease-out,
+   color 120ms ease-out, box-shadow 100ms ease-out;
+}
+#musicDialog :is(.music-category, .music-track):not(:disabled):active {
+ box-shadow: inset 1px 1px #292234;
+}
+#musicDialog .music-category[aria-pressed=true] {
+ border-color: #e9b7de;
+ box-shadow: inset 0 -2px #e9b7de;
+}
+@keyframes eumo-music-arrive {
+ from { opacity: 0; transform: translateY(6px); }
+ to { opacity: 1; transform: translateY(0); }
+}
+@keyframes eumo-backdrop-arrive { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+ .language-menu:not([hidden]), #musicDialog[open], #musicDialog[open]::backdrop { animation: none; }
+}
+
 </style></head><body>
 <svg class="svg-defs" aria-hidden="true"><defs><symbol id="i-pickaxe" viewBox="0 0 24 24"><path d="M3 3h12v3h4v3h3v5h-3v-3h-4V8h-3l-2 3 2 2-9 9-3-3 9-9-2-2H3z"/></symbol><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10h3V7h3V4h6v3h3v3h3v11h-7v-7h-4v7H3Z"/></symbol><symbol id="i-gift" viewBox="0 0 24 24"><path d="M3 10h18v4H3zm2 4v7h14v-7h-5v7h-4v-7M10 3h4v4h-4zm-6 0h4v4H4zm12 0h4v4h-4z"/></symbol><symbol id="i-shirt" viewBox="0 0 24 24"><path d="M8 3H5v3H2v6h5v9h10v-9h5V6h-3V3h-3v4H8Z"/></symbol><symbol id="i-friends" viewBox="0 0 24 24"><path d="M5 3h5v6H5zm9 2h5v5h-5zM2 12h11v8H2zm12 1h8v7h-8z"/></symbol><symbol id="i-report" viewBox="0 0 24 24"><path d="M3 3h2v17h17v2H3zm5 9h3v5H8zm5-5h3v10h-3zm5-4h3v14h-3z"/></symbol><symbol id="i-sound" viewBox="0 0 24 24"><path d="M3 9h5V5h5v14H8v-4H3zm14-3h3v12h-3m-2-9h2v6h-2"/></symbol><symbol id="i-library" viewBox="0 0 24 24"><path d="M2 2h8v8H2zm12 0h8v8h-8zM2 14h8v8H2zm12 0h8v8h-8z"/></symbol><symbol id="i-note" viewBox="0 0 24 24"><path d="M9 3h12v4h-9v11h-2v3H4v-2H2v-4h2v-2h5z"/></symbol><symbol id="i-rhythm" viewBox="0 0 24 24"><path d="M2 9h4v12H2zm8-7h4v19h-4zm8 4h4v15h-4z"/></symbol><symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 4h8v3h4v3h3v9H2v-9h3V7h2zm0 16h2v3H7zm8 0h2v3h-2z"/></symbol><symbol id="i-disc" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M7 1h10v2h4v4h2v10h-2v4h-4v2H7v-2H3v-4H1V7h2V3h4zm3 8v2H8v3h2v2h4v-2h2v-3h-2V9z"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><path d="M5 3h3v3h4v3h4v3h4v3h-4v3h-4v3H5z"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M4 3h6v18H4zm10 0h6v18h-6z"/></symbol><symbol id="i-previous" viewBox="0 0 24 24"><path d="M2 4h4v16H2zm13 0h5v16h-5v-3h-4v-3H7v-4h4V7h4z"/></symbol><symbol id="i-next" viewBox="0 0 24 24"><path d="M18 4h4v16h-4zM4 4h5v3h4v3h4v4h-4v3H9v3H4z"/></symbol><symbol id="i-add-friend" viewBox="0 0 24 24"><path d="M5 2h6v2h2v6h-2v2H5v-2H3V4h2zM1 16h3v-2h8v2h3v6H1zm17-9h3v4h3v3h-3v4h-3v-4h-4v-3h4z"/></symbol></defs></svg>
 

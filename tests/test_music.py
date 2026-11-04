@@ -85,7 +85,7 @@ def run():
     if width==390:page.screenshot(path=str(ROOT/'docs/images/eumo-music-mobile.png'),full_page=True)
     page.keyboard.press('Escape')
    # The download contains the default track once, shares it with the catalog, and plays offline.
-   offline=browser.new_context(viewport={'width':1280,'height':800});download=offline.new_page();download.goto(url+'/dist/Eumo.html');download.locator('#enterGame').click();offline.set_offline(True)
+   offline=browser.new_context(viewport={'width':1280,'height':800});offline.add_init_script("localStorage.setItem('eumo-tour-v1','seen')");download=offline.new_page();download.goto(url+'/dist/Eumo.html');download.locator('#enterGame').click();offline.set_offline(True)
    assert download.evaluate('MusicCatalog.tracks[0].src===document.querySelector("#focusMusic").getAttribute("src")')
    download.locator('#openMusicLibrary').click();download.locator('[data-music-track="warm-focus"]').click();download.wait_for_function('document.querySelector("#focusMusic").currentTime>0')
    assert not errors,errors
