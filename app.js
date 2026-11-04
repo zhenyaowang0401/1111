@@ -295,7 +295,7 @@ FloatingMole.init({
 
 window.addEventListener("eumo-language",()=>{renderStats();renderTimer();renderReports();renderProfile();MoleChat.refresh();});
 EumoI18n.observe(document);
-document.getElementById("languageSwitch").addEventListener("click",()=>EumoI18n.set(EumoI18n.language==='en'?'zh':'en'));
+EumoI18n.mountPicker(document.getElementById("languageSwitch"));
 
 Onboarding.init({read:()=>state,navigate:navigateTo});
 

@@ -24,7 +24,7 @@ def run():
      if step<3:page.locator('#tourNext').click()
     if width!=1000:
      for _ in range(3):page.locator('#tourBack').click()
-   page.locator('#tourLanguage').click();expect(page.locator('#tourTitle')).to_have_text('看看进步，找个朋友');page.locator('#tourNext').click();expect(page.locator('#onboardingDialog')).to_be_hidden();expect(page.locator('#startButton')).to_be_focused()
+   page.locator('#tourLanguage').click();page.keyboard.press('Escape');expect(page.locator('#onboardingDialog')).to_be_visible();page.locator('#tourLanguage').click();page.locator('#tourLanguageMenu [data-language=zh]').click();expect(page.locator('#tourTitle')).to_have_text('看看进步，找个朋友');page.locator('#tourNext').click();expect(page.locator('#onboardingDialog')).to_be_hidden();expect(page.locator('#startButton')).to_be_focused()
    assert page.evaluate('JSON.stringify({balance:state.balance,inventory:state.inventory,depth:state.depth,session:state.session,owned:state.owned})')==baseline
    page.reload();expect(page.locator('#onboardingDialog')).to_be_hidden();page.locator('#helpButton').click();page.locator('#replayTour').click();expect(page.locator('#tourProgress')).to_have_text('1 / 4')
    page.keyboard.press('Tab');assert page.evaluate("document.activeElement.closest('#onboardingDialog')!==null")

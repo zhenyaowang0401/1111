@@ -17,7 +17,6 @@ window.Onboarding=(()=>{
   document.getElementById('tourBack').hidden=welcome;document.getElementById('tourBack').disabled=step===0;document.getElementById('tourBack').textContent=text('Back','上一步');
   document.getElementById('tourSkip').textContent=welcome?text('Jump right in','直接开始'):text('Skip','跳过');
   document.getElementById('tourNext').textContent=welcome?text('Show me around','带我看看'):step===3?text('Start my first session','开始我的第一轮'):text('Next','下一步');
-  document.getElementById('tourLanguage').textContent=EumoI18n.language==='en'?'中文':'English';
   document.getElementById('tourTopics').setAttribute('aria-label',text('Tour highlights','指引高亮区域'));
   const tabs=document.getElementById('tourTopics');tabs.replaceChildren();tabs.hidden=welcome;
   if(!welcome)item.labels.forEach((label,i)=>{const b=document.createElement('button');b.type='button';b.textContent=text(...label);b.className='tour-topic';b.setAttribute('aria-pressed',String(topic===i));b.addEventListener('click',()=>{topic=i;paint();reveal();});tabs.append(b);});
@@ -51,7 +50,7 @@ window.Onboarding=(()=>{
   dialog.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const buttons=[...dialog.querySelectorAll('button')].filter(b=>!b.disabled&&b.getClientRects().length),first=buttons[0],last=buttons.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}});
   document.getElementById('tourNext').onclick=()=>{if(step===3){close(true);return;}step++;topic=0;paint();reveal();document.getElementById('tourNext').focus();};
   document.getElementById('tourBack').onclick=()=>{if(step>0){step--;topic=0;paint();reveal();}};
-  document.getElementById('tourSkip').onclick=()=>close();document.getElementById('tourLanguage').onclick=()=>EumoI18n.set(EumoI18n.language==='en'?'zh':'en');
+  document.getElementById('tourSkip').onclick=()=>close();EumoI18n.mountPicker(document.getElementById('tourLanguage'));
   dialog.addEventListener('cancel',e=>{e.preventDefault();close();});dialog.addEventListener('close',()=>clearInterval(watch));
   window.addEventListener('resize',()=>{if(dialog.open)reveal();});window.addEventListener('scroll',position,{passive:true});window.addEventListener('eumo-language',paint);
   const replay=document.getElementById('replayTour');replay.onclick=()=>{if(bridge.read().session?.status==='running')return;document.getElementById('infoDialog').close();open(false);};

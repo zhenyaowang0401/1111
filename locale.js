@@ -503,10 +503,26 @@ window.EumoI18n=(()=>{
   while(node=walker.nextNode()){if(node.parentElement?.closest(skip))continue;const value=translateValue(node,'text',node.nodeValue);if(value!==node.nodeValue)node.nodeValue=value;}
   for(const el of d.querySelectorAll('[placeholder],[title],[aria-label]')){if(el.closest('[data-no-translate],.chat-entry,#languageSwitch'))continue;for(const attr of ['placeholder','title','aria-label'])if(el.hasAttribute(attr)){const value=translateValue(el,attr,el.getAttribute(attr));if(value!==el.getAttribute(attr))el.setAttribute(attr,value);}}
   d.querySelectorAll('.weekdays span').forEach((e,i)=>{e.textContent=(language==='zh'?['一','二','三','四','五','六','日']:['M','T','W','T','F','S','S'])[i];});
-  const switcher=d.getElementById('languageSwitch');if(switcher){switcher.textContent=language==='en'?'中文':'English';switcher.setAttribute('aria-label',language==='en'?'Switch to Chinese':'切换到英文');}
   observer?.observe(d.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['placeholder','title','aria-label']});
  }
  function observe(d){if(documents.has(d))return;const observer=new MutationObserver(()=>apply(d));documents.set(d,observer);apply(d);d.defaultView?.addEventListener('pagehide',()=>{observer.disconnect();documents.delete(d);},{once:true});}
  function set(value){if(!['en','zh'].includes(value)||language===value)return;language=value;try{localStorage.setItem(KEY,language);}catch{}window.dispatchEvent(new Event('eumo-language'));for(const d of documents.keys())apply(d);}
- return {get language(){return language;},locale:()=>language==='zh'?'zh-CN':'en-US',set,t,observe};
+ // Both setup and the optional tour use the same explicit language menu.
+ function mountPicker(button){
+  const root=document.createElement('div');root.className='language-picker';root.setAttribute('data-no-translate','');button.before(root);root.append(button);
+  button.classList.add('language-trigger');button.setAttribute('aria-haspopup','menu');button.setAttribute('aria-expanded','false');
+  button.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg><span class="language-current"></span><svg class="language-chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="m3 4 3 3 3-3"/></svg>';
+  const menu=document.createElement('div');menu.className='language-menu';menu.id=button.id+'Menu';menu.role='menu';menu.hidden=true;button.setAttribute('aria-controls',menu.id);root.append(menu);
+  const options=['en','zh'].map(value=>{const option=document.createElement('button');option.type='button';option.role='menuitemradio';option.tabIndex=-1;option.lang=value==='en'?'en':'zh-CN';option.dataset.language=value;option.innerHTML=`<span>${value==='en'?'English':'简体中文'}</span><span class="language-check" aria-hidden="true"></span>`;menu.append(option);option.addEventListener('click',()=>{set(value);close(true);});return option;});
+  function update(){const label=language==='en'?'English':'简体中文';button.querySelector('.language-current').textContent=label;button.setAttribute('aria-label',language==='en'?'Language: '+label:'语言：'+label);button.title=language==='en'?'Choose language':'选择语言';menu.setAttribute('aria-label',language==='en'?'Language':'语言');for(const option of options){const active=option.dataset.language===language;option.setAttribute('aria-checked',String(active));option.querySelector('.language-check').textContent=active?'✓':'';}}
+  function close(focus=false){menu.hidden=true;button.setAttribute('aria-expanded','false');if(focus)button.focus();}
+  function open(){menu.hidden=false;button.setAttribute('aria-expanded','true');options.find(o=>o.dataset.language===language).focus();}
+  button.addEventListener('click',()=>{if(menu.hidden)open();else close(true);});
+  root.addEventListener('keydown',event=>{if(event.key==='Escape'&&!menu.hidden){event.preventDefault();event.stopPropagation();close(true);return;}if(event.key==='Tab'){close();return;}if(!['ArrowDown','ArrowUp','Home','End'].includes(event.key))return;event.preventDefault();event.stopPropagation();if(menu.hidden){open();return;}const current=options.indexOf(document.activeElement),next=event.key==='Home'?0:event.key==='End'?options.length-1:(current+(event.key==='ArrowDown'?1:-1)+options.length)%options.length;options[next].focus();});
+  root.addEventListener('focusout',event=>{if(!root.contains(event.relatedTarget))close();});
+  document.addEventListener('pointerdown',event=>{if(!root.contains(event.target))close();});
+  root.closest('dialog')?.addEventListener('close',()=>close());
+  window.addEventListener('eumo-language',update);update();
+ }
+ return {get language(){return language;},locale:()=>language==='zh'?'zh-CN':'en-US',set,t,observe,mountPicker};
 })();
