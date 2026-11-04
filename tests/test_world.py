@@ -92,7 +92,7 @@ def run():
     page.locator('.footer a[href="#start"]').click();page.wait_for_timeout(160)
     assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),(width,'setup')
     page.locator('#enterGame').click()
-    for route in ['focus','rewards','wardrobe','reports','companions']:
+    for route in ['focus','home','wardrobe','reports','companions']:
      page.locator(f'[data-page="{route}"]').click();page.wait_for_timeout(160)
      assert not page.evaluate('document.documentElement.scrollWidth>innerWidth'),(width,route)
    # A phone in a different timezone uses that device's wall clock, not server time.

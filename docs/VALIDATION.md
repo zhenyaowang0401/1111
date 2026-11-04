@@ -4,6 +4,18 @@
 
 **以下自动化检查使用本地协议 fixture，不代表真实 Qwen 语义质量评测已通过。** 用户已在 Vercel 配置 Key 并提供线上模型回复截图；当前执行环境没有服务商 Key，也无法直接访问该部署，因此没有把用户截图当成完整模型评测。 下表的模型服务使用本地测试 fixture；它验证软件行为，不验证真实模型语气、解题正确性或建议质量。
 
+## 页面与矿洞精简（2026-11-04）
+
+`python tests/test_golden_chest.py` 与 `python tests/test_crafting_browser.py` 通过：移除 Inventory 后，从家园宝箱完成普通展示、金色掉落入库、摆放、收回、取消/确认出售、99 星结算、材料制作、刷新及离线包；数据与已有拥有列表保留。
+
+`python tests/test_v3.py` 通过：暂停/结束后的摄像机浏览、运行锁定、三连击、真实金色结算与宝箱出售、四首音频及离线字节、移动布局。`python tests/test_viewport.py` 通过 13 组桌面尺寸/DPI 及移动/离线布局，眼镜按钮与音乐控件不重叠。`python tests/test_onboarding.py` 通过删除 Inventory 目标后的四步流程。
+
+`python tests/test_mine_pet.py` 通过鼠标与触屏三连击、拖动后返回再点、眼镜开关及刷新保持、中文读屏名称、旧 #rewards 转家园，余额和库存保持。触屏回归中使用连续触屏输入，避免混用合成鼠标造成 Chromium 不派发兼容 click 的测试干扰。
+
+已查看精简后的 Focus 截图。测试使用隔离存档，未验证 Vercel 生产部署。
+
+![精简后的 Focus](images/eumo-focus-clean.png)
+
 ## 语言菜单 A 方案（2026-11-04）
 
 `python tests/test_locale.py` 通过：按钮显示当前语言，打开不改变语言，当前选项 ✓、原生语言名、方向键、Escape 焦点返回、外部点击关闭、320/390/1440 菜单不溢出、双向切换和持久化；已有用户原文保护、聊天语言、真实 Document PiP 双语同步与离线包回归通过。
@@ -216,8 +228,8 @@
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 22032749
-SHA-256: 39fdf688ae7a8140282a50d758f3a05cc901a20cd741a6229e6da32cb62be5a0
+字节数: 22029072
+SHA-256: b14e1a9b2811f6620bed8bf436ff95361237d2f96560d62e320732fcecccf231
 MP3: Warm Focus 194.520秒；Winter bonfire 12.168秒；Tropical rainforest 13.416秒；botanicore 213.552秒；Litte ridge 222.840秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```

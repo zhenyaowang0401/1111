@@ -12,9 +12,8 @@ window.MineView=(()=>{
  function refresh(){
   if(!read)return;const s=read(),max=maximum(s),can=allowed(s)&&max>0;
   if(!allowed(s)){override=false;pointer=null;}
-  const value=cameraFor(s),dug=depth(s),from=Math.min(dug,Math.max(0,Math.floor((value-87)/6))),to=Math.min(Math.floor(dug),Math.max(0,Math.ceil((value+224-87)/6)));
-  $('petStage').classList.toggle('can-browse',can);$('mineBrowseControls').hidden=!can;$('mineBrowseHint').hidden=!can;$('mineViewLabel').hidden=!can;
-  $('mineViewLabel').textContent=`VIEW ${from}–${to} m`;$('mineBrowseHint').textContent='Drag to explore · '+Math.floor(dug)+' m dug';
+  const value=cameraFor(s),dug=depth(s),from=Math.min(dug,Math.max(0,Math.floor((value-87)/6)));
+  $('petStage').classList.toggle('can-browse',can);$('mineBrowseControls').hidden=!can;
   $('mineToSurface').disabled=value<=0;$('mineToMole').disabled=value>=max-.5;
   if(can)$('sceneLabel').textContent=override&&value===0?'Surface':Terrain.layerAt(override?from:dug).name;
  }

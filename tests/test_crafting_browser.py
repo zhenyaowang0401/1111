@@ -56,8 +56,8 @@ def run():
    assert len(final['home']['owned'])==7
    page.locator('#editHomeButton').click();page.clock.run_for(3000);page.screenshot(path=str(ROOT/'docs/images/eumo-crafting-home.png'),full_page=True)
    page.reload();expect(page.locator('#heldItemLabel')).to_have_text('On head: Glow mushroom');assert saved()['home']==final['home']
-   page.locator('[data-page="rewards"]').click();expect(page.locator('#collectionCount')).to_have_text('4 / 4 found');expect(page.locator('#rewardGrid .locked')).to_have_count(0)
-   page.locator('#inventoryCraftLink').click();expect(page.locator('[data-craft-item]')).to_have_count(0);expect(page.locator('[data-place-crafted]')).to_have_count(5)
+   assert set(saved()['foundDiscoveries'])=={'star','mushroom','crystal','fossil'}
+   page.locator('#openCraftingButton').click();expect(page.locator('[data-craft-item]')).to_have_count(0);expect(page.locator('[data-place-crafted]')).to_have_count(5)
    close_craft();page.locator('#openChestButton').click();expect(page.locator('[data-chest-slot="crystal"] .slot-count')).to_have_text('0');page.locator('[data-chest-slot="crystal"]').click();expect(page.locator('[data-hold="crystal"]')).to_have_text('None left');page.locator('#chestCraftButton').click()
    # Replacing furniture and moving owned pieces never spends materials a second time.
    before=saved();place('mushroomLamp','right');assert saved()['home']['slots']['left'] is None
@@ -97,6 +97,6 @@ def run():
    offline.goto(url+'/dist/Eumo.html#home');context.set_offline(True);offline.locator('#openCraftingButton').click();offline.locator('[data-craft-item="starMobile"]').click();offline.locator('#confirmCraft').click()
    result=offline.evaluate('(k)=>JSON.parse(localStorage.getItem(k))',KEY);assert result['inventory'][0]==0 and 'starMobile' in result['home']['owned'] and result['balance']==0
    assert not errors,errors
-   context.close();browser.close();print('PASS: confirmed crafting, cancel/Escape, reserved head/room finds, exact costs and stars, no duplicate craft, permanent ownership/placement/reload, discovery history, original furniture, paused/running/stale guards, responsive dialogs, chest/inventory entry and offline crafting.')
+   context.close();browser.close();print('PASS: confirmed crafting, cancel/Escape, reserved head/room finds, exact costs and stars, no duplicate craft, permanent ownership/placement/reload, discovery history, original furniture, paused/running/stale guards, responsive dialogs, home/chest entry and offline crafting.')
  finally:server.shutdown();server.server_close()
 if __name__=='__main__':run()

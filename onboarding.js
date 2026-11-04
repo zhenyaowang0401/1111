@@ -6,7 +6,7 @@ window.Onboarding=(()=>{
  const steps=[
   {title:['Start together','一起开工'],copy:['Choose a time and press Start. I’ll dig while you focus. Pause together; End session saves your finds.','选好时间，点开始，你专注，我挖掘。暂停一起停，结束会保存收获。'],targets:[['.timer-card']],labels:[['Timer','计时器']]},
   {title:['Make yourself comfortable','舒服地专注'],copy:['Pick a sound you like. You can also open my chat whenever you need a little company.','听点喜欢的声音，需要时也可以找我聊聊。'],targets:[['.rain-controls'],['#moleDialogueSpace']],labels:[['Music','音乐'],['AI chat','AI 聊天']]},
-  {title:['Bring your finds home','把收获带回家'],copy:['Stars buy outfits. Spare finds become decor. Your home is where you can put it all on display.','星星买穿搭，发现物做装饰，回家就能摆出来。'],targets:[['[data-page="rewards"]','[data-page="wardrobe"]','[data-page="home"]']],labels:[['Finds · Outfits · Home','图鉴 · 装扮 · 家园']]},
+  {title:['Bring your finds home','把收获带回家'],copy:['Stars buy outfits. Spare finds become decor. Your home is where you can put it all on display.','星星买穿搭，发现物做装饰，回家就能摆出来。'],targets:[['[data-page="wardrobe"]','[data-page="home"]']],labels:[['Outfits · Home','装扮 · 家园']]},
   {title:['Progress and company','看看进步，找个朋友'],copy:['See your own rhythm in Reports. In Friends, copy your code and invite a mole friend.','看看自己的节奏，也可以复制好友码，邀请鼹鼠朋友。'],targets:[['[data-page="reports"]','[data-page="companions"]']],labels:[['Reports · Friends','数据 · 好友']]}
  ];
  function mark(){seen=true;try{localStorage.setItem(KEY,'seen');}catch{}}

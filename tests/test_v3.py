@@ -19,7 +19,7 @@ def run():
    assert page.evaluate('JSON.stringify([state.depth,state.balance,state.inventory,state.eligibleSeconds])')==original
    assert not page.evaluate('petAt'),'Dragging must not trigger pet reaction'
    page.locator('#mineToSurface').click();assert page.evaluate('MineView.cameraFor(state)')==0
-   expect(page.locator('#mineViewLabel')).to_contain_text('0–23 m');page.locator('#petStage').focus();page.keyboard.press('End');assert page.evaluate('MineView.cameraFor(state)===MineView.maximum(state)')
+   expect(page.locator('#mineViewLabel')).to_have_count(0);page.locator('#petStage').focus();page.keyboard.press('End');assert page.evaluate('MineView.cameraFor(state)===MineView.maximum(state)')
    page.locator('#startButton').click();expect(page.locator('#mineBrowseControls')).to_be_hidden();page.mouse.move(x,y);page.mouse.down();page.mouse.move(x,y+180,steps=8);page.mouse.up();assert page.evaluate('MineView.cameraFor(state)===MineView.maximum(state)')
    page.clock.fast_forward(61000);page.locator('#startButton').click();elapsed=page.evaluate('state.session.elapsed');page.locator('#mineToSurface').click();page.clock.fast_forward(5000);assert page.evaluate('state.session.elapsed')==elapsed and page.evaluate('MineView.cameraFor(state)')==0
    page.locator('#startButton').click();assert page.evaluate('MineView.cameraFor(state)===MineView.maximum(state)');page.locator('#stopButton').click();page.locator('#confirmStop').click();assert page.evaluate('state.session') is None
@@ -32,18 +32,18 @@ def run():
    assert page.evaluate('petSpinAt>0');expect(page.locator('#homeSpeech')).to_contain_text('spin');rotation=page.evaluate("PixelArt.getBounds('homeCanvas').rotation");assert 0<rotation<6.284,rotation
    page.screenshot(path=str(ROOT/'docs/images/eumo-v3-spin.png'),full_page=True);page.clock.run_for(1600);assert page.evaluate('petSpinAt')==0
    # Shelf reserves one copy, duplicate sale pays 99 once; cancel and reload are safe.
-   page.locator('[data-page="rewards"]').click();expect(page.locator('.golden-card')).to_have_count(10)
+   page.locator('[data-page="home"]').click();page.locator('#openChestShortcut').click();expect(page.locator('[data-golden-chest-slot]')).to_have_count(10)
    before=page.evaluate('state.balance');page.locator('[data-sell-treasure="mole-statue"]').click();page.locator('#cancelTreasureSale').click();assert page.evaluate('state.balance')==before
    page.locator('[data-sell-treasure="mole-statue"]').click();page.locator('#confirmTreasureSale').click();assert page.evaluate('state.balance')==before+99
    expect(page.locator('[data-sell-treasure="mole-statue"]')).to_be_disabled();page.locator('#confirmTreasureSale').dispatch_event('click');assert page.evaluate('state.balance')==before+99
    page.reload();assert page.evaluate('state.rareInventory["mole-statue"]')==1 and page.evaluate('state.balance')==before+99
-   page.locator('[data-display-treasure="sanxingdui"]').click();expect(page.locator('#home')).to_be_visible();page.clock.run_for(250)
+   page.locator('#openChestShortcut').click();page.locator('[data-golden-chest-slot="sanxingdui"]').click();page.locator('[data-display-treasure="sanxingdui"]').click();expect(page.locator('#home')).to_be_visible();page.clock.run_for(250)
    def gold_pixels():return page.locator('#homeCanvas').evaluate("c=>{const p=c.getContext('2d').getImageData(247,130,32,32).data;let n=0;for(let i=0;i<p.length;i+=4)if(p[i]===233&&p[i+1]===184&&p[i+2]===78)n++;return n;}")
    assert gold_pixels()>50;page.screenshot(path=str(ROOT/'docs/images/eumo-v3-home.png'),full_page=True)
    page.locator('#putBackTreasure').click();page.clock.run_for(250);assert gold_pixels()==0
-   page.locator('[data-page="rewards"]').click();page.screenshot(path=str(ROOT/'docs/images/eumo-v3-collection.png'),full_page=True)
+   page.locator('#openChestShortcut').click();page.locator('[data-golden-chest-slot="sanxingdui"]').click();page.screenshot(path=str(ROOT/'docs/images/eumo-v3-chest.png'),full_page=True)
    page.locator('[data-sell-treasure="sanxingdui"]').click();page.locator('#confirmTreasureSale').click();assert page.evaluate('state.balance')==before+198
-   page.locator('[data-page="focus"]').click()
+   page.locator('#chestDoneButton').click();page.locator('[data-page="focus"]').click()
    # Stable fixture has a golden mask at the third formal discovery; earn it via the real timer.
    page.evaluate('state.eligibleSeconds=1200;state.rareClaimed=2;state.minutes=10;save();renderTimer();');page.locator('#startButton').click();page.clock.fast_forward(601000)
    expect(page.locator('#finishDialog')).to_be_visible();expect(page.locator('#goldenFinishCopy')).to_contain_text('Sanxingdui');assert page.evaluate('state.rareInventory.sanxingdui')==1
@@ -58,10 +58,10 @@ def run():
    # Golden shelf and touch camera controls fit small screens; reduced-motion is honored.
    page.emulate_media(reduced_motion='reduce');page.locator('[data-page="home"]').click();page.clock.run_for(250);tap_mole();page.clock.run_for(150);tap_mole();page.clock.run_for(150);tap_mole();page.clock.run_for(150);assert page.evaluate("PixelArt.getBounds('homeCanvas').rotation")==0
    for width,height in [(320,640),(390,844),(844,390)]:
-    page.set_viewport_size({'width':width,'height':height});page.locator('[data-page="rewards"]').click();assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
+    page.set_viewport_size({'width':width,'height':height});page.locator('[data-page="home"]').click();assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
     page.locator('[data-page="focus"]').click();assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
    # Every uploaded byte is preserved in the offline catalogue; all four tracks play without network.
-   offline=browser.new_context(viewport={'width':1280,'height':800});download=offline.new_page();download.goto(url+'/dist/Eumo.html');download.locator('#enterGame').click();offline.set_offline(True);download.locator('#openMusicLibrary').click()
+   offline=browser.new_context(viewport={'width':1280,'height':800});download=offline.new_page();download.goto(url+'/dist/Eumo.html');download.locator('#enterGame').click();download.locator('#tourSkip').click();offline.set_offline(True);download.locator('#openMusicLibrary').click()
    import base64
    for category,id,title,seconds in tracks:
     source=download.evaluate('(id)=>MusicCatalog.tracks.find(t=>t.id===id).src',id);filename={'noise-one':'winter-bonfire','noise-two':'tropical-rainforest','groove-one':'botanicore','soft-next':'litte-ridge'}[id]

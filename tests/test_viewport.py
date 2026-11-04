@@ -54,7 +54,7 @@ def run():
      page.locator('#stopButton').click();page.locator('#confirmStop').click()
     ctx.close()
    # Narrow screens retain usable window controls without horizontal overflow.
-   mobile=browser.new_page();mobile.goto(url)
+   mobile=browser.new_page();mobile.add_init_script("localStorage.setItem('eumo-tour-v1','seen')");mobile.goto(url)
    for width in [320,390,768]:
     mobile.set_viewport_size({'width':width,'height':844})
     if mobile.locator('#setupScreen').is_visible():mobile.locator('#enterGame').click()
@@ -63,7 +63,7 @@ def run():
     mobile.locator('#toggleMoleChat').click();expect(mobile.locator('#moleChatContent')).to_be_hidden();mobile.locator('#toggleMoleChat').click()
    mobile.set_viewport_size({'width':390,'height':844});mobile.screenshot(path=str(ROOT/'docs/images/eumo-chat-mobile.png'),full_page=True)
    # The same window works from the bundled download with network disabled.
-   offline=browser.new_context();download=offline.new_page();download.goto(url+'/dist/Eumo.html');download.locator('#enterGame').click();offline.set_offline(True)
+   offline=browser.new_context();offline.add_init_script("localStorage.setItem('eumo-tour-v1','seen')");download=offline.new_page();download.goto(url+'/dist/Eumo.html');download.locator('#enterGame').click();offline.set_offline(True)
    download.locator('#toggleMoleChat').click();expect(download.locator('#moleChatContent')).to_be_hidden();download.locator('#toggleMoleChat').click();expect(download.locator('#moleChatContent')).to_be_visible();offline.close()
    assert not errors,errors
    browser.close();print('PASS: 13 desktop viewport/DPI combinations at browser 100%; idle/running/paused; full canvas, timer, Start/End and bottom controls + footer visible without page scrolling; aligned 2.55:1 panels; inset chat, keyboard collapse/expand without pausing, user-initiated sending, mobile/offline UI, compact timer gaps; undistorted canvas and readable digits.')

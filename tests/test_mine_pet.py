@@ -17,6 +17,7 @@ def run():
     assert page.evaluate('MineView.depth(state)')==120
     def tap():
      b=page.evaluate("PixelArt.getBounds('miningCanvas')");r=page.locator('#miningCanvas').bounding_box();x=r['x']+(b['x']+b['w']/2)/384*r['width'];y=r['y']+(b['y']+b['h']/2)/224*r['height']
+     assert page.evaluate("([x,y])=>{const c=document.querySelector('#miningCanvas'),r=c.getBoundingClientRect();return document.elementFromPoint(x,y)===c && PixelArt.hitTest(c.id,(x-r.left)*c.width/r.width,(y-r.top)*c.height/r.height)}",[x,y])
      if touch:page.touchscreen.tap(x,y)
      else:page.mouse.click(x,y)
     before=page.evaluate('JSON.stringify([state.depth,state.balance,state.inventory])')
@@ -33,8 +34,23 @@ def run():
     else:
      page.mouse.move(x,y);page.mouse.down();page.mouse.move(x,y+85,steps=10);page.mouse.up()
     assert page.evaluate('MineView.cameraFor(state)')<camera;assert page.evaluate('petAt')==0
-    page.clock.run_for(500);page.locator('#mineToMole').click();tap();expect(page.locator('#petSpeech')).to_be_visible()
+    page.clock.run_for(500)
+    # Keep one input type: a synthetic mouse click immediately before a touch
+    # can suppress Chromium's compatibility click, unlike an all-touch gesture.
+    if touch:page.locator('#mineToMole').tap()
+    else:page.locator('#mineToMole').click()
+    page.clock.run_for(50);tap();expect(page.locator('#petSpeech')).to_be_visible()
     assert page.evaluate('JSON.stringify([state.depth,state.balance,state.inventory])')==before
+    # Removed Inventory stays removed; compact glasses toggle only affects visibility.
+    for selector in ['#rewards','[data-page="rewards"]','#mineViewLabel','#mineBrowseHint']:
+     expect(page.locator(selector)).to_have_count(0)
+    button=page.locator('#simpleViewButton');expect(button.locator('svg')).to_have_count(1);expect(button).to_have_text('');expect(button).to_have_attribute('aria-label','Hide animation')
+    button.click();expect(page.locator('.arcade-machine')).to_be_hidden();expect(button).to_have_attribute('aria-label','Show animation');expect(button).to_have_attribute('aria-pressed','true')
+    page.reload();expect(page.locator('.arcade-machine')).to_be_hidden();page.locator('#simpleViewButton').click();expect(page.locator('.arcade-machine')).to_be_visible()
+    assert page.evaluate('JSON.stringify([state.depth,state.balance,state.inventory])')==before
+    page.evaluate("EumoI18n.set('zh')");expect(button).to_have_attribute('aria-label','隐藏动画');page.evaluate("EumoI18n.set('en')")
+    if not touch:page.screenshot(path=str(ROOT/'docs/images/eumo-focus-clean.png'),full_page=True)
+    page.evaluate("location.hash='rewards'");expect(page.locator('#home')).to_be_visible();expect(page).to_have_url(url+'/#home');page.locator('[data-page="focus"]').click()
     page.clock.run_for(1600);page.locator('#startButton').click();expect(page.locator('#petButton')).to_be_disabled()
     assert not errors,errors;ctx.close()
    browser.close()

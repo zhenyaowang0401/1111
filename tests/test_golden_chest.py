@@ -47,7 +47,7 @@ def run():
             expect(chest.locator('[data-sell-treasure="sanxingdui"]')).to_be_disabled()
             page.locator('#confirmTreasureSale').dispatch_event('click')
             assert page.evaluate('state.balance')==balance+99
-            expect(page.locator('#goldenGrid [data-display-treasure="sanxingdui"]')).to_be_disabled()
+            expect(chest.locator('[data-display-treasure="sanxingdui"]')).to_be_disabled()
             # Ordinary chest still uses head display, without touching the golden inventory.
             chest.locator('[data-chest-slot="mushroom"]').click(); chest.locator('[data-hold="mushroom"]').click()
             assert page.evaluate('state.heldItem')=='mushroom'
