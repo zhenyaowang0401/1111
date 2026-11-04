@@ -379,6 +379,135 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
  #focus .mole-dialogue-space { flex: none; height: 220px; }
 }
 
+/* Scene-first rooms: editing tools are bounded, non-modal drawers. */
+.app-shell:has(#home:not([hidden])), .app-shell:has(#wardrobe:not([hidden])) {
+ max-width: 1440px; width: calc(100% - clamp(24px, 6vw, 96px)); padding: 0;
+}
+.nav a { display: flex; flex-direction: column; justify-content: center; gap: 3px; height: 52px; min-width: 48px; }
+.nav-label { font-size: 11px; line-height: 13px; font-weight: 500; letter-spacing: 0; }
+.nav a svg { width: 22px; height: 22px; }
+#focus #minePetName { flex: 1; margin-left: 0; }
+#simpleViewButton .visibility-eye-closed { display: none; }
+.simple-view #simpleViewButton .visibility-eye-open { display: none; }
+.simple-view #simpleViewButton .visibility-eye-closed { display: block; }
+#home .home-layout, #wardrobe .wardrobe-layout {
+ display: grid; grid-template-columns: minmax(0,1fr); gap: 16px;
+ height: clamp(460px, calc(100dvh - 210px), 820px); align-items: stretch;
+}
+#home .home-layout.panel-open, #wardrobe .wardrobe-layout.panel-open {
+ grid-template-columns: minmax(0,1fr) minmax(310px,360px);
+}
+#home .home-room, #wardrobe .fitting-room {
+ min-width: 0; min-height: 0; height: 100%; display: flex; flex-direction: column; gap: 0;
+ padding: 0 12px 12px; border: 2px solid #93809f; background: #39324d;
+ box-shadow: 3px 3px #15172b;
+}
+#home .home-room > .control-heading, #wardrobe .fitting-room > .control-heading {
+ flex-shrink: 0; min-height: 38px; padding: 8px 2px; border: 0;
+ font-size: 13px; line-height: 20px; letter-spacing: 0; color: #e8dcec;
+}
+#homeMoodLabel { color: #c0b3ce; font-size: 12px; }
+#home .home-stage {
+ flex: 1; min-height: 0; margin: 0; border: 0; background: #292536;
+ container-type: size; display: grid; place-items: center; overflow: hidden;
+}
+#home .home-scene { position: relative; width: min(100cqw,133.333333cqh); aspect-ratio: 4/3; }
+#home .home-scene canvas { width: 100%; height: auto; aspect-ratio: 4/3; }
+#home .home-actions {
+ flex-shrink: 0; justify-content: flex-end; gap: 8px; margin: 10px 0 0; line-height: 20px;
+}
+#home .home-actions button { padding: 7px 12px; min-height: 36px; font-size: 13px; }
+#home #editHomeButton { background: #d9a5ce; color: #392a45; border-color: #f2cee9; }
+#home .home-display-status { display: flex; flex-wrap: wrap; gap: 6px 14px; flex-shrink: 0; }
+#home :is(.held-item-bar, .golden-display-bar) {
+ display: flex; align-items: center; gap: 8px; margin: 8px 0 0; padding: 0;
+ background: none; border: 0; font-size: 12px; min-width: 0;
+}
+#home :is(#heldItemLabel,#goldenDisplayLabel) { overflow-wrap: anywhere; }
+#home .home-display-status button { padding: 4px 8px; font-size: 12px; flex-shrink: 0; }
+#home .home-shop, #wardrobe .closet {
+ display: flex; flex-direction: column; min-width: 0; min-height: 0; height: 100%;
+ padding: 12px; background: #302d45; border: 2px solid #7f708e;
+ box-shadow: 2px 2px #17172b; overflow: hidden;
+}
+.scene-drawer:not([hidden]) { animation: scene-drawer-arrive 160ms ease-out; }
+.scene-drawer-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-shrink: 0; margin-bottom: 12px; }
+.scene-drawer-heading h2 { margin: 0; font-size: 16px; font-weight: 600; line-height: 24px; color: #eee3f2; }
+.drawer-close { width: 32px; height: 32px; flex-shrink: 0; padding: 0; font-size: 24px; line-height: 1; background: #574663; color: #f1deed; border: 1px solid #aa8cb8; box-shadow: 2px 2px #1b182b; }
+.drawer-close:active { transform: translate(1px,1px); box-shadow: none; }
+.drawer-hint { margin: 0 0 10px; color: #d9c8df; font-size: 12px; }
+#homeEditor { flex: 1; min-height: 0; overflow: auto; overscroll-behavior: contain; scrollbar-color: #a98bb7 #242237; padding-right: 6px; }
+#home .home-slots { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px; margin: 0 0 8px; }
+#home .home-slots button { padding: 7px 5px; background: #27263d; border-width: 1px; }
+#home .home-slots button[aria-pressed=true] { border-color: #dca9d0; box-shadow: inset 0 -2px #dca9d0; color: #f2cbe8; }
+#home #clearHomeSlot { padding: 4px 8px; font-size: 12px; box-shadow: none; }
+#home .home-item-grid { gap: 7px; margin-top: 12px; }
+#home .home-item { grid-template-columns: 36px minmax(0,1fr) auto; gap: 7px; padding: 8px; background: #28253b; border: 1px solid #594c68; }
+#home .home-item.selected { border-color: #dca9d0; }
+#home .home-item-art svg { width: 34px; height: 34px; }
+#home .home-item strong { font-size: 13px; line-height: 18px; }
+#home .home-item small { font-size: 11px; line-height: 16px; margin-top: 3px; }
+#home .home-item button { padding: 6px; font-size: 12px; max-width: 82px; }
+#home .home-theme-heading { margin: 22px 0 10px; }
+#home .home-theme { padding: 8px; gap: 7px; background: #28253b; border-width: 1px; }
+#home .home-theme small { font-size: 11px; }
+#wardrobe .fitting-pet { flex: 1; min-height: 0; margin: 0; border: 0; background: #292536; container-type: size; display: grid; place-items: center; aspect-ratio: auto; }
+#wardrobe .fitting-pet .pet-button { width: min(100cqw,120cqh); aspect-ratio: 192/160; }
+#wardrobe .fitting-pet canvas { width: 100%; height: auto; aspect-ratio: 192/160; max-height: none; }
+#wardrobe .category-tabs { flex-shrink: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin: 12px 0 0; padding: 0; border: 0; }
+#wardrobe .category-tabs button { padding: 7px 10px; font-size: 12px; line-height: 18px; background: #302a43; border: 1px solid #756381; color: #d6c7df; }
+#wardrobe .category-tabs button[aria-pressed=true] { background: #302a43; color: #d6c7df; border-color: #756381; }
+#wardrobe .category-tabs button[aria-expanded=true] { color: #ffe1f3; border-color: #dca9d0; box-shadow: inset 0 -2px #dca9d0; }
+#wardrobe .closet-tabs { display: flex; flex-shrink: 0; justify-content: center; gap: 10px; margin: 10px 0 0; border: 0; }
+#wardrobe .closet-tabs button { min-width: 100px; padding: 8px 16px; background: #574265; border: 1px solid #a38aac; color: #f0dcea; font-size: 13px; line-height: 20px; }
+#wardrobe .closet-tabs button[aria-expanded=true] { border-color: #efc4e6; background: #74547f; }
+#wardrobe .shop-scroll { padding: 1px 5px 6px 1px; scrollbar-width: thin; scrollbar-color: #aa8bb7 #242237; }
+#wardrobe .outfit-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 7px; }
+#wardrobe .outfit-card { display: flex; flex-direction: column; position: relative; padding: 7px; background: #29263e; border: 1px solid #62516f; box-shadow: none; }
+#wardrobe .outfit-card.equipped { border-color: #ecc0df; background: #49364f; }
+#wardrobe .outfit-art { margin-top: 12px; height: 56px; border: 0; background: none; }
+#wardrobe .outfit-art svg { width: 52px; height: 50px; }
+#wardrobe .outfit-card h3 { margin: 6px 0 8px; min-height: 34px; font-size: 12px; line-height: 17px; color: #f0e5f3; overflow-wrap: anywhere; }
+#wardrobe .rarity-badge { position: absolute; top: 5px; left: 6px; font-size: 9px; line-height: 12px; }
+.outfit-equipped-mark { position: absolute; top: 3px; right: 6px; color: #ffe5b4; font-size: 14px; line-height: 16px; }
+#wardrobe .item-action { margin-top: auto; display: flex; }
+#wardrobe .item-action button { width: 100%; padding: 5px 2px; min-height: 30px; font-size: 11px; line-height: 16px; }
+#wardrobe .wardrobe-equipped { flex-shrink: 0; border-top: 1px solid #594a67; padding-top: 8px; margin-top: 8px; display: flex; align-items: center; gap: 8px; }
+#wardrobe .equipped-list { flex: 1; justify-content: flex-start; gap: 4px; min-height: 0; max-height: 66px; overflow: auto; margin: 0; font-size: 11px; }
+#wardrobe #removeOutfit { flex-shrink: 0; padding: 6px 8px; font-size: 11px; max-width: 92px; }
+#wardrobe .tool-shop-note { margin: 0 0 10px; padding: 8px; font-size: 12px; }
+#wardrobe .closet-empty { padding: 28px 8px; font-size: 13px; }
+@keyframes scene-drawer-arrive { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+@media (hover:hover) and (pointer:fine) {
+ .drawer-close:hover { background: #74567f; }
+ #wardrobe .category-tabs button:hover, #wardrobe .closet-tabs button:hover { border-color: #edc6e3; }
+ #home .home-item:hover, #wardrobe .outfit-card:hover { background: #3c304a; }
+}
+@media (max-width: 800px) {
+ #home > .page-heading, #wardrobe > .page-heading { padding: 14px 0; }
+ #home .home-layout, #wardrobe .wardrobe-layout,
+ #home .home-layout.panel-open, #wardrobe .wardrobe-layout.panel-open { display: flex; flex-direction: column; gap: 12px; height: auto; }
+ #home .home-room { height: clamp(360px,65dvh,650px); }
+ #wardrobe .fitting-room { height: clamp(420px,70dvh,680px); }
+ #home .panel-open .home-room { height: clamp(240px,34dvh,340px); }
+ #wardrobe .panel-open .fitting-room { height: clamp(320px,38dvh,400px); }
+ #home .home-shop, #wardrobe .closet { height: clamp(300px,46dvh,480px); }
+ #wardrobe .fitting-room { padding: 0 10px 12px; }
+ #home .home-actions { gap: 6px; justify-content: center; }
+ #home .home-actions button { padding: 7px 8px; font-size: 12px; }
+ #wardrobe .category-tabs button { padding: 6px 8px; }
+ #wardrobe .item-action button { min-height: 36px; font-size: 12px; }
+ #wardrobe .outfit-card h3 { font-size: 13px; line-height: 18px; }
+ .drawer-close { width: 36px; height: 36px; }
+}
+@media (max-width: 400px) {
+ .nav { gap: 6px; }
+ .nav a { min-width: 48px; height: 48px; }
+ #home .home-actions button { padding: 6px; font-size: 11px; }
+ #wardrobe .outfit-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (prefers-reduced-motion:reduce) { .scene-drawer:not([hidden]) { animation: none; } }
+
 </style></head><body>
 <svg class="svg-defs" aria-hidden="true"><defs><symbol id="i-pickaxe" viewBox="0 0 24 24"><path d="M3 3h12v3h4v3h3v5h-3v-3h-4V8h-3l-2 3 2 2-9 9-3-3 9-9-2-2H3z"/></symbol><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10h3V7h3V4h6v3h3v3h3v11h-7v-7h-4v7H3Z"/></symbol><symbol id="i-gift" viewBox="0 0 24 24"><path d="M3 10h18v4H3zm2 4v7h14v-7h-5v7h-4v-7M10 3h4v4h-4zm-6 0h4v4H4zm12 0h4v4h-4z"/></symbol><symbol id="i-shirt" viewBox="0 0 24 24"><path d="M8 3H5v3H2v6h5v9h10v-9h5V6h-3V3h-3v4H8Z"/></symbol><symbol id="i-friends" viewBox="0 0 24 24"><path d="M5 3h5v6H5zm9 2h5v5h-5zM2 12h11v8H2zm12 1h8v7h-8z"/></symbol><symbol id="i-report" viewBox="0 0 24 24"><path d="M3 3h2v17h17v2H3zm5 9h3v5H8zm5-5h3v10h-3zm5-4h3v14h-3z"/></symbol><symbol id="i-sound" viewBox="0 0 24 24"><path d="M3 9h5V5h5v14H8v-4H3zm14-3h3v12h-3m-2-9h2v6h-2"/></symbol><symbol id="i-library" viewBox="0 0 24 24"><path d="M2 2h8v8H2zm12 0h8v8h-8zM2 14h8v8H2zm12 0h8v8h-8z"/></symbol><symbol id="i-note" viewBox="0 0 24 24"><path d="M9 3h12v4h-9v11h-2v3H4v-2H2v-4h2v-2h5z"/></symbol><symbol id="i-rhythm" viewBox="0 0 24 24"><path d="M2 9h4v12H2zm8-7h4v19h-4zm8 4h4v15h-4z"/></symbol><symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 4h8v3h4v3h3v9H2v-9h3V7h2zm0 16h2v3H7zm8 0h2v3h-2z"/></symbol><symbol id="i-disc" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M7 1h10v2h4v4h2v10h-2v4h-4v2H7v-2H3v-4H1V7h2V3h4zm3 8v2H8v3h2v2h4v-2h2v-3h-2V9z"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><path d="M5 3h3v3h4v3h4v3h4v3h-4v3h-4v3H5z"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M4 3h6v18H4zm10 0h6v18h-6z"/></symbol><symbol id="i-previous" viewBox="0 0 24 24"><path d="M2 4h4v16H2zm13 0h5v16h-5v-3h-4v-3H7v-4h4V7h4z"/></symbol><symbol id="i-next" viewBox="0 0 24 24"><path d="M18 4h4v16h-4zM4 4h5v3h4v3h4v4h-4v3H9v3H4z"/></symbol><symbol id="i-add-friend" viewBox="0 0 24 24"><path d="M5 2h6v2h2v6h-2v2H5v-2H3V4h2zM1 16h3v-2h8v2h3v6H1zm17-9h3v4h3v3h-3v4h-3v-4h-4v-3h4z"/></symbol></defs></svg>
 
@@ -396,16 +525,41 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
   </form>
  </div>
 </section>
-<div id="gameShell" class="app-shell" hidden><header class="header"><a class="brand" href="#start" aria-label="Mole setup">Eu<span>mo</span> <small class="version-tag">v3</small></a><nav class="nav" aria-label="Main navigation"><a href="#focus" data-page="focus" aria-label="Focus" title="Focus"><svg><use href="#i-pickaxe"/></svg></a><a href="#home" data-page="home" aria-label="Home" title="Home"><svg><use href="#i-home"/></svg></a><a href="#wardrobe" data-page="wardrobe" aria-label="Equipment" title="Equipment"><svg><use href="#i-shirt"/></svg></a><a href="#companions" data-page="companions" aria-label="Friends" title="Friends"><svg><use href="#i-friends"/></svg></a></nav><div class="header-right"><span class="gem-balance" aria-label="Star balance">✦ <b id="balance">0</b></span><a href="#reports" data-page="reports" class="report-link" aria-label="Today and reports" title="Today and reports"><svg><use href="#i-report"/></svg></a></div></header>
-<main><section id="focus" class="page focus-page" aria-labelledby="focusTitle"><div class="page-heading"><h1 id="focusTitle">Focus</h1><div class="focus-meta"><button id="floatMoleButton" class="quiet-button float-mole-button" type="button" aria-pressed="false" title="Keep your mole with you in a floating window">Float mole ↗</button><span id="focusMode">Study</span><span class="meta-separator">/</span><time id="deviceTime" class="device-time"></time><span id="devicePeriod" class="period-label"></span></div></div><div class="game-layout"><div class="arcade-machine"><div class="machine-top"><span id="minePetName">MOMO</span><button id="demoButton" class="mine-demo-button">15s demo</button><span>01</span></div><div class="screen-frame"><div class="screen-hud"><span><i></i><b id="mineStatus">Idle</b></span><span>DEPTH <b id="depthDisplay">000</b><small> m</small></span></div><div class="pet-stage" id="petStage"><button class="pet-button" id="petButton" aria-label="Pet Momo" title="Pet Momo"><canvas id="miningCanvas" width="384" height="224" aria-label="Momo and the mine"></canvas></button><div id="petSpeech" class="pet-speech" role="status" hidden>yeeeeee</div><div id="goldenPickup" class="golden-pickup" role="status" hidden></div><div id="mineBrowseControls" class="mine-browse-controls" hidden><button id="mineToSurface" type="button">↑ Surface</button><button id="mineToMole" type="button">↓ Mole</button></div><span id="sceneLabel" class="scene-label">Surface</span></div></div><div id="moleDialogueSpace" class="mole-dialogue-space">
+<div id="gameShell" class="app-shell" hidden><header class="header"><a class="brand" href="#start" aria-label="Mole setup">Eu<span>mo</span> <small class="version-tag">v3</small></a><nav class="nav" aria-label="Main navigation"><a href="#focus" data-page="focus" aria-label="Focus" title="Focus"><svg aria-hidden="true"><use href="#i-pickaxe"/></svg><span class="nav-label">Focus</span></a><a href="#home" data-page="home" aria-label="Home" title="Home"><svg aria-hidden="true"><use href="#i-home"/></svg><span class="nav-label">Home</span></a><a href="#wardrobe" data-page="wardrobe" aria-label="Equipment" title="Equipment"><svg aria-hidden="true"><use href="#i-shirt"/></svg><span class="nav-label">Style</span></a><a href="#companions" data-page="companions" aria-label="Friends" title="Friends"><svg aria-hidden="true"><use href="#i-friends"/></svg><span class="nav-label">Friends</span></a></nav><div class="header-right"><span class="gem-balance" aria-label="Star balance">✦ <b id="balance">0</b></span><a href="#reports" data-page="reports" class="report-link" aria-label="Today and reports" title="Today and reports"><svg><use href="#i-report"/></svg></a></div></header>
+<main><section id="focus" class="page focus-page" aria-labelledby="focusTitle"><div class="page-heading"><h1 id="focusTitle">Focus</h1><div class="focus-meta"><button id="floatMoleButton" class="quiet-button float-mole-button" type="button" aria-pressed="false" title="Keep your mole with you in a floating window">Float mole ↗</button><span id="focusMode">Study</span><span class="meta-separator">/</span><time id="deviceTime" class="device-time"></time><span id="devicePeriod" class="period-label"></span></div></div><div class="game-layout"><div class="arcade-machine"><div class="machine-top"><span id="minePetName">MOMO</span><button id="demoButton" class="mine-demo-button">15s demo</button></div><div class="screen-frame"><div class="screen-hud"><span><i></i><b id="mineStatus">Idle</b></span><span>DEPTH <b id="depthDisplay">000</b><small> m</small></span></div><div class="pet-stage" id="petStage"><button class="pet-button" id="petButton" aria-label="Pet Momo" title="Pet Momo"><canvas id="miningCanvas" width="384" height="224" aria-label="Momo and the mine"></canvas></button><div id="petSpeech" class="pet-speech" role="status" hidden>yeeeeee</div><div id="goldenPickup" class="golden-pickup" role="status" hidden></div><div id="mineBrowseControls" class="mine-browse-controls" hidden><button id="mineToSurface" type="button">↑ Surface</button><button id="mineToMole" type="button">↓ Mole</button></div><span id="sceneLabel" class="scene-label">Surface</span></div></div><div id="moleDialogueSpace" class="mole-dialogue-space">
 <section class="mole-chat-window" aria-labelledby="moleChatTitle"><div class="mole-chat-titlebar"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 2h14v10H7l-4 3v-3H1z"/><path class="chat-icon-lines" d="M4 5h8v1H4zm0 3h5v1H4z"/></svg><h2 id="moleChatTitle"><span id="chatMoleName">Momo</span> · chat</h2><span class="chat-title-trim" aria-hidden="true"></span><button id="openMoleChat" class="chat-window-button" type="button" aria-label="Open full conversation" title="Open conversation">□</button><button id="toggleMoleChat" class="chat-window-button" type="button" aria-expanded="true" aria-controls="moleChatContent" aria-label="Minimize mole chat">−</button></div>
 <div id="moleChatContent" class="mole-chat-content"><div id="chatMessages" class="chat-messages" role="log" aria-live="polite" aria-label="Conversation with your mole" tabindex="0"></div><form id="moleChatForm" class="mole-chat-compose"><label class="sr-only" for="moleChatInput">Message your mole</label><input id="moleChatInput" type="text" maxlength="2000" placeholder="Talk to your mole…" autocomplete="off"><button id="moleChatSend" type="submit" class="chat-send-button">Send ↵</button></form></div></section>
-</div></div><aside class="control-panel"><div class="control-heading"><span>TIMER</span><span id="timerLabel">Ready</span></div><label class="task-label" for="taskInput">What are you working on?</label><input id="taskInput" class="task-input" maxlength="100" placeholder="Optional task"><div class="timer-card"><div id="timeDisplay" class="timer-digits" role="timer">25<span>:</span>00</div><div class="duration-controls"><button id="minusTime" aria-label="Remove five minutes">−</button><span id="durationLabel">25 min</span><button id="plusTime" aria-label="Add five minutes">+</button></div><div class="focus-modes" aria-label="Session type"><button data-mode="study" class="selected">Study</button><button data-mode="work">Work</button><button data-mode="rest">Break</button></div><button id="startButton" class="start-button"><span class="play-symbol">▶</span><span id="startText">Start</span><span>↗</span></button><button id="stopButton" class="stop-button" hidden>End session</button></div><div class="mission-stats"><div><span>Focus today</span><strong id="todayMinutes">0m</strong></div><div><span>All-time depth</span><strong><b id="totalDepth">0</b><small> m</small></strong></div></div><div class="depth-progress"><div><span>Dig progress</span><b id="digPercent">0%</b></div><div class="progress-track"><i id="digProgress"></i></div></div><section class="music-module" aria-label="Music player"><div class="rain-controls"><button id="soundButton" class="sound-button" aria-pressed="false" aria-label="Play music"><svg aria-hidden="true"><use href="#i-sound"/></svg><span>Music</span><i class="toggle"></i></button><label class="sr-only" for="musicVolume">Music volume</label><input type="range" id="musicVolume" min="0" max="100" value="45" aria-label="Music volume"><button id="openMusicLibrary" class="music-library-button" type="button" aria-haspopup="dialog" aria-controls="musicDialog" aria-label="Open music library" title="Music library"><svg aria-hidden="true"><use href="#i-library"/></svg></button></div><button id="musicMiniPlayer" class="music-mini-player" type="button" aria-haspopup="dialog" aria-controls="musicDialog" aria-label="Open music player"><svg class="music-mini-disc" aria-hidden="true"><use href="#i-disc"/></svg><span class="music-mini-copy"><strong id="musicMiniTitle">Warm Focus</strong><small id="musicMiniState">Paused · Soft music</small></span><span class="music-equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></section><button id="simpleViewButton" class="quiet-button" type="button" aria-pressed="false" aria-label="Hide animation" title="Hide animation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 8h8v8H2zM14 8h8v8h-8z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 10h4M0 8h2M22 8h2" fill="none" stroke="currentColor" stroke-width="2"/><path class="visibility-slash" d="M3 3l18 18" fill="none" stroke="currentColor" stroke-width="2"/></svg></button></aside></div></section>
+</div></div><aside class="control-panel"><div class="control-heading"><span>TIMER</span><span id="timerLabel">Ready</span></div><label class="task-label" for="taskInput">What are you working on?</label><input id="taskInput" class="task-input" maxlength="100" placeholder="Optional task"><div class="timer-card"><div id="timeDisplay" class="timer-digits" role="timer">25<span>:</span>00</div><div class="duration-controls"><button id="minusTime" aria-label="Remove five minutes">−</button><span id="durationLabel">25 min</span><button id="plusTime" aria-label="Add five minutes">+</button></div><div class="focus-modes" aria-label="Session type"><button data-mode="study" class="selected">Study</button><button data-mode="work">Work</button><button data-mode="rest">Break</button></div><button id="startButton" class="start-button"><span class="play-symbol">▶</span><span id="startText">Start</span><span>↗</span></button><button id="stopButton" class="stop-button" hidden>End session</button></div><div class="mission-stats"><div><span>Focus today</span><strong id="todayMinutes">0m</strong></div><div><span>All-time depth</span><strong><b id="totalDepth">0</b><small> m</small></strong></div></div><div class="depth-progress"><div><span>Dig progress</span><b id="digPercent">0%</b></div><div class="progress-track"><i id="digProgress"></i></div></div><section class="music-module" aria-label="Music player"><div class="rain-controls"><button id="soundButton" class="sound-button" aria-pressed="false" aria-label="Play music"><svg aria-hidden="true"><use href="#i-sound"/></svg><span>Music</span><i class="toggle"></i></button><label class="sr-only" for="musicVolume">Music volume</label><input type="range" id="musicVolume" min="0" max="100" value="45" aria-label="Music volume"><button id="openMusicLibrary" class="music-library-button" type="button" aria-haspopup="dialog" aria-controls="musicDialog" aria-label="Open music library" title="Music library"><svg aria-hidden="true"><use href="#i-library"/></svg></button></div><button id="musicMiniPlayer" class="music-mini-player" type="button" aria-haspopup="dialog" aria-controls="musicDialog" aria-label="Open music player"><svg class="music-mini-disc" aria-hidden="true"><use href="#i-disc"/></svg><span class="music-mini-copy"><strong id="musicMiniTitle">Warm Focus</strong><small id="musicMiniState">Paused · Soft music</small></span><span class="music-equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></section><button id="simpleViewButton" class="quiet-button" type="button" aria-pressed="false" aria-label="Hide animation" title="Hide animation"><svg viewBox="0 0 24 24" aria-hidden="true"><g class="visibility-eye-open"><path d="M2 10h2V8h4V6h8v2h4v2h2v4h-2v2h-4v2H8v-2H4v-2H2z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 9h4v6h-4z" fill="currentColor"/></g><g class="visibility-eye-closed" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9v3h2v2h4v2h8v-2h4v-2h2V9M6 15v4m6-3v4m6-5v4"/></g></svg></button></aside></div></section>
 <section id="home" class="page home-page" hidden aria-labelledby="homeTitle">
-<div class="page-heading"><h1 id="homeTitle">Home</h1><span class="page-meta">YOUR LITTLE CAVE</span></div>
-<div class="home-layout"><div class="home-room"><div class="control-heading"><span><span id="homePetName">MOMO</span> <small id="homeMoodLabel">Idle</small></span><span id="homeThemeName">Cozy cave</span></div><div class="home-stage"><button id="homePetButton" class="pet-button" aria-label="Pet Momo at home"><canvas id="homeCanvas" width="384" height="288" aria-label="Your mole's round burrow"></canvas></button><button id="openChestButton" class="chest-hotspot" aria-label="Open treasure chest" title="Open chest"></button><div id="homeSpeech" class="pet-speech" hidden>yeeeeee</div></div><div class="home-actions"><button id="editHomeButton" class="quiet-button">Decorate</button><button id="openChestShortcut" class="quiet-button">Open chest</button><button id="openCraftingButton" class="quiet-button">Craft decor</button><span id="homeEditHint">Place your finds here.</span></div></div>
-<aside class="home-shop"><div id="heldItemBar" class="held-item-bar" hidden><span id="heldItemLabel"></span><button id="putBackButton" class="quiet-button">Put back</button></div><div class="closet-heading"><h2>Room &amp; finds</h2><span class="closet-balance">✦ <b id="homeBalance">0</b></span></div><div id="goldenDisplayBar" class="golden-display-bar"><span id="goldenDisplayLabel">Golden shelf · nothing on display yet</span><button id="putBackTreasure" class="quiet-button" hidden>Put back</button></div><div id="homeViewNote" class="home-view-note">Bring your discoveries home. Craft decor with spare finds between sessions.</div><div id="homeEditor" hidden><div class="home-slots" aria-label="Placement spot"><button data-slot="left" aria-pressed="true">Left nook</button><button data-slot="right" aria-pressed="false">Right nook</button><button data-slot="wall" aria-pressed="false">Wall</button><button data-slot="floor" aria-pressed="false">Floor</button></div><button id="clearHomeSlot" class="quiet-button">Clear spot</button><div id="homeItemGrid" class="home-item-grid"></div><h3 class="home-theme-heading">Room themes</h3><div id="homeThemeGrid" class="home-theme-grid"></div></div></aside></div></section>
-<section id="wardrobe" class="page wardrobe-page" hidden aria-labelledby="equipmentTitle"><div class="page-heading"><h1 id="equipmentTitle">Equipment</h1><span class="page-meta" id="equippedCount">0 equipped</span></div><div class="wardrobe-layout"><div class="fitting-room"><div class="control-heading"><span id="equipmentPetName">MOMO</span><span id="momoLevel">LV. 01</span></div><div class="fitting-pet"><button id="wardrobePetButton" class="pet-button" aria-label="Pet Momo in equipment preview"><canvas id="wardrobeCanvas" width="192" height="160" aria-label="Equipped items preview"></canvas></button><div id="wardrobeSpeech" class="pet-speech" hidden>yeeeeee</div></div><div class="equipped-list" id="equippedList">No equipment</div><button id="removeOutfit" class="quiet-button">Unequip all</button></div><div class="closet"><div class="closet-heading"><h2>Shop</h2><span class="closet-balance">✦ <b id="closetBalance">0</b></span></div><div class="closet-tabs"><button class="active" data-filter="all">All</button><button data-filter="owned">Owned <span id="ownedCount">0</span></button></div><div id="categoryTabs" class="category-tabs" aria-label="Equipment categories"></div><div id="toolShopNote" class="tool-shop-note" hidden><span id="activeToolName">No tool selected</span><button id="resetTool" class="quiet-button">Use default tool</button></div><div id="shopScroll" class="shop-scroll" tabindex="0" role="region" aria-label="Shop items"><div id="outfitGrid" class="outfit-grid"></div></div></div></div></section>
+<div class="page-heading"><h1 id="homeTitle">Home</h1></div>
+<div class="home-layout" id="homeLayout">
+ <div class="home-room">
+  <div class="control-heading"><span id="homePetName">MOMO</span><small id="homeMoodLabel">Idle</small><span id="homeThemeName" hidden>Cozy cave</span></div>
+  <div class="home-stage"><div class="home-scene"><button id="homePetButton" class="pet-button" aria-label="Pet Momo at home"><canvas id="homeCanvas" width="384" height="288" aria-label="Your mole's round burrow"></canvas></button><button id="openChestButton" class="chest-hotspot" aria-label="Open treasure chest" title="Open treasure chest"></button><div id="homeSpeech" class="pet-speech" hidden>yeeeeee</div></div></div>
+  <div class="home-actions"><button id="openChestShortcut" class="quiet-button">Open chest</button><button id="openCraftingButton" class="quiet-button">Craft decor</button><button id="editHomeButton" class="quiet-button" aria-expanded="false" aria-controls="homeDrawer">Decorate</button></div>
+  <div class="home-display-status"><div id="heldItemBar" class="held-item-bar" hidden><span id="heldItemLabel"></span><button id="putBackButton" class="quiet-button">Put back</button></div><div id="goldenDisplayBar" class="golden-display-bar" hidden><span id="goldenDisplayLabel"></span><button id="putBackTreasure" class="quiet-button" hidden>Put back</button></div></div>
+ </div>
+ <aside id="homeDrawer" class="home-shop scene-drawer" role="region" aria-labelledby="homeDrawerTitle" hidden>
+  <div class="scene-drawer-heading"><h2 id="homeDrawerTitle">Decorate</h2><button id="closeHomeDrawer" class="drawer-close" type="button" aria-label="Close decor panel" title="Close decor panel">×</button></div>
+  <span id="homeBalance" hidden>0</span><p id="homeEditHint" class="drawer-hint"></p>
+  <div id="homeEditor" hidden><div class="home-slots" aria-label="Placement spot"><button data-slot="left" aria-pressed="true">Left nook</button><button data-slot="right" aria-pressed="false">Right nook</button><button data-slot="wall" aria-pressed="false">Wall</button><button data-slot="floor" aria-pressed="false">Floor</button></div><button id="clearHomeSlot" class="quiet-button">Clear spot</button><div id="homeItemGrid" class="home-item-grid"></div><h3 class="home-theme-heading">Room themes</h3><div id="homeThemeGrid" class="home-theme-grid"></div></div>
+ </aside>
+</div></section>
+<section id="wardrobe" class="page wardrobe-page" hidden aria-labelledby="equipmentTitle">
+<div class="page-heading"><h1 id="equipmentTitle">Equipment</h1><span id="equippedCount" hidden>0 equipped</span></div>
+<div class="wardrobe-layout" id="wardrobeLayout">
+ <div class="fitting-room"><div class="control-heading"><span id="equipmentPetName">MOMO</span><span id="momoLevel" hidden>LV. 01</span></div><div class="fitting-pet"><button id="wardrobePetButton" class="pet-button" aria-label="Pet Momo in equipment preview"><canvas id="wardrobeCanvas" width="192" height="160" aria-label="Equipped items preview"></canvas></button><div id="wardrobeSpeech" class="pet-speech" hidden>yeeeeee</div></div>
+  <div id="categoryTabs" class="category-tabs" aria-label="Equipment categories"></div>
+  <div class="closet-tabs" aria-label="Item collection"><button data-filter="owned" aria-expanded="false" aria-controls="wardrobeDrawer">My items</button><button data-filter="all" class="active" aria-expanded="false" aria-controls="wardrobeDrawer">Shop</button></div>
+ </div>
+ <aside id="wardrobeDrawer" class="closet scene-drawer" role="region" aria-labelledby="wardrobeDrawerTitle" hidden>
+  <div class="scene-drawer-heading"><h2 id="wardrobeDrawerTitle">Items</h2><button id="closeWardrobeDrawer" class="drawer-close" type="button" aria-label="Close items panel" title="Close items panel">×</button></div>
+  <span id="closetBalance" hidden>0</span><span id="ownedCount" hidden>0</span>
+  <div id="toolShopNote" class="tool-shop-note" hidden><span id="activeToolName">No tool selected</span><button id="resetTool" class="quiet-button">Use default tool</button></div>
+  <div id="shopScroll" class="shop-scroll" tabindex="0" role="region" aria-label="Shop items"><div id="outfitGrid" class="outfit-grid"></div></div>
+  <div class="wardrobe-equipped"><div class="equipped-list" id="equippedList">No equipment</div><button id="removeOutfit" class="quiet-button">Unequip all</button></div>
+ </aside>
+</div></section>
 <section id="reports" class="page reports-page" hidden aria-labelledby="reportTitle"><div class="page-heading"><h1 id="reportTitle">Today</h1><span class="page-meta" id="reportDate"></span></div><div class="report-stats"><article><span>TODAY</span><strong id="reportToday">0m</strong><small id="reportTodaySessions">0 completed</small></article><article><span>THIS WEEK</span><strong id="reportWeek">0m</strong><small>Mon – Sun</small></article><article><span>ALL TIME</span><strong id="reportTotal">0m</strong><small>Study + Work</small></article></div><div class="today-details"><span>Study <b id="todayStudy">0m</b></span><span>Work <b id="todayWork">0m</b></span><button id="finishTodayButton" class="finish-today-button" aria-label="Finish today">Finish <span aria-hidden="true">✓</span></button></div><div class="trend-panel"><div class="panel-heading"><h2>Focus trend</h2><div class="range-tabs" aria-label="Trend range"><button class="active" data-range="7">7 days</button><button data-range="30">30 days</button></div></div><div id="trendChart" class="trend-chart"></div><div class="chart-foot"><span id="trendTotal">0m total</span><span id="chartTooltip" role="status">Minutes per day</span></div></div><div class="calendar-layout"><div class="calendar-panel"><div class="panel-heading"><h2 id="calendarMonth"></h2><div class="month-controls"><button id="previousMonth" aria-label="Previous month">‹</button><button id="currentMonth">Today</button><button id="nextMonth" aria-label="Next month">›</button></div></div><div class="weekdays" aria-hidden="true"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div id="calendarGrid" class="calendar-grid" role="group" aria-label="Select a date"></div><div class="calendar-key"><span>Focus time</span><i></i><i></i><i></i><i></i></div></div><div class="daily-log"><div class="panel-heading"><h2 id="logDate">Daily log</h2><strong id="logTotal">0m</strong></div><div id="logEntries"></div></div></div><p class="report-note">Study and Work use actual running time. Pauses, breaks and demos are excluded. Stored in this browser.</p></section>
 
 <section id="companions" class="page companions-page" hidden aria-labelledby="companionsTitle">
@@ -450,6 +604,12 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
 window.EumoI18n=(()=>{
  const KEY='eumo-language';let language='en';try{if(localStorage.getItem(KEY)==='zh')language='zh';}catch{}
  const dictionary={
+ "Style": "装扮",
+ "My items": "我的物品",
+ "Items": "物品",
+ "Item collection": "物品收藏",
+ "Close decor panel": "收起布置面板",
+ "Close items panel": "收起物品面板",
  "Come add your mole friends!": "快来添加你的鼹鼠朋友！",
  "Mole setup": "鼹鼠设置",
  "Your mole": "你的鼹鼠",
@@ -2016,6 +2176,7 @@ try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));if(saved&&typeof s
 HomeCatalog.rememberFinds(state);
 let pendingCraft=null;
 let draftColor=state.profile.color,draftName=state.profile.name,afterSetup='focus',currentGamePage='focus',lastClockStamp='';
+let wardrobeOpen=false,wardrobeReturnSelector='[data-filter=all]';
 let homeEditing=false,selectedSlot='left',finishDayPending=false,lastFinishedId=null,daySummaryPending=false;
 let demoSelected=false,selectedFilter='all',selectedCategory='all',selectedChestItem=null,toastTimeout,petTimeout,petAt=0,petSpinAt=0,petCombo=[],petComboCanvas=null,lastSave=0,lastReportMinute=-1;
 let trendRange=7,selectedDay=todayKey(),calendarView=new Date(new Date().getFullYear(),new Date().getMonth(),1);
@@ -2039,11 +2200,12 @@ function renderDig(){const m=PixelArt.digMetrics({...state,remaining:remaining()
 function renderStats(){$('#balance').textContent=state.balance;$('#closetBalance').textContent=state.balance;$('#ownedCount').textContent=state.owned.length+state.ownedTools.length;$('#equippedCount').textContent=state.equipped.length+' equipped';$('#equippedList').innerHTML=state.equipped.length?state.equipped.map(id=>`<span class="equipment-chip">${outfits.find(o=>o.id===id).name}</span>`).join(''):'No equipment';$('#removeOutfit').disabled=!state.equipped.length;HomeCatalog.rememberFinds(state);renderGoldenShelf();renderCloset();renderReportStats();renderHome();}
 function renderCloset(){
  const toolMode=selectedCategory==='tools',source=toolMode?tools:outfits.filter(o=>selectedCategory==='all'||o.category===selectedCategory),ownedIDs=toolMode?state.ownedTools:state.owned,items=selectedFilter==='owned'?source.filter(o=>ownedIDs.includes(o.id)):source;
- $('#categoryTabs').innerHTML=WardrobeCatalog.categories.map(c=>`<button data-category="${c.id}" aria-pressed="${selectedCategory===c.id}">${c.label}${c.id==='all'?'':` <small>${c.id==='tools'?tools.length:outfits.filter(o=>o.category===c.id).length}</small>`}</button>`).join('');
+ $('#categoryTabs').innerHTML=WardrobeCatalog.categories.map(c=>`<button data-category="${c.id}" aria-pressed="${selectedCategory===c.id}" aria-expanded="${wardrobeOpen&&selectedCategory===c.id}" aria-controls="wardrobeDrawer">${c.label}</button>`).join('');
+ $('#wardrobeDrawerTitle').textContent=selectedCategory==='all'?'Items':WardrobeCatalog.categories.find(c=>c.id===selectedCategory).label;
  $('#toolShopNote').hidden=!toolMode;$('#activeToolName').textContent=state.tool?'Using: '+tools.find(t=>t.id===state.tool).name:'Default digging tool';$('#resetTool').disabled=!state.tool;
- $('#outfitGrid').innerHTML=items.length?items.map(o=>{const owned=ownedIDs.includes(o.id),equipped=toolMode?state.tool===o.id:state.equipped.includes(o.id);return `<article class="outfit-card ${equipped?'equipped':''}" data-rarity="${o.rarity.toLowerCase()}"><span class="rarity-badge">${o.rarity}</span><div class="outfit-art">${PixelArt.iconSVG(o.id)}</div><h3>${o.name}</h3><div class="item-action"><span>${owned?'Owned':'✦ '+o.cost}</span><button ${toolMode?'data-tool':'data-item'}="${o.id}" class="${equipped?'equipped-button':''}" aria-pressed="${equipped}" ${toolMode&&equipped?'disabled':''} aria-label="${equipped?(toolMode?'Using':'Remove'):owned?(toolMode?'Use':'Equip'):'Buy'} ${o.name}">${equipped?(toolMode?'Using':'Remove'):owned?(toolMode?'Use':'Equip'):'Buy'}</button></div></article>`;}).join(''):'<div class="closet-empty">No owned items.<br><button id="browseAll" class="quiet-button">Browse items</button></div>';
+ $('#outfitGrid').innerHTML=items.length?items.map(o=>{const owned=ownedIDs.includes(o.id),equipped=toolMode?state.tool===o.id:state.equipped.includes(o.id);return `<article class="outfit-card ${equipped?'equipped':''}" data-rarity="${o.rarity.toLowerCase()}">${['Rare','Epic','Legendary'].includes(o.rarity)?`<span class="rarity-badge">${o.rarity}</span>`:''}${equipped?'<span class="outfit-equipped-mark" aria-hidden="true">✓</span>':''}<div class="outfit-art">${PixelArt.iconSVG(o.id)}</div><h3>${o.name}</h3><div class="item-action"><button ${toolMode?'data-tool':'data-item'}="${o.id}" class="${equipped?'equipped-button':''}" aria-pressed="${equipped}" ${toolMode&&equipped?'disabled':''} aria-label="${equipped?(toolMode?'Using':'Remove'):owned?(toolMode?'Use':'Equip'):'Buy'} ${o.name}">${equipped?(toolMode?'Using':'Remove'):owned?(toolMode?'Use':'Equip'):'Buy · ✦ '+o.cost}</button></div></article>`;}).join(''):'<div class="closet-empty">No owned items.<br><button id="browseAll" class="quiet-button">Browse items</button></div>';
 }
-function navigate(page){trackStudy();syncClock();const requested=typeof page==='string'?page:location.hash.slice(1),allowed=['focus','home','wardrobe','reports','companions'];let target=requested==='rewards'?'home':allowed.includes(requested)?requested:(requested==='start'?'start':state.profile.configured?'focus':'start');if(!state.profile.configured&&target!=='start'){afterSetup=target;target='start';}else if(target==='start')afterSetup=currentGamePage;document.body.dataset.screen=target==='start'?'start':'game';$('#setupScreen').hidden=target!=='start';$('#gameShell').hidden=target==='start';$$('.page').forEach(p=>p.hidden=p.id!==target);$$('[data-page]').forEach(a=>{const active=a.dataset.page===target;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});document.title=`Eumo v3 — ${{start:'Mole setup',focus:'Focus',home:'Home',wardrobe:'Equipment',reports:'Today',companions:'Friends'}[target]}`;if(requested==='rewards'){try{history.replaceState(null,'','#home');}catch{}}if(target==='start')prepareSetup();else currentGamePage=target;if(target==='reports')renderReports();if(target==='home')renderHome();if(target==='companions')FriendsClient.activate();window.scrollTo({top:0,behavior:'instant'});}
+function navigate(page){trackStudy();syncClock();const requested=typeof page==='string'?page:location.hash.slice(1),allowed=['focus','home','wardrobe','reports','companions'];let target=requested==='rewards'?'home':allowed.includes(requested)?requested:(requested==='start'?'start':state.profile.configured?'focus':'start');if(!state.profile.configured&&target!=='start'){afterSetup=target;target='start';}else if(target==='start')afterSetup=currentGamePage;document.body.dataset.screen=target==='start'?'start':'game';$('#setupScreen').hidden=target!=='start';$('#gameShell').hidden=target==='start';$$('.page').forEach(p=>p.hidden=p.id!==target);$$('[data-page]').forEach(a=>{const active=a.dataset.page===target;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});document.title=`Eumo v3 — ${{start:'Mole setup',focus:'Focus',home:'Home',wardrobe:'Equipment',reports:'Today',companions:'Friends'}[target]}`;if(requested==='rewards'){try{history.replaceState(null,'','#home');}catch{}}if(target!=='home'&&homeEditing){homeEditing=false;updateHomeMode();}if(target!=='wardrobe'&&wardrobeOpen)closeWardrobePanel(false);if(target==='start')prepareSetup();else currentGamePage=target;if(target==='reports')renderReports();if(target==='home')renderHome();if(target==='companions')FriendsClient.activate();window.scrollTo({top:0,behavior:'instant'});}
 window.addEventListener('hashchange',navigate);
 window.addEventListener('popstate',navigate);
 function navigateTo(target){if(target==='rewards')target='home';navigate(target);try{if(location.hash!=='#'+target)history.pushState(null,'','#'+target);}catch(_){/* Embedded previews may disallow URL changes; the view is already updated. */}}
@@ -2081,9 +2243,17 @@ $('#outfitGrid').addEventListener('click',e=>{if(e.target.closest('#browseAll'))
  else if(isTool)state.tool=id;else if(state.equipped.includes(id))state.equipped=state.equipped.filter(i=>i!==id);else state.equipped=WardrobeCatalog.equip(state.equipped,id);
  save();renderStats();FriendsClient.notify();if(justBought||(isTool?state.tool===id:state.equipped.includes(id))){const line=MoleChat.onGameEvent(justBought?'purchase':'equip',{itemId:id});if(line)toast(state.profile.name+': '+line);}
 });
-$('#categoryTabs').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;selectedCategory=b.dataset.category;renderCloset();$('#shopScroll').scrollTop=0;});
+function syncWardrobePanel(){
+ $('#wardrobeDrawer').hidden=!wardrobeOpen;$('#wardrobeLayout').classList.toggle('panel-open',wardrobeOpen);
+ $$('[data-filter]').forEach(b=>{b.classList.toggle('active',b.dataset.filter===selectedFilter);b.setAttribute('aria-expanded',String(wardrobeOpen&&b.dataset.filter===selectedFilter));});
+ $$('[data-category]').forEach(b=>b.setAttribute('aria-expanded',String(wardrobeOpen&&b.dataset.category===selectedCategory)));
+}
+function openWardrobePanel(selector){wardrobeOpen=true;wardrobeReturnSelector=selector;syncWardrobePanel();$('#closeWardrobeDrawer').focus({preventScroll:true});}
+function closeWardrobePanel(focus=true){wardrobeOpen=false;syncWardrobePanel();if(focus)$(wardrobeReturnSelector)?.focus({preventScroll:true});}
+$('#closeWardrobeDrawer').addEventListener('click',()=>closeWardrobePanel());
+$('#categoryTabs').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;selectedCategory=b.dataset.category;renderCloset();$('#shopScroll').scrollTop=0;openWardrobePanel('[data-category="'+selectedCategory+'"]');});
 $('#resetTool').addEventListener('click',()=>{state.tool=null;save();renderCloset();FriendsClient.notify();});
-function setFilter(filter){$('#shopScroll').scrollTop=0;selectedFilter=filter;$$('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===filter));renderCloset();}$$('[data-filter]').forEach(b=>b.addEventListener('click',()=>setFilter(b.dataset.filter)));$('#removeOutfit').addEventListener('click',()=>{state.equipped=[];save();renderStats();FriendsClient.notify();});
+function setFilter(filter){$('#shopScroll').scrollTop=0;selectedFilter=filter;renderCloset();syncWardrobePanel();}$$('[data-filter]').forEach(b=>b.addEventListener('click',()=>{setFilter(b.dataset.filter);openWardrobePanel('[data-filter="'+b.dataset.filter+'"]');}));$('#removeOutfit').addEventListener('click',()=>{state.equipped=[];save();renderStats();FriendsClient.notify();});
 function pet(e,canvasId,speechId){
  if(state.session||MineView.consumeClick())return;const now=Date.now(),canvas=$(canvasId),rect=canvas.getBoundingClientRect();
  if(e.detail!==0&&!PixelArt.hitTest(canvas.id,(e.clientX-rect.left)*canvas.width/rect.width,(e.clientY-rect.top)*canvas.height/rect.height))return;
@@ -2145,7 +2315,7 @@ $('#chestItems').addEventListener('click',e=>{
  state.heldItem=id;state.idleAt=Date.now();save();renderStats();$('#chestDialog').close();
 });
 $('#putBackButton').addEventListener('click',()=>{if(state.session)return;state.heldItem=null;save();renderStats();});
-function updateHomeMode(){renderHeldState();updateCraftControls();$('#editHomeButton').textContent=homeEditing?'Done decorating':state.session?.status==='running'?'Pause & decorate':'Decorate';$('#homeEditor').hidden=!homeEditing;$('#homeViewNote').hidden=homeEditing;$('#homeEditHint').textContent=homeEditing?(state.session?'Paused · resume in Focus':'Choose a spot and an item.'):'Place your finds here.';}
+function updateHomeMode(){renderHeldState();updateCraftControls();$('#editHomeButton').textContent=homeEditing?'Done decorating':state.session?.status==='running'?'Pause & decorate':'Decorate';$('#editHomeButton').setAttribute('aria-expanded',String(homeEditing));$('#homeEditor').hidden=!homeEditing;$('#homeDrawer').hidden=!homeEditing;$('#homeLayout').classList.toggle('panel-open',homeEditing);$('#homeEditHint').textContent=state.session?'Paused · resume in Focus':'';$('#homeEditHint').hidden=!state.session;}
 function renderHome(){const h=state.home;$('#homeBalance').textContent=state.balance;$('#homeThemeName').textContent=HomeCatalog.themes.find(t=>t.id===h.theme).name;updateHomeMode();$$('[data-slot]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.slot===selectedSlot)));$('#clearHomeSlot').disabled=!h.slots[selectedSlot];
  const items=HomeCatalog.items.filter(i=>i.slots.includes(selectedSlot)).map(i=>({...i,owned:h.owned.includes(i.id)}));
  if(selectedSlot!=='floor')discoveries.forEach((d,i)=>items.push({id:'find:'+d.id,name:d.name,cost:0,owned:state.inventory[i]>0,count:state.inventory[i],find:i}));
@@ -2156,7 +2326,10 @@ function renderHome(){const h=state.home;$('#homeBalance').textContent=state.bal
   return `<article class="home-item ${placed?'selected':''}"><div class="home-item-art">${PixelArt.homeIcon(i.id)}</div><div><strong>${i.name}</strong><small>${detail}</small></div><button data-home-item="${i.id}" ${can?'':'disabled'}>${i.find!==undefined&&!i.owned?(state.foundDiscoveries.includes(discoveries[i.find].id)?'None left':'Not found'):action}</button></article>`;
  }).join('');
  $('#homeThemeGrid').innerHTML=HomeCatalog.themes.map(t=>{const owned=h.ownedThemes.includes(t.id),selected=h.theme===t.id;return `<button data-theme="${t.id}" class="home-theme ${selected?'selected':''}" style="--swatch:${t.wall}" ${selected||(!owned&&state.balance<t.cost)?'disabled':''}><i></i><span>${t.name}<small>${selected?'Selected':owned?'Owned':'✦ '+t.cost}</small></span></button>`;}).join('');if($('#chestDialog').open)renderChest();if($('#craftingDialog').open)renderCrafting();}
-$('#editHomeButton').addEventListener('click',()=>{if(!homeEditing&&state.session?.status==='running')pauseSession();homeEditing=!homeEditing;renderHome();});
+function closeHomePanel(focus=true){homeEditing=false;renderHome();if(focus)$('#editHomeButton').focus({preventScroll:true});}
+$('#editHomeButton').addEventListener('click',()=>{if(!homeEditing&&state.session?.status==='running')pauseSession();homeEditing=!homeEditing;renderHome();if(homeEditing)$('#closeHomeDrawer').focus({preventScroll:true});});
+$('#closeHomeDrawer').addEventListener('click',()=>closeHomePanel());
+document.addEventListener('keydown',e=>{if(e.key!=='Escape'||e.defaultPrevented||document.querySelector('dialog[open]'))return;if(!$('#home').hidden&&homeEditing){e.preventDefault();closeHomePanel();}else if(!$('#wardrobe').hidden&&wardrobeOpen){e.preventDefault();closeWardrobePanel();}});
 $$('[data-slot]').forEach(b=>b.addEventListener('click',()=>{selectedSlot=b.dataset.slot;renderHome();}));$('#clearHomeSlot').addEventListener('click',()=>{if(!homeEditing)return;state.home.slots[selectedSlot]=null;save();renderHome();});
 $('#homeItemGrid').addEventListener('click',e=>{const b=e.target.closest('[data-home-item]');if(!b||!homeEditing||state.session?.status==='running')return;const id=b.dataset.homeItem,h=state.home,f=HomeCatalog.items.find(i=>i.id===id),find=discoveries.findIndex(i=>'find:'+i.id===id);if(f){if(!f.slots.includes(selectedSlot))return;if(f.recipe&&!h.owned.includes(id)){openCrafting(id);return;}if(!h.owned.includes(id)){if(state.balance<f.cost)return;state.balance-=f.cost;h.owned.push(id);}for(const slot of Object.keys(h.slots))if(h.slots[slot]===id)h.slots[slot]=null;}else{if(find<0||selectedSlot==='floor')return;const used=Object.entries(h.slots).filter(([slot,v])=>slot!==selectedSlot&&v===id).length;if(state.inventory[find]<=used)return;if(state.heldItem===id.slice(5))state.heldItem=null;}h.slots[selectedSlot]=id;save();renderStats();});
 $('#homeThemeGrid').addEventListener('click',e=>{const b=e.target.closest('[data-theme]');if(!b||!homeEditing)return;const t=HomeCatalog.themes.find(t=>t.id===b.dataset.theme),h=state.home;if(!t)return;if(!h.ownedThemes.includes(t.id)){if(state.balance<t.cost)return;state.balance-=t.cost;h.ownedThemes.push(t.id);}h.theme=t.id;save();renderStats();});
@@ -2204,7 +2377,7 @@ $('#confirmCraft').addEventListener('click',()=>{
 let pendingTreasureSale=null;
 function updateGoldenControls(){for(const b of $$('[data-display-treasure]')){const id=b.dataset.displayTreasure;b.disabled=!(state.rareInventory[id]>0)||state.displayedTreasure===id||state.session?.status==='running';}for(const b of $$('[data-store-treasure]'))b.disabled=state.session?.status==='running';$('#putBackTreasure').disabled=state.session?.status==='running';}
 function renderGoldenShelf(){
- const shown=RareTreasures.get(state.displayedTreasure);$('#goldenDisplayLabel').textContent=shown?'Golden shelf · '+shown.name:'Golden shelf · nothing on display yet';$('#putBackTreasure').hidden=!shown;$('#putBackTreasure').disabled=state.session?.status==='running';
+ const shown=RareTreasures.get(state.displayedTreasure);$('#goldenDisplayBar').hidden=!shown;$('#goldenDisplayLabel').textContent=shown?'Golden shelf · '+shown.name:'';$('#putBackTreasure').hidden=!shown;$('#putBackTreasure').disabled=state.session?.status==='running';
 }
 function handleGoldenAction(e){
  const display=e.target.closest('[data-display-treasure]'),sell=e.target.closest('[data-sell-treasure]');

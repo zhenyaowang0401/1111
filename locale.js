@@ -3,6 +3,12 @@
 window.EumoI18n=(()=>{
  const KEY='eumo-language';let language='en';try{if(localStorage.getItem(KEY)==='zh')language='zh';}catch{}
  const dictionary={
+ "Style": "装扮",
+ "My items": "我的物品",
+ "Items": "物品",
+ "Item collection": "物品收藏",
+ "Close decor panel": "收起布置面板",
+ "Close items panel": "收起物品面板",
  "Come add your mole friends!": "快来添加你的鼹鼠朋友！",
  "Mole setup": "鼹鼠设置",
  "Your mole": "你的鼹鼠",
