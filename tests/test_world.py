@@ -17,6 +17,7 @@ def run():
   with sync_playwright() as p:
    browser=p.chromium.launch(executable_path=os.environ.get('PLAYWRIGHT_CHROMIUM_EXECUTABLE') or shutil.which('chromium') or shutil.which('chromium-browser'),args=['--no-sandbox'])
    context=browser.new_context(timezone_id='Asia/Shanghai',viewport={'width':1440,'height':1000})
+   context.add_init_script("localStorage.setItem('eumo-tour-v1','seen')")
    page=context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    url=f'http://127.0.0.1:{server.server_port}'
    page.goto(url+'/#reports')

@@ -53,7 +53,7 @@ py -m http.server 8000
 
 Mole setup 右上角可切换中文 / English，首次默认英文，选择保存在当前浏览器。鼹鼠开场和游戏提醒跟随界面语言，聊天回复跟随当前消息的中英文。用户填写的名字、任务、笔记与聊天历史保留原文。好友页只显示真实好友，空列表提示 Come add your mole friends!。
 
-[新手指引方案](docs/ONBOARDING_PROPOSAL.md) 尚待确认，没有加入首次弹窗。
+[新手指引](docs/ONBOARDING_PROPOSAL.md) 已实现：首次设置后可选择 4 步简短介绍或直接开始，支持中英文、跳过和 Help 重看；不会自动启动计时。
 
 ## 当前功能
 

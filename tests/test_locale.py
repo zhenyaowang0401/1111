@@ -8,7 +8,7 @@ def run():
  try:
   with sync_playwright() as p:
    b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox']);ctx=b.new_context(locale='zh-CN');page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
-   page.goto(url);expect(page.locator('#setupTitle')).to_have_text('Your mole');expect(page.locator('html')).to_have_attribute('lang','en')
+   page.add_init_script("localStorage.setItem('eumo-tour-v1','seen')");page.goto(url);expect(page.locator('#setupTitle')).to_have_text('Your mole');expect(page.locator('html')).to_have_attribute('lang','en')
    page.locator('#petName').fill('Study');page.locator('#languageSwitch').click();expect(page.locator('#setupTitle')).to_have_text('你的鼹鼠');expect(page.locator('#previewPetName')).to_have_text('Study');page.locator('#enterGame').click();expect(page.locator('#focusTitle')).to_have_text('专注');expect(page.locator('#chatMessages')).to_contain_text('一小步也算数')
    for target,label,selector in [('home','家园','#homeTitle'),('wardrobe','装扮','#equipmentTitle'),('reports','今天','#reportTitle'),('companions','好友','#companionsTitle')]:
     page.evaluate('(x)=>navigateTo(x)',target)

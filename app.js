@@ -267,7 +267,7 @@ $('#colorPresets').innerHTML=PET_COLORS.map(c=>`<button type="button" class="col
 $('#colorPresets').addEventListener('click',e=>{const b=e.target.closest('[data-color]');if(!b)return;draftColor=b.dataset.color;renderColorChoice();});$('#petColor').addEventListener('input',e=>{draftColor=cleanPetColor(e.target.value);renderColorChoice();});
 $('#petName').addEventListener('input',e=>{draftName=cleanPetName(e.target.value);$('#previewPetName').textContent=draftName||'…';e.target.setCustomValidity('');$('#nameError').textContent='';});
 $('#petName').addEventListener('invalid',()=>{$('#nameError').textContent='Enter a mole name.';});
-function enterPet(e){e.preventDefault();const input=$('#petName'),name=cleanPetName(input.value);if(!name){$('#nameError').textContent='Enter a mole name.';input.setCustomValidity('Enter a mole name.');input.focus();return;}input.setCustomValidity('');state.profile={name,color:draftColor,configured:true};save();renderProfile();renderTimer();navigateTo(afterSetup);}
+function enterPet(e){e.preventDefault();const firstVisit=!state.profile.configured;const input=$('#petName'),name=cleanPetName(input.value);if(!name){$('#nameError').textContent='Enter a mole name.';input.setCustomValidity('Enter a mole name.');input.focus();return;}input.setCustomValidity('');state.profile={name,color:draftColor,configured:true};save();renderProfile();renderTimer();navigateTo(afterSetup);if(firstVisit)Onboarding.offer();}
 $('#enterGame').addEventListener('click',enterPet);
 $('#petSetupForm').addEventListener('submit',enterPet);
 $('#petName').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing&&e.keyCode!==229)enterPet(e);});
@@ -295,3 +295,5 @@ FloatingMole.init({
 window.addEventListener("eumo-language",()=>{renderStats();renderTimer();renderReports();renderProfile();MoleChat.refresh();});
 EumoI18n.observe(document);
 document.getElementById("languageSwitch").addEventListener("click",()=>EumoI18n.set(EumoI18n.language==='en'?'zh':'en'));
+
+Onboarding.init({read:()=>state,navigate:navigateTo});

@@ -481,6 +481,7 @@ window.EumoI18n=(()=>{
 };
  Object.assign(dictionary,{'Enter a mole name.':'给鼹鼠起个名字吧。','In progress':'进行中','Completed':'已完成','End this session?':'结束本轮？','Drag to explore':'拖动查看','VIEW':'查看','m dug':'米已挖掘','Your floating mine':'你的浮动矿洞','End session confirmation':'确认结束本轮','Drag to explore ·':'拖动查看 ·','Finish today?':'结束今天的专注？','End session & finish today':'结束本轮并总结今天','End session?':'结束本轮？','You':'你'});
  Object.assign(dictionary,{'Make':'制作','Made':'已制作','one':'一件','golden find sold':'金色收藏已出售','Device time':'设备时间','at home':'在家园','in equipment preview':'在装扮预览中','and the mine':'和矿洞','daily':'每日','days':'天','seconds':'秒','minutes':'分钟','stored in this browser':'保存在当前浏览器','This dig':'本轮挖掘','saved when you end':'结束后保存','GOLDEN FIND':'金色发现物','in your backpack':'已放入背包','Not enough stars':'星星不足','All saved':'已全部保存','SESSION ENDED':'本轮结束','DAY COMPLETE':'今日完成','Today saved':'今日已保存','Nothing recorded yet.':'暂时没有记录。','No focus time today yet.':'今天还没有专注时间。'});
+ Object.assign(dictionary,{'Show me around':'带我看看','Pause your session to take the tour.':'暂停专注后即可查看指引。'});
  for(const [en,zh] of Object.entries(dictionary))if(!dictionary[en.toLowerCase()])dictionary[en.toLowerCase()]=zh;
  const escaped=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
  const pattern=new RegExp('(?<![A-Za-z])('+Object.keys(dictionary).sort((a,b)=>b.length-a.length).map(escaped).join('|')+')(?![A-Za-z])','g');

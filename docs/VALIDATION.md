@@ -4,6 +4,15 @@
 
 **以下自动化检查使用本地协议 fixture，不代表真实 Qwen 语义质量评测已通过。** 用户已在 Vercel 配置 Key 并提供线上模型回复截图；当前执行环境没有服务商 Key，也无法直接访问该部署，因此没有把用户截图当成完整模型评测。 下表的模型服务使用本地测试 fixture；它验证软件行为，不验证真实模型语气、解题正确性或建议质量。
 
+## 可选新手指引（2026-11-04）
+
+`python tests/test_onboarding.py` 通过：首次设置后可选欢迎、四步和音乐/AI 高亮切换、1440×960 / 390×844 / 320×640 / 1000×550 布局、跳过与 Escape、完成聚焦 Start、刷新不再弹出、Help 重看、键盘焦点限制、中文切换、运行中禁用以及从其他窗口恢复时关闭指引。比较指引前后计时、余额、库存、深度和拥有列表，均未改动；禁用本地存储仍可关闭，离线包仍可首次使用。
+
+`python tests/test_locale.py` 与 `python tests/test_world.py` 回归通过。这两个测试显式跳过新手指引以分别检查双语与原有设置流程；首次体验由上述独立测试覆盖。已查看桌面与手机截图。没有验证 Vercel 生产部署或真实用户完成率。
+
+![桌面计时指引](images/eumo-onboarding.png)
+![手机 AI 指引](images/eumo-onboarding-mobile.png)
+
 ## 中英文与演示好友移除（2026-11-04）
 
 `python tests/test_locale.py` 通过：中文浏览器首次英文、中英文切换及持久保存、真实好友空列表、动态开始/暂停/继续、用户名字与任务原文、逐条中英文聊天请求、320/390/1440 布局、离线构建，以及真实 Document PiP 窗口双向语言同步。检查了中文设置页截图并遍历主要页面与弹窗。
@@ -12,7 +21,7 @@
 
 `python tests/test_friends_browser.py` 通过：两个独立浏览器和真实 PostgreSQL 验证好友申请、接受、共享状态、删除与空列表；移除了旧演示玩家断言。`python tests/test_world.py` 通过设置、存档、本地日夜和 24 组响应式视图，好友检查改为真实好友空状态。
 
-中文界面翻译在 locale.js 中维护，不改游戏数据、任务、名字或聊天原文。三个离线入口字节相同。新手指引仅写入 ONBOARDING_PROPOSAL.md，尚未实现。生产 Vercel 构建尚未在此环境直接验证。
+中文界面翻译在 locale.js 中维护，不改游戏数据、任务、名字或聊天原文。三个离线入口字节相同。新手指引现已实现，验证见下方独立记录。生产 Vercel 构建尚未在此环境直接验证。
 
 ![中文设置页（隔离测试存档）](images/eumo-language-setup.png)
 
@@ -192,8 +201,8 @@
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 22016622
-SHA-256: d9007c80f08986d64b056e9714a069dbacca0a3466e4b5a2e3c613b129767e83
+字节数: 22027539
+SHA-256: 3addae79d40e8beebf25b8b117249c7d11a7cfb959e6e28fc26b627634e89833
 MP3: Warm Focus 194.520秒；Winter bonfire 12.168秒；Tropical rainforest 13.416秒；botanicore 213.552秒；Litte ridge 222.840秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```
