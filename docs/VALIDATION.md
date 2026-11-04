@@ -1,8 +1,20 @@
 # Eumo v3 · 功能与接口验证记录
 
-最新验证日期：2026-11-03；此前同步陪伴与接口记录为 2026-10-22（Asia/Shanghai）。对象为当前源码、Node 接口和 `dist/Eumo.html`。环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0；Vercel 配置目标为 Node 22。
+最新验证日期：2026-11-04；此前同步陪伴与接口记录为 2026-10-22（Asia/Shanghai）。对象为当前源码、Node 接口和 `dist/Eumo.html`。环境：Python 3.12.14、Playwright 1.62.0、Chromium 154.0.8037.57、Node.js v24.19.0；Vercel 配置目标为 Node 22。
 
 **以下自动化检查使用本地协议 fixture，不代表真实 Qwen 语义质量评测已通过。** 用户已在 Vercel 配置 Key 并提供线上模型回复截图；当前执行环境没有服务商 Key，也无法直接访问该部署，因此没有把用户截图当成完整模型评测。 下表的模型服务使用本地测试 fixture；它验证软件行为，不验证真实模型语气、解题正确性或建议质量。
+
+## 中英文与演示好友移除（2026-11-04）
+
+`python tests/test_locale.py` 通过：中文浏览器首次英文、中英文切换及持久保存、真实好友空列表、动态开始/暂停/继续、用户名字与任务原文、逐条中英文聊天请求、320/390/1440 布局、离线构建，以及真实 Document PiP 窗口双向语言同步。检查了中文设置页截图并遍历主要页面与弹窗。
+
+`node --test tests/test_ai.cjs` 17 项通过，新增消息语言覆盖界面语言的服务端断言。此为本地接口验证，没有调用真实付费模型评估回复质量。
+
+`python tests/test_friends_browser.py` 通过：两个独立浏览器和真实 PostgreSQL 验证好友申请、接受、共享状态、删除与空列表；移除了旧演示玩家断言。`python tests/test_world.py` 通过设置、存档、本地日夜和 24 组响应式视图，好友检查改为真实好友空状态。
+
+中文界面翻译在 locale.js 中维护，不改游戏数据、任务、名字或聊天原文。三个离线入口字节相同。新手指引仅写入 ONBOARDING_PROPOSAL.md，尚未实现。生产 Vercel 构建尚未在此环境直接验证。
+
+![中文设置页（隔离测试存档）](images/eumo-language-setup.png)
 
 ## 材料制作与奶牛猫帽（2026-11-03）
 
@@ -180,8 +192,8 @@
 ```text
 主入口: dist/Eumo.html
 兼容入口: dist/Supermo.html、dist/LOOP_PET.html
-字节数: 21991102
-SHA-256: 093b7d57cb5546f8e58347da0dafa0e104e8d8161b968f6b9b3c3332b4f5ace5
+字节数: 22016622
+SHA-256: d9007c80f08986d64b056e9714a069dbacca0a3466e4b5a2e3c613b129767e83
 MP3: Warm Focus 194.520秒；Winter bonfire 12.168秒；Tropical rainforest 13.416秒；botanicore 213.552秒；Litte ridge 222.840秒
 Logo 字体: Pixelify Sans variable TTF, 79160 字节, SIL OFL 1.1
 ```

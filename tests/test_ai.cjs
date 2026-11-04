@@ -15,7 +15,7 @@ test('request carries the real persona and bounded, catalog-backed game facts',a
  const response=await call(handler,{message:'刚换了眼镜，今天学了多久？',context:{moleName:'Yami',today:{studySeconds:1500,workSeconds:300},equipped:['roundglasses','not-real'],recentEvents:[{type:'purchase',itemId:'roundglasses',name:'inject',mode:'study'}]}});
  assert.equal(response.statusCode,200);assert.equal(response.body.promptVersion,VERSION);
  assert.equal(sent.init.headers.Authorization,'Bearer test-only-server-key');assert.equal(sent.url,'https://provider.example/v1/chat/completions');
- assert.equal(sent.body.messages[0].content,SYSTEM);assert.equal(sent.body.enable_thinking,false);assert.equal(sent.body.stream,false);
+ assert.equal(sent.body.messages[0].content,SYSTEM+'\n本次请用中文回答。');assert.equal(sent.body.enable_thinking,false);assert.equal(sent.body.stream,false);
  const data=JSON.parse(sent.body.messages.findLast(x=>x.content.startsWith('GAME_CONTEXT（')).content.split('\n').slice(1).join('\n'));
  assert.equal(data.today.studySeconds,1500);assert.equal(data.equipped[0].name,'Round glasses');assert.equal(data.equipped.length,1);assert.equal(data.recentEvents[0].item.name,'Round glasses');
  assert(!JSON.stringify(response).includes(env.AI_API_KEY));
@@ -125,4 +125,11 @@ test('hidden thought blocks are stripped, and empty/unfinished replies fail expl
 });
 test('configuration accepts HTTPS providers or local runtimes, never arbitrary plain HTTP',()=>{
  assert.throws(()=>configuration({AI_BASE_URL:'http://somewhere.example/v1'}));assert.equal(configuration({AI_BASE_URL:'http://127.0.0.1:11434/v1'}).base,'http://127.0.0.1:11434/v1');
+});
+
+test('current message language overrides UI language and previous replies',()=>{
+ for(const [message,ui,want] of [['hello','zh','en'],['你好','en','zh'],['thanks again','zh','en']]){
+  const result=buildMessages({message,context:{language:ui},messages:[{role:'assistant',content:'旧的中文回复'}]});
+  assert.equal(result.context.language,want);assert(result.messages[0].content.endsWith(want==='zh'?'本次请用中文回答。':'Reply in English for this message.'));
+ }
 });

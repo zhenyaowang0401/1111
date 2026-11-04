@@ -81,22 +81,11 @@ def run():
    page.clock.fast_forward(11000);page.wait_for_timeout(200)
    expect(page.locator('body')).to_have_attribute('data-period','morning')
    expect(page.locator('#deviceTime')).to_have_text('06:00')
-   # Four visible sample players, independently colored sprites and expandable loot.
-   page.locator('[data-page="companions"]').click();page.wait_for_timeout(250)
-   expect(page.locator('.friend-card')).to_have_count(4)
-   expect(page.locator('.sample-badge')).to_have_text('4 sample players')
-   for id,name,color in [('luka','Luka','#efa77c'),('yun','Yun','#7dcbb4'),('daniel','Daniel','#85bcea'),('selina','Selina','#e78ab6')]:
-    expect(page.locator(f'[data-friend="{id}"]')).to_contain_text(name)
-    assert pixels('#friend-'+id,color)>10,(id,'colored sprite missing')
-    page.locator(f'[data-friend="{id}"]').click()
-    expect(page.locator('#friend-detail-'+id)).to_be_visible()
-    expect(page.locator('#friend-detail-'+id+' .friend-item')).to_have_count(4)
-    page.locator(f'[data-friend="{id}"]').click()
-    expect(page.locator('#friend-detail-'+id)).to_be_hidden()
-   expect(page.get_by_role('progressbar',name="Yun's study goal")).to_have_attribute('aria-valuenow','45')
-   page.locator('[data-friend="yun"]').click()
-   expect(page.locator('#friend-detail-yun .friend-item').nth(1)).to_contain_text('Glow mushroom')
-   expect(page.locator('#friend-detail-yun .friend-item').nth(1)).to_contain_text('× 4')
+   # Only real friends are shown; new players get an invitation.
+   page.locator('[data-page="companions"]').click()
+   expect(page.locator('.friend-card')).to_have_count(0)
+   expect(page.locator('#sampleFriends')).to_have_count(0)
+   expect(page.locator('#friendsEmpty')).to_have_text('Come add your mole friends!')
    for width in [320,390,768,1440]:
     page.set_viewport_size({'width':width,'height':900})
     page.locator('.footer a[href="#start"]').click();page.wait_for_timeout(160)
@@ -113,7 +102,7 @@ def run():
    expect(mobile.locator('body')).to_have_attribute('data-period','night')
    expect(mobile.locator('#setupTime')).to_have_attribute('title','Device time · America/Los_Angeles')
    assert not errors,errors
-   print('PASS: mandatory creation, 12 live color presets + custom color, safe naming, deep-link entry, cancel/save/reload, retained depth, local-time sky and UI in four periods, automatic dawn boundary, four distinct companion sprites, study progress and loot expansion, phone timezone, 24 responsive views; no JS errors.')
+   print('PASS: mandatory creation, 12 live color presets + custom color, safe naming, deep-link entry, cancel/save/reload, retained depth, local-time sky and UI in four periods, automatic dawn boundary, real-friend empty state without demo profiles, phone timezone, 24 responsive views; no JS errors.')
    browser.close()
  finally:server.shutdown();server.server_close()
 if __name__=='__main__':run()

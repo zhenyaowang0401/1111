@@ -8,10 +8,11 @@ window.MoleChat=(()=>{
  const $=id=>document.getElementById(id);
  const text=(value,max=4000)=>String(value??'').slice(0,max);
  const day=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
- function language(){const last=[...entries].reverse().find(x=>x.role==='user');return last?(/[\u3400-\u9fff]/.test(last.content)?'zh':'en'):(navigator.language||'en').startsWith('zh')?'zh':'en';}
+ function language(){return window.EumoI18n?.language||'en';}
+ function replyLanguage(){const last=[...entries].reverse().find(x=>x.role==='user');return last?(/[\u3400-\u9fff]/.test(last.content)?'zh':'en'):language();}
  function store(){try{localStorage.setItem(KEY,JSON.stringify({entries:entries.slice(-24),events:events.slice(-5),lastActivityEvent,sharing}));}catch{/* Gameplay and chat can still run without persistence. */}}
  function snapshot(){
-  const s=getState(),now=new Date(),base={moleName:s.profile.name,language:language(),shared:sharing,localDate:day(now),localTime:now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}),timezone:Intl.DateTimeFormat().resolvedOptions().timeZone};
+  const s=getState(),now=new Date(),base={moleName:s.profile.name,language:replyLanguage(),shared:sharing,localDate:day(now),localTime:now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}),timezone:Intl.DateTimeFormat().resolvedOptions().timeZone};
   if(!sharing)return base;
   const today=s.reportDays[base.localDate]||{},session=s.session;
   return {...base,today:{studySeconds:today.seconds||0,workSeconds:today.workSeconds||0},currentSession:session?{mode:session.mode,status:session.status,demo:session.demo,elapsedSeconds:session.elapsed||0,remainingSeconds:s.remaining,task:session.task}:null,
@@ -37,7 +38,7 @@ window.MoleChat=(()=>{
   $('clearMoleChat').disabled=busy;$('shareGameContext').checked=sharing;
  }
  function errorCopy(code){
-  const zh=language()==='zh';
+  const zh=replyLanguage()==='zh';
   if(code==='AI_NOT_CONFIGURED')return zh?'聊天服务还没连接好，需要站点主人完成 AI 配置。你的游戏进度不受影响。':'AI is not connected yet. The site owner needs to finish setup. Your game progress is safe.';
   if(code==='RATE_LIMITED'||code==='PROVIDER_BUSY')return zh?'小铲子有点忙，等一分钟再聊吧。你的文字还在。':'A busy little moment. Please try again in a minute; your draft is safe.';
   if(code==='FILE_MODE')return zh?'请从网站或本地服务打开 Eumo，才能连接聊天。离线游戏仍然可以玩。':'Open Eumo on its website or local server to connect chat. The offline game still works.';
@@ -49,7 +50,7 @@ window.MoleChat=(()=>{
   // Keep old conversations visible, but don't feed a previous persona's wrong replies back to the model.
   const previous=[];let budget=6000;for(const entry of entries.filter(x=>x.source!=='game'&&(x.role!=='assistant'||x.personaVersion===PERSONA_VERSION)).slice(-12).reverse()){if(!budget)break;const content=text(entry.content,Math.min(1800,budget));previous.unshift({role:entry.role,content});budget-=content.length;}
   const sent={id:Date.now()+'-'+Math.random().toString(36).slice(2),role:'user',content:message,source:'user'};
-  entries.push(sent);busy=true;notice=language()==='zh'?'在挖一点灵感…':'Digging up a thought…';input.value='';render();
+  entries.push(sent);busy=true;notice=replyLanguage()==='zh'?'在挖一点灵感…':'Digging up a thought…';input.value='';render();
   const revision=activityRevision,controller=new AbortController(),timer=setTimeout(()=>controller.abort(),45000);pendingController=controller;
   try{
    const response=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,messages:previous,context:snapshot()}),signal:controller.signal});
@@ -94,7 +95,7 @@ window.MoleChat=(()=>{
   $('clearMoleChat').addEventListener('click',()=>{if(busy)return;entries=[];events=[];notice='';store();render();});
   $('shareGameContext').addEventListener('change',e=>{sharing=e.target.checked;store();});
   const starters={plan:'Help me plan today. Ask about my available time if needed.',study:'I would like help understanding a study question. What do you need from me?',relax:'I would like a gentle break and some company.',story:'Tell me a short, funny story from your burrow.'};
-  document.querySelectorAll('[data-chat-starter]').forEach(button=>button.addEventListener('click',()=>{$('chatDialogInput').value=starters[button.dataset.chatStarter];$('chatDialogInput').focus();}));
+  document.querySelectorAll('[data-chat-starter]').forEach(button=>button.addEventListener('click',()=>{$('chatDialogInput').value=language()==='zh'?({plan:'帮我安排今天，可以先问我有多少时间。',study:'我有一个学习问题，需要提供哪些信息？',relax:'我想轻松休息一下，陪陪我吧。',story:'讲一个地洞里发生的有趣小故事吧。'})[button.dataset.chatStarter]:starters[button.dataset.chatStarter];$('chatDialogInput').focus();}));
   render();
  }
  return {init,onGameEvent,open,refresh:render};

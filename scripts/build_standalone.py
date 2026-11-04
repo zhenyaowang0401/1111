@@ -8,7 +8,7 @@ import mimetypes
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPTS = ('world.js', 'journey.js', 'home.js', 'wardrobe.js', 'wardrobe-art.js', 'terrain.js', 'music-catalog.js', 'audio.js', 'treasures.js', 'mine-view.js', 'pixel-art.js', 'chat.js', 'music.js', 'friends.js', 'floating-mole.js', 'app.js')
+SCRIPTS = ('locale.js', 'world.js', 'journey.js', 'home.js', 'wardrobe.js', 'wardrobe-art.js', 'terrain.js', 'music-catalog.js', 'audio.js', 'treasures.js', 'mine-view.js', 'pixel-art.js', 'chat.js', 'music.js', 'friends.js', 'floating-mole.js', 'app.js')
 
 
 def embed_music() -> tuple[str, str]:

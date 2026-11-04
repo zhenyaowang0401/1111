@@ -234,12 +234,14 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
 #craftConfirmDialog{width:min(420px,calc(100vw - 24px));max-width:420px;max-height:calc(100dvh - 32px);overflow:auto;padding:24px;border:3px solid #bd9ec3;background:#30273f}#craftConfirmTitle{font-size:22px;margin:0 0 16px}.craft-confirm-art{width:112px;height:112px;margin:0 auto 16px;padding:10px;background:#211c32;border:2px solid #715b7d}.craft-confirm-art svg{width:100%;height:100%}#craftConfirmCopy,.craft-confirm-status{font-size:14px;line-height:1.6}.craft-confirm-status{color:#bcd9c9}.craft-confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}.craft-confirm-actions button{margin:0;min-width:0;min-height:44px;font-size:13px;padding:9px}.home-item:focus-within{border-color:#f3d49f}
 @media(max-width:480px){.crafting-header{padding:16px}.crafting-header h2{font-size:21px}.crafting-body{padding:0 14px 16px}.craft-recipe-grid{grid-template-columns:1fr}.crafting-footer{padding:10px 16px}.craft-material{padding:7px;gap:5px}.craft-material svg{width:24px;height:24px}.craft-material span,.craft-material strong{font-size:11px}.craft-confirm-actions{grid-template-columns:1fr}#craftConfirmDialog{padding:18px}.home-item strong{overflow-wrap:anywhere}}
 
+.setup-heading{position:relative}.language-switch{float:right;margin-top:0;min-width:82px}html[lang=zh-CN]{--font:Arial,'Microsoft YaHei',sans-serif}
+
 </style></head><body>
 <svg class="svg-defs" aria-hidden="true"><defs><symbol id="i-pickaxe" viewBox="0 0 24 24"><path d="M3 3h12v3h4v3h3v5h-3v-3h-4V8h-3l-2 3 2 2-9 9-3-3 9-9-2-2H3z"/></symbol><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10h3V7h3V4h6v3h3v3h3v11h-7v-7h-4v7H3Z"/></symbol><symbol id="i-gift" viewBox="0 0 24 24"><path d="M3 10h18v4H3zm2 4v7h14v-7h-5v7h-4v-7M10 3h4v4h-4zm-6 0h4v4H4zm12 0h4v4h-4z"/></symbol><symbol id="i-shirt" viewBox="0 0 24 24"><path d="M8 3H5v3H2v6h5v9h10v-9h5V6h-3V3h-3v4H8Z"/></symbol><symbol id="i-friends" viewBox="0 0 24 24"><path d="M5 3h5v6H5zm9 2h5v5h-5zM2 12h11v8H2zm12 1h8v7h-8z"/></symbol><symbol id="i-report" viewBox="0 0 24 24"><path d="M3 3h2v17h17v2H3zm5 9h3v5H8zm5-5h3v10h-3zm5-4h3v14h-3z"/></symbol><symbol id="i-sound" viewBox="0 0 24 24"><path d="M3 9h5V5h5v14H8v-4H3zm14-3h3v12h-3m-2-9h2v6h-2"/></symbol><symbol id="i-library" viewBox="0 0 24 24"><path d="M2 2h8v8H2zm12 0h8v8h-8zM2 14h8v8H2zm12 0h8v8h-8z"/></symbol><symbol id="i-note" viewBox="0 0 24 24"><path d="M9 3h12v4h-9v11h-2v3H4v-2H2v-4h2v-2h5z"/></symbol><symbol id="i-rhythm" viewBox="0 0 24 24"><path d="M2 9h4v12H2zm8-7h4v19h-4zm8 4h4v15h-4z"/></symbol><symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 4h8v3h4v3h3v9H2v-9h3V7h2zm0 16h2v3H7zm8 0h2v3h-2z"/></symbol><symbol id="i-disc" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M7 1h10v2h4v4h2v10h-2v4h-4v2H7v-2H3v-4H1V7h2V3h4zm3 8v2H8v3h2v2h4v-2h2v-3h-2V9z"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><path d="M5 3h3v3h4v3h4v3h4v3h-4v3h-4v3H5z"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M4 3h6v18H4zm10 0h6v18h-6z"/></symbol><symbol id="i-previous" viewBox="0 0 24 24"><path d="M2 4h4v16H2zm13 0h5v16h-5v-3h-4v-3H7v-4h4V7h4z"/></symbol><symbol id="i-next" viewBox="0 0 24 24"><path d="M18 4h4v16h-4zM4 4h5v3h4v3h4v4h-4v3H9v3H4z"/></symbol><symbol id="i-add-friend" viewBox="0 0 24 24"><path d="M5 2h6v2h2v6h-2v2H5v-2H3V4h2zM1 16h3v-2h8v2h3v6H1zm17-9h3v4h3v3h-3v4h-3v-4h-4v-3h4z"/></symbol></defs></svg>
 
 <section id="setupScreen" class="setup-screen" aria-labelledby="setupTitle" hidden>
  <header class="setup-header"><a class="brand" href="#start">Eu<span>mo</span> <small class="version-tag">v3</small></a><span class="setup-clock"><span id="setupPeriod"></span><time id="setupTime"></time></span></header>
- <div class="setup-heading"><span class="tiny-label">Mole setup</span><h1 id="setupTitle">Your mole</h1></div>
+ <div class="setup-heading"><button id="languageSwitch" class="quiet-button language-switch" type="button" aria-label="Switch language">中文</button><span class="tiny-label">Mole setup</span><h1 id="setupTitle">Your mole</h1></div>
  <div class="setup-layout">
   <div class="character-stage"><div class="character-frame"><canvas id="setupCanvas" width="240" height="208" aria-label="Your mole color preview"></canvas><span id="previewPetName" class="preview-pet-name">Momo</span></div><div class="preview-ground">03 / Eumo v3</div></div>
   <form id="petSetupForm" class="setup-controls" autocomplete="off">
@@ -268,8 +270,8 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
  <div class="page-heading"><h1 id="companionsTitle">Friends</h1><button id="openFriends" class="add-friend-button" type="button" aria-label="Add friends" aria-haspopup="dialog" aria-controls="friendsDialog"><svg aria-hidden="true"><use href="#i-add-friend"/></svg><span>Add friend</span><b id="friendRequestCount" hidden>0</b></button></div>
  <div class="friend-connection-bar"><div><i id="friendConnectionLight" aria-hidden="true"></i><span id="friendsStatus" role="status">Connect to add friends and share a little company.</span></div><button id="friendsRetry" class="quiet-button" type="button">Connect</button></div>
  <div class="friend-list-heading"><span>FRIEND SIGNAL</span><span>TODAY</span></div>
- <div id="onlineFriendList" class="friend-list"></div><p id="friendsEmpty" class="friends-empty">Your friends will appear here after you exchange codes and accept a request.</p>
- <details id="sampleFriends" class="sample-friends" open><summary><span>Demo moles</span><span class="sample-badge">4 sample players</span></summary><div id="friendList" class="friend-list"></div><p class="companion-note">Demo profiles · These four moles are examples, not live players.</p></details>
+ <div id="onlineFriendList" class="friend-list"></div><p id="friendsEmpty" class="friends-empty">Come add your mole friends!</p>
+
 </section>
 </main><footer class="footer"><a href="#start">Mole setup</a><button id="helpButton">Help</button></footer></div><div id="toast" class="toast" role="status"></div>
 <dialog id="friendsDialog" class="friends-dialog" aria-labelledby="friendsDialogTitle"><div class="music-window-bar"><svg aria-hidden="true"><use href="#i-add-friend"/></svg><h2 id="friendsDialogTitle">A little company</h2><span class="music-window-trim" aria-hidden="true"></span><button id="closeFriends" class="music-window-button" type="button" aria-label="Close friends">×</button></div><div class="friends-dialog-body">
@@ -301,6 +303,512 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
 <dialog id="todayDialog"><button class="dialog-close" aria-label="Close">×</button><span class="eyebrow">TODAY</span><h2 id="todaySummaryTime"></h2><p id="moleTodayCopy"></p><div id="todaySummaryTasks" class="today-summary-tasks"></div><p id="todaySummaryRewards"></p><button id="closeTodayButton" class="dialog-primary">Finish</button></dialog>
 <dialog id="chatDialog" class="chat-dialog" aria-labelledby="chatDialogTitle"><div class="mole-chat-titlebar"><h2 id="chatDialogTitle">Your mole · a little space to talk</h2><span class="chat-title-trim" aria-hidden="true"></span><button id="closeMoleChat" type="button" class="chat-window-button" aria-label="Close conversation">×</button></div><div class="chat-dialog-body"><div id="chatDialogMessages" class="chat-dialog-messages" role="log" aria-live="polite" aria-label="Full conversation" tabindex="0"></div><div class="chat-starters" aria-label="Conversation ideas"><button type="button" data-chat-starter="plan">Plan today</button><button type="button" data-chat-starter="study">Study help</button><button type="button" data-chat-starter="relax">Take a break</button><button type="button" data-chat-starter="story">Tiny story</button></div><form id="chatDialogForm" class="chat-dialog-compose"><label class="sr-only" for="chatDialogInput">Message your mole</label><textarea id="chatDialogInput" rows="2" maxlength="2000" placeholder="Ask a question, plan your day, or just say hello…"></textarea><button id="chatDialogSend" type="submit" class="chat-send-button">Send ↵</button></form><div class="chat-options"><label><input type="checkbox" id="shareGameContext" checked> Share task &amp; focus summary</label><button id="clearMoleChat" type="button">Clear conversation</button></div><p class="chat-privacy">Messages and the shared game summary go to the configured AI provider. Chat history stays in this browser. AI can make mistakes.</p></div></dialog>
 <script>
+/* Reversible presentation translations. Game data and conversation text stay original. */
+'use strict';
+window.EumoI18n=(()=>{
+ const KEY='eumo-language';let language='en';try{if(localStorage.getItem(KEY)==='zh')language='zh';}catch{}
+ const dictionary={
+ "Come add your mole friends!": "快来添加你的鼹鼠朋友！",
+ "Mole setup": "鼹鼠设置",
+ "Your mole": "你的鼹鼠",
+ "Mole name": "鼹鼠名字",
+ "Custom color": "自定义颜色",
+ "Color": "颜色",
+ "Back": "返回",
+ "START": "开始",
+ "Start": "开始",
+ "Focus": "专注",
+ "Home": "家园",
+ "Inventory": "图鉴与背包",
+ "Equipment": "装扮",
+ "Friends": "好友",
+ "Today and reports": "今日与数据",
+ "Today": "今天",
+ "Help": "帮助",
+ "Study": "学习",
+ "Work": "工作",
+ "Break": "休息",
+ "Ready": "准备好了",
+ "Running": "进行中",
+ "Paused": "已暂停",
+ "Resting": "休息中",
+ "Idle": "空闲",
+ "Drowsy": "困倦",
+ "Sleeping": "睡着了",
+ "Digging": "挖掘中",
+ "Surface": "地面",
+ "Pause": "暂停",
+ "Resume": "继续",
+ "End session": "结束本轮",
+ "End and save": "结束并保存",
+ "Keep going": "继续专注",
+ "TIMER": "计时器",
+ "What are you working on?": "你准备做什么？",
+ "Optional task": "填写任务（可选）",
+ "Focus today": "今日专注",
+ "All-time depth": "累计深度",
+ "Dig progress": "挖掘进度",
+ "Music": "音乐",
+ "Hide animation": "隐藏动画",
+ "Show animation": "显示动画",
+ "Float mole": "浮动鼹鼠",
+ "Close floating mole": "关闭浮动鼹鼠",
+ "15s demo": "15 秒试玩",
+ "Exit demo": "退出试玩",
+ "DEPTH": "深度",
+ "Root soil": "根系土层",
+ "Stone beds": "岩石层",
+ "Sand beds": "沙土层",
+ "Slate layer": "板岩层",
+ "Red granite": "红色花岗岩",
+ "Crystal seams": "水晶矿脉",
+ "Deep basalt": "深层玄武岩",
+ "Mole": "鼹鼠",
+ "YOUR LITTLE CAVE": "你的小地洞",
+ "Cozy cave": "温馨地洞",
+ "Cozy burrow": "温馨地洞",
+ "Moss garden": "苔藓花园",
+ "Rainy burrow": "雨天地洞",
+ "Moonlit burrow": "月光地洞",
+ "Room & finds": "房间与发现物",
+ "Decorate": "布置房间",
+ "Done decorating": "完成布置",
+ "Pause & decorate": "暂停并布置",
+ "Open chest": "打开宝箱",
+ "Open treasure chest": "打开宝箱",
+ "Place your finds here.": "把发现物摆在这里吧。",
+ "Choose a spot and an item.": "选择位置，再选择物品。",
+ "Paused · resume in Focus": "已暂停，可在专注页继续",
+ "Put back": "收回",
+ "On head": "头顶展示",
+ "Stored": "已收起",
+ "Left nook": "左侧角落",
+ "Right nook": "右侧角落",
+ "Wall": "墙面",
+ "Floor": "地面",
+ "Clear spot": "清空位置",
+ "Room themes": "房间主题",
+ "Owned": "已拥有",
+ "Placed": "已摆放",
+ "Place": "摆放",
+ "In use": "使用中",
+ "Buy & place": "购买并摆放",
+ "Buy": "购买",
+ "Selected": "已选择",
+ "Not found": "未发现",
+ "None left": "已用完",
+ "Found": "已发现",
+ "Golden shelf · nothing on display yet": "金色展柜 · 尚未展示",
+ "Golden shelf": "金色展柜",
+ "Collection →": "查看收藏 →",
+ "Bring your discoveries home. Craft decor with spare finds between sessions.": "把发现物带回家，休息时用多余材料制作装饰。",
+ "Craft decor at home →": "去家园制作装饰 →",
+ "Pause & craft at home →": "暂停并去家园制作 →",
+ "Craft decor": "制作装饰",
+ "Pause & craft": "暂停并制作",
+ "FROM YOUR FINDS": "来自你的发现物",
+ "Craft a little home": "制作温馨小家",
+ "Use spare finds from your chest. Displayed finds stay in place.": "使用宝箱里的多余材料，正在展示的物品会保留。",
+ "Make each piece once. Move it around your home for free.": "每件只需制作一次，之后可以自由摆放。",
+ "Mushroom planter": "蘑菇盆栽",
+ "Mushroom lamp": "蘑菇灯",
+ "Crystal wind chime": "水晶风铃",
+ "Fossil frame": "化石画框",
+ "Starry mobile": "星空挂饰",
+ "A tiny patch of forest for your nook.": "把一小片森林带进地洞。",
+ "A soft glow beneath a rosy mushroom cap.": "粉色蘑菇帽下亮着柔和的光。",
+ "Little blue crystals hanging from a wooden branch.": "挂在木枝上的小蓝水晶。",
+ "Your own little piece of natural history.": "收藏一小段大自然的历史。",
+ "A small constellation for the burrow wall.": "给地洞墙上挂一小片星空。",
+ "Made · Place at home →": "已制作 · 去家园摆放 →",
+ "Make…": "制作…",
+ "Collect more": "继续收集",
+ "View recipe": "查看配方",
+ "Handmade · owned": "已制作并拥有",
+ "Keep materials": "保留材料",
+ "Make decor": "确认制作",
+ "Make this decor?": "制作这件装饰？",
+ "This uses chest materials. Your star balance stays the same.": "使用宝箱材料，不扣除星星余额。",
+ "Pause your session to make decor.": "暂停专注后即可制作装饰。",
+ "You already made this piece.": "你已经拥有这件装饰了。",
+ "Not enough spare finds. Displayed copies stay safe.": "多余材料不足，已展示的物品会保留。",
+ "Star fragment": "星星碎片",
+ "Glow mushroom": "发光蘑菇",
+ "Stardust crystal": "星尘水晶",
+ "Spiral fossil": "螺旋化石",
+ "Woven rug": "编织地毯",
+ "Warm lamp": "暖光台灯",
+ "Soft cushion": "柔软坐垫",
+ "Writing desk": "书桌",
+ "Little bookcase": "小书架",
+ "Small bed": "小床",
+ "Star picture": "星星挂画",
+ "Treasure chest": "藏宝箱",
+ "Close chest": "关闭宝箱",
+ "Ordinary finds": "普通发现物",
+ "Golden finds": "金色收藏",
+ "Display on head": "顶在头上展示",
+ "Take & display": "取出并展示",
+ "Display at home": "在家园展示",
+ "On golden shelf": "已在金色展柜展示",
+ "Sell golden find?": "出售金色收藏？",
+ "Keep it": "留下它",
+ "You receive 99 stars in your existing balance.": "出售后获得 99 星，计入现有余额。",
+ "One copy is on your shelf. Put it back to sell.": "有一件正在展示，收回后才能出售。",
+ "Ordinary finds go on your mole’s head; golden finds go on your room’s golden shelf.": "普通发现物可顶在鼹鼠头上；金色收藏可放进房间展柜。",
+ "New finds enter this chest when you end the session. Golden shelf display is available while paused.": "本轮结束后发现物会进入宝箱；暂停时可以展示金色收藏。",
+ "STARS": "星星",
+ "SESSIONS": "完成轮次",
+ "FOCUS": "专注时长",
+ "Recent sessions": "最近记录",
+ "No sessions yet.": "还没有专注记录。",
+ "A 3% bonus chance with each ten-minute discovery. Keep your find, display it at home, or sell it for 99 stars.": "每个十分钟发现节点有 3% 额外机会获得金色收藏，可保留、展示或出售得 99 星。",
+ "Open chest at home →": "去家园打开宝箱 →",
+ "Shop": "商店",
+ "All": "全部",
+ "Hats": "帽子",
+ "Clothes": "衣服",
+ "Scarves": "围巾",
+ "Glasses": "眼镜",
+ "Tools": "工具",
+ "Extras": "配饰",
+ "Remove": "脱下",
+ "Remove all": "全部脱下",
+ "No equipment": "尚未穿戴",
+ "Equipped": "已穿戴",
+ "Equip": "穿戴",
+ "Using": "使用中",
+ "Use": "使用",
+ "Use default tool": "使用默认工具",
+ "Common": "普通",
+ "Uncommon": "特别",
+ "Rare": "稀有",
+ "Epic": "史诗",
+ "Legendary": "传说",
+ "Explorer hat": "探险帽",
+ "Sun hat": "遮阳帽",
+ "Bucket hat": "渔夫帽",
+ "Baseball cap": "棒球帽",
+ "Bunny hat": "兔子帽",
+ "Kitten hat": "小猫帽",
+ "Tuxedo cat hat": "奶牛猫帽",
+ "Puppy hat": "狗狗帽",
+ "Frog hat": "青蛙帽",
+ "Panda hat": "熊猫帽",
+ "Fox hat": "狐狸帽",
+ "Lion hat": "狮子帽",
+ "Space helmet": "宇航员头盔",
+ "Little crown": "小皇冠",
+ "Cream sweater": "奶油色毛衣",
+ "Honey coat": "蜂蜜色大衣",
+ "Lilac hoodie": "淡紫色卫衣",
+ "Brown school uniform": "棕色校服",
+ "Peach puffer": "桃色羽绒服",
+ "Mint scarf": "薄荷围巾",
+ "Striped scarf": "条纹围巾",
+ "Checkered scarf": "格纹围巾",
+ "Ribbon scarf": "蝴蝶结围巾",
+ "Fluffy scarf": "毛绒围巾",
+ "Goggles": "护目镜",
+ "Sunglasses": "墨镜",
+ "Round glasses": "圆框眼镜",
+ "Square frames": "方框眼镜",
+ "Heart frames": "爱心眼镜",
+ "Star shades": "星星眼镜",
+ "Star pin": "星星胸针",
+ "Giant spoon": "大勺子",
+ "Garden shovel": "园艺铲",
+ "Garden fork": "园艺叉",
+ "Electric drill": "电钻",
+ "Jackhammer": "破碎锤",
+ "Crystal drill": "水晶钻",
+ "Soft music": "轻音乐",
+ "Groove": "律动",
+ "White noise": "白噪音",
+ "Music library": "音乐库",
+ "Volume": "音量",
+ "Play": "播放",
+ "Previous track": "上一首",
+ "Next track": "下一首",
+ "Repeat one": "单曲循环",
+ "Repeat all": "顺序循环",
+ "Coming soon": "敬请期待",
+ "TODAY": "今天",
+ "THIS WEEK": "本周",
+ "ALL TIME": "累计",
+ "Mon – Sun": "周一至周日",
+ "Finish": "结束今日",
+ "Finish today": "结束今日",
+ "Focus trend": "专注趋势",
+ "7 days": "7 天",
+ "30 days": "30 天",
+ "Minutes per day": "每日分钟数",
+ "Focus time": "专注时间",
+ "Daily log": "每日记录",
+ "No focus sessions.": "还没有专注记录。",
+ "Time recorded on this date": "当天记录的专注时间",
+ "Study and Work use actual running time. Pauses, breaks and demos are excluded. Stored in this browser.": "学习和工作按实际计时统计，不含暂停、休息和试玩，数据保存在当前浏览器。",
+ "SESSION COMPLETE": "本轮完成",
+ "What did you finish?": "你完成了什么？",
+ "Optional note": "填写笔记（可选）",
+ "Done": "完成",
+ "Home →": "去家园 →",
+ "Complete": "已完成",
+ "Ended early": "提前结束",
+ "FRIEND SIGNAL": "好友动态",
+ "Add friend": "添加好友",
+ "Add friends": "添加好友",
+ "Connect": "连接",
+ "Refresh": "刷新",
+ "A little company": "一起陪伴",
+ "Your mole, with friends": "和鼹鼠朋友一起",
+ "Enable online friends": "开启联网好友",
+ "Your friend code": "你的好友码",
+ "Copy": "复制",
+ "Daily focus goal": "每日专注目标",
+ "Share my status with accepted friends": "与已添加的好友分享我的状态",
+ "Add by friend code": "通过好友码添加",
+ "Send request": "发送申请",
+ "Incoming requests": "收到的申请",
+ "Outgoing requests": "发出的申请",
+ "No requests yet.": "暂时没有申请。",
+ "Accept": "接受",
+ "Decline": "拒绝",
+ "Cancel request": "取消申请",
+ "Remove friend": "删除好友",
+ "Cancel": "取消",
+ "Connected · Status updates every 15–30 seconds.": "已连接，每 15～30 秒更新状态。",
+ "Connect to add friends and share a little company.": "连接后即可添加好友，一起专注。",
+ "Status sharing paused": "已暂停状态分享",
+ "Status sharing paused · Friends and requests are still available.": "已暂停分享状态，仍可查看好友和申请。",
+ "Connection interrupted · Showing the last update.": "连接中断，当前显示上次更新的状态。",
+ "Share this code with a friend. They can send a request for you to accept.": "把好友码发给朋友，对方发送申请后你可以接受。",
+ "Accepted friends can see your mole, online status and focus summary. Your tasks and chats stay private. This browser keeps your friend identity.": "成为好友后可查看鼹鼠、在线状态和专注概况。任务和聊天内容不会分享，好友身份保存在当前浏览器。",
+ "Studying": "学习中",
+ "Working": "工作中",
+ "On a break": "休息中",
+ "Trying a demo": "试玩中",
+ "Offline": "离线",
+ "Away": "暂离",
+ "Online": "在线",
+ "Send ↵": "发送 ↵",
+ "Talk to your mole…": "和你的鼹鼠聊聊…",
+ "Talk to your mole...": "和你的鼹鼠聊聊…",
+ "Clear chat": "清空聊天",
+ "Share game context": "分享游戏状态",
+ "Close": "关闭",
+ "How it works": "玩法说明",
+ "Lilac": "淡紫",
+ "Rose": "玫瑰",
+ "Peach": "蜜桃",
+ "Honey": "蜂蜜",
+ "Mint": "薄荷",
+ "Teal": "青绿",
+ "Sky": "天空",
+ "Cobalt": "钴蓝",
+ "Plum": "梅紫",
+ "Berry": "莓红",
+ "Moss": "苔绿",
+ "Silver": "银灰",
+ "Custom": "自定义",
+ "Morning": "早晨",
+ "Day": "白天",
+ "Evening": "傍晚",
+ "Night": "夜晚",
+ "Back to Eumo": "返回 Eumo",
+ "Session saved": "本轮已保存",
+ "Ready whenever you are.": "准备好时，我们就一起开始。",
+ "All saved. Let’s rest together.": "已经保存好啦，一起休息吧。",
+ "A little pause together.": "一起稍微歇一会儿。",
+ "I’m resting with you.": "我陪你一起休息。",
+ "Wheee! One happy spin!": "耶！开心转一圈！",
+ "End this session and save your progress?": "结束本轮并保存进度？",
+ "End & save": "结束并保存",
+ "Drag the title bar · Keep Eumo open": "拖动标题栏移动 · 保持 Eumo 打开",
+ "spare": "可用",
+ "needed": "需要",
+ "displayed": "已展示",
+ "Recipe": "配方",
+ "Session running": "专注进行中",
+ "made! Choose Place at home to decorate.": "制作完成！点击去家园摆放。",
+ "Your new piece will be saved in Room & finds.": "成品将保存在房间物品中。",
+ "Choose a spot, then place your": "选择位置，然后摆放你的",
+ "stars": "星星",
+ "finds": "发现物",
+ "equipped": "已穿戴",
+ "completed": "已完成",
+ "found": "已发现",
+ "today": "今天",
+ "total": "合计",
+ "min": "分钟",
+ "GOLDEN": "金色",
+ "UNDISCOVERED": "未发现",
+ "Sell": "出售",
+ "On display": "正在展示",
+ "Online friends is not connected yet. Please try again later.": "联网好友暂未连接，请稍后再试。",
+ "Could not reach friends. Your game progress is safe. Please try again.": "好友连接失败，游戏进度已保留，请重试。",
+ "Open the online website to connect with friends. The offline game still works.": "请打开在线网站连接好友，离线游戏仍可使用。",
+ "Connect this browser to get your friend code.": "连接当前浏览器即可获取好友码。",
+ "Enter a valid friend code, such as EU-ABCDE-FG234.": "请输入有效好友码，例如 EU-ABCDE-FG234。",
+ "No friend was found with that code. Check it and try again.": "未找到该好友码，请检查后重试。",
+ "That is your own friend code.": "这是你自己的好友码。",
+ "This request or friendship has changed. Refresh and try again.": "申请或好友关系已变化，请刷新后重试。",
+ "Too many friend requests. Please try again later.": "好友申请过于频繁，请稍后再试。",
+ "A busy little moment. Please wait a minute and try again.": "稍微有些忙，请过一分钟再试。",
+ "The friend list is full.": "好友列表已满。",
+ "Request sent. Your friend can accept it with their code window.": "申请已发送，朋友可以在好友窗口中接受。",
+ "Your request is already waiting for an answer.": "申请已发送，正在等待对方回复。",
+ "This friend already sent you a request. Accept it below.": "对方已向你发送申请，可以在下方接受。",
+ "You are already friends.": "你们已经是好友了。",
+ "Friend added. You can now see each other’s status.": "添加成功，现在可以看到彼此的状态。",
+ "Friend removed. You no longer share status.": "已删除好友，不再分享彼此的状态。",
+ "Request closed.": "申请已关闭。",
+ "Live status refreshes every 15–30 seconds. Closing the page eventually shows you as offline.": "状态每 15～30 秒刷新，关闭页面后会显示为离线。",
+ "Requests": "收到的申请",
+ "Sent requests": "发出的申请",
+ "Keep friend": "保留好友",
+ "You and": "你和",
+ "will stop sharing status. To reconnect, exchange a new request.": "将停止分享状态，重新添加需要再次申请。",
+ "No tool selected": "未选择工具",
+ "Unequip all": "全部脱下",
+ "Your mole · a little space to talk": "你的鼹鼠 · 聊聊天的小天地",
+ "Plan today": "安排今天",
+ "Study help": "学习答疑",
+ "Take a break": "放松一下",
+ "Tiny story": "小故事",
+ "Share task & focus summary": "分享任务与专注概况",
+ "Clear conversation": "清空对话",
+ "Message your mole": "给鼹鼠发消息",
+ "Ask a question, plan your day, or just say hello…": "问个问题、安排一天，或打声招呼…",
+ "Messages and the shared game summary go to the configured AI provider. Chat history stays in this browser. AI can make mistakes.": "消息和共享的游戏概况将发送给 AI 服务，对话记录保存在当前浏览器。AI 的回答可能有误。",
+ "Full conversation": "完整对话",
+ "Open full conversation": "打开完整对话",
+ "Open conversation": "打开对话",
+ "Close conversation": "关闭对话",
+ "Minimize mole chat": "收起聊天",
+ "Conversation with your mole": "与鼹鼠对话",
+ "Conversation ideas": "聊天话题",
+ "· chat": "· 聊天",
+ "Study or work while your mole digs. Every five minutes earns a star; every ten minutes brings a find. Pickups are automatic. Pausing stops progress. Ending early keeps what you earned.": "你学习或工作时，鼹鼠陪你挖掘。每五分钟获得一颗星，每十分钟获得一个发现物，自动拾取。暂停时停止进度，提前结束也能保留收获。",
+ "Developer demo: 15 seconds, one star, five metres and one find per completed run. Demo rewards are spendable but excluded from focus reports.": "开发者试玩：每轮十五秒，获得一颗星、五米深度和一个发现物。奖励可以使用，但不计入专注报告。",
+ "Pet your mole while idle; tap three times quickly for a happy jump and spin. Pause or end your session to drag through the mine. Golden finds have a 3% bonus chance per ten-minute discovery, excluding demos; keep, display at home or sell for 99 stars. Display finds on your mole’s head at home. Craft decor with spare finds; each piece is yours to keep, and displayed finds stay safe. Mix hats, clothes and scarves; tools appear only while digging. Music: soft music, groove and white noise, supplied by the creator.": "空闲时摸摸鼹鼠，快速点三下会跳起转圈。暂停或结束后可拖动查看矿洞。正式专注每十分钟的发现节点有 3% 机会额外获得金色收藏，可收藏、展示或出售得 99 星。普通物品可在家园顶在头上，多余材料可制作永久装饰。帽子、衣服、围巾可搭配，工具只在挖掘时出现。音乐包含轻音乐、律动和白噪音。",
+ "Choose a find to display on your mole's head.": "选择一个发现物，展示在鼹鼠头顶。",
+ "Your recorded time, dug depth and collected items will be saved.": "已记录的时间、挖掘深度和收获都会保存。",
+ "Keep focusing": "继续专注",
+ "Take your mole along": "带上你的鼹鼠",
+ "Open Eumo in a recent desktop Chrome or Edge browser to use the floating companion window.": "使用新版桌面 Chrome 或 Edge 打开 Eumo，即可开启浮动陪伴窗。",
+ "You can move and resize it while visiting other tabs. Keep the Eumo tab open; closing the little window won’t end your session.": "切换标签页时仍能移动和缩放小窗。请保持 Eumo 标签页打开，关闭小窗不会结束专注。",
+ "This browser does not support the floating window. Your focus timer still works here.": "当前浏览器不支持浮动窗，专注计时仍可正常使用。",
+ "Eumo · music room": "Eumo · 音乐空间",
+ "NOW PLAYING": "正在播放",
+ "Music volume": "音乐音量",
+ "Music player": "音乐播放器",
+ "Open music library": "打开音乐库",
+ "Open music player": "打开播放器",
+ "Close music library": "关闭音乐库",
+ "Music categories": "音乐分类",
+ "Playback position": "播放进度",
+ "Play music": "播放音乐",
+ "Pause music": "暂停音乐",
+ "Music library volume": "音乐库音量",
+ "Repeat one track": "单曲循环",
+ "Play all tracks": "播放全部曲目",
+ "Play all": "顺序播放",
+ "Playing": "播放中",
+ "Loading": "加载中",
+ "Play track": "播放曲目",
+ "Not added yet": "尚未添加",
+ "ready to play": "首可播放",
+ "New sounds are on their way": "新声音正在准备中",
+ "Choose a sound": "选择音乐",
+ "A little soundtrack for whatever you are working on.": "让音乐陪你完成眼前的小事。",
+ "Soft little melodies for focused moments": "适合专注时聆听的轻柔旋律",
+ "A little rhythm for your day": "为一天添一点节奏",
+ "Room to breathe and settle in": "慢慢呼吸，安静下来",
+ "A familiar little focus companion": "熟悉的专注陪伴",
+ "A gentle trail through your focus time": "陪伴专注时光的轻柔旋律",
+ "Warm Focus": "暖意专注",
+ "Winter bonfire": "冬日篝火",
+ "Tropical rainforest": "热带雨林",
+ "Litte ridge": "小山脊",
+ "botanicore": "植物律动",
+ "Sanxingdui mask": "三星堆面具",
+ "Museum bronze ding": "博物馆青铜鼎",
+ "Golden mole statue": "金色鼹鼠雕像",
+ "iPhone 18": "苹果 18",
+ "ROG laptop": "ROG 笔记本",
+ "Chanel bag": "香奈儿包",
+ "Vintage gold camera": "复古金色相机",
+ "Celestial globe": "星空仪",
+ "Royal golden crown": "金色王冠",
+ "Golden game console": "金色游戏机",
+ "A wide-eyed visitor from an ancient world.": "来自古老世界的大眼睛访客。",
+ "Three little legs, a very long story.": "三只小脚，承载悠长的故事。",
+ "A tiny monument to showing up.": "纪念每一次愿意开始的小小雕像。",
+ "Excellent reception, even in a tiny burrow.": "即使在小地洞里，信号也很好。",
+ "For very serious pebble research.": "用于非常认真的小石头研究。",
+ "A gold little outfit for the treasure shelf.": "给宝物架添一份金色时尚。",
+ "For the smallest adventures worth keeping.": "记录值得珍藏的小小冒险。",
+ "The whole night sky, neatly on a stand.": "把整片夜空收在小支架上。",
+ "Queen of the soil blocks, just for today.": "今天就是泥土王国的女王。",
+ "A pocket-sized reward for a good break.": "放松时光的口袋小奖励。",
+ "Your mole color preview": "鼹鼠颜色预览",
+ "Your mole’s name": "鼹鼠的名字",
+ "Pet color presets": "预设颜色",
+ "Custom pet color": "自定义鼹鼠颜色",
+ "Main navigation": "主导航",
+ "Star balance": "星星余额",
+ "Keep your mole with you in a floating window": "在浮动窗中让鼹鼠陪着你",
+ "Remove five minutes": "减少五分钟",
+ "Add five minutes": "增加五分钟",
+ "Session type": "专注类型",
+ "Placement spot": "摆放位置",
+ "Equipped items preview": "已穿戴物品预览",
+ "Equipment categories": "装扮分类",
+ "Shop items": "商店物品",
+ "Trend range": "趋势时间范围",
+ "Previous month": "上个月",
+ "Next month": "下个月",
+ "Select a date": "选择日期",
+ "Close friends": "关闭好友窗口",
+ "Friend code to add": "要添加的好友码",
+ "Close crafting": "关闭制作窗口",
+ "Spare materials": "可用材料",
+ "Pet": "摸摸",
+ "tracks": "首曲目",
+ "track": "首曲目",
+ "private": "不公开",
+ "last update": "上次更新",
+ "last shared": "上次分享",
+ "This friend has paused status sharing.": "这位朋友已暂停分享状态。",
+ "End this session and save today’s time and collected items.": "结束本轮并保存今天的时间和收获。",
+ "No focus recorded yet today.": "今天还没有专注记录。"
+};
+ Object.assign(dictionary,{'Enter a mole name.':'给鼹鼠起个名字吧。','In progress':'进行中','Completed':'已完成','End this session?':'结束本轮？','Drag to explore':'拖动查看','VIEW':'查看','m dug':'米已挖掘','Your floating mine':'你的浮动矿洞','End session confirmation':'确认结束本轮','Drag to explore ·':'拖动查看 ·','Finish today?':'结束今天的专注？','End session & finish today':'结束本轮并总结今天','End session?':'结束本轮？','You':'你'});
+ Object.assign(dictionary,{'Make':'制作','Made':'已制作','one':'一件','golden find sold':'金色收藏已出售','Device time':'设备时间','at home':'在家园','in equipment preview':'在装扮预览中','and the mine':'和矿洞','daily':'每日','days':'天','seconds':'秒','minutes':'分钟','stored in this browser':'保存在当前浏览器','This dig':'本轮挖掘','saved when you end':'结束后保存','GOLDEN FIND':'金色发现物','in your backpack':'已放入背包','Not enough stars':'星星不足','All saved':'已全部保存','SESSION ENDED':'本轮结束','DAY COMPLETE':'今日完成','Today saved':'今日已保存','Nothing recorded yet.':'暂时没有记录。','No focus time today yet.':'今天还没有专注时间。'});
+ for(const [en,zh] of Object.entries(dictionary))if(!dictionary[en.toLowerCase()])dictionary[en.toLowerCase()]=zh;
+ const escaped=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+ const pattern=new RegExp('(?<![A-Za-z])('+Object.keys(dictionary).sort((a,b)=>b.length-a.length).map(escaped).join('|')+')(?![A-Za-z])','g');
+ function t(s){return language==='zh'?String(s).replace(pattern,m=>dictionary[m]):String(s);}
+ const documents=new Map(),records=new WeakMap();
+ const skip='script,style,textarea,input,code,[data-no-translate],.chat-entry,.chat-notice,#previewPetName,#homePetName,#minePetName,#equipmentPetName,#chatMoleName,#removeFriendName,.friend-identity>strong,.friend-request-row>span,.outcome-note,#name,#languageSwitch';
+ function translateValue(node,key,value){let record=records.get(node);if(!record){record={};records.set(node,record);}let entry=record[key];if(!entry||value!==entry.output)entry={source:value};entry.output=t(entry.source);record[key]=entry;return entry.output;}
+ function apply(d){const observer=documents.get(d);observer?.disconnect();
+  d.title=translateValue(d,'title',d.title);
+  d.documentElement.lang=language==='zh'?'zh-CN':'en';
+  const walker=d.createTreeWalker(d.body,NodeFilter.SHOW_TEXT);let node;
+  while(node=walker.nextNode()){if(node.parentElement?.closest(skip))continue;const value=translateValue(node,'text',node.nodeValue);if(value!==node.nodeValue)node.nodeValue=value;}
+  for(const el of d.querySelectorAll('[placeholder],[title],[aria-label]')){if(el.closest('[data-no-translate],.chat-entry,#languageSwitch'))continue;for(const attr of ['placeholder','title','aria-label'])if(el.hasAttribute(attr)){const value=translateValue(el,attr,el.getAttribute(attr));if(value!==el.getAttribute(attr))el.setAttribute(attr,value);}}
+  d.querySelectorAll('.weekdays span').forEach((e,i)=>{e.textContent=(language==='zh'?['一','二','三','四','五','六','日']:['M','T','W','T','F','S','S'])[i];});
+  const switcher=d.getElementById('languageSwitch');if(switcher){switcher.textContent=language==='en'?'中文':'English';switcher.setAttribute('aria-label',language==='en'?'Switch to Chinese':'切换到英文');}
+  observer?.observe(d.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['placeholder','title','aria-label']});
+ }
+ function observe(d){if(documents.has(d))return;const observer=new MutationObserver(()=>apply(d));documents.set(d,observer);apply(d);d.defaultView?.addEventListener('pagehide',()=>{observer.disconnect();documents.delete(d);},{once:true});}
+ function set(value){if(!['en','zh'].includes(value)||language===value)return;language=value;try{localStorage.setItem(KEY,language);}catch{}window.dispatchEvent(new Event('eumo-language'));for(const d of documents.keys())apply(d);}
+ return {get language(){return language;},locale:()=>language==='zh'?'zh-CN':'en-US',set,t,observe};
+})();
+
+</script><script>
 'use strict';
 window.WorldClock=(()=>{
  const themes={
@@ -865,10 +1373,11 @@ window.MoleChat=(()=>{
  const $=id=>document.getElementById(id);
  const text=(value,max=4000)=>String(value??'').slice(0,max);
  const day=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
- function language(){const last=[...entries].reverse().find(x=>x.role==='user');return last?(/[\u3400-\u9fff]/.test(last.content)?'zh':'en'):(navigator.language||'en').startsWith('zh')?'zh':'en';}
+ function language(){return window.EumoI18n?.language||'en';}
+ function replyLanguage(){const last=[...entries].reverse().find(x=>x.role==='user');return last?(/[\u3400-\u9fff]/.test(last.content)?'zh':'en'):language();}
  function store(){try{localStorage.setItem(KEY,JSON.stringify({entries:entries.slice(-24),events:events.slice(-5),lastActivityEvent,sharing}));}catch{/* Gameplay and chat can still run without persistence. */}}
  function snapshot(){
-  const s=getState(),now=new Date(),base={moleName:s.profile.name,language:language(),shared:sharing,localDate:day(now),localTime:now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}),timezone:Intl.DateTimeFormat().resolvedOptions().timeZone};
+  const s=getState(),now=new Date(),base={moleName:s.profile.name,language:replyLanguage(),shared:sharing,localDate:day(now),localTime:now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}),timezone:Intl.DateTimeFormat().resolvedOptions().timeZone};
   if(!sharing)return base;
   const today=s.reportDays[base.localDate]||{},session=s.session;
   return {...base,today:{studySeconds:today.seconds||0,workSeconds:today.workSeconds||0},currentSession:session?{mode:session.mode,status:session.status,demo:session.demo,elapsedSeconds:session.elapsed||0,remainingSeconds:s.remaining,task:session.task}:null,
@@ -894,7 +1403,7 @@ window.MoleChat=(()=>{
   $('clearMoleChat').disabled=busy;$('shareGameContext').checked=sharing;
  }
  function errorCopy(code){
-  const zh=language()==='zh';
+  const zh=replyLanguage()==='zh';
   if(code==='AI_NOT_CONFIGURED')return zh?'聊天服务还没连接好，需要站点主人完成 AI 配置。你的游戏进度不受影响。':'AI is not connected yet. The site owner needs to finish setup. Your game progress is safe.';
   if(code==='RATE_LIMITED'||code==='PROVIDER_BUSY')return zh?'小铲子有点忙，等一分钟再聊吧。你的文字还在。':'A busy little moment. Please try again in a minute; your draft is safe.';
   if(code==='FILE_MODE')return zh?'请从网站或本地服务打开 Eumo，才能连接聊天。离线游戏仍然可以玩。':'Open Eumo on its website or local server to connect chat. The offline game still works.';
@@ -906,7 +1415,7 @@ window.MoleChat=(()=>{
   // Keep old conversations visible, but don't feed a previous persona's wrong replies back to the model.
   const previous=[];let budget=6000;for(const entry of entries.filter(x=>x.source!=='game'&&(x.role!=='assistant'||x.personaVersion===PERSONA_VERSION)).slice(-12).reverse()){if(!budget)break;const content=text(entry.content,Math.min(1800,budget));previous.unshift({role:entry.role,content});budget-=content.length;}
   const sent={id:Date.now()+'-'+Math.random().toString(36).slice(2),role:'user',content:message,source:'user'};
-  entries.push(sent);busy=true;notice=language()==='zh'?'在挖一点灵感…':'Digging up a thought…';input.value='';render();
+  entries.push(sent);busy=true;notice=replyLanguage()==='zh'?'在挖一点灵感…':'Digging up a thought…';input.value='';render();
   const revision=activityRevision,controller=new AbortController(),timer=setTimeout(()=>controller.abort(),45000);pendingController=controller;
   try{
    const response=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,messages:previous,context:snapshot()}),signal:controller.signal});
@@ -951,7 +1460,7 @@ window.MoleChat=(()=>{
   $('clearMoleChat').addEventListener('click',()=>{if(busy)return;entries=[];events=[];notice='';store();render();});
   $('shareGameContext').addEventListener('change',e=>{sharing=e.target.checked;store();});
   const starters={plan:'Help me plan today. Ask about my available time if needed.',study:'I would like help understanding a study question. What do you need from me?',relax:'I would like a gentle break and some company.',story:'Tell me a short, funny story from your burrow.'};
-  document.querySelectorAll('[data-chat-starter]').forEach(button=>button.addEventListener('click',()=>{$('chatDialogInput').value=starters[button.dataset.chatStarter];$('chatDialogInput').focus();}));
+  document.querySelectorAll('[data-chat-starter]').forEach(button=>button.addEventListener('click',()=>{$('chatDialogInput').value=language()==='zh'?({plan:'帮我安排今天，可以先问我有多少时间。',study:'我有一个学习问题，需要提供哪些信息？',relax:'我想轻松休息一下，陪陪我吧。',story:'讲一个地洞里发生的有趣小故事吧。'})[button.dataset.chatStarter]:starters[button.dataset.chatStarter];$('chatDialogInput').focus();}));
   render();
  }
  return {init,onGameEvent,open,refresh:render};
@@ -1054,7 +1563,7 @@ window.FriendsClient=(()=>{
  let read,model=null,busy=false,unavailable=false,message='',connectionError='',goal=120,enabled=false,players=[],expanded=new Set(),removeTarget=null,timer,baseServer=0,basePerformance=0,lastAction=0;
  const labels={studying:'Studying',working:'Working',paused:'Paused',break:'On a break',demo:'Trying a demo',idle:'Idle',drowsy:'Drowsy',sleeping:'Sleeping'};
  const notices={REQUEST_SENT:'Request sent. Your friend can accept it with their code window.',REQUEST_PENDING:'Your request is already waiting for an answer.',INCOMING_REQUEST:'This friend already sent you a request. Accept it below.',ALREADY_FRIENDS:'You are already friends.',FRIEND_ADDED:'Friend added. You can now see each other’s status.',FRIEND_REMOVED:'Friend removed. You no longer share status.',REQUEST_CLOSED:'Request closed.'};
- const errors={FRIENDS_NOT_CONFIGURED:'Online friends is not connected yet. The demo moles are still available.',FRIENDS_UNAVAILABLE:'Could not reach friends. Your game progress is safe. Please try again.',UNAUTHORIZED:'Connect this browser to get your friend code.',INVALID_CODE:'Enter a valid friend code, such as EU-ABCDE-FG234.',CODE_NOT_FOUND:'No friend was found with that code. Check it and try again.',SELF_REQUEST:'That is your own friend code.',REQUEST_NOT_FOUND:'This request or friendship has changed. Refresh and try again.',REQUEST_LIMITED:'Too many friend requests. Please try again later.',RATE_LIMITED:'A busy little moment. Please wait a minute and try again.',FRIEND_LIMIT:'The friend list is full.',FILE_MODE:'Open the online website to connect with friends. The offline game and demo moles still work.'};
+ const errors={FRIENDS_NOT_CONFIGURED:'Online friends is not connected yet. Please try again later.',FRIENDS_UNAVAILABLE:'Could not reach friends. Your game progress is safe. Please try again.',UNAUTHORIZED:'Connect this browser to get your friend code.',INVALID_CODE:'Enter a valid friend code, such as EU-ABCDE-FG234.',CODE_NOT_FOUND:'No friend was found with that code. Check it and try again.',SELF_REQUEST:'That is your own friend code.',REQUEST_NOT_FOUND:'This request or friendship has changed. Refresh and try again.',REQUEST_LIMITED:'Too many friend requests. Please try again later.',RATE_LIMITED:'A busy little moment. Please wait a minute and try again.',FRIEND_LIMIT:'The friend list is full.',FILE_MODE:'Open the online website to connect with friends. The offline game still works.'};
  function prefs(){try{localStorage.setItem(PREF,JSON.stringify({enabled,goal}));}catch{}}
  function serverNow(){return baseServer?baseServer+performance.now()-basePerformance:Date.now();}
  function summary(){
@@ -1210,6 +1719,7 @@ window.FloatingMole=(()=>{
    const d=w.document;d.documentElement.lang='en';d.title='Eumo · Floating mole';
    const style=d.createElement('style');style.textContent=css;d.head.append(style);
    d.body.innerHTML=`<section class="tunnel-window" aria-label="Your floating mine"><main><canvas id="mole" width="128" height="171" aria-hidden="true"></canvas><button id="pet" aria-label="Pet your mole"></button></main><div class="mine-top"><header><span id="name"></span><button id="return" title="Back to Eumo" aria-label="Back to Eumo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9 2h5v5M14 2 7 9M6 3H2v11h11v-4"/></svg></button></header><div class="mine-hud"><div id="time" role="timer"></div><div class="time-detail"><span id="mode"></span><span id="depth"></span></div></div></div><p id="line" role="status"></p><section id="confirmation" aria-label="End session confirmation" hidden><p>End this session and save your progress?</p><div><button id="keep">Keep going</button><button id="save">End &amp; save</button></div></section><footer><button id="toggle">Start</button><button id="end">End session</button></footer><p id="hint">Drag the title bar · Keep Eumo open</p></section>`;
+   window.EumoI18n?.observe(d);
    d.getElementById('toggle').addEventListener('click',()=>{confirmSession=null;d.getElementById('confirmation').hidden=true;bridge.toggle();sync();});
    d.getElementById('end').addEventListener('click',()=>{const s=bridge.snapshot();if(!s.session){sync();return;}confirmSession=s.session.id;d.getElementById('confirmation').hidden=false;d.getElementById('keep').focus();});
    d.getElementById('keep').addEventListener('click',()=>{confirmSession=null;d.getElementById('confirmation').hidden=true;d.getElementById('end').focus();});
@@ -1240,12 +1750,7 @@ const PET_COLORS=[
  {name:'Mint',hex:'#7dcbb4'},{name:'Teal',hex:'#60b6c7'},{name:'Sky',hex:'#85bcea'},{name:'Cobalt',hex:'#7f93d7'},
  {name:'Plum',hex:'#a474c8'},{name:'Berry',hex:'#c27698'},{name:'Moss',hex:'#a6bd76'},{name:'Silver',hex:'#a9b4c6'}
 ];
-const COMPANIONS=[
- {id:'luka',name:'Luka',color:'#efa77c',minutes:75,goal:120,depth:148,status:'Studying',inventory:[3,1,2,0],equipped:['hat']},
- {id:'yun',name:'Yun',color:'#7dcbb4',minutes:45,goal:90,depth:92,status:'Idle',inventory:[1,4,1,0],equipped:['scarf']},
- {id:'daniel',name:'Daniel',color:'#85bcea',minutes:110,goal:120,depth:220,status:'Studying',inventory:[2,1,4,1],equipped:['glasses','star']},
- {id:'selina',name:'Selina',color:'#e78ab6',minutes:30,goal:60,depth:64,status:'Idle',inventory:[2,2,0,1],equipped:['star']}
-];
+
 function cleanPetName(value){return Array.from(String(value||'').normalize('NFKC').replace(/[\u0000-\u001f\u007f]/g,'').trim()).slice(0,16).join('');}
 function cleanPetColor(value){return /^#[0-9a-f]{6}$/i.test(value||'')?value.toLowerCase():'#b784cf';}
 const dateKey=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -1308,7 +1813,7 @@ function renderTimer(){document.body.dataset.petState=petMood();const moodName={
 function renderDig(){const m=PixelArt.digMetrics({...state,remaining:remaining()});$('#depthDisplay').textContent=String(Math.floor(m.worldDepth)).padStart(3,'0');$('#totalDepth').textContent=Math.floor(state.depth);$('#digPercent').textContent=Math.floor(m.fraction*100)+'%';$('#digProgress').style.width=(m.fraction*100)+'%';$('#mineStatus').textContent=state.session?(state.session.status==='running'?(Journey.eligible(state.session)?'Digging':'Resting'):'Resting'):({awake:'Idle',rest:'Resting',drowsy:'Drowsy',asleep:'Sleeping'}[petMood()]);if(!state.session&&m.worldDepth===0)$('#mineStatus').textContent='Surface';$('#sceneLabel').textContent=m.worldDepth===0?'Surface':Terrain.layerAt(m.worldDepth).name;$('#momoLevel').textContent='LV. '+String(Math.floor(state.sessions/3)+1).padStart(2,'0');}
 function renderStats(){$('#balance').textContent=state.balance;$('#rewardBalance').textContent=state.balance;$('#closetBalance').textContent=state.balance;$('#totalSessions').textContent=state.sessions;$('#totalMinutes').textContent=duration(Object.keys(state.reportDays).reduce((n,k)=>n+reportSeconds(k),0));$('#ownedCount').textContent=state.owned.length+state.ownedTools.length;$('#equippedCount').textContent=state.equipped.length+' equipped';$('#equippedList').innerHTML=state.equipped.length?state.equipped.map(id=>`<span class="equipment-chip">${outfits.find(o=>o.id===id).name}</span>`).join(''):'No equipment';$('#removeOutfit').disabled=!state.equipped.length;renderRewards();renderCloset();renderReportStats();renderHome();}
 function sessionLine(h){return `${h.demo?'Dev demo':modes[h.mode]} · ${duration(h.seconds,true)}${h.depth?' · '+Math.floor(h.depth)+' m':''}`;}
-function renderRewards(){HomeCatalog.rememberFinds(state);renderGoldenFinds();$('#collectionCount').textContent=state.foundDiscoveries.length+' / 4 found';$('#rewardGrid').innerHTML=discoveries.map((d,i)=>`<article class="reward-item ${state.foundDiscoveries.includes(d.id)?'':'locked'}"><span class="reward-quantity">${state.foundDiscoveries.includes(d.id)?'× '+state.inventory[i]:'?'}</span><div class="reward-art">${PixelArt.iconSVG(d.id)}</div><h3>${d.name}</h3></article>`).join('');$('#history').innerHTML=state.history.length?state.history.slice(0,5).map(h=>`<div class="history-row"><div><strong>${sessionLine(h)}</strong><small>${new Date(h.at).toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})} · ${h.outcome==='stopped'?'Ended early':'Complete'}</small></div><b>+${h.stars} ✦</b></div>`).join(''):'<div class="history-empty">No sessions yet.</div>';}
+function renderRewards(){HomeCatalog.rememberFinds(state);renderGoldenFinds();$('#collectionCount').textContent=state.foundDiscoveries.length+' / 4 found';$('#rewardGrid').innerHTML=discoveries.map((d,i)=>`<article class="reward-item ${state.foundDiscoveries.includes(d.id)?'':'locked'}"><span class="reward-quantity">${state.foundDiscoveries.includes(d.id)?'× '+state.inventory[i]:'?'}</span><div class="reward-art">${PixelArt.iconSVG(d.id)}</div><h3>${d.name}</h3></article>`).join('');$('#history').innerHTML=state.history.length?state.history.slice(0,5).map(h=>`<div class="history-row"><div><strong>${sessionLine(h)}</strong><small>${new Date(h.at).toLocaleString(EumoI18n.locale(),{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})} · ${h.outcome==='stopped'?'Ended early':'Complete'}</small></div><b>+${h.stars} ✦</b></div>`).join(''):'<div class="history-empty">No sessions yet.</div>';}
 function renderCloset(){
  const toolMode=selectedCategory==='tools',source=toolMode?tools:outfits.filter(o=>selectedCategory==='all'||o.category===selectedCategory),ownedIDs=toolMode?state.ownedTools:state.owned,items=selectedFilter==='owned'?source.filter(o=>ownedIDs.includes(o.id)):source;
  $('#categoryTabs').innerHTML=WardrobeCatalog.categories.map(c=>`<button data-category="${c.id}" aria-pressed="${selectedCategory===c.id}">${c.label}${c.id==='all'?'':` <small>${c.id==='tools'?tools.length:outfits.filter(o=>o.category===c.id).length}</small>`}</button>`).join('');
@@ -1377,17 +1882,17 @@ function renderSimpleView(){document.body.classList.toggle('simple-view',state.s
 function wake(){state.idleAt=Date.now();}document.addEventListener('pointerdown',wake,{passive:true});document.addEventListener('keydown',wake);
 
 function reportSeconds(key){const d=state.reportDays[key];return (d?.seconds||0)+(d?.workSeconds||0);}
-function renderReportStats(){const today=todayKey(),now=new Date(),monday=new Date(now.getFullYear(),now.getMonth(),now.getDate()-((now.getDay()+6)%7)),mondayKey=dateKey(monday),todaySeconds=reportSeconds(today),total=Object.keys(state.reportDays).reduce((sum,k)=>sum+reportSeconds(k),0),week=Object.entries(state.reportDays).filter(([key])=>key>=mondayKey&&key<=today).reduce((sum,[key])=>sum+reportSeconds(key),0);$('#todayMinutes').textContent=duration(todaySeconds,true);$('#reportToday').textContent=duration(todaySeconds,true);$('#reportWeek').textContent=duration(week,true);$('#reportTotal').textContent=duration(total,true);const day=state.reportDays[today],completed=(day?.completed||0)+(day?.workCompleted||0);$('#todayStudy').textContent=duration(day?.seconds||0,true);$('#todayWork').textContent=duration(day?.workSeconds||0,true);$('#reportTodaySessions').textContent=`${completed} completed`;$('#reportDate').textContent=now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});if(!$('#reports').hidden){const stamp=Math.floor(total/60);if(stamp!==lastReportMinute){renderTrend();lastReportMinute=stamp;}}}
+function renderReportStats(){const today=todayKey(),now=new Date(),monday=new Date(now.getFullYear(),now.getMonth(),now.getDate()-((now.getDay()+6)%7)),mondayKey=dateKey(monday),todaySeconds=reportSeconds(today),total=Object.keys(state.reportDays).reduce((sum,k)=>sum+reportSeconds(k),0),week=Object.entries(state.reportDays).filter(([key])=>key>=mondayKey&&key<=today).reduce((sum,[key])=>sum+reportSeconds(key),0);$('#todayMinutes').textContent=duration(todaySeconds,true);$('#reportToday').textContent=duration(todaySeconds,true);$('#reportWeek').textContent=duration(week,true);$('#reportTotal').textContent=duration(total,true);const day=state.reportDays[today],completed=(day?.completed||0)+(day?.workCompleted||0);$('#todayStudy').textContent=duration(day?.seconds||0,true);$('#todayWork').textContent=duration(day?.workSeconds||0,true);$('#reportTodaySessions').textContent=`${completed} completed`;$('#reportDate').textContent=now.toLocaleDateString(EumoI18n.locale(),{month:'short',day:'numeric',year:'numeric'});if(!$('#reports').hidden){const stamp=Math.floor(total/60);if(stamp!==lastReportMinute){renderTrend();lastReportMinute=stamp;}}}
 function trendData(){const now=new Date();return Array.from({length:trendRange},(_,i)=>{const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()-(trendRange-1-i));return {key:dateKey(d),date:d,minutes:reportSeconds(dateKey(d))/60};});}
 function renderTrend(){const points=trendData(),max=Math.max(20,Math.ceil(Math.max(...points.map(p=>p.minutes))/20)*20),W=Math.max(260,Math.round($('#trendChart').clientWidth)||900),H=250,L=42,R=15,T=15,B=35,plotH=H-T-B,plotW=W-L-R;const xy=points.map((p,i)=>({x:L+i*plotW/(points.length-1),y:T+plotH-p.minutes/max*plotH}));let curve=`M ${xy[0].x} ${xy[0].y}`;for(let i=1;i<xy.length;i++){const a=xy[i-1],b=xy[i],mid=(a.x+b.x)/2;curve+=` C ${mid} ${a.y},${mid} ${b.y},${b.x} ${b.y}`;}let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Focus minutes for the last ${trendRange} days"><title>Focus trend: ${points.map(p=>p.key+': '+Math.round(p.minutes)+' minutes').join('; ')}</title><defs><linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ba78bd" stop-opacity=".2"/><stop offset="1" stop-color="#ba78bd" stop-opacity="0"/></linearGradient></defs>`;
  for(let i=0;i<=4;i++){const y=T+plotH-i*plotH/4;svg+=`<path d="M ${L} ${y} H ${W-R}" stroke="#37436b" stroke-width="1"/><text x="${L-10}" y="${y+3}" text-anchor="end">${Math.round(max*i/4)}</text>`;}
  svg+=`<path d="${curve} L ${xy.at(-1).x} ${T+plotH} L ${L} ${T+plotH} Z" fill="url(#chartFill)"/><path d="${curve}" stroke="#e6a1d8" stroke-width="2.5" fill="none"/>`;
- for(let i=0;i<points.length;i++){const p=points[i],v=xy[i],label=p.date.toLocaleDateString('en-US',{month:'short',day:'numeric'});svg+=`<circle class="chart-point" tabindex="0" data-date="${p.key}" data-minutes="${p.minutes}" cx="${v.x}" cy="${v.y}" r="${trendRange===7?4.5:3}" role="img" aria-label="${label}: ${duration(p.minutes*60,true)}"><title>${label}: ${duration(p.minutes*60,true)}</title></circle>`;if(trendRange===7||i===0||i===points.length-1||i%6===0)svg+=`<text x="${v.x}" y="${H-10}" text-anchor="${i===0?'start':i===points.length-1?'end':'middle'}">${label}</text>`;}
+ for(let i=0;i<points.length;i++){const p=points[i],v=xy[i],label=p.date.toLocaleDateString(EumoI18n.locale(),{month:'short',day:'numeric'});svg+=`<circle class="chart-point" tabindex="0" data-date="${p.key}" data-minutes="${p.minutes}" cx="${v.x}" cy="${v.y}" r="${trendRange===7?4.5:3}" role="img" aria-label="${label}: ${duration(p.minutes*60,true)}"><title>${label}: ${duration(p.minutes*60,true)}</title></circle>`;if(trendRange===7||i===0||i===points.length-1||i%6===0)svg+=`<text x="${v.x}" y="${H-10}" text-anchor="${i===0?'start':i===points.length-1?'end':'middle'}">${label}</text>`;}
  $('#trendChart').innerHTML=svg+'</svg>';$('#trendTotal').textContent=duration(points.reduce((s,p)=>s+p.minutes*60,0),true)+' total';}
-function renderCalendar(){const year=calendarView.getFullYear(),month=calendarView.getMonth(),count=new Date(year,month+1,0).getDate(),offset=(new Date(year,month,1).getDay()+6)%7,today=todayKey();$('#calendarMonth').textContent=calendarView.toLocaleDateString('en-US',{month:'long',year:'numeric'});let html='<span class="calendar-blank" aria-hidden="true"></span>'.repeat(offset);for(let day=1;day<=count;day++){const key=dateKey(new Date(year,month,day)),seconds=reportSeconds(key),minutes=seconds/60,level=minutes>=60?3:minutes>=25?2:seconds>0?1:0,future=key>today;html+=`<button class="calendar-day ${key===selectedDay?'selected':''} ${key===today?'is-today':''} ${future?'future':''}" data-day="${key}" data-level="${level}" aria-pressed="${key===selectedDay}" aria-label="${new Date(year,month,day).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}: ${duration(seconds,true)}" ${future?'disabled':''}><span>${day}</span><small>${seconds>0?duration(seconds,true):''}</small></button>`;}$('#calendarGrid').innerHTML=html;$('#nextMonth').disabled=year===new Date().getFullYear()&&month===new Date().getMonth();}
+function renderCalendar(){const year=calendarView.getFullYear(),month=calendarView.getMonth(),count=new Date(year,month+1,0).getDate(),offset=(new Date(year,month,1).getDay()+6)%7,today=todayKey();$('#calendarMonth').textContent=calendarView.toLocaleDateString(EumoI18n.locale(),{month:'long',year:'numeric'});let html='<span class="calendar-blank" aria-hidden="true"></span>'.repeat(offset);for(let day=1;day<=count;day++){const key=dateKey(new Date(year,month,day)),seconds=reportSeconds(key),minutes=seconds/60,level=minutes>=60?3:minutes>=25?2:seconds>0?1:0,future=key>today;html+=`<button class="calendar-day ${key===selectedDay?'selected':''} ${key===today?'is-today':''} ${future?'future':''}" data-day="${key}" data-level="${level}" aria-pressed="${key===selectedDay}" aria-label="${new Date(year,month,day).toLocaleDateString(EumoI18n.locale(),{month:'long',day:'numeric',year:'numeric'})}: ${duration(seconds,true)}" ${future?'disabled':''}><span>${day}</span><small>${seconds>0?duration(seconds,true):''}</small></button>`;}$('#calendarGrid').innerHTML=html;$('#nextMonth').disabled=year===new Date().getFullYear()&&month===new Date().getMonth();}
 function dayEntries(key){return state.history.filter(h=>focusSession(h)&&(h.daySeconds&&Object.keys(h.daySeconds).length?h.daySeconds[key]>0:dateKey(new Date(h.at))===key));}
-function logEntry(h,key,active=false){const seconds=h.daySeconds?.[key]??h.seconds??0;return `<div class="log-entry ${active?'active-log':''}"><div>${escapeHTML(h.task||modes[h.mode])}<small>${modes[h.mode]} · ${active?(h.status==='running'?'In progress':'Paused'):h.outcome==='stopped'?'Ended early':'Completed'}</small>${h.note?`<small class="outcome-note">${escapeHTML(h.note)}</small>`:''}</div><strong>${duration(seconds,true)}</strong></div>`;}
-function renderDayLog(){const key=selectedDay;$('#logDate').textContent=parseDay(key).toLocaleDateString('en-US',{month:'short',day:'numeric'});$('#logTotal').textContent=duration(reportSeconds(key),true);let html='';if(focusSession(state.session)&&(state.session.daySeconds?.[key]||0)>0)html+=logEntry(state.session,key,true);html+=dayEntries(key).map(h=>logEntry(h,key)).join('');if(!html&&reportSeconds(key)>0)html='<div class="log-entry"><div>Focus<small>Time recorded on this date</small></div><strong>'+duration(reportSeconds(key),true)+'</strong></div>';$('#logEntries').innerHTML=html||'<div class="log-empty">No focus sessions.</div>';}
+function logEntry(h,key,active=false){const seconds=h.daySeconds?.[key]??h.seconds??0;return `<div class="log-entry ${active?'active-log':''}"><div><span ${h.task?'data-no-translate':''}>${escapeHTML(h.task||modes[h.mode])}</span><small>${modes[h.mode]} · ${active?(h.status==='running'?'In progress':'Paused'):h.outcome==='stopped'?'Ended early':'Completed'}</small>${h.note?`<small class="outcome-note">${escapeHTML(h.note)}</small>`:''}</div><strong>${duration(seconds,true)}</strong></div>`;}
+function renderDayLog(){const key=selectedDay;$('#logDate').textContent=parseDay(key).toLocaleDateString(EumoI18n.locale(),{month:'short',day:'numeric'});$('#logTotal').textContent=duration(reportSeconds(key),true);let html='';if(focusSession(state.session)&&(state.session.daySeconds?.[key]||0)>0)html+=logEntry(state.session,key,true);html+=dayEntries(key).map(h=>logEntry(h,key)).join('');if(!html&&reportSeconds(key)>0)html='<div class="log-entry"><div>Focus<small>Time recorded on this date</small></div><strong>'+duration(reportSeconds(key),true)+'</strong></div>';$('#logEntries').innerHTML=html||'<div class="log-empty">No focus sessions.</div>';}
 function finishTodaySummary(){if(!daySummaryPending)return;daySummaryPending=false;state.surfaceDepth=state.depth;state.digDay=todayKey();state.idleAt=Date.now();state.simpleView=false;homeEditing=false;clearPet();MineView.reset();save();renderSimpleView();navigateTo('focus');renderTimer();PixelArt.refreshFocus();MoleChat.onGameEvent('day_finished');FriendsClient.notify();}
 function showTodaySummary(){daySummaryPending=true;const key=todayKey(),seconds=reportSeconds(key),entries=dayEntries(key);$('#todaySummaryTime').textContent=duration(seconds,true)+' of focus';$('#moleTodayCopy').textContent=`${state.profile.name}: You logged ${duration(seconds,true)} of focus today.`;$('#todaySummaryTasks').innerHTML=entries.map(h=>logEntry(h,key)).join('')||'<p>No focus sessions today.</p>';const rewards=state.history.filter(focusSession).reduce((r,h)=>{const onDay=dateKey(new Date(h.at))===key;if(onDay){r.stars+=h.stars||0;r.finds+=(h.finds||[]).reduce((a,n)=>a+n,0);}return r;},{stars:0,finds:0});$('#todaySummaryRewards').textContent=`${rewards.stars} stars · ${rewards.finds} finds · demos excluded`;if(!$('#todayDialog').open)$('#todayDialog').showModal();renderReports();}
 $('#finishTodayButton').addEventListener('click',()=>{if(state.session)requestStop(true);else showTodaySummary();});$('#closeTodayButton').addEventListener('click',()=>{finishTodaySummary();$('#todayDialog').close();});$('#todayDialog').addEventListener('close',finishTodaySummary);
@@ -1395,7 +1900,7 @@ $('#finishTodayButton').addEventListener('click',()=>{if(state.session)requestSt
 
 function renderReports(){renderReportStats();renderTrend();renderCalendar();renderDayLog();}
 $$('[data-range]').forEach(b=>b.addEventListener('click',()=>{trendRange=Number(b.dataset.range);$$('[data-range]').forEach(x=>x.classList.toggle('active',x===b));renderTrend();}));
-$('#trendChart').addEventListener('mouseover',e=>{const p=e.target.closest('[data-date]');if(p)$('#chartTooltip').textContent=`${parseDay(p.dataset.date).toLocaleDateString('en-US',{month:'short',day:'numeric'})} · ${duration(Number(p.dataset.minutes)*60,true)}`;});$('#trendChart').addEventListener('focusin',e=>{const p=e.target.closest('[data-date]');if(p)$('#chartTooltip').textContent=`${parseDay(p.dataset.date).toLocaleDateString('en-US',{month:'short',day:'numeric'})} · ${duration(Number(p.dataset.minutes)*60,true)}`;});
+$('#trendChart').addEventListener('mouseover',e=>{const p=e.target.closest('[data-date]');if(p)$('#chartTooltip').textContent=`${parseDay(p.dataset.date).toLocaleDateString(EumoI18n.locale(),{month:'short',day:'numeric'})} · ${duration(Number(p.dataset.minutes)*60,true)}`;});$('#trendChart').addEventListener('focusin',e=>{const p=e.target.closest('[data-date]');if(p)$('#chartTooltip').textContent=`${parseDay(p.dataset.date).toLocaleDateString(EumoI18n.locale(),{month:'short',day:'numeric'})} · ${duration(Number(p.dataset.minutes)*60,true)}`;});
 $('#calendarGrid').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selectedDay=b.dataset.day;renderCalendar();renderDayLog();});$('#previousMonth').addEventListener('click',()=>{calendarView=new Date(calendarView.getFullYear(),calendarView.getMonth()-1,1);renderCalendar();});$('#nextMonth').addEventListener('click',()=>{const now=new Date();if(calendarView>=new Date(now.getFullYear(),now.getMonth(),1))return;calendarView=new Date(calendarView.getFullYear(),calendarView.getMonth()+1,1);renderCalendar();});$('#currentMonth').addEventListener('click',()=>{const now=new Date();calendarView=new Date(now.getFullYear(),now.getMonth(),1);selectedDay=todayKey();renderCalendar();renderDayLog();});
 function tick(){if(ensureDigDay())save();syncClock();trackStudy();if(state.session?.status==='running'&&remaining()===0)complete();else renderTimer();if(!$('#reports').hidden&&state.session)renderDayLog();if(state.session&&Date.now()-lastSave>=1000)save();}
 setInterval(tick,250);document.addEventListener('visibilitychange',()=>{tick();save();});window.addEventListener('pagehide',()=>{trackStudy();save();});window.addEventListener('focus',tick);
@@ -1491,7 +1996,7 @@ $('#goldenGrid').addEventListener('click',handleGoldenAction);$('#chestItems').a
 $('#cancelTreasureSale').addEventListener('click',()=>$('#sellTreasureDialog').close());$('#sellTreasureDialog').addEventListener('close',()=>{pendingTreasureSale=null;});
 $('#confirmTreasureSale').addEventListener('click',()=>{const id=pendingTreasureSale;pendingTreasureSale=null;if(RareTreasures.sell(state,id)){save();renderStats();toast('+99 stars · golden find sold');}$('#sellTreasureDialog').close();});
 $('#putBackTreasure').addEventListener('click',()=>{if(state.session?.status==='running')return;state.displayedTreasure=null;save();renderStats();});
-MineView.init(()=>state);ensureDigDay();renderFriends();renderProfile();renderSimpleView();PixelArt.init(()=>({...state,remaining:remaining(),petAt,petSpinAt,draftColor,companions:[...COMPANIONS,...FriendsClient.getPlayers()],homeEditing,selectedSlot,chestOpen:$('#chestDialog').open,idleMood:petMood()}));trackStudy();renderStats();renderTimer();navigate();if(state.session?.status==='running'&&remaining()===0)complete();save();
+MineView.init(()=>state);ensureDigDay();renderProfile();renderSimpleView();PixelArt.init(()=>({...state,remaining:remaining(),petAt,petSpinAt,draftColor,companions:FriendsClient.getPlayers(),homeEditing,selectedSlot,chestOpen:$('#chestDialog').open,idleMood:petMood()}));trackStudy();renderStats();renderTimer();navigate();if(state.session?.status==='running'&&remaining()===0)complete();save();
 
 function syncClock(){const clock=WorldClock.snapshot(),stamp=clock.iso.slice(0,16)+'|'+clock.time+'|'+clock.period+'|'+clock.timezone;if(stamp===lastClockStamp)return;lastClockStamp=stamp;document.body.dataset.period=clock.period;for(const id of ['deviceTime','setupTime']){const el=$('#'+id);el.textContent=clock.time;el.dateTime=clock.iso;el.title=`Device time · ${clock.timezone}`;el.setAttribute('aria-label',`${clock.label}, ${clock.time}, ${clock.timezone}`);}$('#devicePeriod').textContent=clock.label;$('#setupPeriod').textContent=clock.label;}
 function renderProfile(){$('#chatMoleName').textContent=state.profile.name;$('#moleDialogueSpace').style.setProperty('--mole-chat-color',state.profile.color);$('#homePetName').textContent=state.profile.name;$('#homePetButton').setAttribute('aria-label',`Pet ${state.profile.name} at home`);$('#minePetName').textContent=state.profile.name;$('#equipmentPetName').textContent=state.profile.name;$('#petButton').setAttribute('aria-label',`Pet ${state.profile.name}`);$('#wardrobePetButton').setAttribute('aria-label',`Pet ${state.profile.name} in equipment preview`);$('#miningCanvas').setAttribute('aria-label',`${state.profile.name} and the mine`);MoleChat.refresh();FriendsClient.notify();}
@@ -1506,8 +2011,7 @@ $('#enterGame').addEventListener('click',enterPet);
 $('#petSetupForm').addEventListener('submit',enterPet);
 $('#petName').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing&&e.keyCode!==229)enterPet(e);});
 $('#cancelSetup').addEventListener('click',()=>navigateTo(afterSetup));
-function renderFriends(){$('#friendList').innerHTML=COMPANIONS.map(f=>{const ratio=Math.min(100,Math.round(f.minutes/f.goal*100));return `<article class="friend-card" style="--friend-color:${f.color}"><button class="friend-summary" data-friend="${f.id}" aria-expanded="false" aria-controls="friend-detail-${f.id}" aria-label="${f.name}: ${duration(f.minutes*60)} studied today. View finds."><canvas id="friend-${f.id}" width="96" height="88" aria-label="${f.name}'s ${PET_COLORS.find(c=>c.hex===f.color)?.name||'colored'} mole"></canvas><span class="friend-identity"><strong>${f.name}</strong><small><i class="${f.status==='Studying'?'studying':''}"></i>${f.status}</small></span><span class="friend-progress"><span><span>Study</span><b>${ratio}%</b></span><span class="friend-progress-track" role="progressbar" aria-label="${f.name}'s study goal" aria-valuemin="0" aria-valuemax="${f.goal}" aria-valuenow="${f.minutes}"><i style="width:${ratio}%"></i></span><small>${f.minutes} / ${f.goal} min</small></span><span class="friend-today"><b>${duration(f.minutes*60)}</b><small>today</small></span><span class="friend-finds">${discoveries.filter((d,i)=>f.inventory[i]>0).slice(0,3).map(d=>PixelArt.iconSVG(d.id)).join('')}</span><span class="friend-expand" aria-hidden="true">+</span></button><div id="friend-detail-${f.id}" class="friend-detail" hidden><div class="friend-depth"><span>TOTAL DEPTH</span><strong>${f.depth} m</strong></div><div class="friend-inventory">${discoveries.map((d,i)=>`<div class="friend-item ${f.inventory[i]?'':'not-found'}">${PixelArt.iconSVG(d.id)}<span>${d.name}<small>× ${f.inventory[i]}</small></span></div>`).join('')}</div></div></article>`;}).join('');}
-$('#friendList').addEventListener('click',e=>{const b=e.target.closest('[data-friend]');if(!b)return;const open=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',String(open));$('#friend-detail-'+b.dataset.friend).hidden=!open;b.querySelector('.friend-expand').textContent=open?'−':'+';});
+
 
 renderColorChoice();
 
@@ -1526,5 +2030,9 @@ FloatingMole.init({
  pet(){pet({detail:0},'#miningCanvas','#petSpeech');},
  returnToFocus(){navigateTo('focus');},notify:toast
 });
+
+window.addEventListener("eumo-language",()=>{renderStats();renderTimer();renderReports();renderProfile();MoleChat.refresh();});
+EumoI18n.observe(document);
+document.getElementById("languageSwitch").addEventListener("click",()=>EumoI18n.set(EumoI18n.language==='en'?'zh':'en'));
 
 </script></body></html>

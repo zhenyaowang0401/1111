@@ -22,7 +22,7 @@ def run():
    a,b=[c.new_page() for c in contexts];js_errors=[]
    for page,name,color,seconds in [(a,'Yami','#b784cf',1500),(b,'Momo','#7dcbb4',900)]:
     page.on('pageerror',lambda e:js_errors.append(str(e)));page.add_init_script(seed(name,color,seconds));page.goto(url+'/#companions')
-    expect(page.locator('#companionsTitle')).to_have_text('Friends');expect(page.locator('#friendList .friend-card')).to_have_count(4);expect(page.locator('#onlineFriendList .friend-card')).to_have_count(0)
+    expect(page.locator('#companionsTitle')).to_have_text('Friends');expect(page.locator('#friendList .friend-card')).to_have_count(0);expect(page.locator('#onlineFriendList .friend-card')).to_have_count(0)
     page.locator('#openFriends').click();expect(page.locator('#enableFriends')).to_be_enabled();page.locator('#enableFriends').click();expect(page.locator('#myFriendCode')).to_be_visible();expect(page.locator('#myFriendCode')).not_to_have_value('');expect(page.locator('#friendsRetry')).to_be_enabled()
    code_a=a.locator('#myFriendCode').input_value();code_b=b.locator('#myFriendCode').input_value();assert code_a!=code_b
    assert 'eumo_friend_session' not in a.evaluate('document.cookie')
@@ -81,14 +81,14 @@ def run():
    a.locator('#closeFriends').click()
    # Missing deployment settings never generate a fake friend code.
    unconfigured=browser.new_page();unconfigured.add_init_script(seed('Demo','#b784cf',0));unconfigured.route('**/api/friends',lambda r:r.fulfill(status=503,content_type='application/json',body='{"error":"FRIENDS_NOT_CONFIGURED"}'));unconfigured.goto(url+'/#companions');unconfigured.locator('#openFriends').click()
-   expect(unconfigured.locator('#enableFriends')).to_be_disabled();expect(unconfigured.locator('#myFriendPanel')).to_be_hidden();expect(unconfigured.locator('#friendsStatus')).to_contain_text('not connected');expect(unconfigured.locator('#friendList .friend-card')).to_have_count(4)
+   expect(unconfigured.locator('#enableFriends')).to_be_disabled();expect(unconfigured.locator('#myFriendPanel')).to_be_hidden();expect(unconfigured.locator('#friendsStatus')).to_contain_text('not connected');expect(unconfigured.locator('#friendList .friend-card')).to_have_count(0)
    # Once deployment settings are fixed, retrying must re-enable real connection.
    unconfigured.unroute('**/api/friends');unconfigured.locator('#closeFriends').click();unconfigured.locator('#openFriends').click();expect(unconfigured.locator('#enableFriends')).to_be_enabled();unconfigured.locator('#enableFriends').click();expect(unconfigured.locator('#myFriendCode')).to_be_visible()
-   # Standalone demos remain usable with networking unavailable.
-   offline=browser.new_context();download=offline.new_page();download.goto(url+'/dist/Eumo.html#companions');download.locator('#enterGame').click();offline.set_offline(True);download.locator('[data-friend="yun"]').click();expect(download.locator('#friend-detail-yun')).to_be_visible()
+   # Standalone stays honest when networking is unavailable.
+   offline=browser.new_context();download=offline.new_page();download.goto(url+'/dist/Eumo.html#companions');download.locator('#enterGame').click();offline.set_offline(True);expect(download.locator('#sampleFriends')).to_have_count(0);expect(download.locator('#friendsEmpty')).to_have_text('Come add your mole friends!')
    assert not js_errors,js_errors
    browser.close()
-  print('PASS: two independent browsers, real cookie-authenticated API and PostgreSQL: friend codes/copy, pending mutual consent, accepted profiles, study/pause/profile/color updates, task exclusion/XSS, sharing pause/resume, saved identity, Away/Offline, removal on both sides, decline/cancel, mobile dialog, missing-config honesty and offline demos. Production cloud setup is not verified.')
+  print('PASS: two independent browsers, real cookie-authenticated API and PostgreSQL: friend codes/copy, pending mutual consent, accepted profiles, study/pause/profile/color updates, task exclusion/XSS, sharing pause/resume, saved identity, Away/Offline, removal on both sides, decline/cancel, mobile dialog, missing-config honesty and offline empty state. Production cloud setup is not verified.')
  finally:
   for process in [app,database]:
    if process:
