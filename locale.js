@@ -3,6 +3,7 @@
 window.EumoI18n=(()=>{
  const KEY='eumo-language';let language='en';try{if(localStorage.getItem(KEY)==='zh')language='zh';}catch{}
  const dictionary={
+ "Living room":"起居区","Living rug":"起居区地毯","Bedroom":"卧室","Bedroom wall":"卧室墙面","Study wall":"工作区墙面","Gallery":"收藏区","Gallery wall":"收藏区墙面","Visit friends":"拜访好友","Visit home":"查看家园","Home not shared yet":"家园尚未分享","Last shared home · View only":"最近分享的家园 · 仅供参观","UNDERGROUND HOME":"地下家园",
  "Come add your mole friends!": "快来添加你的鼹鼠朋友！",
  "Mole setup": "鼹鼠设置",
  "Your mole": "你的鼹鼠",
@@ -268,7 +269,7 @@ window.EumoI18n=(()=>{
  "Your friend code": "你的好友码",
  "Copy": "复制",
  "Daily focus goal": "每日专注目标",
- "Share my status with accepted friends": "与已添加的好友分享我的状态",
+ "Share my status and home with accepted friends": "与已添加的好友分享我的状态和家园",
  "Add by friend code": "通过好友码添加",
  "Send request": "发送申请",
  "Incoming requests": "收到的申请",

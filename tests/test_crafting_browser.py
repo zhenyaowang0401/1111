@@ -49,7 +49,7 @@ def run():
    wall_pixels=[]
    for id in ['crystalChime','fossilFrame','starMobile']:
     open_craft();make(id);place(id,'wall');page.wait_for_timeout(180)
-    wall_pixels.append(page.locator('#homeCanvas').evaluate("c=>Array.from(c.getContext('2d').getImageData(100,100,52,52).data).join(',')"))
+    wall_pixels.append(page.locator('#homeCanvas').evaluate("c=>Array.from(c.getContext('2d').getImageData(448,192,52,52).data).join(',')"))
    assert len(set(wall_pixels))==3,'Actual wall art must change'
    final=saved();assert final['inventory']==[0,1,0,0] and final['balance']==77
    assert set(final['foundDiscoveries'])=={'star','mushroom','crystal','fossil'}

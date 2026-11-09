@@ -103,28 +103,47 @@ window.PixelArt=(()=>{
   box(c,x+18,y+9,7,8,'#eed194');box(c,x+20,y+11,3,3,'#775638');bounds.chest={x:x-4,y:y-4,w:50,h:36};
  }
  function renderHome(c,s,frame){
-  const theme=HomeCatalog.themes.find(t=>t.id===s.home.theme)||HomeCatalog.themes[0],t=WorldClock.snapshot();box(c,0,0,384,288,'#252b35');
-  // A round earthen burrow, cut out of layered soil with exposed roots.
-  for(let row=0;row<18;row++)for(let col=0;col<24;col++){const r=random(col,row);box(c,col*16,row*16,16,16,r>.5?'#514538':'#4a3e35');if(r<.12)box(c,col*16+3,row*16+7,6,3,'#74634d');}
-  oval(c,39,4,306,280,theme.trim,4);oval(c,47,11,290,266,tint(theme.wall,-.18),4);oval(c,56,20,272,250,theme.wall,4);
-  c.save();c.clip(ovalPath(56,20,272,250,4));
-  for(let i=0;i<26;i++){const xx=60+random(i,11)*260,yy=28+random(i,9)*178;box(c,xx,yy,6+random(i,13)*12,3,tint(theme.wall,i%2?.055:-.055));}
-  // Curved roots hug the ceiling instead of a rectangular brick wall.
-  for(let i=0;i<7;i++){const x=70+i*39,yy=30+Math.abs(i-3)*7;box(c,x,yy,3,22,'#695139');box(c,x+3,yy+19,10,3,'#695139');box(c,x+11,yy+21,3,12,'#695139');box(c,x,yy,1,17,'#bd9a6d');}
-  // A small round opening reveals the same local sky as the mine surface.
-  oval(c,166,58,54,54,'#4f4034',2);oval(c,170,61,46,47,'#d0ac7a',2);oval(c,174,65,38,39,t.sky,2);
-  c.save();c.clip(ovalPath(174,65,38,39,2));cloud(c,169,87,t.cloud);if(t.period==='night')moon(c,190,68,.65,t.sun);else sun(c,195,74,.4,t.sun);
-  if(theme.id==='rain')for(let i=0;i<6;i++)box(c,177+i*6,67+(i*13+frame*2)%34,1,4,'#c0dce6');c.restore();
-  box(c,174,106,38,3,'#b18b61');
-  // Floor and objects share a baseline and remain inside the round silhouette.
-  box(c,54,205,276,65,theme.floor);for(let row=0;row<5;row++){const yy=208+row*14;box(c,54,yy,276,1,tint(theme.floor,-.15));for(let x=60+(row%2)*35;x<330;x+=70)box(c,x,yy,1,14,tint(theme.floor,-.1));}box(c,58,203,268,3,tint(theme.floor,.15));
-  for(const key of ['floor','wall','left','right']){const spot=HomeCatalog.slots[key],id=s.home.slots[key];if(id)drawHomeItem(c,id,spot);if(s.homeEditing){const w=key==='floor'?70:key==='wall'?38:64,h=key==='floor'?20:key==='wall'?38:58,x=spot.x-w/2,y=spot.y-h,col=key===s.selectedSlot?'#ffe0a0':'#c4b798';for(let xx=x;xx<x+w;xx+=8){box(c,xx,y,4,1,col);box(c,xx,spot.y+3,4,1,col);}for(let yy=y;yy<spot.y;yy+=8){box(c,x,yy,1,4,col);box(c,x+w,yy,1,4,col);}}}
-  // A dedicated wall cabinet does not consume ordinary furniture or chest slots.
-  box(c,238,119,49,52,'#574031');box(c,240,121,45,46,'#b28c53');box(c,243,124,39,40,'#334c40');box(c,242,164,42,4,'#ffe1a0');box(c,246,168,34,3,'#846033');
-  if(s.displayedTreasure){RareTreasures.draw(c,s.displayedTreasure,247,130,1);star(c,278,126,.4,'#ffedb4');}else{box(c,255,142,12,1,'#91764f');box(c,260,137,1,11,'#91764f');}
-  const y=190-jump(s),rotation=playerMole(c,s,166,y,2,false,frame,()=>drawHeadDisplay(c,s,166,y,2,frame));bounds.homeCanvas={x:166,y:y-3,w:56,h:60,rotation};positionSpeech('homeSpeech',bounds.homeCanvas,384,288);chest(c,s.chestOpen);c.restore();
-  // Small moss patches on the rim make the cave feel grown rather than built.
-  for(const [x,y] of [[74,61],[304,66],[59,149],[316,153]]){box(c,x,y,9,3,'#829165');box(c,x+3,y+3,7,4,'#637953');}
+  const theme=HomeCatalog.themes.find(t=>t.id===s.home.theme)||HomeCatalog.themes[0],t=WorldClock.snapshot();
+  box(c,0,0,640,320,'#65513e');
+  for(let row=2;row<20;row++)for(let col=0;col<40;col++){const v=random(col,row);box(c,col*16,row*16,16,16,v>.5?'#695440':'#715b44');if(v<.16)box(c,col*16+3,row*16+7,5,2,'#8b7153');}
+  // A quiet surface strip makes the underground cross-section legible.
+  box(c,0,0,640,34,t.sky);for(let x=0;x<640;x+=8){const y=27+Math.round(Math.sin(x*.025)*4);box(c,x,y,8,9,t.grassShadow);box(c,x,y,8,3,t.grass);}
+  for(let x=16;x<640;x+=57){box(c,x,19,2,12,t.grassShadow);box(c,x-3,22,8,2,t.grass);}
+  // Connecting passage and central ladder, shared by all four rooms.
+  box(c,265,118,106,32,theme.trim);box(c,270,123,96,23,tint(theme.wall,-.12));
+  box(c,265,250,106,32,theme.trim);box(c,270,255,96,23,tint(theme.wall,-.12));
+  box(c,294,38,40,248,theme.trim);box(c,300,40,28,243,tint(theme.wall,-.24));
+  for(const x of [305,321])box(c,x,38,2,246,'#b29370');for(let y=44;y<280;y+=13)box(c,304,y,20,2,'#e3bd8a');
+  const rooms=[{x:18,y:55,w:268,h:108,name:'Living room'},{x:350,y:55,w:272,h:108,name:'Study'},{x:18,y:187,w:268,h:108,name:'Bedroom'},{x:350,y:187,w:272,h:108,name:'Gallery'}];
+  for(const room of rooms){const {x,y,w,h}=room;
+   // Stepped shoulders and rounded corners, with a broad, horizontal interior.
+   const wall=tint(theme.wall,room.name==='Bedroom'?.27:room.name==='Living room'?.24:.15);
+   for(let row=0;row<h;row+=2){const edge=Math.min(row,h-2-row),inset=edge<4?26:edge<8?18:edge<14?10:edge<22?5:0;box(c,x+inset,y+row,w-inset*2,2,theme.trim);if(row>=6&&row<h-6)box(c,x+inset+5,y+row,w-inset*2-10,2,wall);}
+   for(let k=0;k<8;k++)box(c,x+26+k*27,y+45+(k%3)*9,9,2,tint(wall,-.04));
+   box(c,x+8,y+h-22,w-16,13,theme.floor);box(c,x+12,y+h-9,w-24,3,tint(theme.floor,-.22));
+   for(let xx=x+12;xx<x+w-12;xx+=31)box(c,xx,y+h-20,1,11,tint(theme.floor,-.1));
+   box(c,x+14,y+12,w-28,2,tint(theme.wall,.13));
+   // Roots stay at the ceiling; wall texture never competes with furniture.
+   for(let k=0;k<4;k++){const rx=x+29+k*62;box(c,rx,y+5,2,10,'#806447');box(c,rx+2,y+13,7,2,'#806447');}
+   c.save();c.font='9px Arial';c.fillStyle=tint(theme.trim,-.2);c.fillText(EumoI18n.t(room.name),x+17,y+23);c.restore();
+  }
+  // Open doorways cut into the soil columns, instead of isolated room boxes.
+  for(const y of [125,257]){box(c,278,y,24,24,tint(theme.wall,-.12));box(c,328,y,30,24,tint(theme.wall,-.12));}
+  // Built-in shelves, window and a low kitchen counter give the burrow a lived-in base.
+  box(c,204,93,49,3,'#805f45');for(let k=0;k<4;k++){box(c,208+k*10,83,6,10,k%2?'#b5c6b4':'#e9dbb5');box(c,209+k*10,82,4,2,'#fff2d0');}
+  box(c,207,120,47,27,'#987451');box(c,204,117,53,4,'#dec598');box(c,214,125,13,17,'#b99b70');box(c,232,125,14,17,'#b99b70');
+  box(c,553,88,38,33,'#775c43');box(c,556,91,32,26,t.sky);box(c,570,91,2,26,'#dcc299');box(c,556,104,32,2,'#dcc299');
+  c.save();c.beginPath();c.rect(556,91,32,26);c.clip();if(t.period==='night')star(c,576,94,.6,t.sun);else cloud(c,555,93,t.cloud);c.restore();
+  box(c,550,85,44,3,'#d6b285');box(c,550,88,5,30,'#a1b9af');box(c,590,88,5,30,'#a1b9af');
+  // Permanent reading bench and sleeping alcove are part of the architecture.
+  box(c,184,264,65,5,'#b48f66');box(c,189,269,5,12,'#826747');box(c,240,269,5,12,'#826747');box(c,189,256,25,8,'#d6b3a1');
+  for(const key of ['floor','left','right','wall','study','studyWall','bedWall','gallery']){const spot=HomeCatalog.slots[key],id=s.home.slots[key];if(id)drawHomeItem(c,id,spot);if(s.homeEditing){const wall=spot.kind==='wall',floor=spot.kind==='floor',w=floor?70:64,h=floor?16:wall?42:53,x=spot.x-w/2,y=spot.y-h,col=key===s.selectedSlot?'#fff0bc':'#d5c2a0';for(let xx=x;xx<x+w;xx+=8){box(c,xx,y,4,1,col);box(c,xx,spot.y+2,4,1,col);}for(let yy=y;yy<spot.y;yy+=8){box(c,x,yy,1,4,col);box(c,x+w,yy,1,4,col);}}}
+  // The collection shelf and chest are kept together in the gallery.
+  box(c,384,211,49,35,'#71563f');box(c,387,214,43,29,'#c2a779');box(c,390,217,37,23,'#526552');
+  if(s.displayedTreasure)RareTreasures.draw(c,s.displayedTreasure,393,217,.65);
+  c.save();c.translate(273,29);chest(c,s.chestOpen);c.restore();
+  const y=148-54-jump(s),rotation=playerMole(c,s,139,y,2,false,frame,()=>drawHeadDisplay(c,s,139,y,2,frame));
+  if(!s.visiting){bounds.chest={x:388,y:245,w:50,h:36};bounds.homeCanvas={x:139,y:y-3,w:56,h:60,rotation};positionSpeech('homeSpeech',bounds.homeCanvas,640,320);}
  }
  function jump(s){if(s.session||!s.petAt||matchMedia('(prefers-reduced-motion: reduce)').matches)return 0;const t=(Date.now()-s.petAt)/(s.petSpinAt?1200:850);return t>=0&&t<1?Math.round(Math.sin(t*Math.PI)*(s.petSpinAt?28:18)):0;}
  function playerMole(c,s,x,y,scale,dig,frame,extra){const progress=s.petSpinAt?Math.max(0,Math.min(1,(Date.now()-s.petSpinAt)/1200)):0,rotation=!s.session&&s.petSpinAt&&!matchMedia('(prefers-reduced-motion: reduce)').matches?2*Math.PI*(1-Math.pow(1-progress,2)):0;
@@ -195,5 +214,5 @@ window.PixelArt=(()=>{
 
  let getState,frame=0,last=0;
  function loop(now){if(now-last>120){last=now;frame++;if(getState){const s=getState(),f=matchMedia('(prefers-reduced-motion: reduce)').matches?0:frame;if(!document.getElementById('setupScreen').hidden)renderSetup(document.getElementById('setupCanvas').getContext('2d'),s,f);if(!document.getElementById('home').hidden)renderHome(document.getElementById('homeCanvas').getContext('2d'),s,f);if(!document.getElementById('focus').hidden&&!s.simpleView)renderMine(document.getElementById('miningCanvas').getContext('2d'),s,f);if(!document.getElementById('wardrobe').hidden)renderWardrobe(document.getElementById('wardrobeCanvas').getContext('2d'),s,f);if(!document.getElementById('companions').hidden)for(const friend of s.companions||[]){const canvas=document.getElementById('friend-'+friend.id);if(canvas)renderFriend(canvas.getContext('2d'),friend,f);}}}requestAnimationFrame(loop);}
- return {drawPortrait(canvas,s){const c=canvas.getContext('2d');c.clearRect(0,0,128,128);mole(c,23,40,3,s.equipped,false,0,s.profile.color,'awake',null);},iconSVG,homeIcon,digMetrics,renderFloating,refreshFocus(){if(getState)renderMine(document.getElementById('miningCanvas').getContext('2d'),getState(),matchMedia('(prefers-reduced-motion: reduce)').matches?0:frame);},hitTest(id,x,y){const b=bounds[id];return !!b&&x>=b.x&&x<=b.x+b.w&&y>=b.y&&y<=b.y+b.h;},getBounds:id=>bounds[id]?{...bounds[id]}:null,init(get){getState=get;requestAnimationFrame(loop);}};
+ return {drawHomePreview(canvas,s){const saved={...bounds};renderHome(canvas.getContext('2d'),{...s,visiting:true,homeEditing:false,session:null,idleMood:'awake'},0);Object.assign(bounds,saved);},drawPortrait(canvas,s){const c=canvas.getContext('2d');c.clearRect(0,0,128,128);mole(c,23,40,3,s.equipped,false,0,s.profile.color,'awake',null);},iconSVG,homeIcon,digMetrics,renderFloating,refreshFocus(){if(getState)renderMine(document.getElementById('miningCanvas').getContext('2d'),getState(),matchMedia('(prefers-reduced-motion: reduce)').matches?0:frame);},hitTest(id,x,y){const b=bounds[id];return !!b&&x>=b.x&&x<=b.x+b.w&&y>=b.y&&y<=b.y+b.h;},getBounds:id=>bounds[id]?{...bounds[id]}:null,init(get){getState=get;requestAnimationFrame(loop);}};
 })();

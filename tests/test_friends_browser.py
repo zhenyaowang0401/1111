@@ -36,6 +36,17 @@ def run():
    b.locator('[data-friend-action="accept"]').click();settled(b);refresh(a);expect(a.locator('#onlineFriendList .friend-card')).to_have_count(1);expect(b.locator('#onlineFriendList .friend-card')).to_have_count(1)
    expect(a.locator('#onlineFriendList')).to_contain_text('Momo');expect(a.locator('#onlineFriendList')).to_contain_text('15m')
    for page in [a,b]:page.locator('#closeFriends').click()
+   # Actual shared decor survives the API + database path; visits cannot edit it.
+   b.evaluate("state.home.owned.push('bed');state.home.slots.right='bed';save()")
+   b.evaluate('FriendsClient.activate()');settled(b);refresh(a)
+   assert a.evaluate("FriendsClient.getPlayers()[0].home.slots.right")=='bed'
+   original=a.evaluate('JSON.stringify(state.home)')
+   a.locator('#onlineFriendList [data-live-friend]').click();a.locator('[data-visit-home]').click()
+   expect(a.locator('#friendHomeDialog')).to_be_visible();expect(a.locator('#friendHomeTitle')).to_contain_text('Momo')
+   assert a.locator('#friendHomeDialog [data-home-item]').count()==0
+   a.screenshot(path=str(ROOT/'docs/images/eumo-friend-home.png'))
+   a.locator('#closeFriendHome').click();assert a.evaluate('JSON.stringify(state.home)')==original
+   a.locator('#onlineFriendList [data-live-friend]').click()
    b.locator('[data-page="focus"]').click();b.locator('#taskInput').fill('PRIVATE TASK: do not share');b.locator('#startButton').click();settled(b);b.locator('[data-page="companions"]').click();settled(b);refresh(a)
    expect(a.locator('#onlineFriendList')).to_contain_text('Studying');assert 'PRIVATE TASK' not in a.locator('#onlineFriendList').inner_text()
    canvas=a.locator('#onlineFriendList canvas');a.wait_for_timeout(250)
@@ -50,6 +61,7 @@ def run():
    b.locator('.footer a[href="#start"]').click();b.locator('#petName').fill('<b>Buddy</b>');b.locator('[data-color="#85bcea"]').click();b.locator('#enterGame').click();b.locator('[data-page="companions"]').click();settled(b);refresh(a)
    expect(a.locator('#onlineFriendList .friend-identity strong')).to_have_text('<b>Buddy</b>');assert a.locator('#onlineFriendList .friend-identity strong b').count()==0
    b.locator('#openFriends').click();settled(b);b.locator('#friendSharing').uncheck();settled(b);refresh(a);expect(a.locator('#onlineFriendList')).to_contain_text('Sharing paused');expect(a.locator('#onlineFriendList')).not_to_contain_text('15m')
+   assert a.evaluate('FriendsClient.getPlayers()[0].home') is None
    b.locator('#friendSharing').check();settled(b);b.locator('#friendGoal').fill('20');b.locator('#friendGoal').dispatch_event('change');settled(b);refresh(a);expect(a.locator('#onlineFriendList')).to_contain_text('/ 20 min')
    # The code is public, but cookie authentication is never placed in the document or localStorage.
    b.locator('#closeFriends').click();b.reload();settled(b);b.locator('#openFriends').click();settled(b);expect(b.locator('#myFriendCode')).to_have_value(code_b)

@@ -1,6 +1,6 @@
 'use strict';
 const {randomBytes,createHash}=require('node:crypto');
-const catalog=require('../wardrobe.js');
+const catalog=require('../wardrobe.js'),homeCatalog=require('../home.js');
 const COOKIE='eumo_friend_session',CODE=/^[A-HJ-NP-Z2-9]{10}$/,UUID=/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i;
 const ACTIONS=new Set(['connect','sync','state','request','accept','decline','cancel','remove','pause','resume']),buckets=new Map();
 const send=(res,status,body)=>{res.statusCode=status;res.setHeader('Content-Type','application/json; charset=utf-8');res.setHeader('Cache-Control','no-store');res.setHeader('Vary','Cookie');res.end(JSON.stringify(body));};
@@ -12,7 +12,7 @@ function snapshot(raw={}){
   status:['studying','working','paused','break','demo','idle','drowsy','sleeping'].includes(raw.status)?raw.status:'idle',
   localDate:/^\d{4}-\d{2}-\d{2}$/.test(raw.localDate)?raw.localDate:null,studySeconds:number(raw.studySeconds,86400),workSeconds:number(raw.workSeconds,86400),goalMinutes:Math.max(5,number(raw.goalMinutes,1440)||120),
   depth:number(raw.depth,100000000),mineDepth:number(raw.mineDepth,100000000),equipped:[...new Set((Array.isArray(raw.equipped)?raw.equipped:[]).filter(id=>equipment.has(id)))].slice(0,6),tool:tools.has(raw.tool)?raw.tool:null,
-  inventory:Array.from({length:4},(_,i)=>number(raw.inventory?.[i],1000000))};
+  home:homeCatalog.sharedHome(raw.home),inventory:Array.from({length:4},(_,i)=>number(raw.inventory?.[i],1000000))};
 }
 function configuration(env){
  const url=new URL(env.SUPABASE_URL||'https://unconfigured.invalid');

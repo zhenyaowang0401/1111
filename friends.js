@@ -6,6 +6,7 @@ window.FriendsClient=(()=>{
  const clamp=(n,max=100000000)=>Math.max(0,Math.min(max,Math.floor(Number(n)||0)));
  const duration=s=>s<60?`${clamp(s)}s`:s<3600?`${Math.floor(s/60)}m`:`${Math.floor(s/3600)}h ${Math.floor(s%3600/60)}m`;
  const date=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+ let visitingId=null;
  let read,model=null,busy=false,unavailable=false,message='',connectionError='',goal=120,enabled=false,players=[],expanded=new Set(),removeTarget=null,timer,baseServer=0,basePerformance=0,lastAction=0;
  const labels={studying:'Studying',working:'Working',paused:'Paused',break:'On a break',demo:'Trying a demo',idle:'Idle',drowsy:'Drowsy',sleeping:'Sleeping'};
  const notices={REQUEST_SENT:'Request sent. Your friend can accept it with their code window.',REQUEST_PENDING:'Your request is already waiting for an answer.',INCOMING_REQUEST:'This friend already sent you a request. Accept it below.',ALREADY_FRIENDS:'You are already friends.',FRIEND_ADDED:'Friend added. You can now see each other’s status.',FRIEND_REMOVED:'Friend removed. You no longer share status.',REQUEST_CLOSED:'Request closed.'};
@@ -15,7 +16,7 @@ window.FriendsClient=(()=>{
  function summary(){
   const s=read(),localDate=date(new Date()),today=s.reportDays[localDate]||{},t=s.session;
   const status=t?(t.status==='paused'?'paused':t.demo?'demo':t.mode==='rest'?'break':t.mode==='work'?'working':'studying'):(Date.now()-s.idleAt>=300000?'sleeping':Date.now()-s.idleAt>=90000?'drowsy':'idle');
-  return {name:s.profile.name,color:s.profile.color,status,localDate,studySeconds:today.seconds||0,workSeconds:today.workSeconds||0,goalMinutes:goal,depth:s.depth,mineDepth:PixelArt.digMetrics(s).worldDepth,equipped:s.equipped,tool:s.tool,inventory:s.inventory};
+  return {name:s.profile.name,color:s.profile.color,status,localDate,studySeconds:today.seconds||0,workSeconds:today.workSeconds||0,goalMinutes:goal,depth:s.depth,mineDepth:PixelArt.digMetrics(s).worldDepth,equipped:s.equipped,tool:s.tool,inventory:s.inventory,home:HomeCatalog.sharedHome(s.home)};
  }
  function formatCode(code){return code?'EU-'+code.slice(0,5)+'-'+code.slice(5):'';}
  function views(){
@@ -27,18 +28,20 @@ window.FriendsClient=(()=>{
     moleMood:availability!=='online'?'awake':activity==='sleeping'?'asleep':activity==='drowsy'?'drowsy':['paused','break'].includes(activity)?'rest':'awake',
     equipped:Array.isArray(s.equipped)?s.equipped.filter(id=>WardrobeCatalog.items.some(x=>x.id===id)):[],tool:WardrobeCatalog.tools.some(x=>x.id===s.tool)?s.tool:null,
     studySeconds:clamp(s.studySeconds,86400),workSeconds:clamp(s.workSeconds,86400),goal:Math.max(5,clamp(s.goalMinutes,1440)||120),depth:clamp(s.depth),mineDepth:clamp(s.mineDepth),inventory:Array.from({length:4},(_,i)=>clamp(s.inventory?.[i],1000000)),localDate:/^\d{4}-\d{2}-\d{2}$/.test(s.localDate)?s.localDate:null,
-    lastSeen:Number(f.lastSeen),age,sharing:!!f.sharing};
+    home:f.sharing?HomeCatalog.sharedHome(s.home):null,lastSeen:Number(f.lastSeen),age,sharing:!!f.sharing};
   });
  }
  function renderPlayers(){
-  players=views();const today=date(new Date());
+  players=views();if(visitingId){const visitor=players.find(f=>f.id===visitingId);if(!visitor?.sharing||!visitor.home){$('friendHomeDialog').close();visitingId=null;}else drawVisit(visitor);}
+  const today=date(new Date());
   $('onlineFriendList').innerHTML=players.map(f=>{
    const seconds=f.studySeconds+f.workSeconds,minutes=Math.floor(seconds/60),ratio=Math.min(100,Math.floor(seconds/(f.goal*60)*100)),show=f.sharing,open=expanded.has(f.id),day=f.localDate===today?'today':f.localDate||'last update';
    const status=f.availability==='offline'&&f.lastSeen?`Offline · ${f.age<3600000?Math.max(1,Math.floor(f.age/60000))+'m ago':Math.floor(f.age/3600000)+'h ago'}`:f.status;
-   return `<article class="friend-card live-friend-card" style="--friend-color:${f.color}"><button class="friend-summary" data-live-friend="${f.id}" aria-expanded="${open}" aria-controls="friend-detail-${f.id}" aria-label="${escape(f.name)}: ${escape(f.status)}. View mole and finds."><canvas id="friend-${f.id}" width="96" height="88" aria-label="${escape(f.name)}'s mole"></canvas><span class="friend-identity"><strong>${escape(f.name)}</strong><small><i class="${f.availability==='online'?'studying':''}"></i>${escape(status)}</small></span><span class="friend-progress"><span><span>Focus</span><b>${show?ratio+'%':'—'}</b></span><span class="friend-progress-track" role="progressbar" aria-label="${escape(f.name)}'s focus goal" aria-valuemin="0" aria-valuemax="${f.goal}" aria-valuenow="${show?Math.min(minutes,f.goal):0}" aria-valuetext="${show?`${minutes} of ${f.goal} minutes`:"Status sharing paused"}"><i style="width:${show?ratio:0}%"></i></span><small>${show?`${minutes} / ${f.goal} min`:'Status sharing paused'}</small></span><span class="friend-today"><b>${show?duration(seconds):'—'}</b><small>${escape(show?day:'private')}</small></span><span class="friend-finds">${show?['star','mushroom','crystal','fossil'].filter((id,i)=>f.inventory[i]>0).slice(0,3).map(id=>PixelArt.iconSVG(id)).join(''):''}</span><span class="friend-expand" aria-hidden="true">${open?'−':'+'}</span></button><div id="friend-detail-${f.id}" class="friend-detail" ${open?'':'hidden'}><div class="live-friend-meta"><p>${show?`Mole: ${escape(f.availability==='online'?labels[f.activity]:'last shared '+labels[f.activity])} · Mine ${f.mineDepth} m`:'This friend has paused status sharing.'}</p>${show?`<p>Study ${duration(f.studySeconds)} · Work ${duration(f.workSeconds)} · All-time depth ${f.depth} m</p>`:''}<button type="button" data-remove-friend="${f.linkId}" class="remove-friend-button">Remove friend</button></div>${show?`<div class="friend-inventory">${['Star fragment','Glow mushroom','Stardust crystal','Spiral fossil'].map((name,i)=>`<div class="friend-item ${f.inventory[i]?'':'not-found'}">${PixelArt.iconSVG(['star','mushroom','crystal','fossil'][i])}<span>${name}<small>× ${f.inventory[i]}</small></span></div>`).join('')}</div>`:''}</div></article>`;
+   return `<article class="friend-card live-friend-card" style="--friend-color:${f.color}"><button class="friend-summary" data-live-friend="${f.id}" aria-expanded="${open}" aria-controls="friend-detail-${f.id}" aria-label="${escape(f.name)}: ${escape(f.status)}. View mole and finds."><canvas id="friend-${f.id}" width="96" height="88" aria-label="${escape(f.name)}'s mole"></canvas><span class="friend-identity"><strong>${escape(f.name)}</strong><small><i class="${f.availability==='online'?'studying':''}"></i>${escape(status)}</small></span><span class="friend-progress"><span><span>Focus</span><b>${show?ratio+'%':'—'}</b></span><span class="friend-progress-track" role="progressbar" aria-label="${escape(f.name)}'s focus goal" aria-valuemin="0" aria-valuemax="${f.goal}" aria-valuenow="${show?Math.min(minutes,f.goal):0}" aria-valuetext="${show?`${minutes} of ${f.goal} minutes`:"Status sharing paused"}"><i style="width:${show?ratio:0}%"></i></span><small>${show?`${minutes} / ${f.goal} min`:'Status sharing paused'}</small></span><span class="friend-today"><b>${show?duration(seconds):'—'}</b><small>${escape(show?day:'private')}</small></span><span class="friend-finds">${show?['star','mushroom','crystal','fossil'].filter((id,i)=>f.inventory[i]>0).slice(0,3).map(id=>PixelArt.iconSVG(id)).join(''):''}</span><span class="friend-expand" aria-hidden="true">${open?'−':'+'}</span></button><div id="friend-detail-${f.id}" class="friend-detail" ${open?'':'hidden'}><div class="live-friend-meta"><p>${show?`Mole: ${escape(f.availability==='online'?labels[f.activity]:'last shared '+labels[f.activity])} · Mine ${f.mineDepth} m`:'This friend has paused status sharing.'}</p>${show?`<p>Study ${duration(f.studySeconds)} · Work ${duration(f.workSeconds)} · All-time depth ${f.depth} m</p>`:''}<button type="button" data-visit-home="${f.id}" ${show&&f.home?'':'disabled'}>${show&&f.home?'Visit home':'Home not shared yet'}</button><button type="button" data-remove-friend="${f.linkId}" class="remove-friend-button">Remove friend</button></div>${show?`<div class="friend-inventory">${['Star fragment','Glow mushroom','Stardust crystal','Spiral fossil'].map((name,i)=>`<div class="friend-item ${f.inventory[i]?'':'not-found'}">${PixelArt.iconSVG(['star','mushroom','crystal','fossil'][i])}<span>${name}<small>× ${f.inventory[i]}</small></span></div>`).join('')}</div>`:''}</div></article>`;
   }).join('');
   $('friendsEmpty').hidden=players.length>0;
  }
+ function drawVisit(f){$('friendHomeTitle').textContent=f.name+' · '+EumoI18n.t('Home');PixelArt.drawHomePreview($('friendHomeCanvas'),{profile:{name:f.name,color:f.color},equipped:f.equipped,home:f.home,tool:f.tool});}
  function renderRequests(){
   for(const [id,list,incoming] of [['incomingFriendRequests',model?.incoming||[],true],['outgoingFriendRequests',model?.outgoing||[],false]]){
    $(id).innerHTML=list.length?list.filter(r=>UUID.test(r.linkId)).map(r=>`<div class="friend-request-row"><span>${escape(r.profile?.name||'Momo')}</span><div>${incoming?`<button type="button" data-friend-action="accept" data-link="${r.linkId}" ${busy?'disabled':''}>Accept</button><button type="button" data-friend-action="decline" data-link="${r.linkId}" ${busy?'disabled':''}>Decline</button>`:`<button type="button" data-friend-action="cancel" data-link="${r.linkId}" ${busy?'disabled':''}>Cancel request</button>`}</div></div>`).join(''):'<p class="friend-request-empty">No requests yet.</p>';
@@ -85,6 +88,7 @@ window.FriendsClient=(()=>{
  }
  function init(get){
   read=get;try{const p=JSON.parse(localStorage.getItem(PREF));enabled=!!p?.enabled;goal=Math.max(5,Math.min(1440,Number(p?.goal)||120));}catch{}
+  $('closeFriendHome').addEventListener('click',()=>$('friendHomeDialog').close());$('friendHomeDialog').addEventListener('close',()=>{visitingId=null;});
   $('openFriends').addEventListener('click',open);$('closeFriends').addEventListener('click',()=>$('friendsDialog').close());
   $('friendsRetry').addEventListener('click',()=>model?.self?call(model.self.sharing?'sync':'state'):open());
   $('enableFriends').addEventListener('click',()=>call('connect'));
@@ -95,6 +99,7 @@ window.FriendsClient=(()=>{
   $('friendGoal').addEventListener('change',e=>{goal=Math.max(5,Math.min(1440,Math.floor(Number(e.target.value)||120)));prefs();if(model?.self?.sharing)call('sync');else render();});
   $('friendRequests').addEventListener('click',e=>{const b=e.target.closest('[data-friend-action]');if(b)call(b.dataset.friendAction,{linkId:b.dataset.link});});
   $('onlineFriendList').addEventListener('click',e=>{
+   const visit=e.target.closest('[data-visit-home]');if(visit){const f=players.find(f=>f.id===visit.dataset.visitHome);if(f?.sharing&&f.home){visitingId=f.id;drawVisit(f);$('friendHomeDialog').showModal();}return;}
    const remove=e.target.closest('[data-remove-friend]');if(remove){removeTarget=players.find(f=>f.linkId===remove.dataset.removeFriend);if(removeTarget){$('removeFriendName').textContent=removeTarget.name;$('removeFriendDialog').showModal();}return;}
    const b=e.target.closest('[data-live-friend]');if(b){const id=b.dataset.liveFriend;expanded.has(id)?expanded.delete(id):expanded.add(id);renderPlayers();}
   });
