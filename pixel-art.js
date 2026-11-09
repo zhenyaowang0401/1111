@@ -19,21 +19,13 @@ window.PixelArt=(()=>{
   for(let i=0;i<3;i++){const drift=Math.floor(frame/8+i)%4,xx=x+(16+i*6)*scale,yy=y+(-4-i*5-drift)*scale;c.save();c.globalAlpha=1-i*.2;box(c,xx,yy,4*scale,scale,color);box(c,xx+2*scale,yy+scale,scale,scale,color);box(c,xx+scale,yy+2*scale,scale,scale,color);box(c,xx,yy+3*scale,4*scale,scale,color);c.restore();}
  }
  function mole(c,x,y,scale=2,outfit=[],dig=false,frame=0,color='#b784cf',mood='awake',toolId=null){const colors={...defaultColors,fur:color,furLight:tint(color,.32),shadow:tint(color,-.23)};const has=id=>Array.isArray(outfit)?outfit.includes(id):outfit===id;c.save();c.translate(Math.round(x),Math.round(y));c.scale(scale,scale);const sleepScale=mood==='asleep'?.78+Math.round((Math.sin(frame*.18)+1)*1.5)*.025:1;const r=(a,b,w,h,col)=>{const top=Math.round(27+(b-27)*sleepScale),bottom=Math.round(27+(b+h-27)*sleepScale);box(c,a,top,w,Math.max(1,bottom-top),col);};const bob=dig?(frame%2):0;c.translate(0,bob);
- const spritePainted=MoleArt.paint(c,{color,dig,frame,mood,sleepScale,front:outfit?.length>0});
- if(!spritePainted){
- // Fallback while the local sprite sheet loads.
- r(7,5,12,2,colors.ink);r(4,7,18,3,colors.ink);r(2,10,22,13,colors.ink);r(4,23,18,2,colors.ink);r(4,9,18,13,colors.fur);r(6,7,14,17,colors.fur);r(4,11,18,9,colors.fur);r(6,8,4,3,colors.furLight);r(4,11,3,5,colors.furLight);r(19,13,3,9,colors.shadow);r(6,21,15,3,colors.shadow);
- r(8,16,11,7,colors.pink);r(10,15,7,9,colors.pink);r(10,17,6,5,colors.light);r(8,11,2,2,colors.ink);r(17,11,2,2,colors.ink);if(!dig&&(mood==='asleep'||mood==='rest'||mood==='drowsy'&&frame%30>8||frame%42>=39)){r(8,11,2,2,colors.fur);r(17,11,2,2,colors.fur);r(8,13,3,1,colors.ink);r(16,13,3,1,colors.ink);}r(6,15,3,2,colors.shadow);r(18,15,3,2,colors.shadow);r(11,13,6,3,colors.pink);r(12,13,3,1,colors.light);r(13,17,2,1,colors.ink);
- r(4,24,7,3,colors.ink);r(16,24,7,3,colors.ink);r(5,24,6,2,colors.shadow);r(16,24,6,2,colors.shadow);
- const arm=dig&&frame%2?2:0;r(1,17-arm,5,6,colors.ink);r(2,17-arm,4,5,colors.furLight);r(2,21-arm,3,1,colors.light);r(21,17+arm,5,6,colors.ink);r(21,17+arm,4,5,colors.furLight);r(22,21+arm,3,1,colors.light);
- }
+ MoleArt.paint(c,{color,dig,frame,mood,sleepScale});
  const worn=Array.isArray(outfit)?outfit:[],hat=WardrobeCatalog.items.find(i=>i.category==='hats'&&worn.includes(i.id)),scarf=WardrobeCatalog.items.find(i=>i.category==='scarves'&&worn.includes(i.id));
  if(dig)WardrobeArt.drawTool(r,toolId,frame);
- const fitted=(category,id)=>spritePainted?MoleArt.fit(r,category,id):r;
- if(hat)WardrobeArt.hat(fitted('hats',hat.id),hat.id);
- const eyewear=WardrobeCatalog.items.find(i=>i.category==='glasses'&&worn.includes(i.id));if(eyewear)WardrobeArt.glasses(fitted('glasses',eyewear.id),eyewear.id);
- if(scarf)WardrobeArt.scarf(fitted('scarves',scarf.id),scarf.id);
- const extra=WardrobeCatalog.items.find(i=>i.category==='extras'&&worn.includes(i.id));if(extra)WardrobeArt.extra(fitted('extras',extra.id),extra.id);
+ if(hat)WardrobeArt.hat(r,hat.id);
+ const eyewear=WardrobeCatalog.items.find(i=>i.category==='glasses'&&worn.includes(i.id));if(eyewear)WardrobeArt.glasses(r,eyewear.id);
+ if(scarf)WardrobeArt.scarf(r,scarf.id);
+ const extra=WardrobeCatalog.items.find(i=>i.category==='extras'&&worn.includes(i.id));if(extra)WardrobeArt.extra(r,extra.id);
  c.restore();if(mood==='asleep')sleepEffects(c,x,y,scale,frame,colors.furLight);}
  const itemRects={
  star:[[12,2,8,8,'#fff3a8'],[8,10,16,4,'#fff3a8'],[2,14,28,6,'#fff3a8'],[8,20,16,4,'#fff3a8'],[12,24,8,6,'#e6b76b'],[8,14,4,4,'#fffbe4'],[24,16,4,4,'#e6b76b']],
@@ -90,7 +82,6 @@ window.PixelArt=(()=>{
  function drawHeadDisplay(c,s,x,y,scale,frame){
   if(s.session||!s.heldItem)return;
   let top=WardrobeCatalog.headTop(s.equipped||[]);
-  if(MoleArt.ready&&(s.equipped||[]).some(id=>WardrobeCatalog.items.find(i=>i.id===id)?.category==='hats'))top=MoleArt.hatTop(top);
   if(s.idleMood==='asleep'){const breath=.78+Math.round((Math.sin(frame*.18)+1)*1.5)*.025;top=27+(top-27)*breath;}
   const size=.46*scale;item(c,s.heldItem,x+13*scale-16*size,y+top*scale-32*size+scale,size);
  }

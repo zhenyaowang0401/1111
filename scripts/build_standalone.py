@@ -80,9 +80,6 @@ def build(output: Path) -> Path:
         if page.count(tag) != 1:
             raise ValueError(f'Expected exactly one script tag for {name}')
         code = catalog_code if name == 'music-catalog.js' else (ROOT / name).read_text(encoding='utf-8')
-        if name == 'mole-art.js':
-            sprite = base64.b64encode((ROOT / 'assets/characters/user-mole.png').read_bytes()).decode('ascii')
-            code = code.replace('assets/characters/user-mole.png', 'data:image/png;base64,' + sprite)
         # Keep inline script delimiters safe if a future string contains HTML.
         code = re.sub(r'</script', lambda m: '<\\/script', code, flags=re.IGNORECASE)
         page = page.replace(tag, '<script>\n' + code + '\n</script>')
