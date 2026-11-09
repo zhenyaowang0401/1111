@@ -415,10 +415,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 /* Painted scenery stays quiet behind the opaque working surfaces. */
 .world-backdrop { display: none; }
-.painted-backdrop { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; opacity: .32; filter: saturate(.55) contrast(.82); }
+.painted-backdrop { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; opacity: .36; filter: saturate(.6) contrast(.82); }
 .painted-backdrop svg { display: block; width: 100%; height: 100%; }
 .painted-backdrop .painted-night { display: none; }
 body[data-period="evening"] .painted-backdrop { opacity: .24; }
-body[data-period="night"] .painted-backdrop { opacity: .25; filter: saturate(.6) contrast(.8); }
+body[data-period="night"] .painted-backdrop { opacity: .24; filter: saturate(.4) contrast(.8) brightness(.65); }
 body[data-period="night"] .painted-day { display: none; }
 body[data-period="night"] .painted-night { display: block; }
