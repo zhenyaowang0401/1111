@@ -837,14 +837,17 @@ body[data-period="night"] .painted-night { display: block; }
 @media(max-width:480px){.focus-meta{gap:7px}.focus-status{gap:6px;padding:3px 5px}.focus-status #focusMode{padding-right:5px}.focus-status .device-time{font-size:14px}}
 @media(max-width:600px){.focus-meta{flex-wrap:nowrap}.focus-meta .float-mole-button{flex:0 0 44px;width:44px}}
 /* A wide, two-level burrow. Decorating unfolds below the scene. */
-.home-layout{display:block}.home-room{position:relative;top:auto}.home-stage canvas{aspect-ratio:2/1;width:100%;height:auto;display:block}
-.home-stage{overflow:hidden}.chest-hotspot{left:60.6%;top:76.6%;width:7.8%;height:11.3%;min-width:0;min-height:0}
+.home-layout{display:block}.home-room{position:relative;top:auto}.home-stage canvas{aspect-ratio:16/9;width:100%;height:auto;display:block}
+.home-stage{overflow:hidden}.chest-hotspot{left:71.09375%;top:78.3333%;width:7.8125%;height:10%;min-width:0;min-height:0}
 #home:not(.is-decorating) .home-shop{display:none}
 .home-shop{margin-top:18px}.home-slots{grid-template-columns:repeat(4,1fr)}.home-item-grid{grid-template-columns:repeat(3,minmax(0,1fr));max-height:360px;overflow:auto}
 .home-theme-grid{grid-template-columns:repeat(4,1fr)}#homeEditHint{display:none}
 .friend-home-dialog{width:min(1100px,94vw);max-width:1100px;padding:20px;background:var(--panel);color:var(--text);border:2px solid var(--edge)}
 .friend-home-dialog canvas{width:100%;height:auto;image-rendering:pixelated;display:block}.dialog-heading{display:flex;justify-content:space-between;align-items:center;gap:15px}.dialog-heading h2{margin:0}.dialog-heading button{padding:8px 14px}.friend-home-dialog p{color:var(--muted);font-size:13px}
-@media(max-width:700px){.home-item-grid{grid-template-columns:1fr}.home-slots,.home-theme-grid{grid-template-columns:repeat(2,1fr)}.home-stage{overflow-x:auto}.home-stage #homePetButton{min-width:640px}.home-stage .chest-hotspot{left:388px;top:245px;width:50px;height:36px}.home-actions{gap:8px}.friend-home-dialog{padding:10px}}
+@media(max-width:700px){.home-item-grid{grid-template-columns:1fr}.home-slots,.home-theme-grid{grid-template-columns:repeat(2,1fr)}.home-stage{overflow-x:auto}.home-stage #homePetButton{min-width:640px}.home-stage .chest-hotspot{left:455px;top:282px;width:50px;height:36px}.home-actions{gap:8px}.friend-home-dialog{padding:10px}}
+
+.home-friends-dialog{width:min(720px,94vw);max-width:720px;background:var(--panel);color:var(--text);border:2px solid var(--edge);padding:22px}.home-friends-list{display:grid;gap:12px;max-height:65vh;overflow:auto}.home-friend-row{display:grid;grid-template-columns:160px 1fr auto;align-items:center;gap:16px;padding:12px;border:1px solid var(--edge);text-align:left}.home-friend-row canvas{width:160px;height:90px;image-rendering:pixelated}.home-friend-row strong,.home-friend-row small{display:block;overflow-wrap:anywhere}.home-friend-row small{font-size:12px;margin-top:6px;color:var(--muted)}.home-friends-actions{display:flex;gap:10px;margin-top:16px}#homeFriendsStatus:empty{display:none}
+@media(max-width:520px){.home-friend-row{grid-template-columns:1fr auto;gap:10px}.home-friend-row canvas{grid-column:1/-1;width:100%;height:auto}.home-friends-dialog{padding:14px}}
 
 </style></head><body>
 <div class="painted-backdrop" aria-hidden="true">
@@ -897,7 +900,7 @@ body[data-period="night"] .painted-night { display: block; }
 </div></div><aside class="control-panel"><div class="control-heading"><span>TIMER</span><span id="timerLabel">Ready</span></div><label class="task-label" for="taskInput">What are you working on?</label><input id="taskInput" class="task-input" maxlength="100" placeholder="Optional task"><div class="timer-card"><div id="timeDisplay" class="timer-digits" role="timer">25<span>:</span>00</div><div class="duration-controls"><button id="minusTime" aria-label="Remove five minutes">−</button><span id="durationLabel">25 min</span><button id="plusTime" aria-label="Add five minutes">+</button></div><div class="focus-modes" aria-label="Session type"><button data-mode="study" class="selected">Study</button><button data-mode="work">Work</button><button data-mode="rest">Break</button></div><button id="startButton" class="start-button"><span class="play-symbol" aria-hidden="true"></span><span id="startText" class="sr-only">Start</span></button><button id="stopButton" class="stop-button" hidden>End session</button></div><div class="mission-stats"><div><span>Focus today</span><strong id="todayMinutes">0m</strong></div><div><span>All-time depth</span><strong><b id="totalDepth">0</b><small> m</small></strong></div></div><div class="depth-progress"><div><span>Dig progress</span><b id="digPercent">0%</b></div><div class="progress-track"><i id="digProgress"></i></div></div><section class="music-module" aria-label="Music player"><div class="rain-controls"><button id="soundButton" class="sound-button" aria-pressed="false" aria-label="Play music"><svg aria-hidden="true"><use href="#i-sound"/></svg><span>Music</span><i class="toggle"></i></button><label class="sr-only" for="musicVolume">Music volume</label><input type="range" id="musicVolume" min="0" max="100" value="45" aria-label="Music volume"><button id="openMusicLibrary" class="music-library-button" type="button" aria-haspopup="dialog" aria-controls="musicDialog" aria-label="Open music library" title="Music library"><svg aria-hidden="true"><use href="#i-library"/></svg></button></div><button id="musicMiniPlayer" class="music-mini-player" type="button" aria-haspopup="dialog" aria-controls="musicDialog" aria-label="Open music player"><svg class="music-mini-disc" aria-hidden="true"><use href="#i-disc"/></svg><span class="music-mini-copy"><strong id="musicMiniTitle">Warm Focus</strong><small id="musicMiniState">Paused · Soft music</small></span><span class="music-equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i></span></button></section><button id="simpleViewButton" class="quiet-button" type="button" aria-pressed="false" aria-label="Hide animation" title="Hide animation"><svg viewBox="0 0 24 24" aria-hidden="true"><g class="visibility-eye-open"><path d="M2 10h2V8h4V6h8v2h4v2h2v4h-2v2h-4v2H8v-2H4v-2H2z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 9h4v6h-4z" fill="currentColor"/></g><g class="visibility-eye-closed" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9v3h2v2h4v2h8v-2h4v-2h2V9M6 15v4m6-3v4m6-5v4"/></g></svg></button></aside></div></section>
 <section id="home" class="page home-page" hidden aria-labelledby="homeTitle">
 <div class="page-heading"><h1 id="homeTitle">Home</h1><span class="page-meta">UNDERGROUND HOME</span></div>
-<div class="home-layout"><div class="home-room"><div class="control-heading"><span><span id="homePetName">MOMO</span> <small id="homeMoodLabel">Idle</small></span><span id="homeThemeName">Cozy cave</span></div><div class="home-stage"><button id="homePetButton" class="pet-button" aria-label="Pet Momo at home"><canvas id="homeCanvas" width="640" height="320" aria-label="Your underground home"></canvas></button><button id="openChestButton" class="chest-hotspot" aria-label="Open treasure chest" title="Open chest"></button><div id="homeSpeech" class="pet-speech" hidden>yeeeeee</div></div><div class="home-actions"><button id="editHomeButton" class="quiet-button">Decorate</button><button id="openChestShortcut" class="quiet-button">Open chest</button><button id="openCraftingButton" class="quiet-button">Craft decor</button><span id="homeEditHint">Place your finds here.</span><button id="visitFriendsButton" class="quiet-button">Visit friends</button></div></div>
+<div class="home-layout"><div class="home-room"><div class="control-heading"><span><span id="homePetName">MOMO</span> <small id="homeMoodLabel">Idle</small></span><span id="homeThemeName">Cozy cave</span></div><div class="home-stage"><button id="homePetButton" class="pet-button" aria-label="Pet Momo at home"><canvas id="homeCanvas" width="640" height="360" aria-label="Your underground home"></canvas></button><button id="openChestButton" class="chest-hotspot" aria-label="Open treasure chest" title="Open chest"></button><div id="homeSpeech" class="pet-speech" hidden>yeeeeee</div></div><div class="home-actions"><button id="editHomeButton" class="quiet-button">Decorate</button><button id="openChestShortcut" class="quiet-button">Open chest</button><button id="openCraftingButton" class="quiet-button">Craft decor</button><span id="homeEditHint">Place your finds here.</span><button id="visitFriendsButton" class="quiet-button">Visit friends</button></div></div>
 <aside class="home-shop"><div id="heldItemBar" class="held-item-bar" hidden><span id="heldItemLabel"></span><button id="putBackButton" class="quiet-button">Put back</button></div><div class="closet-heading"><h2>Room &amp; finds</h2><span class="closet-balance">✦ <b id="homeBalance">0</b></span></div><div id="goldenDisplayBar" class="golden-display-bar"><span id="goldenDisplayLabel">Golden shelf · nothing on display yet</span><button id="putBackTreasure" class="quiet-button" hidden>Put back</button></div><div id="homeViewNote" class="home-view-note">Bring your discoveries home. Craft decor with spare finds between sessions.</div><div id="homeEditor" hidden><div class="home-slots" aria-label="Placement spot"><button data-slot="left">Living room</button><button data-slot="floor">Living rug</button><button data-slot="study">Study</button><button data-slot="studyWall">Study wall</button><button data-slot="right">Bedroom</button><button data-slot="bedWall">Bedroom wall</button><button data-slot="gallery">Gallery</button><button data-slot="wall">Gallery wall</button></div><button id="clearHomeSlot" class="quiet-button">Clear spot</button><div id="homeItemGrid" class="home-item-grid"></div><h3 class="home-theme-heading">Room themes</h3><div id="homeThemeGrid" class="home-theme-grid"></div></div></aside></div></section>
 <section id="wardrobe" class="page wardrobe-page" hidden aria-labelledby="equipmentTitle"><div class="page-heading"><h1 id="equipmentTitle">Equipment</h1></div><div class="wardrobe-layout"><div class="fitting-room"><div class="control-heading"><span id="equipmentPetName">MOMO</span></div><div class="fitting-pet"><button id="wardrobePetButton" class="pet-button" aria-label="Pet Momo in equipment preview"><canvas id="wardrobeCanvas" width="192" height="160" aria-label="Equipped items preview"></canvas></button><div id="wardrobeSpeech" class="pet-speech" hidden>yeeeeee</div></div><div class="equipped-list" id="equippedList">No equipment</div><button id="removeOutfit" class="quiet-button">Unequip all</button></div><div class="closet"><div class="closet-heading"><h2>Shop</h2><span class="closet-balance">✦ <b id="closetBalance">0</b></span></div><div class="closet-tabs"><button class="active" data-filter="all">All</button><button data-filter="owned">Owned <span id="ownedCount">0</span></button></div><div id="categoryTabs" class="category-tabs" aria-label="Equipment categories"></div><div id="toolShopNote" class="tool-shop-note" hidden><span id="activeToolName">No tool selected</span><button id="resetTool" class="quiet-button">Use default tool</button></div><div id="shopScroll" class="shop-scroll" tabindex="0" role="region" aria-label="Shop items"><div id="outfitGrid" class="outfit-grid"></div></div></div></div></section>
 <section id="reports" class="page reports-page" hidden aria-labelledby="reportTitle"><div class="page-heading"><h1 id="reportTitle">Today</h1><span class="page-meta" id="reportDate"></span></div><div class="report-stats"><article><span>TODAY</span><strong id="reportToday">0m</strong><small id="reportTodaySessions">0 completed</small></article><article><span>THIS WEEK</span><strong id="reportWeek">0m</strong><small>Mon – Sun</small></article><article><span>ALL TIME</span><strong id="reportTotal">0m</strong><small>Study + Work</small></article></div><div class="today-details"><span>Study <b id="todayStudy">0m</b></span><span>Work <b id="todayWork">0m</b></span><button id="finishTodayButton" class="finish-today-button" aria-label="Finish today">Finish <span aria-hidden="true">✓</span></button></div><div class="trend-panel"><div class="panel-heading"><h2>Focus trend</h2><div class="range-tabs" aria-label="Trend range"><button class="active" data-range="7">7 days</button><button data-range="30">30 days</button></div></div><div id="trendChart" class="trend-chart"></div><div class="chart-foot"><span id="trendTotal">0m total</span><span id="chartTooltip" role="status">Minutes per day</span></div></div><div class="calendar-layout"><div class="calendar-panel"><div class="panel-heading"><h2 id="calendarMonth"></h2><div class="month-controls"><button id="previousMonth" aria-label="Previous month">‹</button><button id="currentMonth">Today</button><button id="nextMonth" aria-label="Next month">›</button></div></div><div class="weekdays" aria-hidden="true"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div id="calendarGrid" class="calendar-grid" role="group" aria-label="Select a date"></div><div class="calendar-key"><span>Focus time</span><i></i><i></i><i></i><i></i></div></div><div class="daily-log"><div class="panel-heading"><h2 id="logDate">Daily log</h2><strong id="logTotal">0m</strong></div><div id="logEntries"></div></div></div><p class="report-note">Study and Work use actual running time. Pauses, breaks and demos are excluded. Stored in this browser.</p></section>
@@ -938,14 +941,16 @@ body[data-period="night"] .painted-night { display: block; }
 <dialog id="stopDialog"><button class="dialog-close" aria-label="Close">×</button><h2 id="stopTitle">End session?</h2><p id="stopCopy">Your recorded time, dug depth and collected items will be saved.</p><button id="continueButton" class="dialog-primary">Keep focusing</button><button id="confirmStop" class="quiet-button">End and save</button></dialog>
 <dialog id="todayDialog"><button class="dialog-close" aria-label="Close">×</button><span class="eyebrow">TODAY</span><h2 id="todaySummaryTime"></h2><p id="moleTodayCopy"></p><div id="todaySummaryTasks" class="today-summary-tasks"></div><p id="todaySummaryRewards"></p><button id="closeTodayButton" class="dialog-primary">Finish</button></dialog>
 <dialog id="chatDialog" class="chat-dialog" aria-labelledby="chatDialogTitle"><div class="mole-chat-titlebar"><h2 id="chatDialogTitle">Your mole · a little space to talk</h2><span class="chat-title-trim" aria-hidden="true"></span><button id="closeMoleChat" type="button" class="chat-window-button" aria-label="Close conversation">×</button></div><div class="chat-dialog-body"><div id="chatDialogMessages" class="chat-dialog-messages" role="log" aria-live="polite" aria-label="Full conversation" tabindex="0"></div><div class="chat-starters" aria-label="Conversation ideas"><button type="button" data-chat-starter="plan">Plan today</button><button type="button" data-chat-starter="study">Study help</button><button type="button" data-chat-starter="relax">Take a break</button><button type="button" data-chat-starter="story">Tiny story</button></div><form id="chatDialogForm" class="chat-dialog-compose"><label class="sr-only" for="chatDialogInput">Message your mole</label><textarea id="chatDialogInput" rows="2" maxlength="2000" placeholder="Ask a question, plan your day, or just say hello…"></textarea><button id="chatDialogSend" type="submit" class="chat-send-button">Send ↵</button></form><div class="chat-options"><label><input type="checkbox" id="shareGameContext" checked> Share task &amp; focus summary</label><button id="clearMoleChat" type="button">Clear conversation</button></div><p class="chat-privacy">Messages and the shared game summary go to the configured AI provider. Chat history stays in this browser. AI can make mistakes.</p></div></dialog>
-<dialog id="friendHomeDialog" class="friend-home-dialog" aria-labelledby="friendHomeTitle"><div class="dialog-heading"><h2 id="friendHomeTitle"></h2><button id="closeFriendHome" aria-label="Close">×</button></div><p id="friendHomeNote">Last shared home · View only</p><canvas id="friendHomeCanvas" width="640" height="320" aria-label="Friend’s underground home"></canvas></dialog>
+<dialog id="homeFriendsDialog" class="home-friends-dialog" aria-labelledby="homeFriendsTitle"><div class="dialog-heading"><h2 id="homeFriendsTitle">Friends’ homes</h2><button id="closeHomeFriends" aria-label="Close">×</button></div><p id="homeFriendsStatus" role="status"></p><div id="homeFriendsList" class="home-friends-list"></div><div class="home-friends-actions"><button id="homeFriendsRefresh" class="quiet-button">Refresh</button><button id="homeFriendsAdd" class="quiet-button">Add friend</button></div></dialog>
+<dialog id="friendHomeDialog" class="friend-home-dialog" aria-labelledby="friendHomeTitle"><div class="dialog-heading"><h2 id="friendHomeTitle"></h2><button id="closeFriendHome" aria-label="Close">×</button></div><p id="friendHomeNote">Last shared home · View only</p><canvas id="friendHomeCanvas" width="640" height="360" aria-label="Friend’s underground home"></canvas></dialog>
 <script>
 /* Reversible presentation translations. Game data and conversation text stay original. */
 'use strict';
 window.EumoI18n=(()=>{
  const KEY='eumo-language';let language='en';try{if(localStorage.getItem(KEY)==='zh')language='zh';}catch{}
  const dictionary={
- "Living room":"起居区","Living rug":"起居区地毯","Bedroom":"卧室","Bedroom wall":"卧室墙面","Study wall":"工作区墙面","Gallery":"收藏区","Gallery wall":"收藏区墙面","Visit friends":"拜访好友","Visit home":"查看家园","Home not shared yet":"家园尚未分享","Last shared home · View only":"最近分享的家园 · 仅供参观","UNDERGROUND HOME":"地下家园",
+ "Living room":"起居区","Living rug":"起居区地毯","Bedroom":"卧室","Bedroom wall":"卧室墙面","Study wall":"工作区墙面","Gallery":"收藏区","Gallery wall":"收藏区墙面","Visit friends":"拜访好友","Visit home":"查看家园","Home not shared yet":"家园尚未分享","Last shared home · View only":"最近分享的家园 · 仅供参观","Friends’ homes":"好友的家", "Loading homes…":"正在寻找好友的家…", "Connect and add a friend to visit their home.":"连接并添加好友后，就可以来串门了。", "No friends yet. Add a friend to visit their home.":"还没有好友，先添加一位好友来串门吧。", "Last shared home":"最近分享的家园",
+ "UNDERGROUND HOME":"地下家园",
  "Come add your mole friends!": "快来添加你的鼹鼠朋友！",
  "Mole setup": "鼹鼠设置",
  "Your mole": "你的鼹鼠",
@@ -1519,7 +1524,7 @@ window.Journey=(()=>{
  themes:[{id:'cave',name:'Cozy burrow',cost:0,wall:'#a7956b',floor:'#b69b65',trim:'#4e5137'},{id:'moss',name:'Moss garden',cost:30,wall:'#88935e',floor:'#b1a974',trim:'#3c5740'},{id:'rain',name:'Rainy burrow',cost:45,wall:'#687984',floor:'#a0907e',trim:'#35434d'},{id:'moon',name:'Moonlit burrow',cost:60,wall:'#486c68',floor:'#939373',trim:'#254c49'}],
  items:[{id:'rug',name:'Woven rug',cost:0,slots:['floor'],scale:2,foot:22},{id:'lamp',name:'Warm lamp',cost:5,slots:['left','right'],scale:1.3,foot:29},{id:'cushion',name:'Soft cushion',cost:10,slots:['left','right'],scale:1.3,foot:28},{id:'desk',name:'Writing desk',cost:15,slots:['left','right'],scale:1.65,foot:31},{id:'bookcase',name:'Little bookcase',cost:20,slots:['left','right'],scale:1.65,foot:31},{id:'bed',name:'Small bed',cost:25,slots:['left','right'],scale:2,foot:32},{id:'art',name:'Star picture',cost:10,slots:['wall'],scale:1,foot:30}],
  materials:[{id:'star',name:'Star fragment'},{id:'mushroom',name:'Glow mushroom'},{id:'crystal',name:'Stardust crystal'},{id:'fossil',name:'Spiral fossil'}],
- slots:{left:{x:88,y:148,label:'Living room',kind:'left'},right:{x:106,y:280,label:'Bedroom',kind:'right'},wall:{x:474,y:240,label:'Gallery wall',kind:'wall'},floor:{x:193,y:151,label:'Living rug',kind:'floor'},study:{x:480,y:148,label:'Study',kind:'right'},studyWall:{x:390,y:111,label:'Study wall',kind:'wall'},bedWall:{x:211,y:236,label:'Bedroom wall',kind:'wall'},gallery:{x:552,y:280,label:'Gallery',kind:'left'}}
+ slots:{left:{x:137,y:316,label:'Living room',kind:'left'},right:{x:91,y:149,label:'Bedroom',kind:'right'},wall:{x:552,y:271,label:'Gallery wall',kind:'wall'},floor:{x:246,y:320,label:'Living rug',kind:'floor'},study:{x:498,y:177,label:'Study',kind:'right'},studyWall:{x:439,y:120,label:'Study wall',kind:'wall'},bedWall:{x:178,y:103,label:'Bedroom wall',kind:'wall'},gallery:{x:560,y:310,label:'Gallery',kind:'left'}}
  };
  catalog.items.push(
   {id:'mushroomPlanter',name:'Mushroom planter',recipe:{mushroom:1},slots:['left','right'],scale:1.3,foot:30,description:'A tiny patch of forest for your nook.'},
@@ -2005,6 +2010,10 @@ window.PixelArt=(()=>{
   else{for(const [a,b,w,h,color] of furniture[id]||[])box(c,x+a*scale,y+b*scale,w*scale,h*scale,color);
    // Shared contact shadows, wood grain and highlights give furniture weight.
    if(['desk','bookcase','bed'].includes(id)){box(c,x+4*scale,spot.y-2,22*scale,2,'#634b42');box(c,x+6*scale,y+13*scale,8*scale,1,'#f3cfa0');}
+   if(id==='bookcase'){for(const [a,b,col] of [[7,6,'#f9ddcc'],[12,5,'#d8f0ce'],[17,7,'#fff0c2'],[22,5,'#c7d4ef'],[8,20,'#e4eabb'],[14,19,'#f3d5c5'],[20,21,'#c5e3e3']]){box(c,x+a*scale,y+b*scale,1,6*scale,col);box(c,x+(a+1)*scale,y+(b+2)*scale,2*scale,1,'#f7e9cb');}box(c,x+3*scale,y+15*scale,26*scale,1,'#dab18b');}
+   if(id==='bed'){for(let a=13;a<25;a+=4)box(c,x+a*scale,y+18*scale,1,6*scale,'#c4ce9566');for(let b=19;b<25;b+=3)box(c,x+12*scale,y+b*scale,13*scale,1,'#c4ce9566');box(c,x+5*scale,y+20*scale,5*scale,1,'#d8c9a4');}
+   if(id==='desk'){box(c,x+9*scale,y+9*scale,7*scale,1,'#aaa98c');box(c,x+23*scale,y+7*scale,4*scale,5*scale,'#788e78');box(c,x+24*scale,y+3*scale,1,5*scale,'#674f3f');box(c,x+3*scale,y+14*scale,26*scale,1,'#b78e6d');}
+   if(id==='cushion'){for(let a=8;a<25;a+=4)box(c,x+a*scale,y+22*scale,1,1,'#f7c7aa');box(c,x+16*scale,y+17*scale,2,2,'#be7964');}
    if(id==='rug'){for(let k=0;k<6;k++){box(c,x-2,y+12*scale+k*3,3,1,'#eac6ac');box(c,x+32*scale,y+12*scale+k*3,3,1,'#eac6ac');}}
   }
  }
@@ -2015,48 +2024,80 @@ window.PixelArt=(()=>{
   else{box(c,x-2,y+1,46,10,'#5d412c');box(c,x,y-1,42,10,'#b98652');box(c,x+3,y-2,36,3,'#e0b57a');box(c,x+6,y,3,10,'#e3c592');box(c,x+33,y,3,10,'#e3c592');}
   box(c,x+18,y+9,7,8,'#eed194');box(c,x+20,y+11,3,3,'#775638');bounds.chest={x:x-4,y:y-4,w:50,h:36};
  }
+ // Organic architecture is rasterized at half resolution, then enlarged without smoothing.
+ // Furnishings keep their finer pixel grid; static layers are cached instead of redrawn each frame.
+ let burrowCache=null;
+ function burrowBackdrop(theme,t){
+  const key=theme.id+':'+t.sky+':'+t.period;if(burrowCache?.key===key)return burrowCache.canvas;
+  const cv=document.createElement('canvas');cv.width=640;cv.height=360;const c=cv.getContext('2d');
+  const raster=document.createElement('canvas');raster.width=320;raster.height=180;const r=raster.getContext('2d');r.scale(.5,.5);
+  const path=(d,fill,stroke,width=1)=>{const p=new Path2D(d);if(fill){r.fillStyle=fill;r.fill(p);}if(stroke){r.strokeStyle=stroke;r.lineWidth=width;r.lineJoin='round';r.lineCap='round';r.stroke(p);}return p;};
+  const soil=c.createLinearGradient(0,28,0,360);soil.addColorStop(0,'#857052');soil.addColorStop(.45,'#6e5844');soil.addColorStop(1,'#493e35');c.fillStyle=soil;c.fillRect(0,0,640,360);
+  for(let k=0;k<800;k++){const x=Math.floor(random(k,36)*640),y=35+Math.floor(random(k,44)*325),w=2+Math.floor(random(k,41)*4);box(c,x,y,w,k%3?1:2,k%4?'#c7ae7722':'#2e302532');}
+  for(let k=0;k<50;k++){const x=Math.floor(random(k,4)*640),y=46+Math.floor(random(k,7)*302);oval(c,x,y,5+k%5,3+k%3,['#a28f6b','#938b72','#736f5d','#b09a77'][k%4],1);box(c,x+2,y,3,1,'#ccb58b55');}
+  box(c,0,0,640,29,t.sky);path('M0 31 Q50 19 95 27 T211 24 Q256 19 294 29 Q320 34 352 26 T468 27 Q548 15 640 24 L640 37 Q553 27 466 39 T290 39 Q196 29 110 39 T0 40 Z',t.grassShadow);path('M0 29 Q50 17 95 25 T211 22 Q256 17 294 27 Q320 32 352 24 T468 25 Q548 13 640 22',null,t.grass,4);
+  // Branching roots frame the soil rather than repeating on each room ceiling.
+  for(const d of ['M36 28 Q26 43 39 65 L20 84 M32 49 L15 55','M231 28 Q250 62 243 92 L264 109 M247 65 L266 79','M603 25 Q622 69 611 99 L629 125 M618 65 L634 78','M49 189 Q63 218 47 251 L31 276 M49 244 L67 258','M378 205 Q400 224 386 250 L396 281 M392 238 L412 244','M210 344 L227 358 M606 290 Q620 312 611 344']){path(d,null,'#372f29',3);path(d,null,'#b2936a',1);}
+  const tunnels=['M315 27 C316 72 313 110 291 150 C275 176 283 197 275 224','M204 125 C235 124 260 129 291 151','M291 151 C331 173 359 129 414 140','M330 284 C369 291 394 248 445 282'];
+  for(const d of tunnels){path(d,null,'#3f3b30',35);path(d,null,'#a18f68',27);path(d,null,tint(theme.wall,-.24),21);path(d,null,tint(theme.floor,-.12),12);}
+  const rooms=[
+   {d:'M35 98 C29 64 63 53 103 57 C137 60 153 45 191 61 C220 74 237 95 230 120 C235 144 213 163 176 166 C142 164 116 173 82 163 C46 165 22 139 35 98 Z',floor:149,wall:.22},
+   {d:'M388 122 C379 91 399 66 438 65 C470 61 484 45 522 57 C548 69 579 67 593 95 C609 119 605 147 589 170 C568 197 531 194 501 195 C462 195 434 205 410 184 C391 170 382 147 388 122 Z',floor:177,wall:.12},
+   {d:'M79 258 C66 226 93 196 134 191 C175 182 191 158 237 177 C271 191 279 196 309 205 C344 216 355 240 357 268 C369 303 336 333 294 335 C254 338 231 344 188 337 C153 332 120 343 96 324 C75 310 69 287 79 258 Z',floor:316,wall:.28},
+   {d:'M427 278 C420 249 444 231 477 239 C505 245 527 225 557 239 C586 246 605 260 603 284 C608 310 583 326 555 326 C529 322 506 336 482 325 C447 328 425 311 427 278 Z',floor:310,wall:.17}
+  ];
+  for(const room of rooms){
+   const p=path(room.d,'#463f31','#35382d',5);path(room.d,tint(theme.wall,-.14),'#8c8860',2);
+   r.save();r.clip(p);r.translate(0,6);path(room.d,tint(theme.wall,room.wall));r.translate(0,-6);
+   // Soft bands of plaster and an earthen floor, not four rigid rectangles.
+   r.fillStyle=tint(theme.wall,room.wall+.05);r.fillRect(0,room.floor-78,640,25);
+   r.fillStyle=tint(theme.floor,.08);r.fillRect(0,room.floor,640,30);
+   r.fillStyle=tint(theme.floor,-.12);r.fillRect(0,room.floor+10,640,30);
+   for(let k=0;k<65;k++){const x=Math.floor(random(k,room.floor)*640),y=room.floor-80+Math.floor(random(k,27)*110);r.fillStyle=y>=room.floor?'#665a4530':'#fff4cd18';r.fillRect(x,y,2+k%5,1);}
+   r.restore();
+  }
+  // Tunnels enter through shaded mouths; short, irregular stone steps show the changes in level.
+  for(const d of ['M216 128 Q256 128 285 150','M288 151 Q341 173 399 144','M335 284 Q383 277 438 285']){path(d,null,'#5d6044',18);path(d,null,tint(theme.wall,-.08),12);}
+  const steps=[[236,130],[249,135],[262,141],[331,158],[344,155],[357,151],[370,146],[366,281],[378,277],[390,274],[403,277]];
+  for(const [x,y] of steps){r.fillStyle='#574f3c';r.fillRect(x,y,13,4);r.fillStyle='#c0aa7b';r.fillRect(x,y,13,2);}
+  // Root-ladder down from the entrance, with narrow rung shadows.
+  for(const d of ['M306 32 Q308 91 284 139 L275 185','M321 32 Q323 91 300 145 L291 190']){path(d,null,'#564332',4);path(d,null,'#b89a70',2);}
+  for(let k=0;k<12;k++){const y=40+k*12,x=y<88?306:306-Math.round((y-88)*.31);path(`M${x} ${y} l16 3`,null,'#efd2a0',2);}
+  // Hanging lanterns: a dim halo, dark fittings and a warm glass core.
+  for(const [x,y] of [[147,211],[466,89],[362,133]]){path(`M${x} ${y-14} v11`,null,'#715d47',1);path(`M${x-7} ${y} Q${x} ${y-7} ${x+7} ${y} L${x+6} ${y+14} Q${x} ${y+19} ${x-6} ${y+14} Z`,'#f3cc76','#67583d',2);r.fillStyle='#fff0b0';r.fillRect(x-2,y+2,3,10);}
+  c.imageSmoothingEnabled=false;c.drawImage(raster,0,0,640,360);
+  // Deliberately fine detail: ceramic dishes, a plant, curtains, books and joinery.
+  const shelf=(x,y,w)=>{box(c,x,y,w,3,'#a48058');box(c,x,y,w,1,'#e0c294');box(c,x+4,y+3,2,5,'#6e5841');box(c,x+w-6,y+3,2,5,'#6e5841');};
+  shelf(188,232,52);for(let k=0;k<5;k++){box(c,192+k*9,220-k%2*2,6,12+k%2*2,['#9daf92','#d4b39b','#93b7ad'][k%3]);box(c,193+k*9,219-k%2*2,4,2,'#f4e6be');box(c,193+k*9,223,1,5,'#fff2d37a');}
+  // A small built-in kitchen in the large living chamber.
+  box(c,283,278,44,37,'#6b6f4d');box(c,285,281,40,31,'#9eac83');box(c,281,276,48,4,'#dfc69e');box(c,285,278,41,1,'#fff0c6');
+  for(let j=0;j<2;j++){box(c,288+j*18,285,14,22,'#7e8d69');box(c,289+j*18,286,12,18,'#b1bb94');box(c,297+j*16,295,2,2,'#6b6747');}
+  oval(c,288,271,17,5,'#71928b',1);oval(c,291,272,11,2,'#d7e5ce',1);box(c,304,266,2,9,'#9cac91');box(c,302,265,4,2,'#e1dcb8');
+  box(c,315,270,6,6,'#bc8f66');box(c,314,269,8,2,'#e2b691');box(c,318,261,1,8,'#506943');box(c,314,262,4,3,'#77945c');box(c,319,258,4,3,'#96a96d');
+  // Tea table, woven seat and two mismatched picture frames make the main room feel inhabited.
+  oval(c,174,313,37,5,'#57493755',1);box(c,181,294,3,20,'#8e704e');box(c,202,295,3,19,'#8e704e');oval(c,172,290,38,9,'#8b6c49',2);oval(c,172,288,38,8,'#c9aa7a',2);box(c,179,289,14,1,'#ebd0a0');
+  box(c,179,284,8,5,'#cad2b0');box(c,181,283,5,1,'#f8edcd');box(c,187,284,2,3,'#87947b');box(c,194,284,9,5,'#a17e6a');box(c,194,283,9,2,'#e5cfab');
+  box(c,185,311,17,4,'#a3835e');box(c,187,315,2,4,'#70583e');box(c,198,315,2,4,'#70583e');for(let k=0;k<4;k++)box(c,187+k*3,312,1,2,'#d1ba89');
+  box(c,259,230,14,18,'#8d7455');box(c,261,232,10,14,'#e2d7b3');box(c,265,235,2,7,'#8e9e70');box(c,263,238,6,2,'#b7bd8a');box(c,279,239,12,13,'#a08a63');box(c,281,241,8,9,'#91aaa0');box(c,283,243,3,3,'#eed5a1');
+  // Bedroom window and a tiny bedside ledge.
+  oval(c,51,78,23,29,'#66543d',2);oval(c,54,81,17,22,t.sky,2);box(c,62,82,1,20,'#f2d9a8');box(c,54,92,17,1,'#f2d9a8');box(c,47,76,31,2,'#b49366');box(c,49,79,5,24,'#a6b8a2');box(c,71,79,5,24,'#a6b8a2');
+  shelf(151,130,39);box(c,155,121,13,9,'#bb9d7c');box(c,156,119,11,3,'#ebd9b7');box(c,173,120,8,10,'#839e94');box(c,175,117,4,3,'#d2d7b4');
+  // Study window with an inset frame, curtain folds and a small potted fern.
+  oval(c,548,98,33,34,'#68583f',2);oval(c,551,101,27,27,t.sky,2);box(c,564,101,2,27,'#e8d2a2');box(c,551,114,27,2,'#e8d2a2');
+  if(t.period==='night')star(c,558,105,.45,'#fae3a1');box(c,544,97,40,2,'#b5956c');for(let k=0;k<3;k++){box(c,546+k*2,100,1,29-k*2,k%2?'#b6c6ab':'#8ca897');box(c,578+k*2,100,1,25+k*2,k%2?'#b6c6ab':'#8ca897');}
+  shelf(544,146,34);box(c,552,136,13,10,'#bc9670');box(c,551,135,15,2,'#e4bd8f');for(let k=0;k<4;k++){box(c,557,123+k*3,2,12-k*3,'#607f55');box(c,552-k%2*3,124+k*3,6,2,'#849e67');box(c,559,121+k*3,5+k%2*2,2,'#99ac78');}
+  // The collection case stays above its chest, with joinery and two shelves.
+  box(c,459,253,42,29,'#70573f');box(c,462,255,36,24,'#c4ab7c');box(c,465,258,30,18,'#637258');box(c,466,258,28,1,'#344c3c');box(c,465,267,30,2,'#a3a77a');box(c,462,278,36,2,'#e7cfa0');
+  burrowCache={key,canvas:cv};return cv;
+ }
  function renderHome(c,s,frame){
   const theme=HomeCatalog.themes.find(t=>t.id===s.home.theme)||HomeCatalog.themes[0],t=WorldClock.snapshot();
-  box(c,0,0,640,320,'#65513e');
-  for(let row=2;row<20;row++)for(let col=0;col<40;col++){const v=random(col,row);box(c,col*16,row*16,16,16,v>.5?'#695440':'#715b44');if(v<.16)box(c,col*16+3,row*16+7,5,2,'#8b7153');}
-  // A quiet surface strip makes the underground cross-section legible.
-  box(c,0,0,640,34,t.sky);for(let x=0;x<640;x+=8){const y=27+Math.round(Math.sin(x*.025)*4);box(c,x,y,8,9,t.grassShadow);box(c,x,y,8,3,t.grass);}
-  for(let x=16;x<640;x+=57){box(c,x,19,2,12,t.grassShadow);box(c,x-3,22,8,2,t.grass);}
-  // Connecting passage and central ladder, shared by all four rooms.
-  box(c,265,118,106,32,theme.trim);box(c,270,123,96,23,tint(theme.wall,-.12));
-  box(c,265,250,106,32,theme.trim);box(c,270,255,96,23,tint(theme.wall,-.12));
-  box(c,294,38,40,248,theme.trim);box(c,300,40,28,243,tint(theme.wall,-.24));
-  for(const x of [305,321])box(c,x,38,2,246,'#b29370');for(let y=44;y<280;y+=13)box(c,304,y,20,2,'#e3bd8a');
-  const rooms=[{x:18,y:55,w:268,h:108,name:'Living room'},{x:350,y:55,w:272,h:108,name:'Study'},{x:18,y:187,w:268,h:108,name:'Bedroom'},{x:350,y:187,w:272,h:108,name:'Gallery'}];
-  for(const room of rooms){const {x,y,w,h}=room;
-   // Stepped shoulders and rounded corners, with a broad, horizontal interior.
-   const wall=tint(theme.wall,room.name==='Bedroom'?.27:room.name==='Living room'?.24:.15);
-   for(let row=0;row<h;row+=2){const edge=Math.min(row,h-2-row),inset=edge<4?26:edge<8?18:edge<14?10:edge<22?5:0;box(c,x+inset,y+row,w-inset*2,2,theme.trim);if(row>=6&&row<h-6)box(c,x+inset+5,y+row,w-inset*2-10,2,wall);}
-   for(let k=0;k<8;k++)box(c,x+26+k*27,y+45+(k%3)*9,9,2,tint(wall,-.04));
-   box(c,x+8,y+h-22,w-16,13,theme.floor);box(c,x+12,y+h-9,w-24,3,tint(theme.floor,-.22));
-   for(let xx=x+12;xx<x+w-12;xx+=31)box(c,xx,y+h-20,1,11,tint(theme.floor,-.1));
-   box(c,x+14,y+12,w-28,2,tint(theme.wall,.13));
-   // Roots stay at the ceiling; wall texture never competes with furniture.
-   for(let k=0;k<4;k++){const rx=x+29+k*62;box(c,rx,y+5,2,10,'#806447');box(c,rx+2,y+13,7,2,'#806447');}
-   c.save();c.font='9px Arial';c.fillStyle=tint(theme.trim,-.2);c.fillText(EumoI18n.t(room.name),x+17,y+23);c.restore();
-  }
-  // Open doorways cut into the soil columns, instead of isolated room boxes.
-  for(const y of [125,257]){box(c,278,y,24,24,tint(theme.wall,-.12));box(c,328,y,30,24,tint(theme.wall,-.12));}
-  // Built-in shelves, window and a low kitchen counter give the burrow a lived-in base.
-  box(c,204,93,49,3,'#805f45');for(let k=0;k<4;k++){box(c,208+k*10,83,6,10,k%2?'#b5c6b4':'#e9dbb5');box(c,209+k*10,82,4,2,'#fff2d0');}
-  box(c,207,120,47,27,'#987451');box(c,204,117,53,4,'#dec598');box(c,214,125,13,17,'#b99b70');box(c,232,125,14,17,'#b99b70');
-  box(c,553,88,38,33,'#775c43');box(c,556,91,32,26,t.sky);box(c,570,91,2,26,'#dcc299');box(c,556,104,32,2,'#dcc299');
-  c.save();c.beginPath();c.rect(556,91,32,26);c.clip();if(t.period==='night')star(c,576,94,.6,t.sun);else cloud(c,555,93,t.cloud);c.restore();
-  box(c,550,85,44,3,'#d6b285');box(c,550,88,5,30,'#a1b9af');box(c,590,88,5,30,'#a1b9af');
-  // Permanent reading bench and sleeping alcove are part of the architecture.
-  box(c,184,264,65,5,'#b48f66');box(c,189,269,5,12,'#826747');box(c,240,269,5,12,'#826747');box(c,189,256,25,8,'#d6b3a1');
+  c.drawImage(burrowBackdrop(theme,t),0,0);
   for(const key of ['floor','left','right','wall','study','studyWall','bedWall','gallery']){const spot=HomeCatalog.slots[key],id=s.home.slots[key];if(id)drawHomeItem(c,id,spot);if(s.homeEditing){const wall=spot.kind==='wall',floor=spot.kind==='floor',w=floor?70:64,h=floor?16:wall?42:53,x=spot.x-w/2,y=spot.y-h,col=key===s.selectedSlot?'#fff0bc':'#d5c2a0';for(let xx=x;xx<x+w;xx+=8){box(c,xx,y,4,1,col);box(c,xx,spot.y+2,4,1,col);}for(let yy=y;yy<spot.y;yy+=8){box(c,x,yy,1,4,col);box(c,x+w,yy,1,4,col);}}}
-  // The collection shelf and chest are kept together in the gallery.
-  box(c,384,211,49,35,'#71563f');box(c,387,214,43,29,'#c2a779');box(c,390,217,37,23,'#526552');
-  if(s.displayedTreasure)RareTreasures.draw(c,s.displayedTreasure,393,217,.65);
-  c.save();c.translate(273,29);chest(c,s.chestOpen);c.restore();
-  const y=148-54-jump(s),rotation=playerMole(c,s,139,y,2,false,frame,()=>drawHeadDisplay(c,s,139,y,2,frame));
-  if(!s.visiting){bounds.chest={x:388,y:245,w:50,h:36};bounds.homeCanvas={x:139,y:y-3,w:56,h:60,rotation};positionSpeech('homeSpeech',bounds.homeCanvas,640,320);}
+  if(s.displayedTreasure)RareTreasures.draw(c,s.displayedTreasure,469,258,.5);
+  c.save();c.translate(340,66);chest(c,s.chestOpen);c.restore();
+  const y=316-54-jump(s),rotation=playerMole(c,s,220,y,2,false,frame,()=>drawHeadDisplay(c,s,220,y,2,frame));
+  if(!s.visiting){bounds.chest={x:455,y:282,w:50,h:36};bounds.homeCanvas={x:220,y:y-3,w:56,h:60,rotation};positionSpeech('homeSpeech',bounds.homeCanvas,640,360);}
  }
  function jump(s){if(s.session||!s.petAt||matchMedia('(prefers-reduced-motion: reduce)').matches)return 0;const t=(Date.now()-s.petAt)/(s.petSpinAt?1200:850);return t>=0&&t<1?Math.round(Math.sin(t*Math.PI)*(s.petSpinAt?28:18)):0;}
  function playerMole(c,s,x,y,scale,dig,frame,extra){const progress=s.petSpinAt?Math.max(0,Math.min(1,(Date.now()-s.petSpinAt)/1200)):0,rotation=!s.session&&s.petSpinAt&&!matchMedia('(prefers-reduced-motion: reduce)').matches?2*Math.PI*(1-Math.pow(1-progress,2)):0;
@@ -2362,8 +2403,17 @@ window.FriendsClient=(()=>{
    const status=f.availability==='offline'&&f.lastSeen?`Offline · ${f.age<3600000?Math.max(1,Math.floor(f.age/60000))+'m ago':Math.floor(f.age/3600000)+'h ago'}`:f.status;
    return `<article class="friend-card live-friend-card" style="--friend-color:${f.color}"><button class="friend-summary" data-live-friend="${f.id}" aria-expanded="${open}" aria-controls="friend-detail-${f.id}" aria-label="${escape(f.name)}: ${escape(f.status)}. View mole and finds."><canvas id="friend-${f.id}" width="96" height="88" aria-label="${escape(f.name)}'s mole"></canvas><span class="friend-identity"><strong>${escape(f.name)}</strong><small><i class="${f.availability==='online'?'studying':''}"></i>${escape(status)}</small></span><span class="friend-progress"><span><span>Focus</span><b>${show?ratio+'%':'—'}</b></span><span class="friend-progress-track" role="progressbar" aria-label="${escape(f.name)}'s focus goal" aria-valuemin="0" aria-valuemax="${f.goal}" aria-valuenow="${show?Math.min(minutes,f.goal):0}" aria-valuetext="${show?`${minutes} of ${f.goal} minutes`:"Status sharing paused"}"><i style="width:${show?ratio:0}%"></i></span><small>${show?`${minutes} / ${f.goal} min`:'Status sharing paused'}</small></span><span class="friend-today"><b>${show?duration(seconds):'—'}</b><small>${escape(show?day:'private')}</small></span><span class="friend-finds">${show?['star','mushroom','crystal','fossil'].filter((id,i)=>f.inventory[i]>0).slice(0,3).map(id=>PixelArt.iconSVG(id)).join(''):''}</span><span class="friend-expand" aria-hidden="true">${open?'−':'+'}</span></button><div id="friend-detail-${f.id}" class="friend-detail" ${open?'':'hidden'}><div class="live-friend-meta"><p>${show?`Mole: ${escape(f.availability==='online'?labels[f.activity]:'last shared '+labels[f.activity])} · Mine ${f.mineDepth} m`:'This friend has paused status sharing.'}</p>${show?`<p>Study ${duration(f.studySeconds)} · Work ${duration(f.workSeconds)} · All-time depth ${f.depth} m</p>`:''}<button type="button" data-visit-home="${f.id}" ${show&&f.home?'':'disabled'}>${show&&f.home?'Visit home':'Home not shared yet'}</button><button type="button" data-remove-friend="${f.linkId}" class="remove-friend-button">Remove friend</button></div>${show?`<div class="friend-inventory">${['Star fragment','Glow mushroom','Stardust crystal','Spiral fossil'].map((name,i)=>`<div class="friend-item ${f.inventory[i]?'':'not-found'}">${PixelArt.iconSVG(['star','mushroom','crystal','fossil'][i])}<span>${name}<small>× ${f.inventory[i]}</small></span></div>`).join('')}</div>`:''}</div></article>`;
   }).join('');
-  $('friendsEmpty').hidden=players.length>0;
+  $('friendsEmpty').hidden=players.length>0;renderHomeList();
  }
+ function renderHomeList(){
+  if(!$('homeFriendsDialog').open)return;
+  $('homeFriendsStatus').textContent=connectionError|| (busy?'Loading homes…':!model?.self?'Connect and add a friend to visit their home.':!players.length?'No friends yet. Add a friend to visit their home.':'');
+  $('homeFriendsRefresh').disabled=busy;
+  $('homeFriendsList').innerHTML=players.map(f=>`<article class="home-friend-row"><canvas width="640" height="360" data-home-preview="${f.id}" aria-label="${escape(f.name)}"></canvas><div><strong>${escape(f.name)}</strong><small>${!f.sharing?'Sharing paused':!f.home?'Home not shared yet':f.availability==='online'?'Online':'Last shared home'}</small></div><button class="quiet-button" data-visit-home="${f.id}" ${!f.sharing||!f.home?'disabled':''}>Visit home</button></article>`).join('');
+  for(const f of players){const cv=$('homeFriendsList').querySelector(`[data-home-preview="${f.id}"]`);if(f.home&&f.sharing)PixelArt.drawHomePreview(cv,{profile:{name:f.name,color:f.color},equipped:f.equipped,home:f.home,tool:f.tool});else cv.hidden=true;}
+ }
+ function visitHome(id){const f=players.find(f=>f.id===id);if(!f?.sharing||!f.home)return;visitingId=f.id;drawVisit(f);$('friendHomeDialog').showModal();}
+ function openHomes(){$('homeFriendsDialog').showModal();renderHomeList();activate();}
  function drawVisit(f){$('friendHomeTitle').textContent=f.name+' · '+EumoI18n.t('Home');PixelArt.drawHomePreview($('friendHomeCanvas'),{profile:{name:f.name,color:f.color},equipped:f.equipped,home:f.home,tool:f.tool});}
  function renderRequests(){
   for(const [id,list,incoming] of [['incomingFriendRequests',model?.incoming||[],true],['outgoingFriendRequests',model?.outgoing||[],false]]){
@@ -2411,6 +2461,10 @@ window.FriendsClient=(()=>{
  }
  function init(get){
   read=get;try{const p=JSON.parse(localStorage.getItem(PREF));enabled=!!p?.enabled;goal=Math.max(5,Math.min(1440,Number(p?.goal)||120));}catch{}
+  $('closeHomeFriends').addEventListener('click',()=>$('homeFriendsDialog').close());
+  $('homeFriendsRefresh').addEventListener('click',activate);
+  $('homeFriendsAdd').addEventListener('click',()=>{$('homeFriendsDialog').close();open();});
+  $('homeFriendsList').addEventListener('click',e=>{const b=e.target.closest('[data-visit-home]');if(b)visitHome(b.dataset.visitHome);});
   $('closeFriendHome').addEventListener('click',()=>$('friendHomeDialog').close());$('friendHomeDialog').addEventListener('close',()=>{visitingId=null;});
   $('openFriends').addEventListener('click',open);$('closeFriends').addEventListener('click',()=>$('friendsDialog').close());
   $('friendsRetry').addEventListener('click',()=>model?.self?call(model.self.sharing?'sync':'state'):open());
@@ -2422,7 +2476,7 @@ window.FriendsClient=(()=>{
   $('friendGoal').addEventListener('change',e=>{goal=Math.max(5,Math.min(1440,Math.floor(Number(e.target.value)||120)));prefs();if(model?.self?.sharing)call('sync');else render();});
   $('friendRequests').addEventListener('click',e=>{const b=e.target.closest('[data-friend-action]');if(b)call(b.dataset.friendAction,{linkId:b.dataset.link});});
   $('onlineFriendList').addEventListener('click',e=>{
-   const visit=e.target.closest('[data-visit-home]');if(visit){const f=players.find(f=>f.id===visit.dataset.visitHome);if(f?.sharing&&f.home){visitingId=f.id;drawVisit(f);$('friendHomeDialog').showModal();}return;}
+   const visit=e.target.closest('[data-visit-home]');if(visit){visitHome(visit.dataset.visitHome);return;}
    const remove=e.target.closest('[data-remove-friend]');if(remove){removeTarget=players.find(f=>f.linkId===remove.dataset.removeFriend);if(removeTarget){$('removeFriendName').textContent=removeTarget.name;$('removeFriendDialog').showModal();}return;}
    const b=e.target.closest('[data-live-friend]');if(b){const id=b.dataset.liveFriend;expanded.has(id)?expanded.delete(id):expanded.add(id);renderPlayers();}
   });
@@ -2431,7 +2485,7 @@ window.FriendsClient=(()=>{
   setInterval(()=>{if(!$('companions').hidden&&model&&views().some((f,i)=>f.availability!==players[i]?.availability||f.availability==='offline'&&Math.floor(f.age/60000)!==Math.floor((players[i]?.age||0)/60000)))renderPlayers();},1000);
   render();if(enabled||!$('companions').hidden)activate();
  }
- return {init,activate,notify,getPlayers:()=>players};
+ return {init,activate,notify,openHomes,getPlayers:()=>players};
 })();
 
 </script><script>
@@ -2818,7 +2872,7 @@ function renderHome(){const h=state.home;$('#homeBalance').textContent=state.bal
   return `<article class="home-item ${placed?'selected':''}"><div class="home-item-art">${PixelArt.homeIcon(i.id)}</div><div><strong>${i.name}</strong><small>${detail}</small></div><button data-home-item="${i.id}" ${can?'':'disabled'}>${i.find!==undefined&&!i.owned?(state.foundDiscoveries.includes(discoveries[i.find].id)?'None left':'Not found'):action}</button></article>`;
  }).join('');
  $('#homeThemeGrid').innerHTML=HomeCatalog.themes.map(t=>{const owned=h.ownedThemes.includes(t.id),selected=h.theme===t.id;return `<button data-theme="${t.id}" class="home-theme ${selected?'selected':''}" style="--swatch:${t.wall}" ${selected||(!owned&&state.balance<t.cost)?'disabled':''}><i></i><span>${t.name}<small>${selected?'Selected':owned?'Owned':'✦ '+t.cost}</small></span></button>`;}).join('');if($('#chestDialog').open)renderChest();if($('#craftingDialog').open)renderCrafting();}
-$('#visitFriendsButton').addEventListener('click',()=>navigateTo('companions'));
+$('#visitFriendsButton').addEventListener('click',()=>FriendsClient.openHomes());
 $('#editHomeButton').addEventListener('click',()=>{if(!homeEditing&&state.session?.status==='running')pauseSession();homeEditing=!homeEditing;renderHome();});
 $$('[data-slot]').forEach(b=>b.addEventListener('click',()=>{selectedSlot=b.dataset.slot;renderHome();}));$('#clearHomeSlot').addEventListener('click',()=>{if(!homeEditing)return;state.home.slots[selectedSlot]=null;save();renderHome();});
 $('#homeItemGrid').addEventListener('click',e=>{const b=e.target.closest('[data-home-item]');if(!b||!homeEditing||state.session?.status==='running')return;const id=b.dataset.homeItem,h=state.home,f=HomeCatalog.items.find(i=>i.id===id),find=discoveries.findIndex(i=>'find:'+i.id===id);if(f){if(!f.slots.includes(selectedSlot))return;if(f.recipe&&!h.owned.includes(id)){openCrafting(id);return;}if(!h.owned.includes(id)){if(state.balance<f.cost)return;state.balance-=f.cost;h.owned.push(id);}for(const slot of Object.keys(h.slots))if(h.slots[slot]===id)h.slots[slot]=null;}else{if(find<0||selectedSlot==='floor')return;const used=Object.entries(h.slots).filter(([slot,v])=>slot!==selectedSlot&&v===id).length;if(state.inventory[find]<=used)return;if(state.heldItem===id.slice(5))state.heldItem=null;}h.slots[selectedSlot]=id;save();renderStats();});

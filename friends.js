@@ -39,8 +39,17 @@ window.FriendsClient=(()=>{
    const status=f.availability==='offline'&&f.lastSeen?`Offline · ${f.age<3600000?Math.max(1,Math.floor(f.age/60000))+'m ago':Math.floor(f.age/3600000)+'h ago'}`:f.status;
    return `<article class="friend-card live-friend-card" style="--friend-color:${f.color}"><button class="friend-summary" data-live-friend="${f.id}" aria-expanded="${open}" aria-controls="friend-detail-${f.id}" aria-label="${escape(f.name)}: ${escape(f.status)}. View mole and finds."><canvas id="friend-${f.id}" width="96" height="88" aria-label="${escape(f.name)}'s mole"></canvas><span class="friend-identity"><strong>${escape(f.name)}</strong><small><i class="${f.availability==='online'?'studying':''}"></i>${escape(status)}</small></span><span class="friend-progress"><span><span>Focus</span><b>${show?ratio+'%':'—'}</b></span><span class="friend-progress-track" role="progressbar" aria-label="${escape(f.name)}'s focus goal" aria-valuemin="0" aria-valuemax="${f.goal}" aria-valuenow="${show?Math.min(minutes,f.goal):0}" aria-valuetext="${show?`${minutes} of ${f.goal} minutes`:"Status sharing paused"}"><i style="width:${show?ratio:0}%"></i></span><small>${show?`${minutes} / ${f.goal} min`:'Status sharing paused'}</small></span><span class="friend-today"><b>${show?duration(seconds):'—'}</b><small>${escape(show?day:'private')}</small></span><span class="friend-finds">${show?['star','mushroom','crystal','fossil'].filter((id,i)=>f.inventory[i]>0).slice(0,3).map(id=>PixelArt.iconSVG(id)).join(''):''}</span><span class="friend-expand" aria-hidden="true">${open?'−':'+'}</span></button><div id="friend-detail-${f.id}" class="friend-detail" ${open?'':'hidden'}><div class="live-friend-meta"><p>${show?`Mole: ${escape(f.availability==='online'?labels[f.activity]:'last shared '+labels[f.activity])} · Mine ${f.mineDepth} m`:'This friend has paused status sharing.'}</p>${show?`<p>Study ${duration(f.studySeconds)} · Work ${duration(f.workSeconds)} · All-time depth ${f.depth} m</p>`:''}<button type="button" data-visit-home="${f.id}" ${show&&f.home?'':'disabled'}>${show&&f.home?'Visit home':'Home not shared yet'}</button><button type="button" data-remove-friend="${f.linkId}" class="remove-friend-button">Remove friend</button></div>${show?`<div class="friend-inventory">${['Star fragment','Glow mushroom','Stardust crystal','Spiral fossil'].map((name,i)=>`<div class="friend-item ${f.inventory[i]?'':'not-found'}">${PixelArt.iconSVG(['star','mushroom','crystal','fossil'][i])}<span>${name}<small>× ${f.inventory[i]}</small></span></div>`).join('')}</div>`:''}</div></article>`;
   }).join('');
-  $('friendsEmpty').hidden=players.length>0;
+  $('friendsEmpty').hidden=players.length>0;renderHomeList();
  }
+ function renderHomeList(){
+  if(!$('homeFriendsDialog').open)return;
+  $('homeFriendsStatus').textContent=connectionError|| (busy?'Loading homes…':!model?.self?'Connect and add a friend to visit their home.':!players.length?'No friends yet. Add a friend to visit their home.':'');
+  $('homeFriendsRefresh').disabled=busy;
+  $('homeFriendsList').innerHTML=players.map(f=>`<article class="home-friend-row"><canvas width="640" height="360" data-home-preview="${f.id}" aria-label="${escape(f.name)}"></canvas><div><strong>${escape(f.name)}</strong><small>${!f.sharing?'Sharing paused':!f.home?'Home not shared yet':f.availability==='online'?'Online':'Last shared home'}</small></div><button class="quiet-button" data-visit-home="${f.id}" ${!f.sharing||!f.home?'disabled':''}>Visit home</button></article>`).join('');
+  for(const f of players){const cv=$('homeFriendsList').querySelector(`[data-home-preview="${f.id}"]`);if(f.home&&f.sharing)PixelArt.drawHomePreview(cv,{profile:{name:f.name,color:f.color},equipped:f.equipped,home:f.home,tool:f.tool});else cv.hidden=true;}
+ }
+ function visitHome(id){const f=players.find(f=>f.id===id);if(!f?.sharing||!f.home)return;visitingId=f.id;drawVisit(f);$('friendHomeDialog').showModal();}
+ function openHomes(){$('homeFriendsDialog').showModal();renderHomeList();activate();}
  function drawVisit(f){$('friendHomeTitle').textContent=f.name+' · '+EumoI18n.t('Home');PixelArt.drawHomePreview($('friendHomeCanvas'),{profile:{name:f.name,color:f.color},equipped:f.equipped,home:f.home,tool:f.tool});}
  function renderRequests(){
   for(const [id,list,incoming] of [['incomingFriendRequests',model?.incoming||[],true],['outgoingFriendRequests',model?.outgoing||[],false]]){
@@ -88,6 +97,10 @@ window.FriendsClient=(()=>{
  }
  function init(get){
   read=get;try{const p=JSON.parse(localStorage.getItem(PREF));enabled=!!p?.enabled;goal=Math.max(5,Math.min(1440,Number(p?.goal)||120));}catch{}
+  $('closeHomeFriends').addEventListener('click',()=>$('homeFriendsDialog').close());
+  $('homeFriendsRefresh').addEventListener('click',activate);
+  $('homeFriendsAdd').addEventListener('click',()=>{$('homeFriendsDialog').close();open();});
+  $('homeFriendsList').addEventListener('click',e=>{const b=e.target.closest('[data-visit-home]');if(b)visitHome(b.dataset.visitHome);});
   $('closeFriendHome').addEventListener('click',()=>$('friendHomeDialog').close());$('friendHomeDialog').addEventListener('close',()=>{visitingId=null;});
   $('openFriends').addEventListener('click',open);$('closeFriends').addEventListener('click',()=>$('friendsDialog').close());
   $('friendsRetry').addEventListener('click',()=>model?.self?call(model.self.sharing?'sync':'state'):open());
@@ -99,7 +112,7 @@ window.FriendsClient=(()=>{
   $('friendGoal').addEventListener('change',e=>{goal=Math.max(5,Math.min(1440,Math.floor(Number(e.target.value)||120)));prefs();if(model?.self?.sharing)call('sync');else render();});
   $('friendRequests').addEventListener('click',e=>{const b=e.target.closest('[data-friend-action]');if(b)call(b.dataset.friendAction,{linkId:b.dataset.link});});
   $('onlineFriendList').addEventListener('click',e=>{
-   const visit=e.target.closest('[data-visit-home]');if(visit){const f=players.find(f=>f.id===visit.dataset.visitHome);if(f?.sharing&&f.home){visitingId=f.id;drawVisit(f);$('friendHomeDialog').showModal();}return;}
+   const visit=e.target.closest('[data-visit-home]');if(visit){visitHome(visit.dataset.visitHome);return;}
    const remove=e.target.closest('[data-remove-friend]');if(remove){removeTarget=players.find(f=>f.linkId===remove.dataset.removeFriend);if(removeTarget){$('removeFriendName').textContent=removeTarget.name;$('removeFriendDialog').showModal();}return;}
    const b=e.target.closest('[data-live-friend]');if(b){const id=b.dataset.liveFriend;expanded.has(id)?expanded.delete(id):expanded.add(id);renderPlayers();}
   });
@@ -108,5 +121,5 @@ window.FriendsClient=(()=>{
   setInterval(()=>{if(!$('companions').hidden&&model&&views().some((f,i)=>f.availability!==players[i]?.availability||f.availability==='offline'&&Math.floor(f.age/60000)!==Math.floor((players[i]?.age||0)/60000)))renderPlayers();},1000);
   render();if(enabled||!$('companions').hidden)activate();
  }
- return {init,activate,notify,getPlayers:()=>players};
+ return {init,activate,notify,openHomes,getPlayers:()=>players};
 })();

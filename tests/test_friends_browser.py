@@ -41,12 +41,17 @@ def run():
    b.evaluate('FriendsClient.activate()');settled(b);refresh(a)
    assert a.evaluate("FriendsClient.getPlayers()[0].home.slots.right")=='bed'
    original=a.evaluate('JSON.stringify(state.home)')
-   a.locator('#onlineFriendList [data-live-friend]').click();a.locator('[data-visit-home]').click()
+   a.locator('[data-page="home"]').click();a.locator('#visitFriendsButton').click()
+   expect(a.locator('#homeFriendsDialog')).to_be_visible();expect(a.locator('#home')).to_be_visible();expect(a.locator('#wardrobe')).to_be_hidden()
+   expect(a.locator('#homeFriendsList')).to_contain_text('Momo');settled(a)
+   a.screenshot(path=str(ROOT/'docs/images/eumo-home-friends-list.png'))
+   a.locator('#homeFriendsList [data-visit-home]').click()
    expect(a.locator('#friendHomeDialog')).to_be_visible();expect(a.locator('#friendHomeTitle')).to_contain_text('Momo')
    assert a.locator('#friendHomeDialog [data-home-item]').count()==0
    a.screenshot(path=str(ROOT/'docs/images/eumo-friend-home.png'))
    a.locator('#closeFriendHome').click();assert a.evaluate('JSON.stringify(state.home)')==original
-   a.locator('#onlineFriendList [data-live-friend]').click()
+   expect(a.locator('#homeFriendsDialog')).to_be_visible();a.locator('#closeHomeFriends').click();expect(a.locator('#home')).to_be_visible()
+   a.locator('[data-page="companions"]').click();settled(a)
    b.locator('[data-page="focus"]').click();b.locator('#taskInput').fill('PRIVATE TASK: do not share');b.locator('#startButton').click();settled(b);b.locator('[data-page="companions"]').click();settled(b);refresh(a)
    expect(a.locator('#onlineFriendList')).to_contain_text('Studying');assert 'PRIVATE TASK' not in a.locator('#onlineFriendList').inner_text()
    canvas=a.locator('#onlineFriendList canvas');a.wait_for_timeout(250)

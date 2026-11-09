@@ -12,6 +12,8 @@ try:
   ctx.add_init_script("localStorage.setItem('eumo-tour-v1','seen');if(!localStorage.getItem('loop-pet-soft-universe-v1'))localStorage.setItem('loop-pet-soft-universe-v1',"+json.dumps(json.dumps(seed))+")")
   page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.goto(url+'/#home')
   expect(page.locator('.home-shop')).to_be_hidden()
+  page.locator('#visitFriendsButton').click();expect(page.locator('#homeFriendsDialog')).to_be_visible();expect(page.locator('#home')).to_be_visible();expect(page.locator('#wardrobe')).to_be_hidden()
+  expect(page.locator('#homeFriendsList .home-friend-row')).to_have_count(0);page.locator('#closeHomeFriends').click()
   assert page.evaluate("state.home.slots.right==='bed'&&state.home.slots.wall==='art'")
   page.locator('#openChestButton').click();expect(page.locator('#chestDialog')).to_be_visible();page.keyboard.press('Escape')
   page.locator('#editHomeButton').click();expect(page.locator('[data-slot]')).to_have_count(8)
