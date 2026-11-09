@@ -24,16 +24,18 @@ window.MoleArt=(()=>{
   if(closed){r(8,12,2,1,ink);r(17,12,2,1,ink);}
   else{r(8,11,2,2,ink);r(17,11,2,2,ink);}
   r(12,13,2,2,'#e7473f');
-  // Three joined toes with stepped edges and discrete light-to-dark bands.
-  // Pink contour avoids the old rectangular navy frame around each foot.
-  function claw(x,y,foot=false){
-   const rows=foot?['.######.','########','########','##.##.##','##.##.##']:['.######.','########','########','##.##.##'];
-   const ramp=foot?['#df9291','#ffd1bd','#ffb5a8','#e69b94','#bc747d']:['#df9291','#ffd1bd','#f4aca0','#bc747d'];
-   rows.forEach((row,j)=>{for(let i=0;i<row.length;i++)if(row[i]==='#')r(x+i,y+j,1,1,(i===0||i===7)&&j<rows.length-1?'#cf8585':ramp[j]);});
+  // Compact original paws: a closed silhouette, with shading only inside it.
+  function hand(x,y){
+   r(x+1,y,5,1,ink);r(x,y+1,7,2,ink);r(x+1,y+3,5,1,ink);
+   r(x+1,y+1,5,2,paw);r(x+1,y+1,3,1,'#ffd1bd');r(x+3,y+2,3,1,'#df9291');
   }
-  claw(4,22,true);claw(15,22,true);
+  function foot(x){
+   r(x,23,7,4,ink);r(x+1,24,5,2,paw);
+   r(x+1,24,3,1,'#ffd1bd');r(x+3,25,3,1,'#df9291');
+  }
+  foot(4);foot(16);
   const arm=dig&&frame%2?2:0;
-  claw(0,17-arm);claw(19,17+arm);
+  hand(0,18-arm);hand(20,18+arm);
   return true;
  }
  function drawAvatar(canvas,color){
