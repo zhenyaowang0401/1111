@@ -29,10 +29,11 @@ window.PixelArt=(()=>{
  }
  const worn=Array.isArray(outfit)?outfit:[],hat=WardrobeCatalog.items.find(i=>i.category==='hats'&&worn.includes(i.id)),scarf=WardrobeCatalog.items.find(i=>i.category==='scarves'&&worn.includes(i.id));
  if(dig)WardrobeArt.drawTool(r,toolId,frame);
- if(hat)WardrobeArt.hat(r,hat.id);
- const eyewear=WardrobeCatalog.items.find(i=>i.category==='glasses'&&worn.includes(i.id));if(eyewear)WardrobeArt.glasses(r,eyewear.id);
- if(scarf)WardrobeArt.scarf(r,scarf.id);
- const extra=WardrobeCatalog.items.find(i=>i.category==='extras'&&worn.includes(i.id));if(extra)WardrobeArt.extra(r,extra.id);
+ const fitted=(category,id)=>spritePainted?MoleArt.fit(r,category,id):r;
+ if(hat)WardrobeArt.hat(fitted('hats',hat.id),hat.id);
+ const eyewear=WardrobeCatalog.items.find(i=>i.category==='glasses'&&worn.includes(i.id));if(eyewear)WardrobeArt.glasses(fitted('glasses',eyewear.id),eyewear.id);
+ if(scarf)WardrobeArt.scarf(fitted('scarves',scarf.id),scarf.id);
+ const extra=WardrobeCatalog.items.find(i=>i.category==='extras'&&worn.includes(i.id));if(extra)WardrobeArt.extra(fitted('extras',extra.id),extra.id);
  c.restore();if(mood==='asleep')sleepEffects(c,x,y,scale,frame,colors.furLight);}
  const itemRects={
  star:[[12,2,8,8,'#fff3a8'],[8,10,16,4,'#fff3a8'],[2,14,28,6,'#fff3a8'],[8,20,16,4,'#fff3a8'],[12,24,8,6,'#e6b76b'],[8,14,4,4,'#fffbe4'],[24,16,4,4,'#e6b76b']],
@@ -89,6 +90,7 @@ window.PixelArt=(()=>{
  function drawHeadDisplay(c,s,x,y,scale,frame){
   if(s.session||!s.heldItem)return;
   let top=WardrobeCatalog.headTop(s.equipped||[]);
+  if(MoleArt.ready&&(s.equipped||[]).some(id=>WardrobeCatalog.items.find(i=>i.id===id)?.category==='hats'))top=MoleArt.hatTop(top);
   if(s.idleMood==='asleep'){const breath=.78+Math.round((Math.sin(frame*.18)+1)*1.5)*.025;top=27+(top-27)*breath;}
   const size=.46*scale;item(c,s.heldItem,x+13*scale-16*size,y+top*scale-32*size+scale,size);
  }

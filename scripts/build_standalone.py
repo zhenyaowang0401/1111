@@ -67,7 +67,7 @@ def build(output: Path) -> Path:
     # Preserve the font's redistribution license inside the downloadable file.
     css = '/*\n' + (ROOT / 'assets/fonts/OFL.txt').read_text(encoding='utf-8') + '\n*/\n' + css
     page = page.replace(style_tag, '<style>\n' + css + '\n</style>')
-    background_path = 'assets/backgrounds/giant-mushroom.png'
+    background_path = 'assets/backgrounds/flower-meadow.png'
     background_data = base64.b64encode((ROOT / background_path).read_bytes()).decode('ascii')
     page = page.replace('href="' + background_path + '"', 'href="data:image/png;base64,' + background_data + '"')
     catalog_code, default_source = embed_music()
