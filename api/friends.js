@@ -48,11 +48,36 @@ function createHandler({env=process.env,fetchImpl=globalThis.fetch,now=Date.now,
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
   try{
    const headers={'Content-Type':'application/json',apikey:config.key};if(!config.key.startsWith('sb_secret_'))headers.Authorization='Bearer '+config.key;
+   const profiles=async(query,options={})=>{
+    const response=await fetchImpl(config.url+'/rest/v1/eumo_friend_profiles?'+query,{headers,...options,signal:controller.signal});
+    if(!response.ok)throw Error('HOME_SYNC_FAILED');return response.status===204?[]:response.json();
+   };
+   // Older tabs do not send home yet. Keep a previously synced layout when they update status.
+   if(input.action==='sync'&&!payload.snapshot.home){
+    const rows=await profiles(new URLSearchParams({select:'snapshot',auth_hash:'eq.'+createHash('sha256').update(token).digest('hex')}).toString());
+    payload.snapshot.home=homeCatalog.sharedHome(rows[0]?.snapshot?.home);
+   }
    const response=await fetchImpl(config.url+'/rest/v1/rpc/eumo_friends_action',{method:'POST',headers,body:JSON.stringify({p_token_hash:createHash('sha256').update(token).digest('hex'),p_action:input.action,p_payload:payload}),signal:controller.signal});
    if(!response.ok)return send(res,503,{error:'FRIENDS_UNAVAILABLE'});
    const data=await response.json();
    if(data.error){const allowed=new Set(['UNAUTHORIZED','REQUEST_LIMITED','CODE_NOT_FOUND','SELF_REQUEST','REQUEST_NOT_FOUND','FRIEND_LIMIT','INVALID_REQUEST']);const error=allowed.has(data.error)?data.error:'FRIENDS_UNAVAILABLE';if(error==='UNAUTHORIZED')res.setHeader('Set-Cookie',COOKIE+'=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0'+(env.VERCEL||req.headers['x-forwarded-proto']==='https'?'; Secure':''));return send(res,error==='UNAUTHORIZED'?401:error==='REQUEST_LIMITED'?429:error==='FRIENDS_UNAVAILABLE'?503:400,{error});}
    if(!data.self||!UUID.test(data.self.id||'')||!CODE.test(data.self.code||'')||!Array.isArray(data.friends)||!Array.isArray(data.incoming)||!Array.isArray(data.outgoing))return send(res,503,{error:'FRIENDS_UNAVAILABLE'});
+   // Homes are visible to accepted friends independently of activity sharing.
+   // Use existing service-role REST grants so already installed databases need no SQL migration.
+   if(payload.snapshot?.home&&!data.self.sharing){
+    for(let attempt=0;attempt<3;attempt++){
+     const rows=await profiles(new URLSearchParams({select:'snapshot',id:'eq.'+data.self.id}).toString());
+     if(!rows[0])throw Error('HOME_SYNC_FAILED');const previous=rows[0].snapshot;
+     const updated=await profiles(new URLSearchParams({id:'eq.'+data.self.id,snapshot:'eq.'+JSON.stringify(previous)}).toString(),{method:'PATCH',headers:{...headers,Prefer:'return=representation'},body:JSON.stringify({snapshot:{...previous,home:payload.snapshot.home}})});
+     if(updated.length)break;if(attempt===2)throw Error('HOME_SYNC_FAILED');
+    }
+   }
+   const ids=data.friends.map(f=>f.id).filter(id=>UUID.test(id));
+   if(ids.length){
+    const rows=await profiles(new URLSearchParams({select:'id,snapshot',id:'in.('+ids.join(',')+')'}).toString());
+    const homes=new Map(rows.map(row=>[row.id,homeCatalog.sharedHome(row.snapshot?.home)]));
+    for(const friend of data.friends)friend.home=homes.get(friend.id)||null;
+   }
    res.setHeader('Set-Cookie',`${COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000`+(env.VERCEL||req.headers['x-forwarded-proto']==='https'?'; Secure':''));
    return send(res,200,data);
   }catch{return send(res,503,{error:'FRIENDS_UNAVAILABLE'});}finally{clearTimeout(timer);}

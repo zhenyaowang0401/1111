@@ -106,13 +106,13 @@ window.PixelArt=(()=>{
   else{box(c,x-2,y+1,46,10,'#5d412c');box(c,x,y-1,42,10,'#b98652');box(c,x+3,y-2,36,3,'#e0b57a');box(c,x+6,y,3,10,'#e3c592');box(c,x+33,y,3,10,'#e3c592');}
   box(c,x+18,y+9,7,8,'#eed194');box(c,x+20,y+11,3,3,'#775638');bounds.chest={x:x-4,y:y-4,w:50,h:36};
  }
- // Organic architecture is rasterized at half resolution, then enlarged without smoothing.
+ // Architecture is painted at 1280 × 720; no half-size intermediate or softened enlargement.
  // Furnishings keep their finer pixel grid; static layers are cached instead of redrawn each frame.
  let burrowCache=null;
  function burrowBackdrop(theme,t){
   const key=theme.id+':'+t.sky+':'+t.period;if(burrowCache?.key===key)return burrowCache.canvas;
-  const cv=document.createElement('canvas');cv.width=640;cv.height=360;const c=cv.getContext('2d');
-  const raster=document.createElement('canvas');raster.width=320;raster.height=180;const r=raster.getContext('2d');r.scale(.5,.5);
+  const cv=document.createElement('canvas');cv.width=1280;cv.height=720;const c=cv.getContext('2d');c.scale(2,2);
+  const raster=document.createElement('canvas');raster.width=1280;raster.height=720;const r=raster.getContext('2d');r.scale(2,2);
   const path=(d,fill,stroke,width=1)=>{const p=new Path2D(d);if(fill){r.fillStyle=fill;r.fill(p);}if(stroke){r.strokeStyle=stroke;r.lineWidth=width;r.lineJoin='round';r.lineCap='round';r.stroke(p);}return p;};
   const soil=c.createLinearGradient(0,28,0,360);soil.addColorStop(0,'#857052');soil.addColorStop(.45,'#6e5844');soil.addColorStop(1,'#493e35');c.fillStyle=soil;c.fillRect(0,0,640,360);
   for(let k=0;k<800;k++){const x=Math.floor(random(k,36)*640),y=35+Math.floor(random(k,44)*325),w=2+Math.floor(random(k,41)*4);box(c,x,y,w,k%3?1:2,k%4?'#c7ae7722':'#2e302532');}
@@ -120,8 +120,12 @@ window.PixelArt=(()=>{
   box(c,0,0,640,29,t.sky);path('M0 31 Q50 19 95 27 T211 24 Q256 19 294 29 Q320 34 352 26 T468 27 Q548 15 640 24 L640 37 Q553 27 466 39 T290 39 Q196 29 110 39 T0 40 Z',t.grassShadow);path('M0 29 Q50 17 95 25 T211 22 Q256 17 294 27 Q320 32 352 24 T468 25 Q548 13 640 22',null,t.grass,4);
   // Branching roots frame the soil rather than repeating on each room ceiling.
   for(const d of ['M36 28 Q26 43 39 65 L20 84 M32 49 L15 55','M231 28 Q250 62 243 92 L264 109 M247 65 L266 79','M603 25 Q622 69 611 99 L629 125 M618 65 L634 78','M49 189 Q63 218 47 251 L31 276 M49 244 L67 258','M378 205 Q400 224 386 250 L396 281 M392 238 L412 244','M210 344 L227 358 M606 290 Q620 312 611 344']){path(d,null,'#372f29',3);path(d,null,'#b2936a',1);}
-  const tunnels=['M315 27 C316 72 313 110 291 150 C275 176 283 197 275 224','M204 125 C235 124 260 129 291 151','M291 151 C331 173 359 129 414 140','M330 284 C369 291 394 248 445 282'];
-  for(const d of tunnels){path(d,null,'#3f3b30',35);path(d,null,'#a18f68',27);path(d,null,tint(theme.wall,-.24),21);path(d,null,tint(theme.floor,-.12),12);}
+  // Plain excavated passages: a vertical shaft and level, open-sided corridors.
+  path('M299 24 H325 V212 H299 Z',tint(theme.wall,-.18));
+  path('M299 26 V206',null,'#4d4938',2);path('M325 27 V207',null,'#99825e',2);
+  path('M207 115 H302 V151 H207 Z',tint(theme.wall,.13));
+  path('M323 139 H411 V178 H323 Z',tint(theme.wall,.10));
+  path('M337 277 H446 V312 H337 Z',tint(theme.wall,.16));
   const rooms=[
    {d:'M35 98 C29 64 63 53 103 57 C137 60 153 45 191 61 C220 74 237 95 230 120 C235 144 213 163 176 166 C142 164 116 173 82 163 C46 165 22 139 35 98 Z',floor:149,wall:.22},
    {d:'M388 122 C379 91 399 66 438 65 C470 61 484 45 522 57 C548 69 579 67 593 95 C609 119 605 147 589 170 C568 197 531 194 501 195 C462 195 434 205 410 184 C391 170 382 147 388 122 Z',floor:177,wall:.12},
@@ -138,13 +142,15 @@ window.PixelArt=(()=>{
    for(let k=0;k<65;k++){const x=Math.floor(random(k,room.floor)*640),y=room.floor-80+Math.floor(random(k,27)*110);r.fillStyle=y>=room.floor?'#665a4530':'#fff4cd18';r.fillRect(x,y,2+k%5,1);}
    r.restore();
   }
-  // Tunnels enter through shaded mouths; short, irregular stone steps show the changes in level.
-  for(const d of ['M216 128 Q256 128 285 150','M288 151 Q341 173 399 144','M335 284 Q383 277 438 285']){path(d,null,'#5d6044',18);path(d,null,tint(theme.wall,-.08),12);}
-  const steps=[[236,130],[249,135],[262,141],[331,158],[344,155],[357,151],[370,146],[366,281],[378,277],[390,274],[403,277]];
-  for(const [x,y] of steps){r.fillStyle='#574f3c';r.fillRect(x,y,13,4);r.fillStyle='#c0aa7b';r.fillRect(x,y,13,2);}
-  // Root-ladder down from the entrance, with narrow rung shadows.
-  for(const d of ['M306 32 Q308 91 284 139 L275 185','M321 32 Q323 91 300 145 L291 190']){path(d,null,'#564332',4);path(d,null,'#b89a70',2);}
-  for(let k=0;k<12;k++){const y=40+k*12,x=y<88?306:306-Math.round((y-88)*.31);path(`M${x} ${y} l16 3`,null,'#efd2a0',2);}
+  // Open room connections have a flat earthen floor, with no raised pipe rims or end caps.
+  path('M217 117 H301 V149 H217 Z',tint(theme.wall,.19));
+  path('M324 141 H403 V177 H324 Z',tint(theme.wall,.12));
+  path('M345 279 H435 V310 H345 Z',tint(theme.wall,.22));
+  for(const [x,y,w] of [[230,115,69],[325,139,61],[357,277,70]]){r.fillStyle='#514b37';r.fillRect(x,y,w,2);r.fillStyle='#b09d75';r.fillRect(x,y+2,w,1);}
+  for(const [x,y,w] of [[217,149,85],[324,177,79],[345,310,90]]){r.fillStyle=theme.floor;r.fillRect(x,y-2,w,3);r.fillStyle=tint(theme.floor,-.2);r.fillRect(x,y+1,w,2);}
+  // Straight wooden ladder. Rungs and rails stay on the same fine pixel grid.
+  for(const x of [306,319]){r.fillStyle='#584b37';r.fillRect(x+1,28,2,183);r.fillStyle='#bd9e70';r.fillRect(x,28,2,183);}
+  for(let y=36;y<209;y+=12){r.fillStyle='#725b3e';r.fillRect(305,y+2,17,2);r.fillStyle='#e1c28a';r.fillRect(305,y,17,2);}
   // Hanging lanterns: a dim halo, dark fittings and a warm glass core.
   for(const [x,y] of [[147,211],[466,89],[362,133]]){path(`M${x} ${y-14} v11`,null,'#715d47',1);path(`M${x-7} ${y} Q${x} ${y-7} ${x+7} ${y} L${x+6} ${y+14} Q${x} ${y+19} ${x-6} ${y+14} Z`,'#f3cc76','#67583d',2);r.fillStyle='#fff0b0';r.fillRect(x-2,y+2,3,10);}
   c.imageSmoothingEnabled=false;c.drawImage(raster,0,0,640,360);
@@ -174,12 +180,13 @@ window.PixelArt=(()=>{
  }
  function renderHome(c,s,frame){
   const theme=HomeCatalog.themes.find(t=>t.id===s.home.theme)||HomeCatalog.themes[0],t=WorldClock.snapshot();
-  c.drawImage(burrowBackdrop(theme,t),0,0);
+  c.save();c.setTransform(c.canvas.width/640,0,0,c.canvas.height/360,0,0);c.imageSmoothingEnabled=false;c.drawImage(burrowBackdrop(theme,t),0,0,640,360);
   for(const key of ['floor','left','right','wall','study','studyWall','bedWall','gallery']){const spot=HomeCatalog.slots[key],id=s.home.slots[key];if(id)drawHomeItem(c,id,spot);if(s.homeEditing){const wall=spot.kind==='wall',floor=spot.kind==='floor',w=floor?70:64,h=floor?16:wall?42:53,x=spot.x-w/2,y=spot.y-h,col=key===s.selectedSlot?'#fff0bc':'#d5c2a0';for(let xx=x;xx<x+w;xx+=8){box(c,xx,y,4,1,col);box(c,xx,spot.y+2,4,1,col);}for(let yy=y;yy<spot.y;yy+=8){box(c,x,yy,1,4,col);box(c,x+w,yy,1,4,col);}}}
   if(s.displayedTreasure)RareTreasures.draw(c,s.displayedTreasure,469,258,.5);
   c.save();c.translate(340,66);chest(c,s.chestOpen);c.restore();
   const y=316-54-jump(s),rotation=playerMole(c,s,220,y,2,false,frame,()=>drawHeadDisplay(c,s,220,y,2,frame));
   if(!s.visiting){bounds.chest={x:455,y:282,w:50,h:36};bounds.homeCanvas={x:220,y:y-3,w:56,h:60,rotation};positionSpeech('homeSpeech',bounds.homeCanvas,640,360);}
+  c.restore();
  }
  function jump(s){if(s.session||!s.petAt||matchMedia('(prefers-reduced-motion: reduce)').matches)return 0;const t=(Date.now()-s.petAt)/(s.petSpinAt?1200:850);return t>=0&&t<1?Math.round(Math.sin(t*Math.PI)*(s.petSpinAt?28:18)):0;}
  function playerMole(c,s,x,y,scale,dig,frame,extra){const progress=s.petSpinAt?Math.max(0,Math.min(1,(Date.now()-s.petSpinAt)/1200)):0,rotation=!s.session&&s.petSpinAt&&!matchMedia('(prefers-reduced-motion: reduce)').matches?2*Math.PI*(1-Math.pow(1-progress,2)):0;

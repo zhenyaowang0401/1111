@@ -72,3 +72,22 @@ test('API: modern Supabase secret keys are not sent as JWTs; anonymous bursts ar
  const headers={'x-forwarded-for':'203.0.113.241'};for(let i=0;i<90;i++)assert.equal((await call(limited,{action:'state'},'',headers)).statusCode,401);
  const blocked=await call(limited,{action:'state'},'',headers);assert.equal(blocked.statusCode,429);assert.equal(blocked.headers['Retry-After'],'60');
 });
+
+// The API keeps homes public to accepted friends using the existing production SQL schema.
+test('API: homes remain visible and update while activity is private; legacy tabs preserve decor',async()=>{
+ const {profileRest}=require('./friends_rest_transport.cjs');
+ const fetchImpl=async(url,options)=>{
+  if(url.includes('/eumo_friend_profiles?'))return {ok:true,json:async()=>profileRest(database.db,url,options.method||'GET',options.body?JSON.parse(options.body):{})};
+  const body=JSON.parse(options.body);return {ok:true,json:async()=>database.rpc(body.p_token_hash,body.p_action,body.p_payload)};
+ };
+ const h=createHandler({env:config,fetchImpl}),home={theme:'moss',slots:{right:'bed',wall:'art'}};
+ const a=await call(h,{action:'connect',snapshot:profile('Visitor')}),b=await call(h,{action:'connect',snapshot:{...profile('Host'),home}});
+ const ca=a.headers['Set-Cookie'].split(';')[0],cb=b.headers['Set-Cookie'].split(';')[0];
+ const request=await call(h,{action:'request',code:b.body.self.code},ca);await call(h,{action:'accept',linkId:request.body.outgoing[0].linkId},cb);
+ await call(h,{action:'pause'},cb);
+ let state=await call(h,{action:'state'},ca);assert.equal(state.body.friends[0].home.slots.right,'bed');assert.equal(state.body.friends[0].snapshot.studySeconds,undefined);
+ const updated=await call(h,{action:'sync',snapshot:{...profile('Host'),home:{theme:'rain',slots:{study:'desk'}}}},cb);assert.equal(updated.statusCode,200);
+ state=await call(h,{action:'state'},ca);assert.equal(state.body.friends[0].home.theme,'rain');assert.equal(state.body.friends[0].home.slots.study,'desk');assert.equal(state.body.friends[0].snapshot.status,undefined);
+ await call(h,{action:'sync',snapshot:profile('Host')},cb);state=await call(h,{action:'state'},ca);assert.equal(state.body.friends[0].home.slots.study,'desk');
+ await call(h,{action:'remove',linkId:state.body.friends[0].linkId},ca);assert.equal((await call(h,{action:'state'},ca)).body.friends.length,0);
+});

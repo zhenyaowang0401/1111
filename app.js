@@ -123,7 +123,7 @@ $('#resetTool').addEventListener('click',()=>{state.tool=null;save();renderClose
 function setFilter(filter){$('#shopScroll').scrollTop=0;selectedFilter=filter;$$('[data-filter]').forEach(b=>b.classList.toggle('active',b.dataset.filter===filter));renderCloset();}$$('[data-filter]').forEach(b=>b.addEventListener('click',()=>setFilter(b.dataset.filter)));$('#removeOutfit').addEventListener('click',()=>{state.equipped=[];save();renderStats();FriendsClient.notify();});
 function pet(e,canvasId,speechId){
  if(state.session||MineView.consumeClick())return;const now=Date.now(),canvas=$(canvasId),rect=canvas.getBoundingClientRect();
- if(e.detail!==0&&!PixelArt.hitTest(canvas.id,(e.clientX-rect.left)*canvas.width/rect.width,(e.clientY-rect.top)*canvas.height/rect.height))return;
+ if(e.detail!==0&&!PixelArt.hitTest(canvas.id,(e.clientX-rect.left)*(canvas.id==='homeCanvas'?640:canvas.width)/rect.width,(e.clientY-rect.top)*(canvas.id==='homeCanvas'?360:canvas.height)/rect.height))return;
  if(petSpinAt&&now-petSpinAt<1400)return;
  if(petComboCanvas!==canvasId)petCombo=[];petComboCanvas=canvasId;petCombo=petCombo.filter(t=>now-t<=1100);petCombo.push(now);
  const spin=petCombo.length>=3;if(!spin&&petAt&&now-petAt<1000)return;

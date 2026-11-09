@@ -15,6 +15,10 @@ try:
   page.locator('#visitFriendsButton').click();expect(page.locator('#homeFriendsDialog')).to_be_visible();expect(page.locator('#home')).to_be_visible();expect(page.locator('#wardrobe')).to_be_hidden()
   expect(page.locator('#homeFriendsList .home-friend-row')).to_have_count(0);page.locator('#closeHomeFriends').click()
   assert page.evaluate("state.home.slots.right==='bed'&&state.home.slots.wall==='art'")
+  page.wait_for_function("PixelArt.getBounds('homeCanvas')!==null")
+  point=page.evaluate("()=>{const r=document.getElementById('homeCanvas').getBoundingClientRect(),b=PixelArt.getBounds('homeCanvas');return {x:r.left+(b.x+b.w/2)*r.width/640,y:r.top+(b.y+b.h/2)*r.height/360}}")
+  page.mouse.click(point['x'],point['y']);expect(page.locator('#homeSpeech')).to_be_visible()
+
   page.locator('#openChestButton').click();expect(page.locator('#chestDialog')).to_be_visible();page.keyboard.press('Escape')
   page.locator('#editHomeButton').click();expect(page.locator('[data-slot]')).to_have_count(8)
   page.locator('[data-slot="study"]').click();page.locator('[data-home-item="desk"]').click()

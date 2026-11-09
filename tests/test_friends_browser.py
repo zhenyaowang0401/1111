@@ -36,6 +36,13 @@ def run():
    b.locator('[data-friend-action="accept"]').click();settled(b);refresh(a);expect(a.locator('#onlineFriendList .friend-card')).to_have_count(1);expect(b.locator('#onlineFriendList .friend-card')).to_have_count(1)
    expect(a.locator('#onlineFriendList')).to_contain_text('Momo');expect(a.locator('#onlineFriendList')).to_contain_text('15m')
    for page in [a,b]:page.locator('#closeFriends').click()
+   # Legacy records with no layout still have an entry, clearly marked as a starter burrow.
+   old_id=a.evaluate('FriendsClient.getPlayers()[0].profileId')
+   urllib.request.urlopen(urllib.request.Request(dburl+'/fixture/clear-home',data=json.dumps({'id':old_id}).encode(),headers={'Content-Type':'application/json'})).read()
+   refresh(a);a.locator('[data-page="home"]').click();a.locator('#visitFriendsButton').click();settled(a)
+   expect(a.locator('#homeFriendsList [data-visit-home]')).to_be_enabled();a.locator('#homeFriendsList [data-visit-home]').click()
+   expect(a.locator('#friendHomeNote')).to_contain_text('Showing the starter burrow')
+   a.locator('#closeFriendHome').click();a.locator('#closeHomeFriends').click();a.locator('[data-page="companions"]').click();settled(a)
    # Actual shared decor survives the API + database path; visits cannot edit it.
    b.evaluate("state.home.owned.push('bed');state.home.slots.right='bed';save()")
    b.evaluate('FriendsClient.activate()');settled(b);refresh(a)
@@ -66,7 +73,14 @@ def run():
    b.locator('.footer a[href="#start"]').click();b.locator('#petName').fill('<b>Buddy</b>');b.locator('[data-color="#85bcea"]').click();b.locator('#enterGame').click();b.locator('[data-page="companions"]').click();settled(b);refresh(a)
    expect(a.locator('#onlineFriendList .friend-identity strong')).to_have_text('<b>Buddy</b>');assert a.locator('#onlineFriendList .friend-identity strong b').count()==0
    b.locator('#openFriends').click();settled(b);b.locator('#friendSharing').uncheck();settled(b);refresh(a);expect(a.locator('#onlineFriendList')).to_contain_text('Sharing paused');expect(a.locator('#onlineFriendList')).not_to_contain_text('15m')
-   assert a.evaluate('FriendsClient.getPlayers()[0].home') is None
+   assert a.evaluate('FriendsClient.getPlayers()[0].home.slots.right')=='bed'
+   # Activity sharing can stay off while home changes sync and accepted friends visit.
+   b.evaluate("state.home.slots.right=null;save();FriendsClient.activate()");settled(b);refresh(a)
+   assert a.evaluate('FriendsClient.getPlayers()[0].home.slots.right') is None
+   a.locator('[data-page="home"]').click();a.locator('#visitFriendsButton').click();settled(a)
+   expect(a.locator('#homeFriendsList [data-visit-home]')).to_be_enabled();a.locator('#homeFriendsList [data-visit-home]').click()
+   expect(a.locator('#friendHomeDialog')).to_be_visible();expect(a.locator('#friendHomeNote')).to_contain_text('Last synced home')
+   a.locator('#closeFriendHome').click();a.locator('#closeHomeFriends').click();a.locator('[data-page="companions"]').click();settled(a)
    b.locator('#friendSharing').check();settled(b);b.locator('#friendGoal').fill('20');b.locator('#friendGoal').dispatch_event('change');settled(b);refresh(a);expect(a.locator('#onlineFriendList')).to_contain_text('/ 20 min')
    # The code is public, but cookie authentication is never placed in the document or localStorage.
    b.locator('#closeFriends').click();b.reload();settled(b);b.locator('#openFriends').click();settled(b);expect(b.locator('#myFriendCode')).to_have_value(code_b)
