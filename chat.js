@@ -26,7 +26,7 @@ window.MoleChat=(()=>{
    const shown=entries.length?entries:[{role:'assistant',content:language()==='zh'?'一小步也算数，我在这里陪你。':'One small step at a time. I’m here with you.',source:'game'}];
    for(const entry of shown){
     const row=document.createElement('div');row.className='mole-chat-message chat-entry '+(entry.role==='user'?'chat-user':'chat-mole');
-    if(entry.role==='assistant'){const avatar=document.createElement('span');avatar.className='chat-avatar';avatar.style.setProperty('--mole-chat-color',getState().profile.color);avatar.setAttribute('aria-hidden','true');avatar.innerHTML='<svg viewBox="0 0 24 24"><path fill="#293a32" d="M5 3h14v2h2v16H3V5h2z"/><path fill="var(--mole-chat-color)" d="M6 4h12v2h2v14H4V6h2z"/><path fill="#c2c6ab" d="M9 12h6v2h2v6H7v-6h2z"/><path fill="#293a32" d="M7 8h1v1H7zm9 0h1v1h-1zm-5 8h2v1h-2z"/><path fill="#c34536" d="M11 10h3v2h-3z"/></svg>';row.append(avatar);}
+    if(entry.role==='assistant'){const avatar=document.createElement('span');avatar.className='chat-avatar';avatar.style.setProperty('--mole-chat-color',getState().profile.color);avatar.setAttribute('aria-hidden','true');avatar.innerHTML='<svg viewBox="0 0 24 24"><path fill="#30233e" d="M5 3h14v2h2v16H3V5h2z"/><path fill="var(--mole-chat-color)" d="M6 4h12v2h2v14H4V6h2z"/><path fill="#e9b1cf" d="M9 11h6v2h2v7H7v-7h2z"/><path fill="#30233e" d="M7 8h2v2H7zm8 0h2v2h-2zm-4 5h2v1h-2z"/></svg>';row.append(avatar);}
     const p=document.createElement('p'),speaker=document.createElement('strong'),body=document.createElement('span');speaker.textContent=entry.role==='user'?(language()==='zh'?'你':'You'):name;body.textContent=entry.content;
     if(entry.source==='game')speaker.title='Game reaction';p.append(speaker,body);row.append(p);log.append(row);
    }

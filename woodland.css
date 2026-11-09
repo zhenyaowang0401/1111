@@ -130,7 +130,8 @@ body[data-period="night"] .world-backdrop .day-sky { display: none; }
 }
 input::placeholder, textarea::placeholder, #focus .task-input::placeholder,
 .mole-chat-compose input::placeholder, .chat-dialog-compose textarea::placeholder { color: var(--muted); opacity: 1; }
-.timer-digits { color: var(--timer); text-shadow: none; font-family: 'Pixelify Sans',var(--font); letter-spacing: -1px; font-weight: 500; }
+/* Restore the previous clear timer typography from style.css. */
+.timer-digits { color: var(--timer); text-shadow: none; }
 .timer-digits > span { color: var(--muted); text-shadow: none; }
 .duration-controls { color: var(--muted); }
 .quiet-button, .duration-controls button, .focus-modes button, .item-action button,
@@ -400,3 +401,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 }
 @media (max-width:360px) { .nav svg { width: 19px; height: 19px; } }
 @media (prefers-reduced-motion:reduce) { .page { animation: none; } }
+
+/* A small tool cursor; its head tip remains the click point in both poses. */
+@media (hover: hover) and (pointer: fine) {
+  body { --eumo-cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20fill%3D%22%23303c32%22%20d%3D%22M15%209l5%204L8%2030H3v-5z%22%2F%3E%3Cpath%20fill%3D%22%23b58953%22%20d%3D%22M16%2012l2%202L6%2028H5v-2z%22%2F%3E%3Cpath%20fill%3D%22%23dfc184%22%20d%3D%22M16%2012l1%201L5%2027v-2z%22%2F%3E%3Cpath%20fill%3D%22%23303c32%22%20d%3D%22M3%203l12%201%207%205%207%208h-5l-6-5-5-2H8z%22%2F%3E%3Cpath%20fill%3D%22%23a9bfba%22%20d%3D%22M5%205l9%201%207%204%205%205h-2l-6-5-5-2H8z%22%2F%3E%3Cpath%20fill%3D%22%23e5e5ca%22%20d%3D%22M5%205l9%201%204%202-1%201-4-2H7z%22%2F%3E%3Cpath%20fill%3D%22%236c8580%22%20d%3D%22M18%2010l6%205h2l-5-5z%22%2F%3E%3Cpath%20fill%3D%22%23d9c18b%22%20d%3D%22M14%209h4v4h-4z%22%2F%3E%3Cpath%20fill%3D%22%236e5e3c%22%20d%3D%22M15%2010h2v2h-2z%22%2F%3E%3C%2Fsvg%3E") 3 3; --eumo-cursor-pressed: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cg%20transform%3D%22rotate%28-12%203%203%29%22%3E%3Cpath%20fill%3D%22%23303c32%22%20d%3D%22M15%209l5%204L8%2030H3v-5z%22%2F%3E%3Cpath%20fill%3D%22%23b58953%22%20d%3D%22M16%2012l2%202L6%2028H5v-2z%22%2F%3E%3Cpath%20fill%3D%22%23dfc184%22%20d%3D%22M16%2012l1%201L5%2027v-2z%22%2F%3E%3Cpath%20fill%3D%22%23303c32%22%20d%3D%22M3%203l12%201%207%205%207%208h-5l-6-5-5-2H8z%22%2F%3E%3Cpath%20fill%3D%22%23a9bfba%22%20d%3D%22M5%205l9%201%207%204%205%205h-2l-6-5-5-2H8z%22%2F%3E%3Cpath%20fill%3D%22%23e5e5ca%22%20d%3D%22M5%205l9%201%204%202-1%201-4-2H7z%22%2F%3E%3Cpath%20fill%3D%22%236c8580%22%20d%3D%22M18%2010l6%205h2l-5-5z%22%2F%3E%3Cpath%20fill%3D%22%23d9c18b%22%20d%3D%22M14%209h4v4h-4z%22%2F%3E%3Cpath%20fill%3D%22%236e5e3c%22%20d%3D%22M15%2010h2v2h-2z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 3 3; cursor: var(--eumo-cursor), auto; }
+  body :is(a, button, summary, [role="button"], input[type="range"], input[type="color"], select),
+  .pet-stage.can-browse, .pet-button { cursor: var(--eumo-cursor), pointer; }
+  body:active, body :is(a, button, summary, [role="button"], input[type="range"]):active,
+  .pet-stage.can-browse:active, .pet-button:active:not(:disabled) { cursor: var(--eumo-cursor-pressed), pointer; }
+  body :is(input:not([type="range"]):not([type="color"]):not([type="checkbox"]), textarea, [contenteditable="true"]) { cursor: text; }
+  body button:disabled, body input:disabled, body [aria-disabled="true"] { cursor: not-allowed; }
+}

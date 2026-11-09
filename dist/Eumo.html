@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#dce6d5"><title>Eumo v3 — Focus</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23293a32' d='M8 4h16v4h4v20H4V8h4z'/%3E%3Cpath fill='%23535e53' d='M8 8h16v18H8z'/%3E%3Cpath fill='%23c2c6ab' d='M11 19h10v7H11z'/%3E%3Cpath fill='%23e9a49d' d='M2 19h5v6H2zm23 0h5v6h-5zM8 27h6v3H8zm10 0h6v3h-6z'/%3E%3Cpath fill='%231b2d25' d='M10 13h1v1h-1zm11 0h1v1h-1z'/%3E%3Cpath fill='%23c34536' d='M14 16h4v3h-4z'/%3E%3C/svg%3E"><style>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#dce6d5"><title>Eumo v3 — Focus</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23ff9bd5' d='M8 4h16v4h4v20H4V8h4z'/%3E%3Cpath fill='%23141b49' d='M8 12h4v4H8zm12 0h4v4h-4z'/%3E%3C/svg%3E"><style>
 /*
 Copyright 2021 The Pixelify Sans Project Authors (https://github.com/eifetx/Pixelify-Sans)
 
@@ -516,7 +516,8 @@ body[data-period="night"] .world-backdrop .day-sky { display: none; }
 }
 input::placeholder, textarea::placeholder, #focus .task-input::placeholder,
 .mole-chat-compose input::placeholder, .chat-dialog-compose textarea::placeholder { color: var(--muted); opacity: 1; }
-.timer-digits { color: var(--timer); text-shadow: none; font-family: 'Pixelify Sans',var(--font); letter-spacing: -1px; font-weight: 500; }
+/* Restore the previous clear timer typography from style.css. */
+.timer-digits { color: var(--timer); text-shadow: none; }
 .timer-digits > span { color: var(--muted); text-shadow: none; }
 .duration-controls { color: var(--muted); }
 .quiet-button, .duration-controls button, .focus-modes button, .item-action button,
@@ -786,6 +787,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 }
 @media (max-width:360px) { .nav svg { width: 19px; height: 19px; } }
 @media (prefers-reduced-motion:reduce) { .page { animation: none; } }
+
+/* A small tool cursor; its head tip remains the click point in both poses. */
+@media (hover: hover) and (pointer: fine) {
+  body { --eumo-cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cpath%20fill%3D%22%23303c32%22%20d%3D%22M15%209l5%204L8%2030H3v-5z%22%2F%3E%3Cpath%20fill%3D%22%23b58953%22%20d%3D%22M16%2012l2%202L6%2028H5v-2z%22%2F%3E%3Cpath%20fill%3D%22%23dfc184%22%20d%3D%22M16%2012l1%201L5%2027v-2z%22%2F%3E%3Cpath%20fill%3D%22%23303c32%22%20d%3D%22M3%203l12%201%207%205%207%208h-5l-6-5-5-2H8z%22%2F%3E%3Cpath%20fill%3D%22%23a9bfba%22%20d%3D%22M5%205l9%201%207%204%205%205h-2l-6-5-5-2H8z%22%2F%3E%3Cpath%20fill%3D%22%23e5e5ca%22%20d%3D%22M5%205l9%201%204%202-1%201-4-2H7z%22%2F%3E%3Cpath%20fill%3D%22%236c8580%22%20d%3D%22M18%2010l6%205h2l-5-5z%22%2F%3E%3Cpath%20fill%3D%22%23d9c18b%22%20d%3D%22M14%209h4v4h-4z%22%2F%3E%3Cpath%20fill%3D%22%236e5e3c%22%20d%3D%22M15%2010h2v2h-2z%22%2F%3E%3C%2Fsvg%3E") 3 3; --eumo-cursor-pressed: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Cg%20transform%3D%22rotate%28-12%203%203%29%22%3E%3Cpath%20fill%3D%22%23303c32%22%20d%3D%22M15%209l5%204L8%2030H3v-5z%22%2F%3E%3Cpath%20fill%3D%22%23b58953%22%20d%3D%22M16%2012l2%202L6%2028H5v-2z%22%2F%3E%3Cpath%20fill%3D%22%23dfc184%22%20d%3D%22M16%2012l1%201L5%2027v-2z%22%2F%3E%3Cpath%20fill%3D%22%23303c32%22%20d%3D%22M3%203l12%201%207%205%207%208h-5l-6-5-5-2H8z%22%2F%3E%3Cpath%20fill%3D%22%23a9bfba%22%20d%3D%22M5%205l9%201%207%204%205%205h-2l-6-5-5-2H8z%22%2F%3E%3Cpath%20fill%3D%22%23e5e5ca%22%20d%3D%22M5%205l9%201%204%202-1%201-4-2H7z%22%2F%3E%3Cpath%20fill%3D%22%236c8580%22%20d%3D%22M18%2010l6%205h2l-5-5z%22%2F%3E%3Cpath%20fill%3D%22%23d9c18b%22%20d%3D%22M14%209h4v4h-4z%22%2F%3E%3Cpath%20fill%3D%22%236e5e3c%22%20d%3D%22M15%2010h2v2h-2z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 3 3; cursor: var(--eumo-cursor), auto; }
+  body :is(a, button, summary, [role="button"], input[type="range"], input[type="color"], select),
+  .pet-stage.can-browse, .pet-button { cursor: var(--eumo-cursor), pointer; }
+  body:active, body :is(a, button, summary, [role="button"], input[type="range"]):active,
+  .pet-stage.can-browse:active, .pet-button:active:not(:disabled) { cursor: var(--eumo-cursor-pressed), pointer; }
+  body :is(input:not([type="range"]):not([type="color"]):not([type="checkbox"]), textarea, [contenteditable="true"]) { cursor: text; }
+  body button:disabled, body input:disabled, body [aria-disabled="true"] { cursor: not-allowed; }
+}
 
 </style></head><body>
 <svg class="world-backdrop" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
@@ -1787,7 +1799,7 @@ window.MineView=(()=>{
 'use strict';
 window.PixelArt=(()=>{
  const bounds={};
- const defaultColors={ink:'#293a32',pink:'#e9a49d',light:'#f7c7b5',shadow:'#c56bb0',fur:'#b784cf',furLight:'#d9a4e2',cyan:'#80e6eb',yellow:'#fff3a8'};
+ const defaultColors={ink:'#28214c',pink:'#f9a6d5',light:'#ffdbec',shadow:'#c56bb0',fur:'#b784cf',furLight:'#d9a4e2',cyan:'#80e6eb',yellow:'#fff3a8'};
  function tint(hex,amount){const values=hex.slice(1).match(/.{2}/g).map(n=>parseInt(n,16));return '#'+values.map(v=>Math.round(amount>=0?v+(255-v)*amount:v*(1+amount)).toString(16).padStart(2,'0')).join('');}
  function box(c,x,y,w,h,color){c.fillStyle=color;c.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
  function star(c,x,y,s=1,color='#fff3a8'){box(c,x+2*s,y,2*s,2*s,color);box(c,x,y+2*s,6*s,2*s,color);box(c,x+2*s,y+4*s,2*s,2*s,color);}
@@ -1806,13 +1818,9 @@ window.PixelArt=(()=>{
  function mole(c,x,y,scale=2,outfit=[],dig=false,frame=0,color='#b784cf',mood='awake',toolId=null){const colors={...defaultColors,fur:color,furLight:tint(color,.32),shadow:tint(color,-.23)};const has=id=>Array.isArray(outfit)?outfit.includes(id):outfit===id;c.save();c.translate(Math.round(x),Math.round(y));c.scale(scale,scale);const sleepScale=mood==='asleep'?.78+Math.round((Math.sin(frame*.18)+1)*1.5)*.025:1;const r=(a,b,w,h,col)=>{const top=Math.round(27+(b-27)*sleepScale),bottom=Math.round(27+(b+h-27)*sleepScale);box(c,a,top,w,Math.max(1,bottom-top),col);};const bob=dig?(frame%2):0;c.translate(0,bob);
  // The same earless, stepped head silhouette is used in every scene.
  r(7,5,12,2,colors.ink);r(4,7,18,3,colors.ink);r(2,10,22,13,colors.ink);r(4,23,18,2,colors.ink);r(4,9,18,13,colors.fur);r(6,7,14,17,colors.fur);r(4,11,18,9,colors.fur);r(6,8,4,3,colors.furLight);r(4,11,3,5,colors.furLight);r(19,13,3,9,colors.shadow);r(6,21,15,3,colors.shadow);
- // One grid cell per eye. The red nose and warm pink paws stay identical in every view.
- r(8,16,11,7,'#c2c6ab');r(10,15,7,9,'#c2c6ab');r(10,18,6,4,'#dddcc3');
- const eyesClosed=!dig&&(mood==='asleep'||mood==='rest'||mood==='drowsy'&&frame%30>8||frame%42>=39);
- if(eyesClosed){r(8,12,2,1,colors.ink);r(17,12,2,1,colors.ink);}else{r(8,11,1,1,colors.ink);r(18,11,1,1,colors.ink);}
- r(6,15,2,1,colors.shadow);r(19,15,2,1,colors.shadow);r(12,13,3,2,'#c34536');r(13,15,1,1,'#a4352e');r(13,18,2,1,colors.ink);
- r(4,24,7,3,colors.ink);r(16,24,7,3,colors.ink);r(5,24,6,2,colors.pink);r(16,24,6,2,colors.pink);r(6,24,1,1,colors.light);r(17,24,1,1,colors.light);
- const arm=dig&&frame%2?2:0;r(1,17-arm,5,6,colors.ink);r(2,17-arm,4,5,colors.pink);r(2,18-arm,1,2,colors.light);r(21,17+arm,5,6,colors.ink);r(21,17+arm,4,5,colors.pink);r(22,18+arm,1,2,colors.light);
+ r(8,16,11,7,colors.pink);r(10,15,7,9,colors.pink);r(10,17,6,5,colors.light);r(8,11,2,2,colors.ink);r(17,11,2,2,colors.ink);if(!dig&&(mood==='asleep'||mood==='rest'||mood==='drowsy'&&frame%30>8||frame%42>=39)){r(8,11,2,2,colors.fur);r(17,11,2,2,colors.fur);r(8,13,3,1,colors.ink);r(16,13,3,1,colors.ink);}r(6,15,3,2,colors.shadow);r(18,15,3,2,colors.shadow);r(11,13,6,3,colors.pink);r(12,13,3,1,colors.light);r(13,17,2,1,colors.ink);
+ r(4,24,7,3,colors.ink);r(16,24,7,3,colors.ink);r(5,24,6,2,colors.shadow);r(16,24,6,2,colors.shadow);
+ const arm=dig&&frame%2?2:0;r(1,17-arm,5,6,colors.ink);r(2,17-arm,4,5,colors.furLight);r(2,21-arm,3,1,colors.light);r(21,17+arm,5,6,colors.ink);r(21,17+arm,4,5,colors.furLight);r(22,21+arm,3,1,colors.light);
  const worn=Array.isArray(outfit)?outfit:[],hat=WardrobeCatalog.items.find(i=>i.category==='hats'&&worn.includes(i.id)),scarf=WardrobeCatalog.items.find(i=>i.category==='scarves'&&worn.includes(i.id));
  if(dig)WardrobeArt.drawTool(r,toolId,frame);
  if(hat)WardrobeArt.hat(r,hat.id);
@@ -2020,7 +2028,7 @@ window.MoleChat=(()=>{
    const shown=entries.length?entries:[{role:'assistant',content:language()==='zh'?'一小步也算数，我在这里陪你。':'One small step at a time. I’m here with you.',source:'game'}];
    for(const entry of shown){
     const row=document.createElement('div');row.className='mole-chat-message chat-entry '+(entry.role==='user'?'chat-user':'chat-mole');
-    if(entry.role==='assistant'){const avatar=document.createElement('span');avatar.className='chat-avatar';avatar.style.setProperty('--mole-chat-color',getState().profile.color);avatar.setAttribute('aria-hidden','true');avatar.innerHTML='<svg viewBox="0 0 24 24"><path fill="#293a32" d="M5 3h14v2h2v16H3V5h2z"/><path fill="var(--mole-chat-color)" d="M6 4h12v2h2v14H4V6h2z"/><path fill="#c2c6ab" d="M9 12h6v2h2v6H7v-6h2z"/><path fill="#293a32" d="M7 8h1v1H7zm9 0h1v1h-1zm-5 8h2v1h-2z"/><path fill="#c34536" d="M11 10h3v2h-3z"/></svg>';row.append(avatar);}
+    if(entry.role==='assistant'){const avatar=document.createElement('span');avatar.className='chat-avatar';avatar.style.setProperty('--mole-chat-color',getState().profile.color);avatar.setAttribute('aria-hidden','true');avatar.innerHTML='<svg viewBox="0 0 24 24"><path fill="#30233e" d="M5 3h14v2h2v16H3V5h2z"/><path fill="var(--mole-chat-color)" d="M6 4h12v2h2v14H4V6h2z"/><path fill="#e9b1cf" d="M9 11h6v2h2v7H7v-7h2z"/><path fill="#30233e" d="M7 8h2v2H7zm8 0h2v2h-2zm-4 5h2v1h-2z"/></svg>';row.append(avatar);}
     const p=document.createElement('p'),speaker=document.createElement('strong'),body=document.createElement('span');speaker.textContent=entry.role==='user'?(language()==='zh'?'你':'You'):name;body.textContent=entry.content;
     if(entry.source==='game')speaker.title='Game reaction';p.append(speaker,body);row.append(p);log.append(row);
    }

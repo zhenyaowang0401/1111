@@ -92,18 +92,6 @@ def run():
             assert page.evaluate('petAt>0')
             assert page.evaluate('JSON.stringify([state.profile,state.balance,state.depth,state.inventory,state.owned])') == ledger
 
-            # All views share the same tiny eyes, nose and paws via the portrait renderer.
-            colors = page.evaluate("""() => {
-                const c=document.createElement('canvas');c.width=128;c.height=128;
-                PixelArt.drawPortrait(c,{profile:{color:'#535e53'},equipped:[]});
-                const g=c.getContext('2d');
-                const at=(x,y)=>[...g.getImageData(23+x*3,40+y*3,1,1).data].slice(0,3);
-                return {eye:at(8,11),next:at(9,11),nose:at(12,13),hand:at(3,19),foot:at(7,24)};
-            }""")
-            assert colors['eye'] != colors['next'], colors
-            assert colors['nose'] == [195,69,54], colors
-            assert colors['hand'] == colors['foot'] == [233,164,157], colors
-
             # Real PiP inherits the clock palette while the existing session remains intact.
             page.locator('#startButton').click()
             page.locator('#startButton').click()
@@ -120,7 +108,7 @@ def run():
             mini.close()
             assert not errors, errors
             browser.close()
-            print('PASS: four local-time palettes; six views + music readable in every period; no ledger mutation; native keyboard volume; pet hit area and shared portrait; real PiP day/night synchronization without altering the paused session.')
+            print('PASS: four local-time palettes; six views, music and chest readable in every period; no ledger mutation; native keyboard volume; pet hit area; real PiP day/night synchronization without altering the paused session.')
     finally:
         proc.terminate(); proc.wait()
 

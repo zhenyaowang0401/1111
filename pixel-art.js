@@ -2,7 +2,7 @@
 'use strict';
 window.PixelArt=(()=>{
  const bounds={};
- const defaultColors={ink:'#293a32',pink:'#e9a49d',light:'#f7c7b5',shadow:'#c56bb0',fur:'#b784cf',furLight:'#d9a4e2',cyan:'#80e6eb',yellow:'#fff3a8'};
+ const defaultColors={ink:'#28214c',pink:'#f9a6d5',light:'#ffdbec',shadow:'#c56bb0',fur:'#b784cf',furLight:'#d9a4e2',cyan:'#80e6eb',yellow:'#fff3a8'};
  function tint(hex,amount){const values=hex.slice(1).match(/.{2}/g).map(n=>parseInt(n,16));return '#'+values.map(v=>Math.round(amount>=0?v+(255-v)*amount:v*(1+amount)).toString(16).padStart(2,'0')).join('');}
  function box(c,x,y,w,h,color){c.fillStyle=color;c.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));}
  function star(c,x,y,s=1,color='#fff3a8'){box(c,x+2*s,y,2*s,2*s,color);box(c,x,y+2*s,6*s,2*s,color);box(c,x+2*s,y+4*s,2*s,2*s,color);}
@@ -21,13 +21,9 @@ window.PixelArt=(()=>{
  function mole(c,x,y,scale=2,outfit=[],dig=false,frame=0,color='#b784cf',mood='awake',toolId=null){const colors={...defaultColors,fur:color,furLight:tint(color,.32),shadow:tint(color,-.23)};const has=id=>Array.isArray(outfit)?outfit.includes(id):outfit===id;c.save();c.translate(Math.round(x),Math.round(y));c.scale(scale,scale);const sleepScale=mood==='asleep'?.78+Math.round((Math.sin(frame*.18)+1)*1.5)*.025:1;const r=(a,b,w,h,col)=>{const top=Math.round(27+(b-27)*sleepScale),bottom=Math.round(27+(b+h-27)*sleepScale);box(c,a,top,w,Math.max(1,bottom-top),col);};const bob=dig?(frame%2):0;c.translate(0,bob);
  // The same earless, stepped head silhouette is used in every scene.
  r(7,5,12,2,colors.ink);r(4,7,18,3,colors.ink);r(2,10,22,13,colors.ink);r(4,23,18,2,colors.ink);r(4,9,18,13,colors.fur);r(6,7,14,17,colors.fur);r(4,11,18,9,colors.fur);r(6,8,4,3,colors.furLight);r(4,11,3,5,colors.furLight);r(19,13,3,9,colors.shadow);r(6,21,15,3,colors.shadow);
- // One grid cell per eye. The red nose and warm pink paws stay identical in every view.
- r(8,16,11,7,'#c2c6ab');r(10,15,7,9,'#c2c6ab');r(10,18,6,4,'#dddcc3');
- const eyesClosed=!dig&&(mood==='asleep'||mood==='rest'||mood==='drowsy'&&frame%30>8||frame%42>=39);
- if(eyesClosed){r(8,12,2,1,colors.ink);r(17,12,2,1,colors.ink);}else{r(8,11,1,1,colors.ink);r(18,11,1,1,colors.ink);}
- r(6,15,2,1,colors.shadow);r(19,15,2,1,colors.shadow);r(12,13,3,2,'#c34536');r(13,15,1,1,'#a4352e');r(13,18,2,1,colors.ink);
- r(4,24,7,3,colors.ink);r(16,24,7,3,colors.ink);r(5,24,6,2,colors.pink);r(16,24,6,2,colors.pink);r(6,24,1,1,colors.light);r(17,24,1,1,colors.light);
- const arm=dig&&frame%2?2:0;r(1,17-arm,5,6,colors.ink);r(2,17-arm,4,5,colors.pink);r(2,18-arm,1,2,colors.light);r(21,17+arm,5,6,colors.ink);r(21,17+arm,4,5,colors.pink);r(22,18+arm,1,2,colors.light);
+ r(8,16,11,7,colors.pink);r(10,15,7,9,colors.pink);r(10,17,6,5,colors.light);r(8,11,2,2,colors.ink);r(17,11,2,2,colors.ink);if(!dig&&(mood==='asleep'||mood==='rest'||mood==='drowsy'&&frame%30>8||frame%42>=39)){r(8,11,2,2,colors.fur);r(17,11,2,2,colors.fur);r(8,13,3,1,colors.ink);r(16,13,3,1,colors.ink);}r(6,15,3,2,colors.shadow);r(18,15,3,2,colors.shadow);r(11,13,6,3,colors.pink);r(12,13,3,1,colors.light);r(13,17,2,1,colors.ink);
+ r(4,24,7,3,colors.ink);r(16,24,7,3,colors.ink);r(5,24,6,2,colors.shadow);r(16,24,6,2,colors.shadow);
+ const arm=dig&&frame%2?2:0;r(1,17-arm,5,6,colors.ink);r(2,17-arm,4,5,colors.furLight);r(2,21-arm,3,1,colors.light);r(21,17+arm,5,6,colors.ink);r(21,17+arm,4,5,colors.furLight);r(22,21+arm,3,1,colors.light);
  const worn=Array.isArray(outfit)?outfit:[],hat=WardrobeCatalog.items.find(i=>i.category==='hats'&&worn.includes(i.id)),scarf=WardrobeCatalog.items.find(i=>i.category==='scarves'&&worn.includes(i.id));
  if(dig)WardrobeArt.drawTool(r,toolId,frame);
  if(hat)WardrobeArt.hat(r,hat.id);
