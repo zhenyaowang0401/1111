@@ -1,6 +1,6 @@
 /* Eumo woodland desktop. Color and surface tokens follow the existing local clock.
    Layout, hit targets, game state and native form controls stay in their original owners. */
-:root, body, body[data-period="day"], body[data-period="morning"] {
+:root, body, body[data-period="day"], body[data-period="morning"], body[data-period="evening"] {
   color-scheme: light;
   --bg: #dce6d5; --sky-top: #b9d8dc; --sky-bottom: #edf0d7;
   --panel: #fff8e6; --raised: #f2efd9; --deep: #fdfaf0;
@@ -21,29 +21,25 @@ body[data-period="morning"] {
   --bg: #e4e7c8; --sky-top: #d3e2d0; --sky-bottom: #f3ebca;
   --board: #c7d0ac; --land-light: #b9c778;
 }
-body[data-period="evening"], body[data-period="night"] {
-  color-scheme: dark;
-  --bg: #14383c; --sky-top: #19515e; --sky-bottom: #173a36;
-  --panel: #243f40; --raised: #2d4c4a; --deep: #193235;
-  --board: #426457; --board-light: #71907b; --board-ink: #f4ead1;
-  --line: #536f60; --edge: #8b9d7d; --edge-soft: #42635c;
-  --text: #f4ecd6; --muted: #bbccba; --pink: #f4c093;
-  --yellow: #f4d47d; --cyan: #acdbcb; --timer: #f4d47d;
-  --button: #385749; --button-hover: #476a52; --button-shadow: #142e2d;
-  --primary: #e7b66c; --primary-hover: #f2ca84; --primary-ink: #2e3c31;
-  --selected: #3e5942; --selected-ink: #fff1bb;
-  --titlebar: #4f6b50; --titlebar-ink: #fff3cc;
-  --inset-shadow: #112b2d; --drop-shadow: #091f2870;
-  --focus-ring: #f3ce7c; --glyph: #c2d9b7; --glyph-accent: #edb377;
-  --land-dark: #244e3d; --land-light: #456a43; --flower: #b8756c;
-  --speckle: #c6d8ac08; --window-highlight: #819776;
+body[data-period="night"] {
+  color-scheme: light;
+  --bg:#8ba5c0;--sky-top:#829bb9;--sky-bottom:#c3d1df;
+  --panel:#f2f1e9;--raised:#e4eaf0;--deep:#f5f7f8;
+  --board:#a6bad0;--board-light:#dce5ed;--board-ink:#344a65;
+  --line:#a0b0c2;--edge:#5e7793;--edge-soft:#b3c2d1;
+  --text:#2f435c;--muted:#526882;--pink:#925d78;
+  --yellow:#775c35;--cyan:#396880;--timer:#354f70;
+  --button:#e7edf3;--button-hover:#f7f8f5;--button-shadow:#a1b3c8;
+  --primary:#627fa4;--primary-hover:#4c6b91;--primary-ink:#fff;
+  --selected:#ccdbea;--selected-ink:#314c70;
+  --titlebar:#5c779a;--titlebar-ink:#f7f5eb;
+  --inset-shadow:#cad4df;--drop-shadow:#334f6a35;
+  --focus-ring:#8b567a;--glyph:#496987;--glyph-accent:#b0788d;
+  --land-dark:#536f8e;--land-light:#91a7bd;--flower:#c6acb8;
+  --speckle:#526b8609;--window-highlight:#fcfcf5;
 }
-body[data-period="evening"] {
-  --bg: #274d4b; --sky-top: #5c8381; --sky-bottom: #355545;
-  --panel: #304a43; --board: #536b50; --board-light: #96a17a;
-  --titlebar: #566b49; --primary: #e9b687;
-}
-:root:has(body[data-period="evening"]), :root:has(body[data-period="night"]) { color-scheme: dark; }
+:root:has(body[data-period="night"]) {color-scheme:light;}
+
 body {
   min-height: 100dvh;
   background-color: var(--bg);
@@ -419,7 +415,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .painted-backdrop svg { display: block; width: 100%; height: 100%; }
 .painted-backdrop .painted-night { display: none; }
 body[data-period="evening"] .painted-backdrop { opacity: .24; }
-body[data-period="night"] .painted-backdrop { opacity: .24; filter: saturate(.4) contrast(.8) brightness(.65); }
+body[data-period="night"] .painted-backdrop { opacity: .48; filter: saturate(.65) contrast(.82); }
 body[data-period="night"] .painted-day { display: none; }
 body[data-period="night"] .painted-night { display: block; }
 
@@ -434,3 +430,23 @@ body[data-period="night"] .painted-night { display: block; }
 #startButton .play-symbol:before{display:none}
 #startButton .play-symbol svg{width:24px;height:24px}
 .focus-icon{fill:none}
+
+/* One compact clock strip for mode, local time and appearance. */
+.focus-status{display:flex;align-items:center;gap:10px;padding:4px 8px;background:var(--button);border:1px solid var(--edge);box-shadow:inset 1px 1px var(--window-highlight),2px 2px var(--drop-shadow);min-height:44px;color:var(--glyph)}
+.focus-status #focusMode{padding-right:8px;border-right:1px solid var(--edge-soft)}
+.focus-status .device-time{color:var(--text);font-size:16px;font-variant-numeric:tabular-nums}
+.appearance-control{position:relative}
+#devicePeriod{width:32px;height:32px;padding:3px;border:0;background:transparent;box-shadow:none;cursor:pointer}
+.appearance-options{position:absolute;right:0;top:calc(100% + 10px);z-index:30;min-width:190px;padding:5px;background:var(--panel);border:1px solid var(--edge);box-shadow:3px 3px var(--drop-shadow)}
+.appearance-options button{display:block;width:100%;padding:10px;text-align:left;border:0;background:transparent;color:var(--text)}
+.appearance-options button[aria-pressed="true"]{background:var(--selected);box-shadow:inset 3px 0 var(--glyph-accent)}
+.appearance-options button:hover{background:var(--raised)}
+.outfit-card[data-rarity]{--rarity:#a2af95;--rarity-tint:#e4e8da;border-color:var(--rarity);border-top-width:4px}
+.outfit-card[data-rarity="uncommon"]{--rarity:#839d6b;--rarity-tint:#dce7ce}
+.outfit-card[data-rarity="rare"]{--rarity:#61988c;--rarity-tint:#d2e6dc}
+.outfit-card[data-rarity="epic"]{--rarity:#aa87ab;--rarity-tint:#e6d9e6}
+.outfit-card[data-rarity="legendary"]{--rarity:#be7896;--rarity-tint:#eed7e1}
+.outfit-card[data-rarity] .outfit-art{background:var(--rarity-tint);border-color:var(--rarity)}
+.outfit-card.equipped{box-shadow:inset 0 0 0 1px var(--edge),2px 2px var(--drop-shadow)}
+@media(max-width:480px){.focus-meta{gap:7px}.focus-status{gap:6px;padding:3px 5px}.focus-status #focusMode{padding-right:5px}.focus-status .device-time{font-size:14px}}
+@media(max-width:600px){.focus-meta{flex-wrap:nowrap}.focus-meta .float-mole-button{flex:0 0 44px;width:44px}}
