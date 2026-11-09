@@ -69,12 +69,12 @@ def run():
    page.locator('[data-page="focus"]').click()
    # The displayed device clock, page background and actual sky pixels agree.
    backgrounds=set()
-   for hour,period,sky in [(7,'morning','#c2b9d6'),(12,'day','#83b8d5'),(18,'evening','#ae809b'),(22,'night','#171c48')]:
+   for hour,period,sky in [(7,'morning','#b5d4cd'),(12,'day','#88bdca'),(18,'evening','#557d80'),(22,'night','#174e5c')]:
     page.clock.set_system_time(datetime(2026,10,20,hour,tzinfo=LOCAL));page.wait_for_timeout(300)
     expect(page.locator('body')).to_have_attribute('data-period',period)
     expect(page.locator('#deviceTime')).to_have_text(f'{hour:02}:00')
     actual=page.locator('#miningCanvas').evaluate("c=>[...c.getContext('2d').getImageData(0,0,1,1).data].slice(0,3)")
-    assert actual==[int(sky[i:i+2],16) for i in [1,3,5]],(period,actual)
+    assert all(abs(a-int(sky[i:i+2],16))<=2 for a,i in zip(actual,[1,3,5])),(period,actual)  # first row of the sky gradient
     backgrounds.add(page.locator('body').evaluate('e=>getComputedStyle(e).backgroundColor'))
    assert len(backgrounds)==4
    page.clock.set_system_time(datetime(2026,10,20,5,59,50,tzinfo=LOCAL));page.wait_for_timeout(300)

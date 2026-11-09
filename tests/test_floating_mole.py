@@ -105,7 +105,7 @@ def run():
             page.locator('#floatMoleButton').click();expect(page.locator('#floatingHelpDialog')).to_be_visible()
             page.locator('#floatingHelpDialog .dialog-close').click()
             # Offline distribution contains the same functional view and cleans up on owner navigation.
-            offline=browser.new_context();download=offline.new_page();download.goto(url+'/dist/Eumo.html');download.locator('#enterGame').click();offline.set_offline(True)
+            offline=browser.new_context();offline.add_init_script("localStorage.setItem('eumo-tour-v1','seen')");download=offline.new_page();download.goto(url+'/dist/Eumo.html');download.locator('#enterGame').click();offline.set_offline(True)
             with offline.expect_page() as event:download.locator('#floatMoleButton').click()
             child=event.value;child.wait_for_selector('#toggle');child.locator('#toggle').click()
             expect(download.locator('#startText')).to_have_text('Pause')

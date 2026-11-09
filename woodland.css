@@ -1,0 +1,402 @@
+/* Eumo woodland desktop. Color and surface tokens follow the existing local clock.
+   Layout, hit targets, game state and native form controls stay in their original owners. */
+:root, body, body[data-period="day"], body[data-period="morning"] {
+  color-scheme: light;
+  --bg: #dce6d5; --sky-top: #b9d8dc; --sky-bottom: #edf0d7;
+  --panel: #fff8e6; --raised: #f2efd9; --deep: #fdfaf0;
+  --board: #b9cbaa; --board-light: #e4e9c9; --board-ink: #344d3d;
+  --line: #a3af8d; --edge: #58674c; --edge-soft: #c4cbae;
+  --text: #303e32; --muted: #536149; --pink: #a4473b;
+  --yellow: #865c1d; --cyan: #2f6a64; --timer: #314f40;
+  --button: #f4efd8; --button-hover: #fffbea; --button-shadow: #b5bf9c;
+  --primary: #b64d40; --primary-hover: #a74136; --primary-ink: #fff8e5;
+  --selected: #dce6c4; --selected-ink: #3b5c39;
+  --titlebar: #5b724f; --titlebar-ink: #fff8e4;
+  --inset-shadow: #d6d8bd; --drop-shadow: #53604335;
+  --focus-ring: #ae493b; --glyph: #476a59; --glyph-accent: #bf5b4b;
+  --land-dark: #64824f; --land-light: #a4b96d; --flower: #c65c57;
+  --speckle: #42683d12; --window-highlight: #fffdf2;
+}
+body[data-period="morning"] {
+  --bg: #e4e7c8; --sky-top: #d3e2d0; --sky-bottom: #f3ebca;
+  --board: #c7d0ac; --land-light: #b9c778;
+}
+body[data-period="evening"], body[data-period="night"] {
+  color-scheme: dark;
+  --bg: #14383c; --sky-top: #19515e; --sky-bottom: #173a36;
+  --panel: #243f40; --raised: #2d4c4a; --deep: #193235;
+  --board: #426457; --board-light: #71907b; --board-ink: #f4ead1;
+  --line: #536f60; --edge: #8b9d7d; --edge-soft: #42635c;
+  --text: #f4ecd6; --muted: #bbccba; --pink: #f4c093;
+  --yellow: #f4d47d; --cyan: #acdbcb; --timer: #f4d47d;
+  --button: #385749; --button-hover: #476a52; --button-shadow: #142e2d;
+  --primary: #e7b66c; --primary-hover: #f2ca84; --primary-ink: #2e3c31;
+  --selected: #3e5942; --selected-ink: #fff1bb;
+  --titlebar: #4f6b50; --titlebar-ink: #fff3cc;
+  --inset-shadow: #112b2d; --drop-shadow: #091f2870;
+  --focus-ring: #f3ce7c; --glyph: #c2d9b7; --glyph-accent: #edb377;
+  --land-dark: #244e3d; --land-light: #456a43; --flower: #b8756c;
+  --speckle: #c6d8ac08; --window-highlight: #819776;
+}
+body[data-period="evening"] {
+  --bg: #274d4b; --sky-top: #5c8381; --sky-bottom: #355545;
+  --panel: #304a43; --board: #536b50; --board-light: #96a17a;
+  --titlebar: #566b49; --primary: #e9b687;
+}
+:root:has(body[data-period="evening"]), :root:has(body[data-period="night"]) { color-scheme: dark; }
+body {
+  min-height: 100dvh;
+  background-color: var(--bg);
+  background-image: linear-gradient(180deg, var(--sky-top), var(--bg) 38%, var(--sky-bottom));
+  background-attachment: fixed;
+  color: var(--text);
+}
+/* The scenery stays behind the UI, never catches a pointer or draws over text. */
+.world-backdrop { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; fill: none; }
+.world-backdrop .night-sky { display: none; }
+.world-backdrop .day-sky, .world-backdrop .night-sky { transform: translateY(105px); }
+body[data-period="night"] .world-backdrop .night-sky { display: inline; }
+body[data-period="night"] .world-backdrop .day-sky { display: none; }
+.world-backdrop .meadow { fill: var(--land-light); opacity: .17; }
+.world-backdrop .stems { stroke: var(--land-dark); fill: none; stroke-width: 3; stroke-linecap: square; opacity: .55; }
+.world-backdrop .leaves { fill: var(--land-dark); opacity: .42; }
+.world-backdrop .petals { fill: var(--flower); }
+.app-shell, .setup-screen { position: relative; z-index: 1; }
+.header, .setup-header { border-bottom: 1px solid var(--edge-soft); }
+.footer { border-color: var(--edge-soft); color: var(--muted); }
+.footer button, .footer a, .meta-separator, .tiny-label { color: var(--muted); }
+.brand { color: var(--board-ink); text-shadow: 1px 2px var(--board-light); }
+.brand > span { color: var(--pink); }
+.brand .version-tag { color: var(--muted); }
+.page-heading h1, .setup-heading h1 { color: var(--text); }
+.page-heading h1 { font-weight: 600; letter-spacing: -.5px; }
+.page-meta, .period-label, .setup-clock { color: var(--muted); }
+.gem-balance { color: var(--yellow); }
+.gem-balance b { color: var(--text); }
+/* Small chamfered tool tiles, with mint corner inlays and a pressed interior. */
+.nav a, .report-link, #simpleViewButton, .music-library-button {
+  position: relative; color: var(--glyph); background-color: var(--button);
+  border: 1px solid var(--edge);
+  background-image: linear-gradient(var(--board-light),var(--board-light)), linear-gradient(var(--board-light),var(--board-light)), linear-gradient(var(--board-light),var(--board-light)), linear-gradient(var(--board-light),var(--board-light));
+  background-size: 5px 5px; background-position: 2px 2px, calc(100% - 2px) 2px, 2px calc(100% - 2px), calc(100% - 2px) calc(100% - 2px);
+  background-repeat: no-repeat;
+  box-shadow: inset 0 0 0 2px var(--window-highlight), inset 0 -4px var(--button-shadow), 2px 2px var(--drop-shadow);
+  border-radius: 3px;
+}
+.nav a.active, .report-link.active {
+  color: var(--glyph-accent); background-color: var(--selected);
+  border-color: var(--edge); box-shadow: inset 0 0 0 2px var(--board-light), inset 2px 3px var(--button-shadow), 1px 1px var(--drop-shadow);
+}
+.nav a.active::after, .report-link.active::after { content: ''; position: absolute; bottom: 4px; width: 9px; height: 2px; background: var(--glyph-accent); }
+.nav a:hover, .report-link:hover { color: var(--glyph-accent); background-color: var(--button-hover); }
+.nav svg { width: 24px; height: 24px; }
+.nav .icon-detail, .report-link .icon-detail { fill: var(--glyph-accent); }
+.nav .icon-paper { fill: var(--button); }
+.nav a:active, .report-link:active { transform: translate(1px,1px); box-shadow: inset 1px 1px var(--button-shadow); }
+/* Warm paper for tools; moss-painted wood for the main scene frame. */
+#focus { --focus-edge: var(--edge-soft); --focus-divider: var(--line); }
+#focus .arcade-machine, .home-room, .fitting-room, .character-stage {
+  background: var(--board); color: var(--board-ink); border-color: var(--edge);
+  box-shadow: inset 0 0 0 2px var(--board-light), 3px 4px var(--drop-shadow);
+}
+#focus .control-panel, .home-shop, .closet, .setup-controls,
+.trend-panel, .calendar-panel, .daily-log, .report-stats article, .today-details {
+  background-color: var(--panel); border-color: var(--edge);
+  box-shadow: inset 0 0 0 2px var(--window-highlight), 3px 4px var(--drop-shadow);
+}
+.control-panel, .home-shop, .closet, .setup-controls {
+  background-image: radial-gradient(var(--speckle) .6px, transparent .8px); background-size: 7px 9px;
+}
+#focus .machine-top, #focus .machine-top > span:last-child, .preview-ground { color: var(--board-ink); }
+#focus .machine-top > span:last-child { opacity: .55; }
+#focus .machine-top::before { content: ''; flex: 0 0 5px; width: 5px; height: 5px; background: var(--titlebar); box-shadow: 0 0 0 1px var(--board-light); }
+.screen-frame, .home-stage, .fitting-pet, .character-frame {
+  border-color: var(--edge); box-shadow: 0 1px var(--board-light), 0 -1px var(--board-light); background: var(--deep);
+}
+.screen-hud { background: var(--titlebar); color: var(--titlebar-ink); border-color: var(--edge); }
+.screen-hud #depthDisplay { color: var(--titlebar-ink); }
+.screen-hud i { background: var(--titlebar-ink); opacity: .5; }
+.running .screen-hud i { background: #dfdf8b; opacity: 1; }
+.scene-label { color: #fff4d7; background: #253e32c9; border: 1px solid #d8ddaf66; padding: 3px 6px; }
+.mine-browse-controls button { color: #fff6dd; background: #354c3eed; border-color: #d9d6ad; box-shadow: 1px 2px #20362b80; }
+.mine-browse-controls button:disabled { opacity: .5; }
+.pet-speech { color: var(--text); background: var(--panel); border-color: var(--edge); text-shadow: none; box-shadow: 2px 3px var(--drop-shadow); }
+.control-heading, .fitting-room .control-heading, #focus .control-heading { color: var(--muted); border-color: var(--line); }
+.control-heading > span:last-child { color: var(--muted); }
+.task-input, #focus .task-input, #petName, .friend-code-row input, .friend-goal-label input,
+.mole-chat-compose input, #focus .mole-chat-compose input, .chat-dialog-compose textarea {
+  background: var(--deep); color: var(--text); border-color: var(--edge-soft);
+  box-shadow: inset 1px 2px var(--inset-shadow); border-radius: 1px;
+}
+input::placeholder, textarea::placeholder, #focus .task-input::placeholder,
+.mole-chat-compose input::placeholder, .chat-dialog-compose textarea::placeholder { color: var(--muted); opacity: 1; }
+.timer-digits { color: var(--timer); text-shadow: none; font-family: 'Pixelify Sans',var(--font); letter-spacing: -1px; font-weight: 500; }
+.timer-digits > span { color: var(--muted); text-shadow: none; }
+.duration-controls { color: var(--muted); }
+.quiet-button, .duration-controls button, .focus-modes button, .item-action button,
+.home-item button, .home-slots button, .category-tabs button, .month-controls button,
+.range-tabs button, .chat-send-button, .chat-window-button, .music-window-button,
+.music-repeat-button, .add-friend-button, .language-trigger, #focus .mine-demo-button,
+.friend-code-row button, .friend-request-row button, .remove-friend-button,
+.chat-starters button, .chat-options button {
+  color: var(--text); background-color: var(--button); border-color: var(--edge);
+  box-shadow: inset 1px 1px var(--window-highlight), inset -1px -2px var(--button-shadow), 1px 2px var(--drop-shadow);
+  border-radius: 2px;
+}
+.quiet-button:hover, .item-action button:hover, .language-trigger:hover,
+.music-window-button:not(:disabled):hover, .chat-send-button:not(:disabled):hover,
+.friend-code-row button:hover, .friend-request-row button:hover, .add-friend-button:hover,
+.remove-friend-button:hover, .chat-starters button:hover, .chat-options button:hover,
+#focus :is(.quiet-button,.duration-controls button):not(:disabled):hover {
+  background-color: var(--button-hover); border-color: var(--edge); color: var(--text);
+}
+.focus-modes button.selected, #focus .focus-modes button.selected,
+.category-tabs button[aria-pressed="true"], .home-slots button[aria-pressed="true"], .range-tabs button.active {
+  background: var(--selected); color: var(--selected-ink); border-color: var(--edge);
+  box-shadow: inset 1px 2px var(--button-shadow), inset 0 -2px var(--board);
+}
+.start-button, .dialog-primary, .setup-start, .finish-today-button,
+.item-action .equipped-button, .item-action button.equipped-button:hover {
+  color: var(--primary-ink); background: var(--primary); border-color: var(--primary);
+  box-shadow: inset 1px 1px #fff4cd70, inset -1px -2px #63352f30, 2px 3px var(--drop-shadow);
+  border-radius: 2px;
+}
+.start-button:hover, .dialog-primary:hover, .setup-start:hover, .finish-today-button:hover { background: var(--primary-hover); }
+.start-button:active, .dialog-primary:active, .setup-start:active { box-shadow: inset 1px 1px #28372d55; transform: translateY(1px); }
+.stop-button { color: var(--muted); }
+.stop-button:hover { color: var(--pink); }
+.mission-stats, .mission-stats > div + div, #focus .mission-stats, #focus .mission-stats > div + div { border-color: var(--line); }
+.mission-stats strong { color: var(--cyan); }
+.depth-progress > div:first-child, .depth-progress b { color: var(--muted); }
+.progress-track { border-color: var(--edge); background: var(--deep); box-shadow: inset 0 1px var(--inset-shadow); }
+.progress-track i { background: repeating-linear-gradient(90deg,var(--titlebar) 0 5px,var(--board-light) 5px 6px); }
+.sound-button, .music-dialog-volume > svg { color: var(--muted); }
+.sound-button[aria-pressed="true"] { color: var(--cyan); }
+.toggle { background: var(--deep); border-color: var(--edge); box-shadow: inset 1px 1px var(--inset-shadow); }
+.toggle:after { background: var(--board); box-shadow: inset 1px 0 var(--board-light); }
+.sound-button[aria-pressed="true"] .toggle:after { background: var(--primary); }
+.music-library-button, #simpleViewButton { color: var(--glyph); }
+.music-library-button:hover { background-color: var(--button-hover); color: var(--glyph-accent); }
+.music-mini-player { color: var(--text); background: var(--raised); border-color: var(--edge-soft); }
+.music-mini-player:hover { background: var(--selected); border-color: var(--edge); }
+.music-mini-copy strong { color: var(--text); }
+.music-mini-copy small { color: var(--muted); }
+.music-mini-disc, .music-equalizer { color: var(--cyan); }
+/* Native ranges retain keyboard/touch behavior, but wear a notched rail and a flower dial. */
+input[type="range"] { -webkit-appearance: none; appearance: none; background: transparent; height: 26px; margin: 0; cursor: pointer; padding: 0; border: 0; box-shadow: none; }
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 8px; border: 1px solid var(--edge); border-radius: 1px;
+  background: repeating-linear-gradient(90deg,transparent 0 11px,var(--edge-soft) 11px 12px), var(--deep);
+  box-shadow: inset 0 2px var(--inset-shadow), 0 1px var(--window-highlight);
+}
+input[type="range"]::-moz-range-track {
+  height: 6px; border: 1px solid var(--edge); border-radius: 1px;
+  background: repeating-linear-gradient(90deg,transparent 0 11px,var(--edge-soft) 11px 12px), var(--deep);
+  box-shadow: inset 0 2px var(--inset-shadow), 0 1px var(--window-highlight);
+}
+input[type="range"] { --dial: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='24' viewBox='0 0 22 24' shape-rendering='crispEdges'%3E%3Cpath fill='%2348583e' d='M8 1h6v3h4v4h3v8h-3v4h-4v3H8v-3H4v-4H1V8h3V4h4z'/%3E%3Cpath fill='%23f4ecd0' d='M8 3h6v3h3v3h2v6h-2v3h-3v3H8v-3H5v-3H3V9h2V6h3z'/%3E%3Cpath fill='%23c56755' d='M9 3h4v5H9zM4 9h5v5H4zm9 0h5v5h-5zM9 16h4v5H9z'/%3E%3Cpath fill='%23799565' d='M6 5h3v4H6zm7 0h3v4h-3zM5 15h4v4H5zm8 0h4v4h-4z'/%3E%3Cpath fill='%2348583e' d='M8 9h6v6H8z'/%3E%3Cpath fill='%23efd17f' d='M9 10h4v4H9z'/%3E%3C/svg%3E"); }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 24px; margin-top: -9px; border: 0; border-radius: 0; background: var(--dial) center/22px 24px no-repeat; filter: drop-shadow(1px 2px 0 var(--drop-shadow)); }
+input[type="range"]::-moz-range-thumb { width: 22px; height: 24px; border: 0; border-radius: 0; background: var(--dial) center/22px 24px no-repeat; }
+input[type="range"]:disabled { opacity: .45; cursor: default; }
+input[type="range"]:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+input[type="checkbox"] { accent-color: var(--titlebar); }
+/* One window language for the compact conversation and every dialog. */
+#focus .mole-chat-window, #chatDialog, dialog.music-dialog, dialog.friends-dialog {
+  color: var(--text); background: var(--board); border-color: var(--edge);
+  box-shadow: inset 0 0 0 1px var(--board-light), 2px 3px var(--drop-shadow);
+}
+.mole-chat-titlebar, #focus .mole-chat-titlebar, .music-window-bar, #musicDialog .music-window-bar {
+  background: var(--titlebar); color: var(--titlebar-ink);
+}
+.mole-chat-titlebar h2, #chatDialog .mole-chat-titlebar h2, .music-window-bar h2,
+.mole-chat-titlebar > svg, .music-window-bar > svg { color: var(--titlebar-ink); }
+.chat-icon-lines { fill: var(--titlebar); }
+.chat-title-trim, .music-window-trim { background: repeating-linear-gradient(0deg,var(--board-light) 0 1px,transparent 1px 3px); }
+#focus .chat-title-trim, #musicDialog .music-window-trim { opacity: .45; }
+.mole-chat-content, #focus .mole-chat-content, .chat-dialog-body, .friends-dialog-body, .music-library-body { background: var(--panel); color: var(--text); }
+.chat-messages, .chat-dialog-messages, .shop-scroll, .music-library-body, .friends-dialog-body, dialog { scrollbar-color: var(--titlebar) var(--raised); scrollbar-width: thin; }
+.chat-messages::-webkit-scrollbar, .chat-dialog-messages::-webkit-scrollbar, .shop-scroll::-webkit-scrollbar { width: 12px; }
+.chat-messages::-webkit-scrollbar-track, .chat-dialog-messages::-webkit-scrollbar-track, .shop-scroll::-webkit-scrollbar-track { background: var(--raised); border: 1px solid var(--edge-soft); }
+.chat-messages::-webkit-scrollbar-thumb, .chat-dialog-messages::-webkit-scrollbar-thumb, .shop-scroll::-webkit-scrollbar-thumb { border: 2px solid var(--raised); background: var(--titlebar); }
+.mole-chat-message p, .mole-chat-message p > span { color: var(--text); }
+.mole-chat-message strong, .chat-user strong { color: var(--pink); }
+.chat-avatar, .chat-mole-avatar { background: var(--selected); border-color: var(--edge-soft); }
+.chat-notice { color: var(--yellow); }
+.chat-dialog-messages { background: var(--deep); border-color: var(--edge-soft); }
+.chat-options, #chatDialog .chat-privacy { color: var(--muted); }
+.chat-window-button:hover { background: var(--button-hover); }
+dialog, #craftingDialog, #craftConfirmDialog {
+  background: var(--panel); border-color: var(--edge); color: var(--text);
+  box-shadow: inset 0 0 0 2px var(--window-highlight), 4px 5px var(--drop-shadow);
+}
+dialog::backdrop { background: #153632b8; }
+dialog h2, .dialog-close, dialog .eyebrow { color: var(--pink); }
+dialog p, .friends-dialog-body p, .friends-dialog-body .friend-code-help,
+.friends-dialog-body .friend-request-empty, .friends-dialog-body .friend-sync-note { color: var(--muted); }
+.friends-dialog-body h3, .add-friend-form > label, .friend-share-label { color: var(--text); }
+.add-friend-form, .friends-dialog-body .friend-sync-note { border-color: var(--edge-soft); }
+.friend-request-row { background: var(--raised); border-color: var(--edge-soft); }
+.friends-dialog-body .friend-message { color: var(--pink); }
+.friend-confirm-actions .dialog-primary { background: var(--primary); color: var(--primary-ink); }
+.toast { background: var(--panel); color: var(--text); border-color: var(--edge); box-shadow: 3px 3px var(--drop-shadow); }
+.language-menu { background: var(--panel); border-color: var(--edge); box-shadow: 3px 4px var(--drop-shadow); }
+.language-menu button, #tourCard .language-menu button { color: var(--text); }
+.language-menu button[aria-checked="true"], #tourCard .language-menu button[aria-checked="true"] { background: var(--selected); color: var(--selected-ink); }
+.language-menu button:hover, .language-menu button:focus-visible, #tourCard .language-menu button:hover, #tourCard .language-menu button:focus-visible { background: var(--raised); outline-color: var(--edge); }
+.language-trigger[aria-expanded="true"] { border-color: var(--edge); }
+/* Music cabinet: pressed category tabs, paper sleeves and a green transport strip. */
+.music-now-playing { background: var(--deep); border-color: var(--edge-soft); box-shadow: inset 1px 2px var(--inset-shadow); }
+.music-disc-art, .music-track-art { background: var(--board); border-color: var(--edge); color: var(--board-ink); }
+.music-disc-art span { color: var(--board-ink); }
+.music-now-copy h3, .music-shelf-heading h3 { color: var(--text); }
+.music-kicker, .music-now-copy p, .music-shelf-heading > span, .music-category small,
+.music-track-copy small, .music-track-state, .music-message { color: var(--muted); }
+.music-playback-state { background: var(--selected); color: var(--selected-ink); border-color: var(--edge-soft); }
+.is-playing .music-playback-state { color: var(--cyan); border-color: var(--cyan); }
+.music-category, .music-track { background: var(--raised); color: var(--text); border-color: var(--edge-soft); box-shadow: inset 1px 1px var(--window-highlight), 1px 2px var(--drop-shadow); }
+.music-category > svg { color: var(--cyan); }
+.music-category:hover, .music-track:not(:disabled):hover { background: var(--button-hover); border-color: var(--edge); }
+.music-category[aria-pressed="true"], #musicDialog .music-category[aria-pressed="true"], .music-track.selected {
+  background: var(--selected); color: var(--selected-ink); border-color: var(--edge);
+  box-shadow: inset 0 -2px var(--titlebar);
+}
+.music-track.selected .music-track-state { color: var(--pink); }
+.music-player-footer { background: var(--board); border-color: var(--edge); }
+.music-seek-row, .music-dialog-volume > svg { color: var(--board-ink); }
+.music-transport-buttons .music-play-button { background: var(--primary); color: var(--primary-ink); }
+.music-repeat-button[aria-pressed="true"] { color: var(--text); border-color: var(--edge); }
+/* Setup, wardrobe and home use the same surfaces, without changing their editors. */
+.field-label, .color-heading, .custom-color-row { color: var(--text); }
+#selectedColorName, #colorHex { color: var(--muted); }
+.color-swatch { border-color: var(--edge); background: var(--raised); box-shadow: 2px 2px var(--drop-shadow); }
+.color-swatch:hover { border-color: var(--pink); }
+.color-swatch.selected { border-color: var(--primary); box-shadow: 0 0 0 2px var(--board-light), 2px 3px var(--drop-shadow); }
+.custom-color-row input { border-color: var(--edge); background: var(--raised); }
+.setup-buttons .setup-start { border-color: var(--primary); box-shadow: inset 1px 1px #fff4cd70, inset -1px -2px #63352f30, 2px 3px var(--drop-shadow); }
+.setup-buttons .setup-back { background: var(--button); color: var(--text); border-color: var(--edge); box-shadow: inset 1px 1px var(--window-highlight), 2px 3px var(--drop-shadow); }
+.setup-back { background: var(--button); color: var(--text); border-color: var(--edge); box-shadow: inset 1px 1px var(--window-highlight), 2px 3px var(--drop-shadow); }
+.preview-pet-name { color: #fff4da; background: #43533c; padding: 2px 8px; border: 1px solid #c5be86; text-shadow: none; }
+.equipped-list { color: var(--muted); }
+.equipment-chip { background: var(--selected); color: var(--selected-ink); border-color: var(--edge-soft); }
+.closet-balance { background: var(--raised); color: var(--yellow); border-color: var(--edge-soft); }
+.closet-tabs, .category-tabs { border-color: var(--edge-soft); }
+.closet-tabs button { color: var(--muted); }
+.closet-tabs button.active { color: var(--pink); border-color: var(--pink); }
+.closet-tabs span { color: var(--muted); }
+.outfit-card { background: var(--panel); border-color: var(--edge-soft); box-shadow: 2px 2px var(--drop-shadow); }
+.outfit-art { background: var(--raised); border-color: var(--edge-soft); background-image: radial-gradient(var(--speckle) 1px,transparent 1px); background-size: 7px 7px; }
+.outfit-card h3, .outfit-card.equipped h3 { color: var(--text); }
+.outfit-card.equipped { border-color: var(--edge); background: var(--selected); }
+.rarity-badge { color: var(--muted); }
+.outfit-card[data-rarity="rare"] { border-color: var(--cyan); }
+.outfit-card[data-rarity="rare"] .rarity-badge { color: var(--cyan); }
+.outfit-card[data-rarity="epic"] { border-color: var(--pink); }
+.outfit-card[data-rarity="epic"] .rarity-badge { color: var(--pink); }
+.outfit-card[data-rarity="legendary"] { border-color: var(--yellow); }
+.outfit-card[data-rarity="legendary"] .rarity-badge { color: var(--yellow); }
+.rarity-badge { border-color: currentColor; }
+body[data-period] .fitting-pet { background: var(--board); }
+.item-action > span { color: var(--yellow); }
+.closet-empty, .tool-shop-note, #activeToolName { color: var(--muted); }
+.home-view-note, #homeEditHint { color: var(--muted); }
+.home-room .control-heading, .home-room .control-heading > span:last-child,
+.fitting-room .control-heading, .fitting-room .control-heading > span:last-child,
+.home-room #homeEditHint, .fitting-room .equipped-list { color: var(--board-ink); }
+.home-room #homeMoodLabel { color: var(--board-ink); }
+.home-item, .home-theme { background: var(--raised); color: var(--text); border-color: var(--edge-soft); }
+.home-item.selected, .home-theme.selected { background: var(--selected); border-color: var(--edge); }
+.home-theme i { border-color: var(--edge); }
+.held-item-bar { border-color: var(--edge-soft); }
+.golden-display-bar { color: var(--yellow); background: var(--raised); border-color: var(--edge-soft); }
+.crafting-header { border-color: var(--edge-soft); background: var(--board); }
+.crafting-header .eyebrow { color: var(--board-ink); }
+.crafting-header h2 { color: var(--text); }
+.crafting-intro, .crafting-footer, .crafting-notice { color: var(--muted); }
+.crafting-footer { border-color: var(--edge-soft); background: var(--raised); }
+.craft-material, .craft-card { background: var(--raised); border-color: var(--edge-soft); color: var(--text); box-shadow: 1px 2px var(--drop-shadow); }
+.craft-materials { border-color: var(--edge-soft); }
+.craft-card h3, .craft-ingredient { color: var(--text); }
+.craft-material strong, .craft-ingredient small, .craft-confirm-status { color: var(--cyan); }
+.craft-card > p, .craft-location, .craft-material small { color: var(--muted); }
+.craft-art, .craft-confirm-art { background: var(--deep); border-color: var(--edge-soft); }
+.craft-card > button { background: var(--primary); color: var(--primary-ink); border-color: var(--edge); box-shadow: inset 1px 1px var(--window-highlight),1px 2px var(--drop-shadow); }
+.craft-card > button:disabled { background: var(--raised); color: var(--muted); border-color: var(--edge-soft); }
+.craft-card.is-made { border-color: var(--titlebar); }
+.craft-card.is-made > button { background: var(--selected); color: var(--selected-ink); border-color: var(--edge); }
+.craft-ingredient progress { background: var(--deep); }
+.craft-ingredient progress::-webkit-progress-bar { background: var(--deep); }
+.craft-ingredient progress::-webkit-progress-value { background: var(--titlebar); }
+.craft-ingredient progress::-moz-progress-bar { background: var(--titlebar); }
+/* Keep the wooden chest's material identity; its buttons match the rest of the game. */
+#chestDialog.game-chest { --text: #fff0d1; --muted: #e4c99c; --yellow: #f6d788; --pink: #f0b98d; }
+#chestDialog #chestHint { color: var(--muted); }
+#chestDialog .chest-selection button, #chestDialog .chest-footer button {
+  color: #fff1d5; background: #596145; border-color: #d5bd83;
+  box-shadow: inset 1px 1px #7d875c, inset -1px -2px #414a34, 1px 2px #362f24;
+}
+#chestDialog .chest-selection button:not(:disabled):hover, #chestDialog .chest-footer button:hover { background: #455039; }
+.golden-pickup { background: #394932f2; border-color: #e4c86c; color: #fff0c2; }
+/* Data and friends remain quiet until selected. No decoration obscures the chart. */
+.report-stats article > span, .report-stats small, .chart-foot, .report-note,
+.log-empty, .log-entry > div > small, .calendar-key, .weekdays, .friend-list-heading { color: var(--muted); }
+.report-stats strong { color: var(--timer); }
+.report-stats article:nth-child(2) strong { color: var(--cyan); }
+.report-stats article:nth-child(3) strong { color: var(--yellow); }
+.panel-heading h2 { color: var(--text); }
+.trend-chart text { fill: var(--muted); }
+.trend-chart path[stroke="#37436b"] { stroke: var(--edge-soft); }
+.trend-chart path[stroke="#e6a1d8"] { stroke: var(--cyan); }
+.trend-chart .chart-point { stroke: var(--cyan); fill: var(--panel); }
+.trend-chart .chart-point:hover, .trend-chart .chart-point:focus { stroke: var(--pink); fill: var(--selected); }
+#trendTotal { color: var(--cyan); }
+.finish-today-button span { color: var(--primary-ink); }
+#chartFill stop { stop-color: var(--cyan); }
+.calendar-day { background: var(--raised); color: var(--text); border-color: var(--edge-soft); }
+.calendar-day small { color: var(--muted); }
+.calendar-day[data-level="1"] { background: var(--board); color: var(--board-ink); }
+.calendar-day[data-level="2"] { background: var(--titlebar); color: var(--titlebar-ink); }
+.calendar-day[data-level="3"] { background: var(--primary); color: var(--primary-ink); }
+.calendar-day[data-level="2"] small, .calendar-day[data-level="3"] small { color: inherit; }
+.calendar-day.is-today > span { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.calendar-key i { background: var(--raised); border-color: var(--edge-soft); }
+.calendar-key i:nth-of-type(2) { background: var(--board); }
+.calendar-key i:nth-of-type(3) { background: var(--titlebar); }
+.calendar-key i:nth-of-type(4) { background: var(--primary); }
+.daily-log .panel-heading, .log-entry, .today-summary-tasks { border-color: var(--edge-soft); }
+.log-entry > strong, .log-badge { color: var(--cyan); }
+.friend-connection-bar, .friend-card { background: var(--panel); color: var(--text); border-color: var(--edge-soft); box-shadow: 2px 3px var(--drop-shadow); }
+.friend-list-heading { background: var(--raised); border-color: var(--edge-soft); }
+.friend-list-heading > span:last-child { color: var(--muted); }
+.friend-card:hover { border-color: var(--edge); }
+.friend-summary:hover, .friend-summary[aria-expanded="true"] { background: var(--selected); border-color: var(--edge-soft); }
+.friend-identity strong { color: var(--text); }
+.friend-identity small, .friend-detail, .live-friend-meta, .friend-signal, .friend-time { color: var(--muted); }
+.friend-progress > span:first-child, .friend-progress > small, .friend-today small,
+.friend-depth span, .friend-item > span, .friend-item small { color: var(--muted); }
+.friend-progress b, .friend-today b, .friend-depth strong { color: var(--cyan); }
+.friend-detail { background: var(--raised); }
+.friend-expand { color: var(--pink); }
+.friend-progress-track { background: var(--deep); border-color: var(--edge-soft); }
+.friend-connection-bar i.connected { background: var(--titlebar); }
+.friends-empty { color: var(--muted); background: var(--panel); border-color: var(--edge-soft); }
+.add-friend-button b { color: var(--primary-ink); background: var(--primary); }
+#tourCard { background: var(--panel); color: var(--text); border-color: var(--edge); box-shadow: 3px 4px var(--drop-shadow); }
+#tourCard button { background: var(--button); color: var(--text); border-color: var(--edge); }
+.tour-top { color: var(--muted); }
+#tourTitle { color: var(--pink); }
+#tourCopy { color: var(--text); }
+#tourTopics button[aria-pressed="true"] { color: var(--selected-ink); border-color: var(--edge); background: var(--selected); }
+#tourNext { background: var(--primary)!important; color: var(--primary-ink)!important; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible,
+#focus button:focus-visible, #focus input:focus-visible, .language-trigger:focus-visible,
+#tourCard button:focus-visible { outline-color: var(--focus-ring); }
+@media (hover:hover) and (pointer:fine) {
+  .category-tabs button:hover, .home-item:hover, .home-theme:hover { border-color: var(--edge); }
+}
+@media (max-width:700px) {
+  .world-backdrop { opacity: .65; }
+  .nav a, .report-link { background-size: 4px 4px; }
+  .nav svg { width: 22px; height: 22px; }
+}
+@media (max-width:360px) { .nav svg { width: 19px; height: 19px; } }
+@media (prefers-reduced-motion:reduce) { .page { animation: none; } }

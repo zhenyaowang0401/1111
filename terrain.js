@@ -3,8 +3,8 @@
 window.Terrain=(()=>{
  const layers=[
   // Normal Study/Work digs one metre per 30 seconds: 240m = two hours.
-  {from:0,name:'Root soil',id:'roots',soil:['#947565','#a38270','#876b60'],stone:['#b99b7c','#7e675e'],moss:'#9bac76'},
-  {from:240,name:'Stone beds',id:'stone',soil:['#9690aa','#a69bb6','#88829c'],stone:['#c7b9d1','#77718d'],moss:'#a1b29e'},
+  {from:0,name:'Root soil',id:'roots',soil:['#9b875d','#ab9669','#8c7955'],stone:['#c5b180','#7d6c4a'],moss:'#93a55c'},
+  {from:240,name:'Stone beds',id:'stone',soil:['#949c8b','#a6ac98','#838e80'],stone:['#bdc2a8','#738074'],moss:'#a1b29e'},
   {from:300,name:'Sand beds',id:'sand',soil:['#d5b590','#e3c8a4','#c7a783'],stone:['#f2dfbb','#b79b78'],moss:'#b0b38a'},
   {from:360,name:'Slate layer',id:'slate',soil:['#6e7f9d','#7c8da7','#62738f'],stone:['#a1b7c6','#53667f'],moss:'#8db8ac'},
   {from:480,name:'Red granite',id:'granite',soil:['#a47c8a','#b68d98','#926f81'],stone:['#dbc1b4','#806472'],moss:'#bba496'},
@@ -21,7 +21,7 @@ window.Terrain=(()=>{
    // The viewport shows ground below the mole. Never preview locked strata
    // ahead of actual progress, especially in the first two hours.
    const layer=index>0&&revealed<current.from+2&&rnd(col+41,row)<.3?layers[index-1]:current;
-   const soil=layer.id==='roots'&&depth>=120?['#8d6d70','#9a7a78','#806268']:layer.soil;
+   const soil=layer.id==='roots'&&depth>=120?['#8d805c','#a08d65','#7e7053']:layer.soil;
    const patch=rnd(Math.floor(col/3),Math.floor(row/3));box(x,y,16,16,soil[Math.floor(patch*3)]);
    if(r>.55){const offset=Math.floor(rnd(col+3,row+7)*4)*2;box(x+offset,y+2,12,4,soil[(Math.floor(patch*3)+1)%3]);box(x+offset+2,y+6,8,2,soil[(Math.floor(patch*3)+1)%3]);}
    // Material-specific geometry: loose grains, chunky stone, angled slate,

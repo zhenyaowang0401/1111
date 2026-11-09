@@ -53,6 +53,11 @@ def build(output: Path) -> Path:
     if page.count(style_tag) != 1:
         raise ValueError('Expected exactly one local style.css stylesheet tag')
     css = (ROOT / 'style.css').read_text(encoding='utf-8')
+    woodland_tag = '<link rel="stylesheet" href="woodland.css">'
+    if page.count(woodland_tag) != 1:
+        raise ValueError('Expected exactly one woodland.css stylesheet tag')
+    css += '\n' + (ROOT / 'woodland.css').read_text(encoding='utf-8')
+    page = page.replace(woodland_tag, '')
     font_path = 'assets/fonts/pixelify-sans.ttf'
     font_url = f'url("{font_path}")'
     if css.count(font_url) != 1:
