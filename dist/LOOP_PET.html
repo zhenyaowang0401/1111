@@ -1614,7 +1614,11 @@ window.WardrobeArt=(()=>{
   if(id==='drill'||id==='crystaldrill')r(36+frame%3,17+bob,1,2,frame%2?'#607c98':'#f0fff7');
  }
  function iconSVG(id){const rs=hats[id]||extras[id]||scarves[id]||glasses[id]||tools[id];if(!rs)return null;const xs=rs.map(r=>r[0]),ys=rs.map(r=>r[1]),minX=Math.min(...xs),minY=Math.min(...ys),maxX=Math.max(...rs.map(r=>r[0]+r[2])),maxY=Math.max(...rs.map(r=>r[1]+r[3])),size=Math.max(maxX-minX,maxY-minY)+5,x=(minX+maxX-size)/2,y=(minY+maxY-size)/2;return `<svg viewBox="${x} ${y} ${size} ${size}" aria-hidden="true" shape-rendering="crispEdges">`+rs.map(([x,y,w,h,color])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${color}"/>`).join('')+'</svg>';}
- return {hat:(r,id)=>draw(r,hats[id]),extra:(r,id)=>draw(r,extras[id]),scarf:(r,id)=>draw(r,scarves[id]),glasses:(r,id)=>draw(r,glasses[id]),drawTool,iconSVG};
+ // Fitted wearing coordinates; catalog icons retain their original clear silhouettes.
+ function extra(r,id){draw((x,y,w,h,c)=>{const a=16+Math.round((x-20)*2/3),b=17+Math.round((y-18)*2/3);r(a,b,Math.max(1,Math.round((x+w-20)*2/3)+16-a),Math.max(1,Math.round((y+h-18)*2/3)+17-b),c);},extras[id]);}
+ function scarf(r,id){const yy=y=>Math.round(y<=21?y-1:20+(y-21)/2);draw((x,y,w,h,c)=>r(x,yy(y),w,Math.max(1,yy(y+h)-yy(y)),c),scarves[id]);}
+ function eyewear(r,id){const align=['squareglasses','heartglasses','starglasses'].includes(id);draw((x,y,w,h,c)=>r(align&&x>=14?x-1:x,y,w,h,c),glasses[id]);}
+ return {hat:(r,id)=>draw(r,hats[id]),extra,scarf,glasses:eyewear,drawTool,iconSVG};
 })();
 
 </script><script>
@@ -1814,7 +1818,7 @@ window.MineView=(()=>{
 window.MoleArt=(()=>{
  function tint(hex,amount){return '#'+hex.slice(1).match(/../g).map(v=>{const n=parseInt(v,16);return Math.round(amount>0?n+(255-n)*amount:n*(1+amount)).toString(16).padStart(2,'0');}).join('');}
  function paint(c,{color='#a9b4c6',dig=false,frame=0,mood='awake',sleepScale=1}={}){
-  const ink='#28214c',fur=color,light=tint(color,.32),shadow=tint(color,-.23),belly='#fff1c8',paw='#ffb5a8';
+  const ink='#28214c',fur=color,light=tint(color,.20),shadow=tint(color,-.18),belly='#fff1c8',paw='#ffb5a8';
   const r=(x,y,w,h,col)=>{const top=Math.round(27+(y-27)*sleepScale),bottom=Math.round(27+(y+h-27)*sleepScale);c.fillStyle=col;c.fillRect(x,top,w,Math.max(1,bottom-top));};
   // Low, pointed tail sits behind the body and feet.
   r(4,21,4,1,ink);r(2,22,6,1,ink);r(1,23,7,1,ink);r(0,24,8,1,ink);
@@ -1826,19 +1830,25 @@ window.MoleArt=(()=>{
   const inside=(x,y)=>spans[y]&&x>=spans[y][0]&&x<spans[y][1];
   for(let y=5;y<=24;y++)for(let x=spans[y][0];x<spans[y][1];x++){
    const edge=!inside(x-1,y)||!inside(x+1,y)||!inside(x,y-1)||!inside(x,y+1);
-   r(x,y,1,1,edge?ink:fur);
+   // Connected lighting bands follow the silhouette, rather than cheek patches.
+   const lit=x<spans[y][0]+4&&y<22,shaded=x>=20||y>=22;
+   r(x,y,1,1,edge?ink:shaded?shadow:lit?light:fur);
   }
-  r(6,8,4,3,light);r(4,11,3,5,light);r(19,13,3,9,shadow);r(6,21,15,3,shadow);
   r(8,16,11,7,belly);r(10,15,7,9,belly);r(10,17,6,5,'#fff8df');
   const closed=!dig&&(mood==='asleep'||mood==='rest'||mood==='drowsy'&&frame%30>8||frame%42>=39);
   if(closed){r(8,12,2,1,ink);r(17,12,2,1,ink);}
   else{r(8,11,2,2,ink);r(17,11,2,2,ink);}
-  r(6,15,3,2,shadow);r(18,15,3,2,shadow);r(12,13,2,2,'#e7473f');
-  r(4,23,7,4,ink);r(16,23,7,4,ink);r(5,24,5,2,paw);r(17,24,5,2,paw);
+  r(12,13,2,2,'#e7473f');
+  // Three joined toes with stepped edges and discrete light-to-dark bands.
+  // Pink contour avoids the old rectangular navy frame around each foot.
+  function claw(x,y,foot=false){
+   const rows=foot?['.######.','########','########','##.##.##','##.##.##']:['.######.','########','########','##.##.##'];
+   const ramp=foot?['#df9291','#ffd1bd','#ffb5a8','#e69b94','#bc747d']:['#df9291','#ffd1bd','#f4aca0','#bc747d'];
+   rows.forEach((row,j)=>{for(let i=0;i<row.length;i++)if(row[i]==='#')r(x+i,y+j,1,1,(i===0||i===7)&&j<rows.length-1?'#cf8585':ramp[j]);});
+  }
+  claw(4,22,true);claw(15,22,true);
   const arm=dig&&frame%2?2:0;
-  // Flat mitten paws: seven pixels wide, four high, with a one-pixel rim.
-  function hand(x,y){r(x+1,y,5,1,ink);r(x,y+1,7,2,ink);r(x+1,y+3,5,1,ink);r(x+1,y+1,5,2,paw);r(x+2,y+2,3,1,'#ed9389');}
-  hand(0,18-arm);hand(20,18+arm);
+  claw(0,17-arm);claw(19,17+arm);
   return true;
  }
  function drawAvatar(canvas,color){
@@ -1915,7 +1925,7 @@ window.PixelArt=(()=>{
  if(running){for(let i=0;i<5;i++){const k=(frame+i*3)%12;const dir=i%2?1:-1;const xx=cx+dir*(14+k*3),yy=end-camera-5-Math.floor(Math.sin(k/12*Math.PI)*18);box(c,xx,yy,3+(i%2)*2,3,'#c1a16e');}if(frame%16<3)star(c,cx+32,my+26,.6,'#fff2b4');}
  // A subtle CRT edge; no blurry resampling.
  box(c,0,h-2,w,2,'#263c33');}
- function renderWardrobe(c,s,frame){const t=WorldClock.snapshot();sky(c,192,160,t);if(t.period!=='night'){cloud(c,8,24,t.cloud);cloud(c,122,13,t.cloudBack);}if(t.period==='night')moon(c,145,13,.8,t.sun);else sun(c,150,25,.7,t.sun);if(t.period==='night')for(let i=0;i<15;i++){const x=Math.floor(random(i,1)*186),y=Math.floor(random(i,6)*116);if(i%4===0)star(c,x,y,.5,'#dfce92');else box(c,x,y,1,1,'#a7c4ad');}box(c,20,116,152,5,'#b39761');box(c,26,121,140,9,'#876c49');box(c,32,130,128,5,'#5a5035');box(c,18,116,4,5,'#dfc481');box(c,170,116,4,5,'#dfc481');const lift=Math.min(18,jump(s)),rotation=playerMole(c,s,57,32-lift,3,false,frame);bounds.wardrobeCanvas={x:57,y:23-lift,w:87,h:94,rotation};positionSpeech('wardrobeSpeech',bounds.wardrobeCanvas,192,160);star(c,28,55,1,'#fff0a9');star(c,151,34,.5,'#f6a6d2');}
+ function renderWardrobe(c,s,frame){const t=WorldClock.snapshot();sky(c,192,160,t);if(t.period!=='night'){cloud(c,8,24,t.cloud);cloud(c,122,13,t.cloudBack);}if(t.period==='night')moon(c,145,13,.8,t.sun);else sun(c,150,25,.7,t.sun);if(t.period==='night')for(let i=0;i<15;i++){const x=Math.floor(random(i,1)*186),y=Math.floor(random(i,6)*116);if(i%4===0)star(c,x,y,.5,'#dfce92');else box(c,x,y,1,1,'#a7c4ad');}box(c,20,116,152,5,'#b39761');box(c,26,121,140,9,'#876c49');box(c,32,130,128,5,'#5a5035');box(c,18,116,4,5,'#dfc481');box(c,170,116,4,5,'#dfc481');const lift=Math.min(18,jump(s)),rotation=playerMole(c,s,57,35-lift,3,false,frame);bounds.wardrobeCanvas={x:57,y:26-lift,w:87,h:90,rotation};positionSpeech('wardrobeSpeech',bounds.wardrobeCanvas,192,160);star(c,28,55,1,'#fff0a9');star(c,151,34,.5,'#f6a6d2');}
  const furniture={
  mushroomPlanter:[[4,20,24,3,'#b98269'],[6,23,20,6,'#98654f'],[9,29,14,2,'#6c4b49'],[7,21,18,2,'#e3ac83'],[8,18,16,2,'#6f8c65'],[13,8,4,11,'#f5dfb5'],[7,6,16,3,'#eea182'],[5,9,20,5,'#a45142'],[7,9,16,3,'#c56a52'],[10,7,3,2,'#fff0d0'],[18,9,3,2,'#ffe7c3'],[23,15,3,5,'#e6cca4'],[20,14,9,3,'#f0b3c4'],[21,13,7,2,'#ffe0c9'],[3,18,3,4,'#a6c48a']],
  mushroomLamp:[[10,27,16,3,'#ba9470'],[12,25,12,3,'#e6be91'],[15,13,5,12,'#f5e4b3'],[15,15,2,9,'#fff3ce'],[5,11,25,4,'#954b40'],[7,14,21,3,'#ffdf91'],[8,5,19,6,'#c76c50'],[11,3,13,3,'#efb28b'],[5,9,25,4,'#b75b47'],[11,6,4,3,'#fff2ce'],[21,8,4,3,'#ffe3bd'],[5,20,2,2,'#ffdc85'],[26,20,2,2,'#ffdc85']],

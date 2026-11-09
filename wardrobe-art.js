@@ -49,5 +49,9 @@ window.WardrobeArt=(()=>{
   if(id==='drill'||id==='crystaldrill')r(36+frame%3,17+bob,1,2,frame%2?'#607c98':'#f0fff7');
  }
  function iconSVG(id){const rs=hats[id]||extras[id]||scarves[id]||glasses[id]||tools[id];if(!rs)return null;const xs=rs.map(r=>r[0]),ys=rs.map(r=>r[1]),minX=Math.min(...xs),minY=Math.min(...ys),maxX=Math.max(...rs.map(r=>r[0]+r[2])),maxY=Math.max(...rs.map(r=>r[1]+r[3])),size=Math.max(maxX-minX,maxY-minY)+5,x=(minX+maxX-size)/2,y=(minY+maxY-size)/2;return `<svg viewBox="${x} ${y} ${size} ${size}" aria-hidden="true" shape-rendering="crispEdges">`+rs.map(([x,y,w,h,color])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${color}"/>`).join('')+'</svg>';}
- return {hat:(r,id)=>draw(r,hats[id]),extra:(r,id)=>draw(r,extras[id]),scarf:(r,id)=>draw(r,scarves[id]),glasses:(r,id)=>draw(r,glasses[id]),drawTool,iconSVG};
+ // Fitted wearing coordinates; catalog icons retain their original clear silhouettes.
+ function extra(r,id){draw((x,y,w,h,c)=>{const a=16+Math.round((x-20)*2/3),b=17+Math.round((y-18)*2/3);r(a,b,Math.max(1,Math.round((x+w-20)*2/3)+16-a),Math.max(1,Math.round((y+h-18)*2/3)+17-b),c);},extras[id]);}
+ function scarf(r,id){const yy=y=>Math.round(y<=21?y-1:20+(y-21)/2);draw((x,y,w,h,c)=>r(x,yy(y),w,Math.max(1,yy(y+h)-yy(y)),c),scarves[id]);}
+ function eyewear(r,id){const align=['squareglasses','heartglasses','starglasses'].includes(id);draw((x,y,w,h,c)=>r(align&&x>=14?x-1:x,y,w,h,c),glasses[id]);}
+ return {hat:(r,id)=>draw(r,hats[id]),extra,scarf,glasses:eyewear,drawTool,iconSVG};
 })();
