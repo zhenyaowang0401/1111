@@ -422,3 +422,15 @@ body[data-period="evening"] .painted-backdrop { opacity: .24; }
 body[data-period="night"] .painted-backdrop { opacity: .24; filter: saturate(.4) contrast(.8) brightness(.65); }
 body[data-period="night"] .painted-day { display: none; }
 body[data-period="night"] .painted-night { display: block; }
+
+/* Quiet focus controls; labels remain available to keyboard and screen readers. */
+.focus-icon{display:block;width:24px;height:24px;flex-shrink:0}
+#floatMoleButton{width:48px;height:44px;padding:4px;display:grid;place-items:center}
+#floatMoleButton .focus-icon{width:34px;height:34px}
+#focusMode,#devicePeriod{display:grid;place-items:center;min-width:28px}
+.focus-modes button{display:grid;place-items:center;min-height:44px}
+#startButton{display:flex;justify-content:center;align-items:center;color:#fff}
+#startButton .play-symbol{width:24px;height:24px}
+#startButton .play-symbol:before{display:none}
+#startButton .play-symbol svg{width:24px;height:24px}
+.focus-icon{fill:none}

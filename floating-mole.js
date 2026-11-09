@@ -13,22 +13,25 @@ window.FloatingMole=(()=>{
  .mine-top{position:absolute;inset:0 0 auto;z-index:2;padding:8px 10px 9px;background:linear-gradient(#1c1b37f5,#1c1b37e8);border-bottom:2px solid #b491a16b;box-shadow:0 3px #18142c3b}
  header{display:flex;gap:8px;align-items:center;font-size:11px;height:24px}#name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#e8c9df;font-weight:600}#return{display:grid;place-items:center;width:24px;min-height:24px;padding:0;background:#5a456455;border-color:#a98db366}#return svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.7}
  .mine-hud{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}#time{font-size:27px;line-height:1;font-weight:650;letter-spacing:1px;font-variant-numeric:tabular-nums;color:#ffedb4}.time-detail{display:flex;flex-direction:column;gap:3px;text-align:right}#mode{font-size:10px;color:#d1c3df}#depth{font-size:11px;color:#a7dace}
- #line{position:absolute;z-index:2;top:80px;left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100% - 28px);text-align:center;font-size:11px;line-height:1.4;margin:0;padding:6px 9px;border:1px solid #b89bc577;background:#30263feb;color:#f2e2f0;pointer-events:none;box-shadow:2px 2px #18132966}
  footer{position:absolute;z-index:2;bottom:0;left:0;right:0;display:flex;gap:7px;padding:9px 10px;background:linear-gradient(transparent,#251c30a3)}footer button{flex:1;min-width:0;font-size:11px}#toggle{background:#e3b0d0;color:#33243e;border-color:#f8d7eb;font-weight:600}#end{background:#46374fe8;border-color:#b998b9}
  #hint{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
  #confirmation{position:absolute;z-index:4;top:50%;left:10px;right:10px;transform:translateY(-50%);border:2px solid #af90b7;padding:12px;background:#30263ff5;box-shadow:0 0 0 100vmax #15102188}#confirmation p{margin:0 0 10px;font-size:12px;line-height:1.4}#confirmation div{display:flex;gap:6px}#confirmation button{flex:1;font-size:11px}
- @media(min-width:300px) and (min-height:380px){.mine-top{padding:10px 12px}header{font-size:12px}#time{font-size:30px}footer{padding:12px}footer button{font-size:12px;min-height:36px}#line{top:88px;font-size:12px}}
+ @media(min-width:300px) and (min-height:380px){.mine-top{padding:10px 12px}header{font-size:12px}#time{font-size:30px}footer{padding:12px}footer button{font-size:12px;min-height:36px}}
  :root{background:#243a35;color:var(--text)}
  .tunnel-window{background:#243a35}
  .mine-top{background:var(--panel);border-color:var(--edge);box-shadow:inset 0 0 0 1px var(--board-light),0 2px #17382d66}
  #name{color:var(--text)}#time{color:var(--timer)}#mode{color:var(--muted)}#depth{color:var(--cyan)}
  button,#return,#end{background:var(--button);color:var(--text);border-color:var(--edge);border-radius:2px;box-shadow:inset 1px 1px var(--board-light),1px 2px #142f2866}
  #toggle{background:var(--primary);color:var(--primary-ink);border-color:var(--edge)}
- #line,#confirmation{background:var(--panel);color:var(--text);border-color:var(--edge)}
+#confirmation{background:var(--panel);color:var(--text);border-color:var(--edge)}
  footer{background:linear-gradient(transparent,#253c35ba)}
  button:focus-visible{outline-color:var(--primary)}
+ #return{width:36px;min-height:36px}header{height:36px}
+ #return svg{width:30px;height:30px;stroke-width:2}
+ #toggle{display:grid;place-items:center;color:#fff;min-height:40px}
+ #toggle svg{width:24px;height:24px}
  `;
- function markOpen(value){const b=button();b.setAttribute('aria-pressed',String(value));b.textContent=value?'Close floating mole':'Float mole ↗';}
+ function markOpen(value){const b=button();b.setAttribute('aria-pressed',String(value));FocusIcons.set(b,value?'return':'depart',value?'Close floating mole':'Float mole ↗');}
  function cleanup(w){if(pip!==w)return;if(interval!==null)w.clearInterval(interval);if(animation!==null)w.cancelAnimationFrame(animation);interval=null;animation=null;pip=null;confirmSession=null;lastSession=null;finished=false;markOpen(false);}
  function close(){if(!pip)return;const w=pip;cleanup(w);w.close();}
  function sync(){
@@ -46,10 +49,8 @@ window.FloatingMole=(()=>{
   d.getElementById('mode').textContent=t?(t.demo?'Demo':rest?'Break':t.mode==='work'?'Work':'Study')+' · '+(running?'Running':'Paused'):finished?'Session saved':'Ready';
   d.getElementById('time').textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');
   d.getElementById('depth').textContent=Math.floor(PixelArt.digMetrics(s).worldDepth)+' m dug';
-  const line=finished?'All saved. Let’s rest together.':!t?'Ready whenever you are.':!running?'A little pause together.':rest?'I’m resting with you.':'';
-  d.getElementById('line').textContent=!t&&s.petAt&&Date.now()-s.petAt<1400?(s.petSpinAt?'Wheee! One happy spin!':'yeeeeee'):line;
-  d.getElementById('line').hidden=!d.getElementById('line').textContent;
-  d.getElementById('toggle').textContent=t?(running?'Pause':'Resume'):'Start';
+  FocusIcons.set(d.getElementById('toggle'),running?'pause':'play',t?(running?'Pause':'Resume'):'Start');
+  FocusIcons.set(d.getElementById('return'),'return','Back to Eumo');
   d.getElementById('end').hidden=!t;d.getElementById('pet').disabled=!!t;
   d.getElementById('pet').setAttribute('aria-label','Pet '+s.profile.name);
   // Store only an ephemeral drawing snapshot, never another session or reward ledger.
@@ -70,7 +71,7 @@ window.FloatingMole=(()=>{
    w.addEventListener('pagehide',()=>cleanup(w),{once:true});
    const d=w.document;d.documentElement.lang='en';d.title='Eumo · Floating mole';
    const style=d.createElement('style');style.textContent=css;d.head.append(style);
-   d.body.innerHTML=`<section class="tunnel-window" aria-label="Your floating mine"><main><canvas id="mole" width="128" height="171" aria-hidden="true"></canvas><button id="pet" aria-label="Pet your mole"></button></main><div class="mine-top"><header><span id="name"></span><button id="return" title="Back to Eumo" aria-label="Back to Eumo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9 2h5v5M14 2 7 9M6 3H2v11h11v-4"/></svg></button></header><div class="mine-hud"><div id="time" role="timer"></div><div class="time-detail"><span id="mode"></span><span id="depth"></span></div></div></div><p id="line" role="status"></p><section id="confirmation" aria-label="End session confirmation" hidden><p>End this session and save your progress?</p><div><button id="keep">Keep going</button><button id="save">End &amp; save</button></div></section><footer><button id="toggle">Start</button><button id="end">End session</button></footer><p id="hint">Drag the title bar · Keep Eumo open</p></section>`;
+   d.body.innerHTML=`<section class="tunnel-window" aria-label="Your floating mine"><main><canvas id="mole" width="128" height="171" aria-hidden="true"></canvas><button id="pet" aria-label="Pet your mole"></button></main><div class="mine-top"><header><span id="name"></span><button id="return" title="Back to Eumo" aria-label="Back to Eumo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9 2h5v5M14 2 7 9M6 3H2v11h11v-4"/></svg></button></header><div class="mine-hud"><div id="time" role="timer"></div><div class="time-detail"><span id="mode"></span><span id="depth"></span></div></div></div><section id="confirmation" aria-label="End session confirmation" hidden><p>End this session and save your progress?</p><div><button id="keep">Keep going</button><button id="save">End &amp; save</button></div></section><footer><button id="toggle">Start</button><button id="end">End session</button></footer><p id="hint">Drag the title bar · Keep Eumo open</p></section>`;
    window.EumoI18n?.observe(d);
    d.getElementById('toggle').addEventListener('click',()=>{confirmSession=null;d.getElementById('confirmation').hidden=true;bridge.toggle();sync();});
    d.getElementById('end').addEventListener('click',()=>{const s=bridge.snapshot();if(!s.session){sync();return;}confirmSession=s.session.id;d.getElementById('confirmation').hidden=false;d.getElementById('keep').focus();});
@@ -84,6 +85,6 @@ window.FloatingMole=(()=>{
   }catch(e){close();bridge.notify('Could not open the floating mole. Try again in a separate Chrome or Edge tab.');}
   finally{opening=false;button().disabled=false;}
  }
- function init(options){bridge=options;button().addEventListener('click',open);window.addEventListener('pagehide',close);}
+ function init(options){bridge=options;markOpen(false);button().addEventListener('click',open);window.addEventListener('pagehide',close);}
  return {init,close,supported};
 })();

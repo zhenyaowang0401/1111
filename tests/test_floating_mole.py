@@ -41,14 +41,17 @@ def run():
             assert mini.locator('#mole').bounding_box()['height']==440
             assert mini.locator('.tunnel-window').evaluate("e=>parseFloat(getComputedStyle(e).borderRadius)")==0
             mini.set_viewport_size({'width':240,'height':320})
+            assert page.locator('#floatMoleButton svg').count()==1
+            assert mini.locator('#return svg').count()==1
+            assert mini.locator('#toggle').inner_text()==''
             initial=page.evaluate('JSON.stringify([state.depth,state.balance,state.inventory])')
             # Idle petting uses the same sprite/animation state; no extra rewards.
-            mini.locator('#pet').click();expect(mini.locator('#line')).to_have_text('yeeeeee')
+            mini.locator('#pet').click();expect(mini.locator('#line')).to_have_count(0)
             mini.locator('#pet').click();mini.locator('#pet').click()
             assert page.evaluate('petSpinAt>0')
             assert page.evaluate('JSON.stringify([state.depth,state.balance,state.inventory])')==initial
             mini.locator('#toggle').click();expect(page.locator('#startText')).to_have_text('Pause')
-            expect(mini.locator('#line')).to_be_hidden()
+            expect(mini.locator('#line')).to_have_count(0)
             expect(mini.locator('#pet')).to_be_disabled()
             # Navigate the original app away from Focus and switch to another real browser tab.
             page.evaluate("navigateTo('home')")
@@ -63,26 +66,26 @@ def run():
             mini.locator('#toggle').click();expect(page.locator('#startText')).to_have_text('Resume')
             elapsed=page.evaluate('state.session.elapsed');page.wait_for_timeout(500)
             assert page.evaluate('state.session.elapsed')==elapsed
-            expect(mini.locator('#line')).to_contain_text('pause together')
+            expect(mini.locator('#line')).to_have_count(0)
             expect(mini.locator('#pet')).to_be_in_viewport()
             mini.screenshot(path='/tmp/eumo-floating-paused.png')
             # Main -> mini synchronization, closing/reopening never settles or pauses a session.
             page.evaluate("document.getElementById('startButton').click()")
-            expect(mini.locator('#toggle')).to_have_text('Pause')
+            expect(mini.locator('#toggle')).to_have_attribute('aria-label','Pause')
             session=page.evaluate('state.session.id');mini.close()
             expect(page.locator('#floatMoleButton')).to_have_attribute('aria-pressed','false')
             assert page.evaluate('state.session.id')==session and page.evaluate('state.session.status')=='running'
-            mini=open_pip();expect(mini.locator('#toggle')).to_have_text('Pause')
+            mini=open_pip();expect(mini.locator('#toggle')).to_have_attribute('aria-label','Pause')
             mini.locator('#end').click();expect(mini.locator('#confirmation')).to_be_visible()
             mini.locator('#keep').click();assert page.evaluate('state.session.id')==session
             mini.locator('#end').click();mini.locator('#save').click()
             assert page.evaluate('state.session') is None
-            expect(mini.locator('#line')).to_contain_text('rest together')
+            expect(mini.locator('#line')).to_have_count(0)
             assert page.evaluate('state.history.length')==1
             mini.locator('#save').dispatch_event('click');assert page.evaluate('state.history.length')==1
             # Break means rest, never digging; natural deadline settles exactly once while mini is open.
             page.evaluate("state.mode='rest';renderTimer()")
-            mini.locator('#toggle').click();expect(mini.locator('#line')).to_contain_text('resting with you')
+            mini.locator('#toggle').click();expect(mini.locator('#line')).to_have_count(0)
             mini.locator('#end').click();mini.locator('#save').click()
             page.evaluate("state.mode='study';state.minutes=5;renderTimer()")
             mini.locator('#toggle').click()
