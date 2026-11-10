@@ -469,3 +469,28 @@ body[data-period="night"]:has(#home:not([hidden])) .painted-backdrop{opacity:.09
 #home .home-room{background:var(--panel);padding:12px;border:2px solid var(--edge);box-shadow:3px 3px var(--drop-shadow)}
 #home .control-heading{padding:8px 2px 12px;letter-spacing:.2px}
 #home .home-stage{border:2px solid #655d48;box-shadow:0 0 0 1px var(--board-light);margin-top:12px}
+
+/* Keep the room visible while browsing and placing decor. */
+#home.is-decorating .home-layout{display:grid;grid-template-columns:minmax(0,1fr) clamp(300px,29vw,360px);gap:18px;align-items:start;scroll-margin-top:16px}
+#home.is-decorating .home-room{position:sticky;top:16px;min-width:0}
+#home.is-decorating .home-stage{width:min(100%,calc((100dvh - 190px)*16/9));margin-inline:auto;overflow:hidden}
+#home.is-decorating .home-stage #homePetButton{min-width:0}
+#home.is-decorating .home-stage .chest-hotspot{left:71.09375%;top:78.3333%;width:7.8125%;height:10%;min-width:0;min-height:0}
+#home.is-decorating .home-shop{margin-top:0;padding:16px;height:calc(100dvh - 32px);overflow-y:auto;overscroll-behavior-y:contain;scrollbar-gutter:stable;min-height:0}
+#home.is-decorating .home-item-grid{grid-template-columns:minmax(0,1fr);max-height:none;overflow:visible}
+#home.is-decorating .home-slots{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:12px}
+#home.is-decorating .home-slots button{padding:8px 4px;min-height:38px}
+#home.is-decorating .home-theme-grid{grid-template-columns:minmax(0,1fr)}
+#home.is-decorating .home-item{grid-template-columns:36px minmax(0,1fr) auto;gap:8px;padding:8px}
+#home.is-decorating .home-item-art svg{width:32px;height:32px}
+#home.is-decorating .home-item strong{overflow-wrap:anywhere}
+#home.is-decorating .home-actions{gap:8px}
+@media(max-width:900px){
+ #home.is-decorating .home-layout{grid-template-columns:minmax(0,1fr);gap:12px;scroll-margin-top:8px}
+ #home.is-decorating .home-room{top:8px;z-index:3;padding:8px}
+ #home.is-decorating .home-room .control-heading{padding:2px 0 6px}
+ #home.is-decorating .home-stage{width:min(100%,calc(26dvh * 16/9));margin-top:8px}
+ #home.is-decorating .home-actions{margin-top:8px;gap:6px}
+ #home.is-decorating .home-actions button{font-size:12px;padding:7px 9px;min-height:34px}
+ #home.is-decorating .home-shop{height:min(48dvh,480px);padding:12px}
+}
