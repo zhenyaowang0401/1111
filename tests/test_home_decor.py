@@ -1,4 +1,4 @@
-"""Buyable fixtures, light removal, persistence and offline texture loading."""
+"""Buyable fixtures, light removal, persistence and offline pixel scenery."""
 from pathlib import Path
 from datetime import datetime, timezone
 from playwright.sync_api import sync_playwright, expect
@@ -14,7 +14,7 @@ try:
   ctx.add_init_script("localStorage.setItem('eumo-tour-v1','seen');if(!localStorage.getItem('loop-pet-soft-universe-v1'))localStorage.setItem('loop-pet-soft-universe-v1',"+json.dumps(json.dumps(seed))+")")
   page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   page.clock.install(time=datetime(2026,11,10,13,tzinfo=timezone.utc))
-  page.goto(url+'/#home');page.wait_for_function('HomeScenery.textureReady && MoleArt.ready')
+  page.goto(url+'/#home');page.wait_for_function('HomeScenery.ready && MoleArt.ready')
   page.clock.run_for(300)
   page.screenshot(path=str(ROOT/'docs/images/eumo-burrow-home.png'),full_page=True)
   page.locator('#editHomeButton').click()
@@ -39,7 +39,7 @@ try:
   # Share serialization must include new fixtures and new positions, while rejecting a wrong item type.
   assert page.evaluate("HomeCatalog.sharedHome(state.home).slots.livingWindow==='archedWindow'")
   assert page.evaluate("HomeCatalog.sharedHome({theme:'cave',slots:{floor:'archedWindow'}}).slots.floor===null")
-  page.locator('#editHomeButton').click();page.reload();page.wait_for_function('HomeScenery.textureReady && MoleArt.ready')
+  page.locator('#editHomeButton').click();page.reload();page.wait_for_function('HomeScenery.ready && MoleArt.ready')
   assert page.evaluate("state.home.slots.livingWindow==='archedWindow' && state.home.slots.livingWall==='hangingLantern' && state.home.slots.left==='kitchenUnit' && state.balance===80")
   page.clock.run_for(300);page.screenshot(path=str(ROOT/'docs/images/eumo-burrow-personalized.png'),full_page=True)
   page.evaluate("WorldClock.setAppearance('night')");page.clock.run_for(300);page.screenshot(path=str(ROOT/'docs/images/eumo-burrow-night.png'),full_page=True)
@@ -51,10 +51,10 @@ try:
   offline.add_init_script("localStorage.setItem('eumo-tour-v1','seen');localStorage.setItem('loop-pet-soft-universe-v1',"+json.dumps(json.dumps(seed))+")")
   offline.route('**/*',lambda route:route.fulfill(status=200,content_type='text/html',body=(ROOT/'dist/Eumo.html').read_text()) if route.request.url==url+'/offline.html' else route.abort())
   local=offline.new_page();local.on('pageerror',lambda e:errors.append(str(e)));local.goto(url+'/offline.html#home')
-  local.wait_for_function('HomeScenery.textureReady && MoleArt.ready')
+  local.wait_for_function('HomeScenery.ready && MoleArt.ready')
   local.locator('#editHomeButton').click();local.locator('[data-slot="bedWindow"]').click();local.locator('[data-home-item="archedWindow"]').click()
   assert local.evaluate("state.home.slots.bedWindow==='archedWindow' && state.balance===142")
   assert not errors,errors
   browser.close()
-  print('PASS: buy/place/move/remove fixtures, exact prices, removable light, share validation, reload, mobile and network-disabled standalone texture/decor.')
+  print('PASS: buy/place/move/remove fixtures, exact prices, removable light, share validation, reload, mobile and network-disabled standalone scenery/decor.')
 finally:proc.terminate();proc.wait()

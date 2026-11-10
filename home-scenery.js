@@ -1,110 +1,107 @@
-/* Original burrow interiors. Logical pixels stay consistent with the existing mole and furniture. */
+/* Native pixel scenery: one joined cave silhouette, a limited palette and integer marks. */
 'use strict';
 window.HomeScenery=(()=>{
  const W=640,H=360,cache=new Map();
  const rect=(c,x,y,w,h,col)=>{c.fillStyle=col;c.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h));};
  const rand=(a,b)=>{const n=Math.sin(a*127.1+b*311.7)*43758.5453;return n-Math.floor(n);};
  const mix=(a,b,t)=>'#'+[1,3,5].map(i=>Math.round(parseInt(a.slice(i,i+2),16)*(1-t)+parseInt(b.slice(i,i+2),16)*t).toString(16).padStart(2,'0')).join('');
- const ellipse=(c,x,y,w,h,col)=>{c.fillStyle=col;c.beginPath();c.ellipse(x+w/2,y+h/2,w/2,h/2,0,0,Math.PI*2);c.fill();};
- const line=(c,d,col,w=1)=>{c.strokeStyle=col;c.lineWidth=w;c.lineCap='round';c.lineJoin='round';c.stroke(new Path2D(d));};
- const fill=(c,d,col)=>{c.fillStyle=col;c.fill(new Path2D(d));};
+ function oval(c,x,y,w,h,col){for(let yy=0;yy<h;yy++){const half=w/2*Math.sqrt(Math.max(0,1-Math.pow((yy+.5-h/2)/(h/2),2))),left=Math.round(w/2-half),right=Math.round(w/2+half);rect(c,x+left,y+yy,right-left,1,col);}}
  const rooms=[
   {x:30,y:54,w:202,floor:149,type:'sleep',path:'M35 98 C29 64 63 53 103 57 C137 60 153 45 191 61 C220 74 237 95 230 120 C235 144 213 163 176 166 C142 164 116 173 82 163 C46 165 22 139 35 98 Z'},
   {x:385,y:54,w:220,floor:177,type:'study',path:'M388 122 C379 91 399 66 438 65 C470 61 484 45 522 57 C548 69 579 67 593 95 C609 119 605 147 589 170 C568 197 531 194 501 195 C462 195 434 205 410 184 C391 170 382 147 388 122 Z'},
   {x:76,y:177,w:282,floor:316,type:'living',path:'M79 258 C66 226 93 196 134 191 C175 182 191 158 237 177 C271 191 279 196 309 205 C344 216 355 240 357 268 C369 303 336 333 294 335 C254 338 231 344 188 337 C153 332 120 343 96 324 C75 310 69 287 79 258 Z'},
   {x:425,y:238,w:180,floor:310,type:'gallery',path:'M427 278 C420 249 444 231 477 239 C505 245 527 225 557 239 C586 246 605 260 603 284 C608 310 583 326 555 326 C529 322 506 336 482 325 C447 328 425 311 427 278 Z'}
  ];
- function wood(c,x,y,w,h,p,vertical=false){
-  c.save();c.beginPath();c.rect(x,y,w,h);c.clip();rect(c,x,y,w,h,p.wood);const step=vertical?9:7;
-  for(let v=0;v<(vertical?w:h);v+=step){const odd=Math.floor(v/step)%2;
-   rect(c,vertical?x+v:x,vertical?y:y+v,vertical?step-1:w,vertical?h:step-1,odd?p.wood:p.woodLight);
-   rect(c,vertical?x+v:x,vertical?y:y+v,vertical?1:w,vertical?h:1,p.woodDark);
-   for(let n=0;n<(vertical?h:w);n+=29){const q=n+odd*12;if(vertical){rect(c,x+v+1,y+q,step-2,1,p.woodDark);rect(c,x+v+3,y+q+4,1,13,p.grain);}else{rect(c,x+q,y+v,1,step,p.woodDark);rect(c,x+q+4,y+v+3,16,1,p.grain);}}
-  }
-  c.restore();
+ // The curved passages overlap the rooms before their shared border is rasterized.
+ const passages=[
+  'M299 30 Q297 72 299 110 Q296 155 298 207 L299 219 L326 219 L325 174 Q329 133 325 97 L326 30 Z',
+  'M213 108 C234 116 241 122 259 120 C278 119 286 113 310 117 L311 154 C291 149 282 159 264 155 C244 151 229 153 213 151 Z',
+  'M315 139 C339 145 344 134 365 137 C380 141 385 136 386 124 C387 114 389 105 399 99 L410 179 C390 174 377 181 361 178 C343 174 335 184 315 179 Z',
+  'M325 235 C347 242 347 269 370 273 C390 279 406 271 421 264 C433 250 445 246 459 250 L457 315 C435 310 410 319 394 314 C374 309 355 320 332 322 Z'
+ ];
+ let geometry;
+ function distances(mask,inside){
+  const d=new Uint16Array(W*H);for(let i=0;i<d.length;i++)d[i]=!!mask[i]===inside?999:0;
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const i=y*W+x;if(d[i])d[i]=Math.min(d[i],x?d[i-1]+1:999,y?d[i-W]+1:999);}
+  for(let y=H-1;y>=0;y--)for(let x=W-1;x>=0;x--){const i=y*W+x;if(d[i])d[i]=Math.min(d[i],x<W-1?d[i+1]+1:999,y<H-1?d[i+W]+1:999);}
+  return d;
  }
- function shelf(c,x,y,w,p){rect(c,x,y+2,w,3,p.woodDark);rect(c,x-1,y,w+2,3,p.wood);rect(c,x,y,w,1,p.highlight);for(const xx of [x+4,x+w-6]){rect(c,xx,y+3,2,5,p.woodDark);rect(c,xx+2,y+3,3,2,p.wood);}}
- function books(c,x,y,n,p){const cols=[p.red,p.sage,p.blue,'#c5a568','#b5a095'];let xx=x;for(let k=0;k<n;k++){const w=3+k%3,h=10+(k*3)%7;rect(c,xx,y-h,w,h,cols[k%cols.length]);rect(c,xx,y-h,1,h,mix(cols[k%cols.length],p.ink,.2));rect(c,xx+1,y-h+2,w-2,1,p.highlight);rect(c,xx+1,y-3,w-2,1,p.highlight);xx+=w+1;}}
- function jar(c,x,y,w,h,col,p){rect(c,x+1,y-h+2,w-2,h-2,col);rect(c,x,y-h+4,w,h-6,col);rect(c,x+2,y-h,w-4,2,p.woodLight);rect(c,x+2,y-h+2,1,h-5,mix(col,'#fff5d9',.55));rect(c,x+1,y-1,w-2,1,mix(col,p.ink,.25));}
- function plant(c,x,y,size,p){rect(c,x-4,y-7,9,7,p.clay);rect(c,x-5,y-8,11,2,p.red);rect(c,x-2,y-6,1,4,p.highlight);for(let k=0;k<5;k++){const yy=y-10-k*size*.65;line(c,`M${x} ${y-8} Q${x-2+k%3} ${yy+3} ${x+(k%2?1:-1)*size} ${yy}`,p.leaf,1);ellipse(c,x+(k%2?0:-size-2),yy-2,size+2,3,k%2?p.leaf:p.leafLight);}}
- function lantern(c,x,y,p,night=false){
-  const glow=c.createRadialGradient(x,y+8,1,x,y+8,night?30:19);glow.addColorStop(0,night?'#ffd98345':'#fff2c52b');glow.addColorStop(1,'#ffe2a000');c.fillStyle=glow;c.fillRect(x-31,y-24,62,65);
-  rect(c,x,y-13,1,12,p.ink);rect(c,x-4,y-2,9,2,p.brassDark);rect(c,x-5,y,11,14,p.ink);rect(c,x-3,y+1,7,11,p.gold);rect(c,x-1,y+2,3,9,p.highlight);rect(c,x-6,y+13,13,2,p.brassDark);rect(c,x-3,y+15,7,1,p.brass);rect(c,x-5,y-1,1,15,p.brass);
- }
- function windowFrame(c,x,y,w,h,p,t){
-  const shape=`M${x} ${y+h} V${y+11} Q${x+w/2} ${y-7} ${x+w} ${y+11} V${y+h} Z`;
-  fill(c,shape,p.woodDark);c.save();c.clip(new Path2D(shape));const g=c.createLinearGradient(0,y,0,y+h);g.addColorStop(0,t.period==='night'?'#244760':'#90b4bb');g.addColorStop(1,t.period==='night'?'#527883':'#d0dfcb');c.fillStyle=g;c.fillRect(x+3,y+3,w-6,h-6);
-  if(t.period==='night'){ellipse(c,x+w-12,y+8,6,6,p.gold);rect(c,x+8,y+12,1,1,p.highlight);}else{fill(c,`M${x+3} ${y+h-8} Q${x+10} ${y+h-18} ${x+19} ${y+h-9} T${x+w-2} ${y+h-13} V${y+h} H${x} Z`,p.leafLight);}
-  rect(c,x+w/2,y+4,2,h-5,p.highlight);rect(c,x+3,y+h*.57,w-6,2,p.highlight);c.restore();line(c,shape,p.woodLight,2);shelf(c,x-3,y+h,w+6,p);
-  rect(c,x-6,y+1,w+12,2,p.woodDark);for(let side=0;side<2;side++){const xx=side?x+w-2:x-4;rect(c,xx,y+4,6,h-4,p.fabric);for(let k=0;k<3;k++)rect(c,xx+k*2,y+5,1,h-5,k%2?p.fabricDark:p.fabricLight);rect(c,xx,y+h-11,6,2,p.brass);}
+ function caveGeometry(){
+  if(geometry)return geometry;
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d',{willReadFrequently:true}),mask=new Uint8Array(W*H),region=new Uint8Array(W*H);
+  [...rooms.map(r=>r.path),...passages].forEach((path,n)=>{
+   c.clearRect(0,0,W,H);c.fillStyle='#fff';c.fill(new Path2D(path));const a=c.getImageData(0,0,W,H).data;
+   for(let i=0;i<mask.length;i++)if(a[i*4+3]>=128){mask[i]=1;if(n<rooms.length)region[i]=n+1;}
+  });
+  const bottom=new Uint16Array(W*H);for(let y=H-1;y>=0;y--)for(let x=0;x<W;x++){const i=y*W+x;if(mask[i])bottom[i]=1+(y<H-1?bottom[i+W]:0);}
+  geometry={mask,region,bottom,inner:distances(mask,true),outer:distances(mask,false)};return geometry;
  }
  function palette(theme,t){
-  const night=t.period==='night',cool=theme.id==='rain'||theme.id==='moon';
-  return {ink:'#403b31',paper:night?'#d8d0b8':'#f3e7cb',plaster:night?'#b7bcb0':cool?'#d7e0d8':'#eadfc2',wood:'#9a704c',woodLight:'#bd9366',woodDark:'#604a36',grain:'#a57e55',highlight:night?'#e5dfc8':'#f7e7bf',sage:cool?'#7d9f9b':theme.id==='moss'?'#8e9f79':'#aaa184',sageDark:cool?'#4f7375':'#5e7254',blue:'#88a8ad',red:'#b9745e',clay:'#c39570',gold:'#f0ca78',brass:'#c2a261',brassDark:'#7e6639',leaf:'#536b46',leafLight:'#8b9b65',fabric:cool?'#99b6bd':theme.id==='moss'?'#b2ba91':'#c39782',fabricDark:cool?'#78959f':'#89966d',fabricLight:cool?'#c4d7d5':'#d5d6ac',night};
+  const night=t.period==='night',cool=theme.id==='rain'||theme.id==='moon',moss=theme.id==='moss';
+  return {ink:night?'#354a52':'#3d4134',wall:night?'#afbcb8':cool?'#d0d9cd':moss?'#d9d9b2':'#e9dfb9',rim:night?'#899d9e':moss?'#a3ac7d':'#c0b38c',soil:night?['#58616a','#4b565e','#414c55']:['#857557','#76664d','#665943'],fleck:night?['#6e7b80','#404f59']:['#998562','#625740'],stone:night?'#849395':'#ac9d7b',wood:'#9a7d58',light:'#d2b486',night};
  }
- function architecture(c,room,p){
-  const shape=new Path2D(room.path);c.save();line(c,room.path,'#28292490',8);fill(c,room.path,p.plaster);c.clip(shape);
-  // Quiet limewashed earth with close paper grain, instead of busy wallpaper and panelling.
-  const wash=c.createLinearGradient(0,room.y,0,room.floor+20);
-  wash.addColorStop(0,mix(p.plaster,p.woodDark,.23));wash.addColorStop(.3,p.plaster);wash.addColorStop(.83,mix(p.plaster,p.highlight,.22));wash.addColorStop(1,mix(p.plaster,p.woodDark,.18));c.fillStyle=wash;c.fillRect(0,0,W,H);
-  for(let k=0;k<75;k++){const x=room.x+rand(k,room.floor)*room.w,y=room.y+rand(k,room.floor+1)*(room.floor-room.y);ellipse(c,x,y,6+rand(k,3)*18,3+rand(k,4)*9,k%2?'#f4e4bc12':'#88754e08');}
-  grain(c,room.x,room.y,room.w,room.floor-room.y+30,room.floor,6000);
-  // A subdued level walking surface; furniture sits on this line.
-  rect(c,room.x,room.floor,room.w,30,mix(p.plaster,p.woodDark,.2));grain(c,room.x,room.floor,room.w,30,52,800);
-  line(c,`M${room.x} ${room.floor} H${room.x+room.w}`,'#8a745c55',1);
-  c.restore();line(c,room.path,'#b7a47e80',1.5);
+ function landscape(c,p,t){
+  // Broad quiet earth strata and small ordered clusters, matching the focus scene.
+  for(let x=0;x<W;x+=4){const wave=Math.round(Math.sin(x*.018)*5+Math.sin(x*.047)*2);rect(c,x,0,4,145+wave,p.soil[0]);rect(c,x,145+wave,4,107,p.soil[1]);rect(c,x,252+wave,4,H,p.soil[2]);}
+  for(let k=0;k<330;k++){const x=Math.floor(rand(k,6)*W/2)*2,y=42+Math.floor(rand(k,8)*(H-42)/2)*2,w=2+k%5;rect(c,x,y,w,1+k%2,p.fleck[k%2]);if(k%3===0)rect(c,x+2,y+2,w-1,1,p.fleck[k%2]);}
+  for(let k=0;k<45;k++){const x=Math.floor(rand(k,11)*W),y=48+Math.floor(rand(k,17)*308);oval(c,x,y,7+k%5,4+k%3,p.fleck[1]);oval(c,x,y-1,7+k%5,4+k%2,p.stone);rect(c,x+2,y,3,1,mix(p.stone,t.cloud,.25));}
+  rect(c,0,0,W,35,t.sky);rect(c,0,19,W,15,mix(t.sky,t.skyLow,.3));
+  // Softly bulging silhouettes are stepped on the same grid as the mole.
+  for(let x=0;x<W;x+=3){const ridge=22+Math.round(Math.sin(x*.035)*4+Math.sin(x*.075)*2);rect(c,x,ridge,3,35-ridge,mix(t.mountain,t.sky,.4));}
+  for(const [x,y]of[[66,8],[438,5]]){rect(c,x,y+3,30,4,t.cloudBack);rect(c,x+6,y,14,7,t.cloudBack);rect(c,x-5,y+7,43,3,t.cloudBack);}
+  for(let x=0;x<W;x+=2){const ground=34+Math.round(Math.sin(x*.022)*3+Math.sin(x*.057));rect(c,x,ground,2,7,t.grassShadow);rect(c,x,ground,2,2,t.grass);if(x%12===0)rect(c,x,ground+2,2,2,mix(t.grass,t.grassShadow,.45));}
+  for(let k=0;k<15;k++){
+   const x=17+k*45,y=35+Math.round(Math.sin(x*.022)*3),petal=k%3===0?'#bc8a87':k%3===1?'#d8bd77':'#a4bbbf';
+   rect(c,x,y-11,1,11,t.grassShadow);rect(c,x+1,y-6,3,1,t.grassShadow);rect(c,x+3,y-8,3,2,t.grass);rect(c,x-3,y-4,3,2,t.grass);
+   rect(c,x-2,y-15,5,1,petal);rect(c,x-3,y-14,7,4,petal);rect(c,x-1,y-13,3,2,t.cloud);rect(c,x-2,y-10,5,1,petal);
+  }
+  if(p.night){for(let k=0;k<12;k++)rect(c,12+k*53,4+k%3*3,1,1,t.sun);}
  }
- function corridor(c,x,y,w,h,p){
-  const wash=c.createLinearGradient(0,y,0,y+h);wash.addColorStop(0,mix(p.plaster,p.woodDark,.16));wash.addColorStop(.55,p.plaster);wash.addColorStop(1,mix(p.plaster,p.woodDark,.2));c.fillStyle=wash;c.fillRect(x,y,w,h);
-  grain(c,x,y,w,h,12,700);line(c,`M${x} ${y} H${x+w}`,'#6f5b4244',1);line(c,`M${x} ${y+h-1} H${x+w}`,'#8a745c55',1);
- }
- function kitchen(c,p){
-  // Crockery dresser, with inset cupboard panels and tiled backsplash.
-  wood(c,283,232,47,23,p);rect(c,287,235,39,15,p.woodDark);for(let i=0;i<5;i++)jar(c,290+i*7,250,5,10-i%2*2,[p.paper,p.blue,p.clay][i%3],p);rect(c,286,251,41,2,p.woodLight);
-  rect(c,282,258,48,18,p.paper);for(let y=258;y<276;y+=6)for(let x=282;x<330;x+=8){rect(c,x,y,1,6,'#b8b6a0');rect(c,x,y,8,1,'#c2bdab');if((x+y)%3===0)rect(c,x+3,y+2,2,2,p.fabric);}
-  rect(c,282,278,49,37,p.woodDark);rect(c,284,279,45,33,p.sage);for(let i=0;i<2;i++){rect(c,287+i*21,284,18,26,p.sageDark);rect(c,289+i*21,286,14,22,p.sage);rect(c,289+i*21,286,14,1,p.fabricLight);rect(c,300+i*17,294,2,3,p.brass);}
-  rect(c,279,275,55,4,p.woodDark);rect(c,279,275,55,2,p.highlight);ellipse(c,285,272,20,5,p.blue);ellipse(c,288,272,14,2,p.paper);rect(c,305,266,2,9,p.brass);rect(c,302,265,5,2,p.highlight);
-  jar(c,316,274,10,13,p.red,p);rect(c,319,258,1,5,p.woodDark);rect(c,323,260,1,5,p.woodDark);
-  rect(c,310,282,10,16,p.paper);for(let y=285;y<297;y+=4)rect(c,311,y,8,1,p.red);rect(c,310,297,10,1,p.woodLight);
- }
- function grain(c,x,y,w,h,seed,amount=1400){
-  for(let k=0;k<amount;k++){const xx=x+rand(k,seed)*w,yy=y+rand(k,seed+3)*h;c.fillStyle=k%2?'#fff2ca12':'#493b3010';c.fillRect(xx,yy,.5+rand(k,seed+8),.5);}
- }
- const earth=new Image();let textureReady=false;
- earth.onload=()=>{textureReady=true;cache.clear();};
- earth.src='assets/backgrounds/burrow-earth.png';
  function paint(theme,t){
-  const key=theme.id+':'+t.period+':'+t.sky+':'+textureReady;if(cache.has(key))return cache.get(key);
-  const cv=document.createElement('canvas');cv.width=W*2;cv.height=H*2;const c=cv.getContext('2d');c.scale(2,2);const p=palette(theme,t);
-  const soil=c.createLinearGradient(0,20,0,H);soil.addColorStop(0,'#736249');soil.addColorStop(1,'#3e3934');c.fillStyle=soil;c.fillRect(0,0,W,H);
-  if(textureReady){c.drawImage(earth,0,0,W,H);const patina=c.createLinearGradient(0,28,0,H);patina.addColorStop(0,'#293e3500');patina.addColorStop(.12,'#293e3540');patina.addColorStop(1,'#242e304a');c.fillStyle=patina;c.fillRect(0,28,W,H-28);}
-  else{grain(c,0,25,W,H-25,40,12000);rect(c,0,0,W,28,t.sky);fill(c,'M0 30 Q90 19 180 28 T400 27 T640 25 V40 H0 Z',p.leaf);}
-  if(p.night){rect(c,0,0,W,H,'#193d5555');}
-  // An open earthen shaft behind the ladder, with no wood-panel backing.
-  rect(c,298,38,28,176,mix(p.plaster,p.woodDark,.22));grain(c,298,38,28,176,26,1000);
-  for(const room of rooms)architecture(c,room,p);
-  corridor(c,217,115,85,36,p);corridor(c,324,139,79,39,p);corridor(c,345,277,90,35,p);
-  // Two slender rails and widely spaced treads: the earth remains visible between them.
-  for(const x of [303,320]){line(c,`M${x+2} 38 L${x+1} 209`,'#342c2540',3);line(c,`M${x} 37 L${x-1} 208`,p.woodDark,2.7);line(c,`M${x-.5} 37 L${x-1.5} 208`,p.woodLight,1);}
-  for(let y=45;y<207;y+=13){line(c,`M302 ${y+1} L320 ${y}`,p.woodDark,2.5);line(c,`M303 ${y} L319 ${y-1}`,p.woodLight,1.2);}
+  const key=theme.id+':'+t.period+':'+t.sky;if(cache.has(key))return cache.get(key);
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');c.imageSmoothingEnabled=false;const p=palette(theme,t),g=caveGeometry();landscape(c,p,t);
+  const image=c.getImageData(0,0,W,H),a=image.data,colors={};
+  const rgb=hex=>colors[hex]||(colors[hex]=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)));
+  const shade=mix(p.wall,p.rim,.45),floor=mix(p.wall,p.rim,.27),texture=mix(p.wall,p.rim,.18);
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+   const i=y*W+x;let col;
+   if(!g.mask[i]){if(g.outer[i]<=2)col=p.ink;else continue;}
+   else if(g.inner[i]===1)col=p.rim;
+   else if(g.inner[i]<4)col=shade;
+   else{const r=rooms[g.region[i]-1];col=(r&&y>=r.floor)||(!r&&g.bottom[i]<6)?floor:p.wall;
+    // Sparse two-pixel chips, not photographic grain or antialiased speckles.
+    if(x%13<3&&y%11===0&&rand(Math.floor(x/13),Math.floor(y/11))>.7)col=texture;
+   }
+   const color=rgb(col);a[i*4]=color[0];a[i*4+1]=color[1];a[i*4+2]=color[2];a[i*4+3]=255;
+  }
+  c.putImageData(image,0,0);
+  // Flat pixel rails and treads, using the focus scene's wood and highlight colours.
+  for(const x of [302,320]){rect(c,x,31,3,181,p.ink);rect(c,x,31,2,180,p.wood);rect(c,x,31,1,179,p.light);}
+  for(let y=41;y<210;y+=13){rect(c,301,y+1,23,3,p.ink);rect(c,301,y,23,2,p.light);rect(c,303,y+1,19,1,p.wood);}
   if(cache.size>12)cache.clear();cache.set(key,cv);return cv;
  }
- function roomAt(spot){return rooms[spot.y<200?(spot.x<320?0:1):(spot.x<400?2:3)];}
+ function roomAt(spot){return spot.y<200?(spot.x<320?1:2):(spot.x<400?3:4);}
  function glow(c,id,spot,t){
   if(!['lamp','mushroomLamp','hangingLantern','archedWindow'].includes(id))return;
-  c.save();c.clip(new Path2D(roomAt(spot).path));
-  const x=spot.x,y=spot.y-(id==='lamp'?29:id==='archedWindow'?22:18),radius=id==='archedWindow'?42:55;
-  const moon=id==='archedWindow'&&t.period==='night';const g=c.createRadialGradient(x,y,1,x,y,radius);g.addColorStop(0,moon?'#a4d8ee70':t.period==='night'?'#ffd37a99':'#ffe6a83d');g.addColorStop(.4,moon?'#a7d8ed26':'#ffe9ac3a');g.addColorStop(1,'#ffe6a800');c.fillStyle=g;c.fillRect(x-radius,y-radius,radius*2,radius*2);c.restore();
+  const g=caveGeometry(),room=roomAt(spot),x=spot.x,y=spot.y-(id==='lamp'?29:id==='archedWindow'?22:18),radius=id==='archedWindow'?42:55,moon=id==='archedWindow'&&t.period==='night';
+  // A handful of stepped light levels: warm without blurring the pixel edges.
+  for(let yy=Math.floor((y-radius)/2)*2;yy<y+radius;yy+=2)for(let xx=Math.floor((x-radius)/2)*2;xx<x+radius;xx+=2){
+   if(xx<0||yy<0||xx+1>=W||yy+1>=H)continue;
+   if([yy*W+xx,yy*W+xx+1,(yy+1)*W+xx,(yy+1)*W+xx+1].some(i=>g.region[i]!==room||g.inner[i]<4))continue;
+   const d=Math.hypot(xx-x,yy-y)/radius,level=Math.floor((1-d)*4);if(level<1)continue;
+   const alpha=(level*(t.period==='night'?24:13)).toString(16).padStart(2,'0');rect(c,xx,yy,2,2,(moon?'#a4d8ee':'#ffda8d')+alpha);
+  }
  }
- function drawDecor(c,id,spot,t,theme){
+ function drawDecor(c,id,spot,t){
   if(!['archedWindow','hangingLantern','herbShelf','crockeryShelf','kitchenUnit'].includes(id))return false;
-  const p=palette(theme,t);c.save();c.clip(new Path2D(roomAt(spot).path));
-  if(id==='archedWindow')windowFrame(c,spot.x-14,spot.y-38,28,32,p,t);
-  if(id==='hangingLantern')lantern(c,spot.x,spot.y-17,p,t.period==='night');
-  if(id==='herbShelf'){shelf(c,spot.x-22,spot.y-5,44,p);plant(c,spot.x-12,spot.y-5,5,p);jar(c,spot.x+5,spot.y-5,8,11,p.blue,p);books(c,spot.x+13,spot.y-5,2,p);}
-  if(id==='crockeryShelf'){shelf(c,spot.x-24,spot.y-5,48,p);for(let k=0;k<5;k++)jar(c,spot.x-20+k*8,spot.y-5,6,10+k%2*4,[p.paper,p.blue,p.clay][k%3],p);}
-  if(id==='kitchenUnit'){c.translate(spot.x-35,spot.y-68);c.scale(.8,.8);c.translate(-267,-232);kitchen(c,p);}
-  c.restore();return true;
+  const scale=id==='kitchenUnit'?2:id==='hangingLantern'?1:1.5,foot=id==='kitchenUnit'?32:30,x=spot.x-16*scale,y=spot.y-foot*scale;
+  for(const [a,b,w,h,original]of furniture[id]){
+   let color=original;
+   if(id==='archedWindow'&&t.period==='night'){if(color==='#83a2a5')color='#426579';else if(color==='#b4c9c1')color='#344f68';else if(color==='#9cab85')color='#749697';}
+   const left=Math.round(x+a*scale),top=Math.round(y+b*scale);rect(c,left,top,Math.round(x+(a+w)*scale)-left,Math.round(y+(b+h)*scale)-top,color);
+  }
+  if(id==='archedWindow'&&t.period==='night'){rect(c,x+20*scale,y+10*scale,2*scale,3*scale,'#e6d9a5');rect(c,x+19*scale,y+11*scale,scale,scale,'#e6d9a5');}
+  return true;
  }
  const furniture=(()=>{
   const all={},ink='#594635',wood='#a37c56',light='#d1ac79',edge='#795b40',cream='#f5e5be',sage='#9cab85',dark='#697e61',pink='#bd8674',blue='#83a2a5';
@@ -166,5 +163,5 @@ window.HomeScenery=(()=>{
   });
   return all;
  })();
- return {paint,furniture,glow,drawDecor,get textureReady(){return textureReady;}};
+ return {paint,furniture,glow,drawDecor,ready:true};
 })();
