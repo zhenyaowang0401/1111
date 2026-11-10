@@ -462,3 +462,10 @@ body[data-period="night"] .painted-night { display: block; }
 
 .home-friends-dialog{width:min(720px,94vw);max-width:720px;background:var(--panel);color:var(--text);border:2px solid var(--edge);padding:22px}.home-friends-list{display:grid;gap:12px;max-height:65vh;overflow:auto}.home-friend-row{display:grid;grid-template-columns:160px 1fr auto;align-items:center;gap:16px;padding:12px;border:1px solid var(--edge);text-align:left}.home-friend-row canvas{width:160px;height:90px;image-rendering:pixelated}.home-friend-row strong,.home-friend-row small{display:block;overflow-wrap:anywhere}.home-friend-row small{font-size:12px;margin-top:6px;color:var(--muted)}.home-friends-actions{display:flex;gap:10px;margin-top:16px}#homeFriendsStatus:empty{display:none}
 @media(max-width:520px){.home-friend-row{grid-template-columns:1fr auto;gap:10px}.home-friend-row canvas{grid-column:1/-1;width:100%;height:auto}.home-friends-dialog{padding:14px}}
+
+/* The home is the illustration; its page background stays quieter than the rooms. */
+body:has(#home:not([hidden])) .painted-backdrop{opacity:.055;filter:saturate(.5)}
+body[data-period="night"]:has(#home:not([hidden])) .painted-backdrop{opacity:.09}
+#home .home-room{background:var(--panel);padding:12px;border:2px solid var(--edge);box-shadow:3px 3px var(--drop-shadow)}
+#home .control-heading{padding:8px 2px 12px;letter-spacing:.2px}
+#home .home-stage{border:2px solid #655d48;box-shadow:0 0 0 1px var(--board-light);margin-top:12px}
