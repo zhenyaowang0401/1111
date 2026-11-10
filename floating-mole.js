@@ -56,10 +56,12 @@ window.FloatingMole=(()=>{
   // Store only an ephemeral drawing snapshot, never another session or reward ledger.
   draw(s,Math.floor(Date.now()/150));
  }
- function draw(s,frame){if(!pip||pip.closed)return;const d=pip.document,canvas=d.getElementById('mole'),height=Math.max(1,Math.round(128*Math.max(240,pip.innerHeight)/Math.max(210,pip.innerWidth)));
-  if(canvas.height!==height)canvas.height=height;
-  const b=PixelArt.renderFloating(canvas.getContext('2d'),s,frame),pet=d.getElementById('pet');
-  pet.style.left=b.x/128*100+'%';pet.style.top=b.y/height*100+'%';pet.style.width=b.w/128*100+'%';pet.style.height=b.h/height*100+'%';
+ function draw(s,frame){if(!pip||pip.closed)return;const d=pip.document,canvas=d.getElementById('mole'),rect=canvas.getBoundingClientRect(),width=Math.max(1,Math.round(rect.width)),height=Math.max(1,Math.round(rect.height)),density=Math.max(1,Math.ceil(pip.devicePixelRatio||1));
+  if(canvas.width!==width*density||canvas.height!==height*density){canvas.width=width*density;canvas.height=height*density;}
+  const c=canvas.getContext('2d');c.setTransform(density,0,0,density,0,0);c.imageSmoothingEnabled=false;
+  const b=PixelArt.renderFloating(c,s,frame,{width,height,top:d.querySelector('.mine-top').getBoundingClientRect().height,bottom:d.querySelector('footer').getBoundingClientRect().height}),pet=d.getElementById('pet');
+  pet.style.left=b.x/width*100+'%';pet.style.top=b.y/height*100+'%';pet.style.width=b.w/width*100+'%';pet.style.height=b.h/height*100+'%';
+  canvas.dataset.pixelScale=String(b.scale);
  }
  function animate(now){if(!pip||pip.closed)return;const w=pip;if(now-lastFrame>=120){lastFrame=now;draw(bridge.visual(),Math.floor(Date.now()/150));}animation=w.requestAnimationFrame(animate);}
  async function open(){
@@ -67,11 +69,13 @@ window.FloatingMole=(()=>{
   if(!supported()){document.getElementById('floatingHelpDialog').showModal();return;}
   opening=true;button().disabled=true;
   try{
-   const w=await window.documentPictureInPicture.requestWindow({width:240,height:320,preferInitialWindowPlacement:true});pip=w;
+   // Browser-owned origin/close chrome cannot be removed. Omit only its redundant return button.
+   const w=await window.documentPictureInPicture.requestWindow({width:256,height:360,preferInitialWindowPlacement:true,disallowReturnToOpener:true});pip=w;
    w.addEventListener('pagehide',()=>cleanup(w),{once:true});
-   const d=w.document;d.documentElement.lang='en';d.title='Eumo · Floating mole';
+   w.addEventListener('resize',()=>{if(pip===w)draw(bridge.visual(),Math.floor(Date.now()/150));});
+   const d=w.document;d.documentElement.lang='en';d.title='Eumo';
    const style=d.createElement('style');style.textContent=css;d.head.append(style);
-   d.body.innerHTML=`<section class="tunnel-window" aria-label="Your floating mine"><main><canvas id="mole" width="128" height="171" aria-hidden="true"></canvas><button id="pet" aria-label="Pet your mole"></button></main><div class="mine-top"><header><span id="name"></span><button id="return" title="Back to Eumo" aria-label="Back to Eumo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9 2h5v5M14 2 7 9M6 3H2v11h11v-4"/></svg></button></header><div class="mine-hud"><div id="time" role="timer"></div><div class="time-detail"><span id="mode"></span><span id="depth"></span></div></div></div><section id="confirmation" aria-label="End session confirmation" hidden><p>End this session and save your progress?</p><div><button id="keep">Keep going</button><button id="save">End &amp; save</button></div></section><footer><button id="toggle">Start</button><button id="end">End session</button></footer><p id="hint">Drag the title bar · Keep Eumo open</p></section>`;
+   d.body.innerHTML=`<section class="tunnel-window" aria-label="Your floating mine"><main><canvas id="mole" width="256" height="360" aria-hidden="true"></canvas><button id="pet" aria-label="Pet your mole"></button></main><div class="mine-top"><header><span id="name"></span><button id="return" title="Back to Eumo" aria-label="Back to Eumo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9 2h5v5M14 2 7 9M6 3H2v11h11v-4"/></svg></button></header><div class="mine-hud"><div id="time" role="timer"></div><div class="time-detail"><span id="mode"></span><span id="depth"></span></div></div></div><section id="confirmation" aria-label="End session confirmation" hidden><p>End this session and save your progress?</p><div><button id="keep">Keep going</button><button id="save">End &amp; save</button></div></section><footer><button id="toggle">Start</button><button id="end">End session</button></footer><p id="hint">Drag the title bar · Keep Eumo open</p></section>`;
    window.EumoI18n?.observe(d);
    d.getElementById('toggle').addEventListener('click',()=>{confirmSession=null;d.getElementById('confirmation').hidden=true;bridge.toggle();sync();});
    d.getElementById('end').addEventListener('click',()=>{const s=bridge.snapshot();if(!s.session){sync();return;}confirmSession=s.session.id;d.getElementById('confirmation').hidden=false;d.getElementById('keep').focus();});

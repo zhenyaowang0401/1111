@@ -30,10 +30,14 @@ def run():
             assert mini.evaluate('document.documentElement.scrollWidth<=innerWidth')
             assert mini.evaluate('document.documentElement.scrollHeight<=innerHeight')
             # Tunnel fills the window while controls remain readable at every supported size.
-            for width,height in [(240,320),(300,440),(320,310),(240,340),(400,260)]:
+            for width,height in [(240,320),(256,360),(300,440),(320,310),(240,340),(400,260)]:
                 mini.set_viewport_size({'width':width,'height':height})
                 assert mini.evaluate('document.documentElement.scrollWidth<=innerWidth')
                 assert mini.evaluate('document.documentElement.scrollHeight<=innerHeight')
+                mini.wait_for_function("()=>{const c=document.getElementById('mole'),r=c.getBoundingClientRect(),d=Math.ceil(devicePixelRatio);return c.width===Math.round(r.width)*d&&c.height===Math.round(r.height)*d}")
+                assert mini.locator('#mole').evaluate('c=>Number.isInteger(Number(c.dataset.pixelScale))')
+                pet_box=mini.locator('#pet').bounding_box();header_box=mini.locator('.mine-top').bounding_box()
+                assert pet_box['y']>=header_box['height']-1,'Outfit must fit below the timer'
                 expect(mini.locator('#time')).to_be_in_viewport()
                 expect(mini.locator('#toggle')).to_be_in_viewport()
             mini.set_viewport_size({'width':300,'height':440})
@@ -68,7 +72,7 @@ def run():
             assert page.evaluate('state.session.elapsed')==elapsed
             expect(mini.locator('#line')).to_have_count(0)
             expect(mini.locator('#pet')).to_be_in_viewport()
-            mini.screenshot(path='/tmp/eumo-floating-paused.png')
+            mini.screenshot(path=str(ROOT/'docs/images/eumo-floating-crisp.png'))
             # Main -> mini synchronization, closing/reopening never settles or pauses a session.
             page.evaluate("document.getElementById('startButton').click()")
             expect(mini.locator('#toggle')).to_have_attribute('aria-label','Pause')
@@ -107,6 +111,16 @@ def run():
             page.evaluate("Object.defineProperty(window,'documentPictureInPicture',{value:undefined,configurable:true})")
             page.locator('#floatMoleButton').click();expect(page.locator('#floatingHelpDialog')).to_be_visible()
             page.locator('#floatingHelpDialog .dialog-close').click()
+            # Real high-density window: backing pixels follow the device, while sprite pixels stay whole.
+            retina=browser.new_context(viewport={'width':1280,'height':800},device_scale_factor=2)
+            retina.add_init_script(f"localStorage.setItem('eumo-tour-v1','seen');localStorage.setItem('{KEY}',{json.dumps(json.dumps(seed))});")
+            owner=retina.new_page();owner.goto(url+'/#focus')
+            with retina.expect_page() as event:owner.locator('#floatMoleButton').click()
+            high=event.value;high.wait_for_selector('#mole');high.set_viewport_size({'width':256,'height':360})
+            high.wait_for_function("()=>{const c=document.getElementById('mole');return c.width===256*Math.ceil(devicePixelRatio)&&c.height===360*Math.ceil(devicePixelRatio)}")
+            high.screenshot(path=str(ROOT/'docs/images/eumo-floating-retina.png'))
+            high.locator('#pet').click();assert owner.evaluate('petAt>0')
+            high.locator('#return').click();retina.close()
             # Offline distribution contains the same functional view and cleans up on owner navigation.
             offline=browser.new_context();offline.add_init_script("localStorage.setItem('eumo-tour-v1','seen')");download=offline.new_page();download.goto(url+'/dist/Eumo.html');download.locator('#enterGame').click();offline.set_offline(True)
             with offline.expect_page() as event:download.locator('#floatMoleButton').click()

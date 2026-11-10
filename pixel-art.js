@@ -230,29 +230,25 @@ window.PixelArt=(()=>{
  }
  function renderFriend(c,f,frame){box(c,0,0,96,88,tint(f.color,-.65));for(let i=0;i<6;i++)box(c,Math.floor(random(i,3)*90),Math.floor(random(i,5)*65),1,1,tint(f.color,.25));box(c,12,72,72,3,tint(f.color,-.2));box(c,17,75,62,3,tint(f.color,-.45));mole(c,22,18,2,f.equipped,f.live?f.availability==='online'&&['studying','working','demo'].includes(f.activity):f.status==='Studying',frame,f.color,f.moleMood||'awake',f.tool||null);}
  // Independent small scene: it keeps drawing in the visible PiP window even when the main tab's RAF sleeps.
- function renderFloating(c,s,frame){
-  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,f=reduced?0:frame,running=s.session?.status==='running'&&Journey.eligible(s.session),w=c.canvas.width,h=c.canvas.height,depth=digMetrics(s).worldDepth;
+ function renderFloating(c,s,frame,viewport={}){
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,f=reduced?0:frame,running=s.session?.status==='running'&&Journey.eligible(s.session),w=viewport.width||c.canvas.clientWidth||c.canvas.width,h=viewport.height||c.canvas.clientHeight||c.canvas.height,depth=digMetrics(s).worldDepth;
   c.imageSmoothingEnabled=false;
-  // The entire little window is a cross-section of the current mine. Texture follows actual depth,
-  // capped to the unlocked stratum; browsing the main mine never moves this companion camera.
-  const camera=87+depth*6,front=h-30;
-  c.save();c.translate(-128,0);Terrain.paint(c,camera,h,f,depth);c.restore();
-  const center=y=>64+Math.round(Math.sin((front-y)*.045+depth*.035)*2)*2;
-  for(let y=0;y<front;y+=4){const cx=center(y),wide=y>front-20?43:39;
-   box(c,cx-wide-5,y,5,4,'#8b865c');box(c,cx-wide,y,5,4,'#405644');box(c,cx-wide+5,y,wide*2-10,4,'#243a35');box(c,cx+wide-5,y,5,4,'#30473b');box(c,cx+wide,y,3,4,'#67734f');
+  // Draw in window pixels. Terrain and the mole use integer scales, never a stretched 128px image.
+  const terrainScale=Math.max(1,Math.round(w/128)),camera=87+depth*6,front=Math.round(h-(viewport.bottom??58)+3),top=viewport.top??88;
+  c.save();c.scale(terrainScale,terrainScale);c.translate(Math.round(w/(2*terrainScale))-192,0);Terrain.paint(c,camera,Math.ceil(h/terrainScale),f,depth);c.restore();
+  const center=y=>Math.round(w/2)+Math.round(Math.sin((front-y)*.045/terrainScale+depth*.035)*2)*terrainScale;
+  for(let y=0;y<front;y+=4*terrainScale){const cx=center(y),wide=(y>front-20*terrainScale?43:39)*terrainScale;
+   box(c,cx-wide-5*terrainScale,y,5*terrainScale,4*terrainScale,'#8b865c');box(c,cx-wide,y,5*terrainScale,4*terrainScale,'#405644');box(c,cx-wide+5*terrainScale,y,wide*2-10*terrainScale,4*terrainScale,'#243a35');box(c,cx+wide-5*terrainScale,y,5*terrainScale,4*terrainScale,'#30473b');box(c,cx+wide,y,3*terrainScale,4*terrainScale,'#67734f');
   }
-  // Ladder disappears behind the mole and continues upward beyond the viewport.
-  const ladderX=center(front)-25,offset=Math.floor(depth*6)%17;
-  box(c,ladderX,0,2,front-2,'#a58b80');box(c,ladderX+14,0,2,front-2,'#b39a87');
-  for(let y=-offset;y<front-3;y+=17)box(c,ladderX-2,y,20,2,'#ddbea0');
-  const cx=center(front);box(c,cx-32,front,64,3,'#b18f7b');box(c,cx-24,front+3,48,2,'#7f655e');
-  // Reserve clear space for the top timer and bottom controls, even in a short, wide window.
-  const ratio=(c.canvas.clientWidth||w)/w,scale=Math.min(2,Math.max(.4,(front-118/ratio)/40)),spinning=!s.session&&s.petSpinAt&&Date.now()-s.petSpinAt<1200&&!reduced;
-  let size=scale,x=cx-13.5*size,y=front-27*size-Math.min(5,jump(s));
-  if(spinning){size=scale*.75;x=cx-13.5*size;y=(40+front)/2-16*size-Math.min(3,jump(s));}
+  const ladderX=center(front)-25*terrainScale,offset=Math.floor(depth*6*terrainScale)%(17*terrainScale);
+  box(c,ladderX,0,2*terrainScale,front-2,'#a58b80');box(c,ladderX+14*terrainScale,0,2*terrainScale,front-2,'#b39a87');
+  for(let y=-offset;y<front-3;y+=17*terrainScale)box(c,ladderX-2*terrainScale,y,20*terrainScale,2*terrainScale,'#ddbea0');
+  const cx=center(front);box(c,cx-32*terrainScale,front,64*terrainScale,3*terrainScale,'#b18f7b');box(c,cx-24*terrainScale,front+3*terrainScale,48*terrainScale,2*terrainScale,'#7f655e');
+  const scale=Math.max(1,Math.min(Math.floor(w/50),Math.floor((front-top-8)/42))),spinning=!s.session&&s.petSpinAt&&Date.now()-s.petSpinAt<1200&&!reduced;
+  const size=spinning?Math.max(1,scale-1):scale,x=Math.round(cx-13.5*size),y=Math.round(front-27*size-Math.min(5,jump(s)));
   const rotation=playerMole(c,s,x,y,size,running,f);
-  if(running)for(let i=0;i<4;i++){const n=(f+i*3)%12,dir=i%2?1:-1;box(c,cx+dir*(16+n*2),front-3-Math.round(Math.sin(n/12*Math.PI)*12),2,2,'#c8a38a');}
-  return {x:x-3*size,y:y-14*size,w:34*size,h:42*size,rotation};
+  if(running)for(let i=0;i<4;i++){const n=(f+i*3)%12,dir=i%2?1:-1;box(c,cx+dir*(16+n*2)*terrainScale,front-3-Math.round(Math.sin(n/12*Math.PI)*12*terrainScale),2*terrainScale,2*terrainScale,'#c8a38a');}
+  return {x:x-3*size,y:y-14*size,w:34*size,h:42*size,rotation,scale:size};
  }
 
  let getState,frame=0,last=0;
