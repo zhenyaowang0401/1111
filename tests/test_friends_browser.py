@@ -44,9 +44,11 @@ def run():
    expect(a.locator('#friendHomeNote')).to_contain_text('Showing the starter burrow')
    a.locator('#closeFriendHome').click();a.locator('#closeHomeFriends').click();a.locator('[data-page="companions"]').click();settled(a)
    # Actual shared decor survives the API + database path; visits cannot edit it.
-   b.evaluate("state.home.owned.push('bed');state.home.slots.right='bed';save()")
+   b.evaluate("state.home.owned.push('bed','archedWindow','hangingLantern');state.home.slots.right='bed';state.home.slots.bedWindow='archedWindow';state.home.slots.livingWall='hangingLantern';save()")
    b.evaluate('FriendsClient.activate()');settled(b);refresh(a)
    assert a.evaluate("FriendsClient.getPlayers()[0].home.slots.right")=='bed'
+   assert a.evaluate("FriendsClient.getPlayers()[0].home.slots.bedWindow")=='archedWindow'
+   assert a.evaluate("FriendsClient.getPlayers()[0].home.slots.livingWall")=='hangingLantern'
    original=a.evaluate('JSON.stringify(state.home)')
    a.locator('[data-page="home"]').click();a.locator('#visitFriendsButton').click()
    expect(a.locator('#homeFriendsDialog')).to_be_visible();expect(a.locator('#home')).to_be_visible();expect(a.locator('#wardrobe')).to_be_hidden()

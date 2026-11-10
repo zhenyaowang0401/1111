@@ -20,7 +20,7 @@ try:
   page.mouse.click(point['x'],point['y']);expect(page.locator('#homeSpeech')).to_be_visible()
 
   page.locator('#openChestButton').click();expect(page.locator('#chestDialog')).to_be_visible();page.keyboard.press('Escape')
-  page.locator('#editHomeButton').click();expect(page.locator('[data-slot]')).to_have_count(8)
+  page.locator('#editHomeButton').click();expect(page.locator('[data-slot]')).to_have_count(page.evaluate('Object.keys(HomeCatalog.slots).length'))
   page.locator('[data-slot="study"]').click();page.locator('[data-home-item="desk"]').click()
   assert page.evaluate("state.home.slots.study==='desk'&&state.balance===85")
   page.locator('[data-slot="bedWall"]').click();page.locator('[data-home-item="art"]').click()
@@ -33,5 +33,5 @@ try:
   page.screenshot(path=str(ROOT/'docs/images/eumo-burrow-mobile.png'))
   page.goto(url+'/dist/Eumo.html#home');ctx.set_offline(True);page.locator('#editHomeButton').click();page.locator('[data-slot="studyWall"]').click();page.locator('[data-home-item="art"]').click()
   assert page.evaluate("state.home.slots.studyWall==='art'")
-  assert not errors,errors;b.close();print('PASS: existing decor preserved, eight slots, room placement/purchase, reload, chest hit target on mobile and offline decorating.')
+  assert not errors,errors;b.close();print('PASS: existing decor preserved, catalog placement slots, room placement/purchase, reload, chest hit target on mobile and offline decorating.')
 finally:proc.terminate();proc.wait()

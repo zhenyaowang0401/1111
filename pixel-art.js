@@ -85,7 +85,8 @@ window.PixelArt=(()=>{
   if(s.idleMood==='asleep'){const breath=.78+Math.round((Math.sin(frame*.18)+1)*1.5)*.025;top=27+(top-27)*breath;}
   const size=.46*scale;item(c,s.heldItem,x+13*scale-16*size,y+top*scale-32*size+scale,size);
  }
- function drawHomeItem(c,id,spot){
+ function drawHomeItem(c,id,spot,t,theme){
+  if(HomeScenery.drawDecor(c,id,spot,t,theme))return;
   const find=id.startsWith('find:'),definition=HomeCatalog.items.find(i=>i.id===id),scale=find?.85:definition.scale,foot=find?32:definition.foot,x=spot.x-16*scale,y=spot.y-foot*scale;
   if(!definition?.slots.includes('wall')&&id!=='rug')oval(c,spot.x-18*scale,spot.y-2,36*scale,5,'#322c2944',2);
   if(find){box(c,x+4*scale,spot.y,24*scale,3,'#b29674');box(c,x+6*scale,spot.y+3,20*scale,3,'#795f4d');item(c,id.slice(5),x,y,scale);}
@@ -103,8 +104,9 @@ window.PixelArt=(()=>{
  function renderHome(c,s,frame){
   const theme=HomeCatalog.themes.find(t=>t.id===s.home.theme)||HomeCatalog.themes[0],t=WorldClock.snapshot();
   c.save();c.setTransform(c.canvas.width/640,0,0,c.canvas.height/360,0,0);c.imageSmoothingEnabled=false;c.drawImage(HomeScenery.paint(theme,t,s.home.slots),0,0,640,360);
-  for(const key of ['floor','left','right','wall','study','studyWall','bedWall','gallery']){const spot=HomeCatalog.slots[key],id=s.home.slots[key];if(id)drawHomeItem(c,id,spot);if(s.homeEditing){const wall=spot.kind==='wall',floor=spot.kind==='floor',w=floor?70:64,h=floor?16:wall?42:53,x=spot.x-w/2,y=spot.y-h,col=key===s.selectedSlot?'#fff0bc':'#d5c2a0';for(let xx=x;xx<x+w;xx+=8){box(c,xx,y,4,1,col);box(c,xx,spot.y+2,4,1,col);}for(let yy=y;yy<spot.y;yy+=8){box(c,x,yy,1,4,col);box(c,x+w,yy,1,4,col);}}}
-  if(s.displayedTreasure)RareTreasures.draw(c,s.displayedTreasure,469,258,.5);
+  for(const [key,spot] of Object.entries(HomeCatalog.slots)){if(s.home.slots[key])HomeScenery.glow(c,s.home.slots[key],spot,t);}
+  for(const key of ['floor',...Object.keys(HomeCatalog.slots).filter(k=>k!=='floor')]){const spot=HomeCatalog.slots[key],id=s.home.slots[key];if(id)drawHomeItem(c,id,spot,t,theme);if(s.homeEditing){const wall=spot.kind==='wall',floor=spot.kind==='floor',w=floor?70:64,h=floor?16:wall?42:53,x=spot.x-w/2,y=spot.y-h,col=key===s.selectedSlot?'#fff0bc':'#d5c2a0';for(let xx=x;xx<x+w;xx+=8){box(c,xx,y,4,1,col);box(c,xx,spot.y+2,4,1,col);}for(let yy=y;yy<spot.y;yy+=8){box(c,x,yy,1,4,col);box(c,x+w,yy,1,4,col);}}}
+  if(s.displayedTreasure){box(c,464,276,32,3,'#aa8560');box(c,466,279,28,2,'#69503b');RareTreasures.draw(c,s.displayedTreasure,469,258,.5);}
   c.save();c.translate(340,66);chest(c,s.chestOpen);c.restore();
   const y=316-54-jump(s),rotation=playerMole(c,s,220,y,2,false,frame,()=>drawHeadDisplay(c,s,220,y,2,frame));
   if(!s.visiting){bounds.chest={x:455,y:282,w:50,h:36};bounds.homeCanvas={x:220,y:y-3,w:56,h:60,rotation};positionSpeech('homeSpeech',bounds.homeCanvas,640,360);}

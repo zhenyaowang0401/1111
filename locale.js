@@ -3,6 +3,7 @@
 window.EumoI18n=(()=>{
  const KEY='eumo-language';let language='en';try{if(localStorage.getItem(KEY)==='zh')language='zh';}catch{}
  const dictionary={
+ "Meadow window":"草甸小窗","Honey lantern":"蜜光吊灯","Herb shelf":"香草置物架","Pottery shelf":"陶器置物架","Little kitchen":"小厨房","Living wall":"起居区墙面","Living nook":"起居区小角","Study nook":"书房小角","Bedroom nook":"卧室小角",
  "Living room":"起居区","Living rug":"起居区地毯","Bedroom":"卧室","Bedroom wall":"卧室墙面","Study wall":"工作区墙面","Gallery":"收藏区","Gallery wall":"收藏区墙面","Visit friends":"拜访好友","Visit home":"查看家园","Home not shared yet":"家园尚未分享","Last shared home · View only":"最近分享的家园 · 仅供参观","Friends’ homes":"好友的家", "Loading homes…":"正在寻找好友的家…", "Connect and add a friend to visit their home.":"连接并添加好友后，就可以来串门了。", "No friends yet. Add a friend to visit their home.":"还没有好友，先添加一位好友来串门吧。", "Last shared home":"最近分享的家园",
  "UNDERGROUND HOME":"地下家园",
  "Come add your mole friends!": "快来添加你的鼹鼠朋友！",
