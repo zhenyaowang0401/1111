@@ -1,7 +1,7 @@
 {
   "name": "eumo-companion",
   "private": true,
-  "version": "3.0.0",
+  "version": "3.1.0",
   "engines": {
     "node": "22.x"
   },
@@ -10,9 +10,64 @@
     "test:ai": "node --test tests/test_ai.cjs",
     "eval:ai": "node scripts/evaluate_ai.cjs",
     "export:sft": "node scripts/export_sft.cjs",
-    "test:friends": "node --test tests/test_friends.cjs"
+    "test:friends": "node --test tests/test_friends.cjs",
+    "desktop:prepare": "node scripts/prepare_desktop.cjs",
+    "desktop:dev": "npm run desktop:prepare && electron .",
+    "desktop:pack": "npm run desktop:prepare && electron-builder --publish never",
+    "test:desktop": "node --test tests/test_desktop.cjs",
+    "test:desktop:smoke": "npm run desktop:prepare && electron . --desktop-smoke"
   },
   "devDependencies": {
-    "@electric-sql/pglite": "0.5.12"
-  }
+    "@electric-sql/pglite": "0.5.12",
+    "electron": "45.3.0",
+    "electron-builder": "26.18.0"
+  },
+  "main": "desktop/main.cjs",
+  "description": "Eumo — a little mole for focus, collecting and decorating",
+  "author": "Eumo",
+  "build": {
+    "appId": "app.eumo.companion",
+    "productName": "Eumo",
+    "directories": {
+      "output": "desktop-dist"
+    },
+    "files": [
+      "desktop/**/*.cjs",
+      "desktop/web/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "npmRebuild": false,
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "category": "public.app-category.productivity",
+      "artifactName": "Eumo-macOS-${arch}.${ext}",
+      "identity": "-",
+      "hardenedRuntime": false,
+      "notarize": false
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "Eumo-Windows-${arch}-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "publish": null,
+    "icon": "desktop/icon.png"
+  },
+  "productName": "Eumo"
 }

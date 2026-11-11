@@ -18,9 +18,21 @@
 
 小窗默认 240×320，整个画面是一段像素矿洞：两侧泥土、向上延伸的梯子和洞底挖掘的鼹鼠（保留颜色、装扮和工具）。顶部显示时间与深度，底部提供操作，地层随实际挖掘深度变化。可以直接开始、暂停、继续、确认结束；学习时一起挖土，暂停和 Break 时一起休息，空闲时还可以抚摸和三连旋转。切换网页时，小窗继续绘制，不依赖主页面动画。
 
-保持原来的 Eumo 标签页打开。关闭小窗不结束学习；关闭或刷新原标签页会关闭小窗，之后需手动重新开启。窗口位置和置顶行为由浏览器和操作系统管理，网页不能强制放在左下角；这不是无边框桌面宠物。暂不支持该接口的浏览器会显示说明，不会假装开启。
+保持原来的 Eumo 标签页打开。关闭小窗不结束学习；关闭或刷新原标签页会关闭小窗，之后需手动重新开启。窗口位置和置顶行为由浏览器和操作系统管理，网页不能强制放在左下角；网页版小窗保留浏览器边框；下方的桌面客户端使用原生无边框小窗。暂不支持该接口的浏览器会显示说明，不会假装开启。
 
-## 下载到电脑并打开
+## Windows / Mac 客户端
+
+| 版本 | GitHub 下载 |
+| --- | --- |
+| Windows x64 | [安装程序 .exe](https://github.com/zhenyaowang0401/1111/releases/latest/download/Eumo-Windows-x64-Setup.exe) |
+| Mac · Apple 芯片 | [安装包 .dmg](https://github.com/zhenyaowang0401/1111/releases/latest/download/Eumo-macOS-arm64.dmg) |
+| Mac · Intel | [安装包 .dmg](https://github.com/zhenyaowang0401/1111/releases/latest/download/Eumo-macOS-x64.dmg) |
+
+[所有版本与构建状态](https://github.com/zhenyaowang0401/1111/actions/workflows/desktop-release.yml) · [发布页](https://github.com/zhenyaowang0401/1111/releases/latest) · [客户端安装、存档迁移与构建说明](docs/DESKTOP.md)
+
+客户端共用网页内容，鼹鼠小窗为无浏览器地址栏的原生置顶窗口。首次 GitHub 构建全部通过后才会生成下载文件。首版未配置商业发行者签名及 Apple 公证，系统可能提示未知发行者。网页和客户端存档各自独立，可用 Help 中的进度导出／导入迁移。
+
+## 下载离线网页版到电脑并打开
 
 **请在 GitHub 仓库页面操作：**
 

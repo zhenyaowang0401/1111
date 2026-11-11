@@ -1,9 +1,10 @@
-/* A browser-owned, always-on-top companion. The original tab owns all game state. */
+/* Browser PiP or native desktop window. The main view owns all game state. */
 'use strict';
 window.FloatingMole=(()=>{
  let bridge,pip=null,opening=false,interval=null,animation=null,lastFrame=0,confirmSession=null,lastSession=null,finished=false;
  const button=()=>document.getElementById('floatMoleButton');
- const supported=()=>window.isSecureContext&&typeof window.documentPictureInPicture?.requestWindow==='function';
+ const native=()=>window.EumoDesktop?.nativeFloating===true;
+ const supported=()=>native()||window.isSecureContext&&typeof window.documentPictureInPicture?.requestWindow==='function';
  const css=`
  :root{color-scheme:dark;font-family:'Segoe UI',Arial,sans-serif;color:#f3eafa;background:#1c1b37}
  *{box-sizing:border-box}body{margin:0;min-width:210px}button{font:inherit;cursor:pointer;color:inherit;border:1px solid #ad8eb0;background:#443653;padding:6px 10px;min-height:32px;border-radius:2px;box-shadow:inset 0 1px #e4c9e52b,1px 2px #15132866}
@@ -70,23 +71,24 @@ window.FloatingMole=(()=>{
   opening=true;button().disabled=true;
   try{
    // Browser-owned origin/close chrome cannot be removed. Omit only its redundant return button.
-   const w=await window.documentPictureInPicture.requestWindow({width:256,height:360,preferInitialWindowPlacement:true,disallowReturnToOpener:true});pip=w;
+   const w=native()?window.open('about:blank','eumo-floating','popup,width=256,height=360'):await window.documentPictureInPicture.requestWindow({width:256,height:360,preferInitialWindowPlacement:true,disallowReturnToOpener:true});if(!w)throw Error('Window blocked');pip=w;
    w.addEventListener('pagehide',()=>cleanup(w),{once:true});
    w.addEventListener('resize',()=>{if(pip===w)draw(bridge.visual(),Math.floor(Date.now()/150));});
    const d=w.document;d.documentElement.lang='en';d.title='Eumo';
-   const style=d.createElement('style');style.textContent=css;d.head.append(style);
+   const style=d.createElement('style');style.textContent=css+(native()?'header{-webkit-app-region:drag;cursor:move}header button{-webkit-app-region:no-drag}#closeNative{width:28px;min-height:28px;padding:0;font-size:18px}':'');d.head.append(style);if(native())d.body.dataset.desktop='true';
    d.body.innerHTML=`<section class="tunnel-window" aria-label="Your floating mine"><main><canvas id="mole" width="256" height="360" aria-hidden="true"></canvas><button id="pet" aria-label="Pet your mole"></button></main><div class="mine-top"><header><span id="name"></span><button id="return" title="Back to Eumo" aria-label="Back to Eumo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9 2h5v5M14 2 7 9M6 3H2v11h11v-4"/></svg></button></header><div class="mine-hud"><div id="time" role="timer"></div><div class="time-detail"><span id="mode"></span><span id="depth"></span></div></div></div><section id="confirmation" aria-label="End session confirmation" hidden><p>End this session and save your progress?</p><div><button id="keep">Keep going</button><button id="save">End &amp; save</button></div></section><footer><button id="toggle">Start</button><button id="end">End session</button></footer><p id="hint">Drag the title bar · Keep Eumo open</p></section>`;
+   if(native()){const x=d.createElement('button');x.id='closeNative';x.textContent='×';x.title='Close floating mole';x.setAttribute('aria-label','Close floating mole');x.onclick=close;d.querySelector('header').append(x);}
    window.EumoI18n?.observe(d);
    d.getElementById('toggle').addEventListener('click',()=>{confirmSession=null;d.getElementById('confirmation').hidden=true;bridge.toggle();sync();});
    d.getElementById('end').addEventListener('click',()=>{const s=bridge.snapshot();if(!s.session){sync();return;}confirmSession=s.session.id;d.getElementById('confirmation').hidden=false;d.getElementById('keep').focus();});
    d.getElementById('keep').addEventListener('click',()=>{confirmSession=null;d.getElementById('confirmation').hidden=true;d.getElementById('end').focus();});
    d.getElementById('save').addEventListener('click',()=>{const id=confirmSession;confirmSession=null;d.getElementById('confirmation').hidden=true;if(id)bridge.end(id);sync();});
-   d.getElementById('return').addEventListener('click',()=>{window.focus();bridge.returnToFocus();close();});
+   d.getElementById('return').addEventListener('click',()=>{if(native())window.EumoDesktop.returnToMain();else window.focus();bridge.returnToFocus();close();});
    d.getElementById('pet').addEventListener('click',()=>{bridge.pet();sync();});
    d.addEventListener('keydown',e=>{if(e.key==='Escape'&&confirmSession){e.preventDefault();confirmSession=null;d.getElementById('confirmation').hidden=true;}});
    lastSession=null;finished=false;lastFrame=0;markOpen(true);sync();interval=w.setInterval(sync,250);animation=w.requestAnimationFrame(animate);
-   bridge.notify('Your mole is floating. Drag its window to a corner; keep this tab open.');
-  }catch(e){close();bridge.notify('Could not open the floating mole. Try again in a separate Chrome or Edge tab.');}
+   bridge.notify(native()?'Your mole is floating. Drag its name to move the window.':'Your mole is floating. Drag its window to a corner; keep this tab open.');
+  }catch(e){close();bridge.notify(native()?'Could not open the floating mole. Please try again.':'Could not open the floating mole. Try again in a separate Chrome or Edge tab.');}
   finally{opening=false;button().disabled=false;}
  }
  function init(options){bridge=options;markOpen(false);button().addEventListener('click',open);window.addEventListener('pagehide',close);}

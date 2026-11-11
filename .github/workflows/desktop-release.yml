@@ -1,0 +1,64 @@
+name: Desktop installers
+on:
+  push:
+    tags: ['desktop-v*']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: win
+            arch: x64
+          - os: macos-latest
+            platform: mac
+            arch: arm64
+          - os: macos-latest
+            platform: mac
+            arch: x64
+    runs-on: ${{ matrix.os }}
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run test:desktop
+      - name: Test real native windows and offline game
+        run: npm run test:desktop:smoke
+        timeout-minutes: 5
+      - name: Build installer
+        run: npm run desktop:pack -- --${{ matrix.platform }} --${{ matrix.arch }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Eumo-${{ matrix.platform }}-${{ matrix.arch }}
+          path: |
+            desktop-dist/*.exe
+            desktop-dist/*.dmg
+            desktop-dist/*.zip
+          if-no-files-found: error
+  release:
+    if: startsWith(github.ref, 'refs/tags/desktop-v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: installers
+          merge-multiple: true
+      - name: Publish all installers together
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sha256sum installers/* > installers/SHA256SUMS.txt
+          gh release create "$GITHUB_REF_NAME" installers/* --title "Eumo ${GITHUB_REF_NAME#desktop-v} — Windows & macOS" --notes-file desktop/RELEASE_NOTES.md --verify-tag --latest

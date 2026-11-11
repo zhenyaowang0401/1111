@@ -298,3 +298,5 @@ Onboarding.init({read:()=>state,navigate:navigateTo});
 if(retiredClothingRefund){save();toast(EumoI18n.language==='zh'?`已下架衣服，退回 ${retiredClothingRefund} 星。`:`Retired clothes refunded: ${retiredClothingRefund} stars.`);}
 
 window.addEventListener('eumo-appearance',()=>{lastClockStamp='';syncClock();PixelArt.refreshFocus();});
+
+SaveTransfer.init({read:()=>state,flush:()=>{trackStudy();save();},beforeReload:()=>{canSave=false;FloatingMole.close();}});

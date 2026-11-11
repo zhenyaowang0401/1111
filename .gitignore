@@ -17,3 +17,7 @@ Thumbs.db
 # Node and local deployment metadata
 node_modules/
 .vercel/
+
+# Generated desktop bundle and installers
+desktop/web/
+desktop-dist/
