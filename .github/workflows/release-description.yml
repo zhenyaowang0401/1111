@@ -1,0 +1,21 @@
+name: Sync English release description
+on:
+  push:
+    branches: [main]
+    paths:
+      - desktop/RELEASE_NOTES.md
+      - .github/workflows/release-description.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update-description:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update the published desktop release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(node -p "require('./package.json').version")
+          gh release edit "desktop-v${version}" --notes-file desktop/RELEASE_NOTES.md --title "Eumo ${version} — Windows & macOS"

@@ -1,258 +1,147 @@
 # Eumo v3
 
-**[在线打开 Eumo →](https://1111-phi-ten.vercel.app/#focus)**
+A retro pixel focus companion. Study or work while your mole digs, collect treasures, dress your companion, and decorate an underground home.
 
-当前使用的 Vercel 项目网址是 **https://1111-phi-ten.vercel.app**，AI 密钥配置在这个项目中。旧入口 `1111-alpha-nine.vercel.app` 使用另一份部署配置；更新 GitHub 代码不会把新项目的密钥同步到旧站。
+**[Play on the web →](https://1111-phi-ten.vercel.app/#focus)** · **[Download for Windows or Mac →](https://github.com/zhenyaowang0401/1111/releases/latest)**
 
-游戏进度保存在各网址自己的浏览器存储里，切换网址不会自动迁移旧站进度。
+![Create your Eumo companion](docs/images/setup.png)
 
-一个英文界面的像素专注小游戏：创建自己的无耳朵鼹鼠，专注时向下挖洞，收集宝物、叠穿装备，布置洞穴家园，并查看每日任务报告。
+## Downloads
 
-[V3 新玩法](docs/V3.md) · [联网好友配置](docs/FRIENDS_SETUP.md) · [音乐库与添加音频](docs/MUSIC.md) · [AI 云端接入](docs/AI_SETUP.md) · [模型选型](docs/AI_RESEARCH.md) · [鼹鼠提示词](docs/AI_PROMPTS.md) · [English](docs/README.en.md) · [功能说明](docs/PRODUCT.md) · [技术与数据结构](docs/ARCHITECTURE.md) · [测试方法](docs/TESTING.md) · [常见问题](docs/TROUBLESHOOTING.md) · [开发记录](docs/DEVLOG.md)
-
-![Eumo 宠物创建界面](docs/images/setup.png)
-
-## 切换网页时继续陪伴
-
-在桌面 Chrome / Edge 中，点 Focus 标题旁的 **Float mole ↗**，打开浏览器画中画小窗。拖动系统标题栏可以将它放到左下角或其他位置，也可以调整窗口大小。
-
-小窗默认 240×320，整个画面是一段像素矿洞：两侧泥土、向上延伸的梯子和洞底挖掘的鼹鼠（保留颜色、装扮和工具）。顶部显示时间与深度，底部提供操作，地层随实际挖掘深度变化。可以直接开始、暂停、继续、确认结束；学习时一起挖土，暂停和 Break 时一起休息，空闲时还可以抚摸和三连旋转。切换网页时，小窗继续绘制，不依赖主页面动画。
-
-保持原来的 Eumo 标签页打开。关闭小窗不结束学习；关闭或刷新原标签页会关闭小窗，之后需手动重新开启。窗口位置和置顶行为由浏览器和操作系统管理，网页不能强制放在左下角；网页版小窗保留浏览器边框；下方的桌面客户端使用原生无边框小窗。暂不支持该接口的浏览器会显示说明，不会假装开启。
-
-## Windows / Mac 客户端
-
-| 版本 | GitHub 下载 |
+| Platform | Installer |
 | --- | --- |
-| Windows x64 | [安装程序 .exe](https://github.com/zhenyaowang0401/1111/releases/latest/download/Eumo-Windows-x64-Setup.exe) |
-| Mac · Apple 芯片 | [安装包 .dmg](https://github.com/zhenyaowang0401/1111/releases/latest/download/Eumo-macOS-arm64.dmg) |
-| Mac · Intel | [安装包 .dmg](https://github.com/zhenyaowang0401/1111/releases/latest/download/Eumo-macOS-x64.dmg) |
+| Windows 10 / 11 · x64 | [Download .exe](https://github.com/zhenyaowang0401/1111/releases/latest/download/Eumo-Windows-x64-Setup.exe) |
+| macOS · Apple silicon | [Download .dmg](https://github.com/zhenyaowang0401/1111/releases/latest/download/Eumo-macOS-arm64.dmg) |
+| macOS · Intel | [Download .dmg](https://github.com/zhenyaowang0401/1111/releases/latest/download/Eumo-macOS-x64.dmg) |
 
-[所有版本与构建状态](https://github.com/zhenyaowang0401/1111/actions/workflows/desktop-release.yml) · [发布页](https://github.com/zhenyaowang0401/1111/releases/latest) · [客户端安装、存档迁移与构建说明](docs/DESKTOP.md)
+The desktop apps share the web game's features and artwork. Their floating mole uses a native, draggable, always-on-top window **without a browser address bar**. Closing the main window while the mole is floating hides the main window and keeps the session running.
 
-客户端共用网页内容，鼹鼠小窗为无浏览器地址栏的原生置顶窗口。首次 GitHub 构建全部通过后才会生成下载文件。首版未配置商业发行者签名及 Apple 公证，系统可能提示未知发行者。网页和客户端存档各自独立，可用 Help 中的进度导出／导入迁移。
+Installers, ZIP alternatives, release notes, and checksums are available on [GitHub Releases](https://github.com/zhenyaowang0401/1111/releases/latest). The first desktop release has no Windows publisher certificate or Apple Developer ID signature/notarization; your operating system may ask you to confirm opening it. See the [desktop guide](docs/DESKTOP.md) for installation, progress transfer, and build instructions.
 
-## 下载离线网页版到电脑并打开
+## Your focus companion
 
-**请在 GitHub 仓库页面操作：**
+- **Focus:** Study, Work, and Break modes; adjustable 5–120 minute sessions; pause, resume, or finish early. The mole digs while you focus and rests when you rest.
+- **Explore:** Follow your mole underground and revisit the already-dug tunnel after pausing or ending a session. Deeper layers introduce stone, sand, slate, granite, crystals, and basalt.
+- **Collect:** Earn stars and discoveries through active focus time. Find rare golden collectibles, display them at home, or sell them for stars.
+- **Dress up:** Mix hats, glasses, scarves, and small accessories. Digging tools have their own artwork and animations, with equal reward rates.
+- **Make a home:** Decorate connected underground rooms, buy furniture, craft permanent decorations from spare finds, and manage treasures in your chest. Decorating keeps the home preview and item browser visible together on supported layouts.
+- **Keep company:** Add real friends using friend codes and see their shared status and mole appearance. Friend requests and online summaries use the configured backend.
+- **Reflect:** Review Study and Work totals, tasks, optional outcomes, trends, and a calendar. Finish the day to bring your mole back to the surface.
+- **Listen:** Play soft music, groove, or white noise in the retro music room. Playback starts only when you choose it.
+- **Chat:** Optional cloud chat supports questions, planning, and conversation with your mole. It requires an internet connection and a server-side provider key.
 
-1. 点击绿色 **Code → Download ZIP**。
-2. 将下载的 ZIP **解压到电脑文件夹**。
-3. 在解压后的文件夹里进入 `dist`，找到 **`Eumo.html`**。
-4. 用 Chrome 或 Edge 打开它，填写宠物名字、选择颜色，再点击 **START**。
+The interface supports English and Simplified Chinese. Choose a language in Mole setup; the app remembers it on the current device. A short, optional onboarding tour is available after setup and from Help.
 
-`dist/Eumo.html` 已包含完整样式、脚本、像素字体、像素绘制和声音，不需要安装 Node.js、npm 或其他运行依赖。
+![Desktop focus layout](docs/images/eumo-fit-desktop.png)
 
-> GitHub 中点击 HTML 文件会看到源码，这是正常的源码浏览界面。请下载、解压后在浏览器中打开文件，或按下面的方法运行本地服务。聊天里的文件预览器也不等于下载到电脑。
+## Floating mole
 
-## 本地开发
+**Desktop app:** Open Float mole from Focus. Drag the name area to move the frameless window, resize it as needed, and use its controls to start, pause, resume, or end a session. The return icon brings back the main window; × closes only the floating window. Use the application menu's Quit command to exit completely.
 
-在解压后的项目根目录运行：
+**Web app:** Desktop Chrome and Edge can open a Document Picture-in-Picture window. Keep the original Eumo tab open. Closing the small window does not end the session; closing or refreshing the original tab closes the small window. The browser controls its title bar and placement, so the web version retains browser chrome. Unsupported browsers show an explanation.
+
+Both versions display the same mole, equipment, tunnel, timer, and depth. They share the main view's session state and do not create a second reward counter.
+
+## Progress and rewards
+
+- Study and Work earn **1 metre per 30 active seconds**, **1 star per 5 active minutes**, and **1 discovery per 10 active minutes**. Partial progress carries across sessions.
+- Pausing and Break do not earn digging rewards. Ending early keeps the time and rewards already recorded.
+- Each regular ten-minute discovery has a **3% total bonus chance** of a golden collectible. Keep it, display it, or sell it for **99 stars**. Demo and Break are excluded.
+- The repeatable **15-second developer demo** grants 5 metres, 1 spendable star, and 1 discovery. It is excluded from formal focus reports.
+- Craft decorations with spare mushrooms, crystals, fossils, and star fragments. Displayed materials are reserved; crafting does not spend stars. Crafted decorations remain yours to move for free.
+- Pet the idle mole to make it jump; three quick taps trigger a full spin. An active or paused session disables petting.
+
+Finishing the day preserves lifetime depth, rewards, inventory, and history. A new device-local day begins at the surface once no session is active; sessions crossing midnight are not interrupted.
+
+## Save and move your progress
+
+Game progress is stored locally. The web app and desktop app have separate storage and **do not automatically sync**.
+
+To move progress, pause your session and open **Help → Move / back up progress**. Export a JSON backup, then import it on the other device. Importing replaces that device's progress after confirmation. Chat history and friend credentials are not included; reconnect friends separately on the new client.
+
+Friend relationships and shared summaries use the configured database. Task text and AI conversations are not shared with friends. Browser identity uses an HttpOnly cookie; a friend code is not a login credential.
+
+Clearing browser site data or application data can remove local progress. Export a backup before clearing data or uninstalling.
+
+## Offline web download
+
+1. On GitHub, select **Code → Download ZIP**.
+2. Extract the ZIP to a folder on your computer.
+3. Open **`dist/Eumo.html`** in Chrome or Edge.
+4. Name your mole, choose a color, and select **START**.
+
+The standalone HTML includes styles, scripts, pixel artwork, fonts, and music. Local gameplay needs no Node.js or npm installation. Online chat and friends still require their backend services. GitHub's HTML file viewer displays source code; download and open the file to play.
+
+## Local development
+
+For static gameplay, serve the repository with Python:
 
 ```sh
 python3 -m http.server 8000
 ```
 
-Windows 如果使用 Python 启动器：
+On Windows, `py -m http.server 8000` also works. Open `http://localhost:8000/` in your browser. Use the same browser and origin to retain local progress.
 
-```powershell
-py -m http.server 8000
+For the local API development server or desktop app, use Node.js 22:
+
+```sh
+npm ci
+npm run dev
+# Or launch the desktop app:
+npm run desktop:dev
 ```
 
-然后在浏览器访问 `http://localhost:8000/`。开发时修改根目录源码；运行应用无需安装 Python 包。这个 Python 服务只提供静态游戏；AI 开发使用 `npm run dev`，云端需按 [AI 接入步骤](docs/AI_SETUP.md) 配置 Vercel 服务端 Key。固定使用同一个浏览器和服务地址，便于保留本地进度。
+Configure provider and database credentials on the server only. The active web deployment is **https://1111-phi-ten.vercel.app**. The older `1111-alpha-nine.vercel.app` deployment has separate environment settings and local browser storage; pushing code does not transfer credentials or saves between deployments.
 
-## 界面语言与首次使用
-
-Mole setup 右上角可切换中文 / English，首次默认英文，选择保存在当前浏览器。鼹鼠开场和游戏提醒跟随界面语言，聊天回复跟随当前消息的中英文。用户填写的名字、任务、笔记与聊天历史保留原文。好友页只显示真实好友，空列表提示 Come add your mole friends!。
-
-[新手指引](docs/ONBOARDING_PROPOSAL.md) 已实现：首次设置后可选择 4 步简短介绍或直接开始，支持中英文、跳过和 Help 重看；不会自动启动计时。
-
-## 当前功能
-
-| 页面 / 系统 | 已实现的内容 |
-| --- | --- |
-| 宠物创建 | 命名、12 种大块颜色预设、自选颜色、实时像素预览；修改外观不重置进度 |
-| 专注与挖洞 | Study / Work / Break，5–120 分钟，增减时间、暂停、继续、提前结束；矿道随计时挖深；运行跟随，暂停/结束后可上下拖动查看已挖区域 |
-| 宠物互动 | 无耳朵造型、待机眨眼、困倦、带 zzz/鼻涕泡/呼吸的睡觉；空闲时点击角色会跳跃、发出两声“嘟嘟”并显示 `yeeeeee`；1.1 秒内三连点击会跳起转一整圈；进行中和暂停的任务都不能抚摸 |
-| 宝箱与装备 | 星星结算、四种普通发现物，十种 3% 额外掉落的金色收藏（可展示或卖 99 星）；帽子 14 款、配饰 8 款、围脖 5 款、眼镜 6 款，分类搭配；6 种付费工具只在挖掘时显示 |
-| 家园 | 第二个小房子入口、圆形土洞、四个摆放位、家具购买、五款材料制作装饰、可点击宝箱、头顶展示发现物（仅家园）、四种房间主题 |
-| 鼹鼠 AI | 可部署的 Qwen 云端聊天接口、真实任务/时长/装备上下文、答疑与规划提示词、可选共享、完整对话窗口与本地历史；尚需配置服务端 Key 才能真实聊天 |
-| 今日报告 | Study / Work 分类时间、任务与可选成果、7 / 30 日趋势、日历、醒目的 Finish 与今日返地面 |
-| 时间联动 | 自动读取设备本地时间和时区；清晨、白天、傍晚、夜晚四种背景 |
-| 好友 | 好友码、双向请求/接受、删除、真实状态与鼹鼠同步、共享开关；需配置 Supabase 后上线。原真实好友鼹鼠独立保留 |
-| 声音 | 紫色复古 Music room，轻音乐/律动/白噪音分类；播放、进度、上下首、循环与音量；Warm Focus、Litte ridge、botanicore、Winter bonfire、Tropical rainforest 五首可播放；不会自动播放 |
-
-**真实好友功能需先完成 [Supabase 配置](docs/FRIENDS_SETUP.md)。** 演示鼹鼠已移除，空列表显示添加好友的邀请。好友关系和已同意共享的摘要在数据库中；游戏进度仍保存在当前浏览器，没有账号云存档。浏览器好友身份用 HttpOnly cookie 保留，好友码不能当作登录凭据。
-
-![100% 缩放下完整显示的桌面布局](docs/images/eumo-fit-desktop.png)
-
-Focus 桌面采用约 72:28 的左右面板，两块上下对齐；左侧矿洞下方是紫色复古 Windows 风格的 Mole chat：可收起、展开，点击方框打开完整对话，支持闲聊、学习答疑和日程建议。换装/共学台词本地即时触发；主动发消息才请求云端 AI。接口已写好，真实聊天需要在 Vercel 配置服务商 Key，当前没有宣称已完成真实模型验证。矮屏优先保留可读的计时与完整操作。
-
-普通挖掘前 2 小时（240 米前）一直是泥土，浅层有藤蔓和树根，深一些土色略变。2 小时才见柔和的淡紫灰石层，2.5 小时进入沙层，之后依次经过板岩、粉褐花岗岩、晶矿和玄武岩。镜头不会提前露出未到达的地层。
-
-![延长的土层](docs/images/eumo-soft-layer-60.png)
-
-![柔和的石层](docs/images/eumo-soft-layer-270.png)
-
-## V3 新玩法
-
-空闲三连点击鼹鼠，它会跳起来转一圈。暂停或结束一轮后拖动矿洞，可以查看已经挖过的深度；继续学习会自动跟回鼹鼠。每次正式十分钟发现物有额外 3% 概率挖出金色收藏，十种合计 3%；可收入收藏、在家中金色壁柜展示，或每件出售得 99 星。[完整规则](docs/V3.md)。
-
-![V3 金色收藏（测试存档展示）](docs/images/eumo-v3-collection.png)
-
-## 真实好友
-
-Friends 页右上角的加好友按钮提供自己的可复制好友码、发送/接受/拒绝/撤回请求和删除好友。成为双向好友后，卡片显示真实专注时间、在线/离线/暂停/休息状态及鼹鼠颜色、装备、工具和睡眠情况。任务和 AI 对话不共享；可暂停状态共享。
-
-![好友界面（本地双浏览器与真实 PostgreSQL 测试）](docs/images/eumo-friends-live.png)
-
-需要一次数据库配置才能在线使用；详见 [好友接入步骤与身份范围](docs/FRIENDS_SETUP.md)。
-
-## 音乐库
-
-点击 Music 右边的四格图标打开紫色复古音乐窗口。Soft music（轻音乐）：Warm Focus、Litte ridge；Groove（律动）：botanicore；White noise（白噪音）：Winter bonfire、Tropical rainforest。四首新上传的音频保持原样，五首都可播放，下载版也已内嵌。
-
-![V3 紫色复古音乐库](docs/images/eumo-v3-music.png)
-
-播放器支持共享音量、可用曲目的上下首、进度和循环；关闭窗口、浏览分类和切换页面都不打断学习。新增音频的配置与打包方法见 [音乐说明](docs/MUSIC.md)。
-
-## 玩法与结算
-
-- Study / Work 每 30 秒挖 1 米，每累计 5 分钟收集 1 星，每 10 分钟收集一件发现物；实际经过路径自动拾取。
-- 零头跨轮保留；暂停、Break 不产奖励，没有连续倍率或每日硬上限。
-- **15 秒开发者 Demo 保留每轮奖励**：5 米、1 星、1 件物品，进入同一余额与背包，方便测试家具和装备。
-- 提前结束保存实际时间、深度和已拿到的奖励；Demo 不计入正式报告。
-- 家园有免费地垫、6 件可购买家具和 3 个付费星星主题，发现物可直接摆放。
-- 右上角 Today 可查看报告或选择 Finish。确认结束后保存成果并让鼹鼠回到地面；只查看或取消不重置矿道，累计深度和奖励保留。下一天从新的浅土矿道开始；跨午夜进行中的任务结束后才返地面。
-
-![圆形鼹鼠洞与头顶展示](docs/images/eumo-home.png)
-
-![今日完成后回到地面](docs/images/eumo-surface.png)
-
-## 页面精简
-
-Inventory 页面及导航已移除，旧 `#rewards` 链接转到家园。物品、金色收藏展示与 99 星出售集中在家园宝箱，兑换装饰从家园或宝箱进入。Focus 的动画开关改为眼镜图标，保留中英文悬停提示和开关状态；矿洞移除 VIEW 范围和拖动说明两条文字，拖动与回到地表/鼹鼠功能保留。
-
-## 分类穿戴与工具
-
-五款衣服已下架；旧存档自动脱下并按原购买价格退回星星。配饰新增爱心 6、叶子 8、小花 10、月亮 12、蘑菇 15、铃铛 18、水晶 22 星，原星星胸针仍为 5 星。配饰为小尺寸胸针，同时选一种。
-
-语言入口采用已确认的 A 方案：地球图标＋当前语言＋下拉箭头，展开选择 English / 简体中文，✓ 标记当前语言；设置页与新手指引共用。见[图标调研与交互预览](docs/LANGUAGE_PICKER_RESEARCH.md)。
-
-| 分类 | 数量 | 星星价格 |
-| --- | ---: | --- |
-| 帽子 | 14 | 3–120 |
-| 小配饰 | 8 | 5–22 |
-| 围脖 | 5 | 3–38 |
-| 眼镜 | 6（含原护目镜） | 2–45 |
-| 付费工具 | 6 | 45–240 |
-
-帽子、配饰、围脖、眼镜各选一件，可跨类别搭配；旧眼镜归入 Glasses，胸针保留在 Extras。新增墨镜、圆框、方框、爱心框和星形框，价格分别为 6、8、10、24、45 星。工具单独选择，不出现在试衣预览里，默认镐子无需购买。工具只有造型和动画差异，不改变奖励或挖掘速度。已购买物品重新选择不收费。
-
-新增动物帽：Kitten 24、Puppy 28、Frog 32、Panda 45、Fox 50、Lion 60 星。与其他装备共用购买、换装和保存机制。下图为隔离测试存档中的实际试衣画布。
-
-![六款动物帽预览](docs/images/eumo-animal-hats.png)
-
-新增奶牛猫帽 Tuxedo cat hat，15 星。
-
-Home 和宝箱均可进入 **Craft decor**：1 个蘑菇制作盆栽，2 个蘑菇制作灯，2 个水晶制作风铃，1 个化石制作画框，2 个星星碎片制作挂饰。确认后只消耗未展示的材料；每件制作一次即可永久拥有、免费移动，星星余额保持不变。材料用完后图鉴仍保留发现记录。详见[材料兑换方案](docs/MATERIAL_EXCHANGE_PROPOSAL.md)。
-
-![用发现物制作家园装饰](docs/images/eumo-crafting.png)
-
-![实际家园摆放与奶牛猫帽](docs/images/eumo-crafting-home.png)
-
-家园宝箱采用木箱、金属搭扣和物品格子：点物品，再点 **Display on head**；发现物不会在矿洞或试衣页面显示。
-
-![游戏宝箱](docs/images/eumo-chest.png)
-
-![固定预览与可滚动商店](docs/images/eumo-v2-shop.png)
-
-商店左侧固定预览鼹鼠，右侧商品区独立滚动；支持鼠标滚轮、拖动滚动条、键盘滚动和触摸滑动，分类栏一直可见。手机将预览压缩到商店上方。正文、按钮和数字使用清晰的系统字体，小字一般为 12–14px，计时使用等宽数字、取消像素阴影；仅 Logo 保留本地 Pixelify Sans，使用 [SIL OFL 1.1 许可](assets/fonts/OFL.txt)。桌面同时按浏览器的可用宽度和高度控制画面：100% 缩放下完整显示游戏、侧栏和底部按钮，避免只按宽度铺大。短屏收紧间距并调整控制排列，计时仍至少 44px，Canvas 保持比例；手机与平板保留纵向滚动。
-
-## 修改源码后生成单文件
+After changing web source files, rebuild all standalone entry points:
 
 ```sh
 python3 scripts/build_standalone.py
 ```
 
-这会重新生成 `dist/Eumo.html`，并更新内容完全相同的旧文件名 `dist/Supermo.html` 和 `dist/LOOP_PET.html` 作为兼容入口。请同时提交源码与更新后的单文件，避免下载版落后于开发版。
+This updates `dist/Eumo.html` and the identical compatibility copies `dist/Supermo.html` and `dist/LOOP_PET.html`. Commit generated files alongside the source changes. Desktop web assets are generated separately by `npm run desktop:prepare` and are not committed.
 
-## 自动化测试
+## Testing
 
-材料制作与存档：`node --test tests/test_crafting.cjs`、`python tests/test_crafting_browser.py`。
+Run checks relevant to the change. Desktop checks include:
 
-测试依赖与游戏运行依赖分开。好友数据库测试先运行 `npm ci` 安装开发用 PostgreSQL 引擎；浏览器测试使用 Python 3.10+：
+```sh
+npm run test:desktop
+npm run test:desktop:smoke
+```
+
+The native-window smoke test requires a graphical desktop. Windows and macOS builds run it in GitHub Actions before publishing installers.
+
+Browser tests use Python 3.10+, Playwright, and Chromium:
 
 ```sh
 python3 -m venv .venv
-```
-
-激活虚拟环境后：
-
-```sh
+# Activate the virtual environment, then:
 python -m pip install -r requirements-dev.txt
 python -m playwright install chromium
 python tests/test_entry.py
 python tests/test_site.py
-python tests/test_world.py
-python tests/test_journey.py
-python tests/test_supermo.py
-python tests/test_eumo.py
-python tests/test_daily.py
-python tests/test_viewport.py
-python tests/test_geology.py
-python tests/test_chat.py
-python tests/test_companion.py
-python tests/test_music.py
-python tests/test_friends_browser.py
-npm run test:friends
-node --test tests/test_ai.cjs
-node tests/test_rewards.js
 ```
 
-Linux 系统若缺少浏览器系统库，可使用 Playwright 官方安装命令 `python -m playwright install --with-deps chromium`。已有系统 Chromium 会被自动复用；也可以设置 `PLAYWRIGHT_CHROMIUM_EXECUTABLE`。
+Additional checks cover rewards, crafting, reports, device time, viewports, friends, chat, and floating windows. See the [testing guide](docs/TESTING.md) and [validation notes](docs/VALIDATION.md). Database tests require `npm ci`; run them with `npm run test:friends`.
 
-测试覆盖内嵌预览中的 START、中文名称与回车、无耳朵图形、抚摸反应、叠穿、挖掘结算、学习报告、跨午夜、设备时区、同伴卡片和手机布局。详见 [测试文档](docs/TESTING.md)。
+## Project structure
 
-## 发布为可点击的网址
+| Path | Purpose |
+| --- | --- |
+| `index.html`, `style.css`, `app.js` | Web entry point, layout, game state, navigation, and timer |
+| `pixel-art.js`, `wardrobe-art.js`, `terrain.js` | Shared pixel character, equipment, and terrain rendering |
+| `home.js`, `wardrobe.js`, `journey.js` | Home decoration, equipment, discoveries, and rewards |
+| `chat.js`, `api/`, `ai/` | Chat interface, server endpoints, prompts, and evaluation scenarios |
+| `audio.js`, `assets/` | Audio playback, music, artwork, and local fonts |
+| `desktop/` | Electron windows, secure resource loading, and release notes |
+| `save-transfer.js` | Portable progress export and import |
+| `dist/Eumo.html` | Standalone offline web build |
+| `scripts/`, `tests/` | Build tools and automated checks |
+| `docs/` | Product, design, setup, deployment, and development notes |
 
-此项目可以部署到 GitHub Pages。仓库所有者可进入 **Settings → Pages**，选择 **Deploy from a branch → main → /(root)**，保存后等待 GitHub 完成部署，再使用该页面显示的网址。
+## Documentation
 
-**提交代码不等于已经启用 Pages。** 本仓库文档不会把未部署的地址标为可用网站。[部署说明](docs/DEPLOYMENT.md) 包含启用步骤和检查方法。
+[Desktop apps](docs/DESKTOP.md) · [Product](docs/PRODUCT.md) · [V3 features](docs/V3.md) · [Friends setup](docs/FRIENDS_SETUP.md) · [Music](docs/MUSIC.md) · [AI setup](docs/AI_SETUP.md) · [Model research](docs/AI_RESEARCH.md) · [Persona prompts](docs/AI_PROMPTS.md) · [Architecture](docs/ARCHITECTURE.md) · [Deployment](docs/DEPLOYMENT.md) · [Troubleshooting](docs/TROUBLESHOOTING.md) · [Development log](docs/DEVLOG.md)
 
-## 项目目录
-
-```text
-.
-├── index.html                 # 多文件网页入口
-├── style.css                  # 像素风与响应式界面
-├── app.js                     # 状态、计时、导航、报告与同伴
-├── chat.js                    # 聊天窗口、上下文与本地陪伴反应
-├── api/chat.js                # Vercel 服务端模型代理
-├── ai/                        # 系统提示词、示范、SFT 种子与评测场景
-├── pixel-art.js               # 无耳朵角色、矿道、动画与配色
-├── world.js                   # 设备时间与昼夜背景
-├── audio.js                   # MP3 播放与两声宠物叫声
-├── journey.js                 # 路径、累计奖励与拾取事件
-├── home.js                    # 家具、主题、配方、材料预留和摆放位置
-├── wardrobe.js                # 分类、价格与装备存档校验
-├── wardrobe-art.js            # 穿戴与六种工具的共用像素模型
-├── terrain.js                 # 土层色块、石子、根系与地下生态
-├── assets/audio/              # 原始 Warm Focus MP3
-├── assets/fonts/              # Pixelify Sans 字体与 OFL 许可
-├── dist/Eumo.html          # 可离线打开的单文件
-├── scripts/build_standalone.py # 可重复的单文件构建
-├── tests/                     # 十套浏览器测试与奖励规则检查
-├── docs/                      # 产品、技术、部署和问题排查
-├── requirements-dev.txt        # 仅测试使用
-└── 349f8aa35697822105fd0040f35a68bd.mp4  # 仓库原有视频，保留
-```
-
-## 当前限制
-
-- 没有真实联机、登录、跨设备同步或排行榜服务。AI 接口是单独的可选功能，服务商会收到主动发送的聊天及所共享摘要；Key 仅放服务端，云端调用可能收费。
-- 浏览器清理站点数据会清除本地记录；直接打开 `file://` 时的存储行为取决于浏览器。
-- 限制存储的内嵌预览仍可交互，但关闭后可能不保留记录。
-- 音乐为用户提供的 MP3，宠物叫声为程序合成；只有用户操作后才启动音频。
-
-[更新记录](CHANGELOG.md) · [贡献说明](CONTRIBUTING.md)
+[Changelog](CHANGELOG.md) · [Contributing](CONTRIBUTING.md) · [Build status](https://github.com/zhenyaowang0401/1111/actions/workflows/desktop-release.yml)

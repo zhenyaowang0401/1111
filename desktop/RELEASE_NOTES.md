@@ -1,12 +1,22 @@
-Eumo 的 Windows / macOS 客户端，共用网页的计时、鼹鼠、装扮、家园和报告代码。
+Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
-- **Windows 10 / 11（x64）**：下载 `Eumo-Windows-x64-Setup.exe`。
-- **Mac Apple 芯片**：下载 `Eumo-macOS-arm64.dmg`。
-- **Mac Intel**：下载 `Eumo-macOS-x64.dmg`。
-- 网页：https://1111-phi-ten.vercel.app
+## Downloads
 
-客户端的 Float mole 是原生、可拖动、置顶的无边框窗口，没有浏览器地址栏；关闭主窗口时，小窗仍可继续计时，通过小窗的返回按钮恢复主窗口。
+- **Windows 10 / 11 (x64):** `Eumo-Windows-x64-Setup.exe`
+- **Mac with Apple silicon:** `Eumo-macOS-arm64.dmg`
+- **Mac with Intel:** `Eumo-macOS-x64.dmg`
+- **Web app:** https://1111-phi-ten.vercel.app
 
-本地玩法可离线运行；聊天、好友需要联网。网页和客户端的进度各自保存，可在 Help → Move / back up progress 导出、导入。好友身份需重新连接，聊天记录不包含在进度备份里。
+Mac ZIP builds are also available in the release assets.
 
-本次为**未使用商业代码签名证书的客户端版本**，Windows 可能显示未知发行者，macOS 可能要求在“隐私与安全性”中确认打开。此版本未做 Apple 公证；请仅从本仓库下载。后续添加开发者证书后可提供已签名、公证的安装包。`SHA256SUMS.txt` 用于核对下载文件完整性。
+## Floating companion
+
+Float mole opens a native, draggable, always-on-top window with **no browser address bar**. It shares the main window's timer and rewards. Closing the main window while the mole is floating hides the main window and keeps the session running; use the return button to bring it back.
+
+## Offline play and progress transfer
+
+Local gameplay works offline. Chat and friends require an internet connection. Web and desktop progress are stored separately; use **Help → Move / back up progress** to export and import a backup. Friend connections must be set up again on the new client. Chat history is not included in the backup.
+
+## Installation notes
+
+This release has no Windows publisher certificate or Apple Developer ID signature/notarization. macOS builds use ad-hoc signing only. Windows may show an unknown-publisher warning, and macOS may require confirmation in Privacy & Security before opening the app. Download from this repository's release page. `SHA256SUMS.txt` contains file checksums for verifying downloads.

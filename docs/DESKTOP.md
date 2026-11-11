@@ -1,39 +1,43 @@
-# Eumo Windows / macOS 客户端
+# Eumo for Windows and macOS
 
-## 下载
+## Downloads
 
-- [网页版](https://1111-phi-ten.vercel.app/#focus)
-- [GitHub Releases：所有客户端、版本说明和校验和](https://github.com/zhenyaowang0401/1111/releases/latest)
-- [Windows x64 安装程序](https://github.com/zhenyaowang0401/1111/releases/latest/download/Eumo-Windows-x64-Setup.exe)
-- [Mac Apple 芯片 DMG](https://github.com/zhenyaowang0401/1111/releases/latest/download/Eumo-macOS-arm64.dmg)
+- [Web app](https://1111-phi-ten.vercel.app/#focus)
+- [GitHub Releases: installers, release notes, and checksums](https://github.com/zhenyaowang0401/1111/releases/latest)
+- [Windows x64 installer](https://github.com/zhenyaowang0401/1111/releases/latest/download/Eumo-Windows-x64-Setup.exe)
+- [Mac Apple silicon DMG](https://github.com/zhenyaowang0401/1111/releases/latest/download/Eumo-macOS-arm64.dmg)
 - [Mac Intel DMG](https://github.com/zhenyaowang0401/1111/releases/latest/download/Eumo-macOS-x64.dmg)
 
-这些资产由 GitHub Actions 在 Windows / macOS 上构建，全部成功后统一发布。首次构建完成前，下载链接不会有文件。源码 ZIP 与安装包不同。
+GitHub Actions builds these installers on Windows and macOS and publishes them together after all builds pass. The repository's source-code ZIP is different from an application installer.
 
-Windows 为 Windows 10 / 11 x64；Mac 使用 Electron 45 支持的 macOS 版本。两种芯片有各自安装包。首版没有 Windows 发行者签名，也没有 Apple Developer ID 签名或 Apple 公证；Mac 仅进行运行所需的 ad-hoc 签名，不代表 Apple 认证。系统可能要求确认未知发行者。请从本仓库 Releases 下载，校验和见 SHA256SUMS.txt。
+Windows builds target Windows 10 / 11 x64. Mac builds require a macOS version supported by Electron 45; download the package matching your processor. This first release has no Windows publisher certificate, Apple Developer ID signature, or Apple notarization. Mac builds use ad-hoc signing, which is not Apple certification. Your system may ask you to confirm an unknown publisher. Download from this repository's Releases page; checksums are listed in `SHA256SUMS.txt`.
 
-## 窗口与存档
+## Windows and saved progress
 
-- 主窗口保留 Windows / Mac 自己的窗口控制，尺寸随屏幕适配。
-- Float mole 使用原生无边框置顶窗口。顶部名字区域可拖动，返回图标恢复主窗口，× 只关闭小窗。
-- 小窗存在时关闭主窗口会隐藏主窗口，计时和奖励仍由原主窗口管理；没有第二份计时器。完全退出请用菜单 Quit。
-- 本地计时、装扮、家园、音乐和报告随安装包离线提供。聊天与好友使用现有 HTTPS 服务；离线或证书异常时显示连接失败，不会忽略证书验证。
-- 网页与客户端分别保存本地数据，不自动同步。Help → Move / back up progress 可以导出 JSON 并在另一端导入。请先暂停计时。导入要确认替换；聊天记录和好友登录凭据不导出，好友需在新客户端重新连接。
-- 普通更新沿用 Eumo 的应用数据目录。卸载、清理应用数据之前请备份。
+- The main window uses native Windows or Mac window controls and adapts to the screen.
+- Float mole is a native, frameless, always-on-top window. Drag the name area to move it. The return icon restores the main window; × closes only the floating window.
+- Closing the main window while the floating window is open hides the main window. The original session still owns the timer and reward state; there is no second counter. Use the application menu's Quit command to exit completely.
+- The installer includes local focus timers, outfits, home decoration, music, and reports for offline use. Chat and friends connect to the existing HTTPS services. Offline or certificate failures produce a connection error; certificate verification is never bypassed.
+- Web and desktop saves are separate and do not automatically sync. Pause your session, then use **Help → Move / back up progress** to export a JSON backup and import it on another device. Importing replaces that device's progress after confirmation. Chat history and friend credentials are not exported; reconnect friends separately.
+- Normal application updates reuse Eumo's data directory. Back up your progress before uninstalling or clearing application data.
 
-## 构建与发布
+## Building and publishing
 
-Node 22，运行 `npm ci`。本地开发：`npm run desktop:dev`。
+Use Node.js 22 and run `npm ci`. Start local desktop development with `npm run desktop:dev`.
 
-- Windows：`npm run desktop:pack -- --win --x64`
-- macOS：`npm run desktop:pack -- --mac --arm64` 或 `--mac --x64`
-- 单元测试：`npm run test:desktop`
-- 原生窗口测试：`npm run test:desktop:smoke`（需要图形桌面）
+- Windows: `npm run desktop:pack -- --win --x64`
+- macOS: `npm run desktop:pack -- --mac --arm64` or `--mac --x64`
+- Unit tests: `npm run test:desktop`
+- Native-window smoke test: `npm run test:desktop:smoke` (requires a graphical desktop)
 
-`desktop/web` 由 `scripts/prepare_desktop.cjs` 从当前网页源码构建，不能手工修改。它只包含页面、样式、浏览器脚本与 assets，排除服务端代码、密钥、数据库和工作区文件。安装程序在 `desktop-dist`，不提交二进制安装包到 Git。
+`scripts/prepare_desktop.cjs` generates `desktop/web` from the current web source. Do not edit generated files directly. The bundle includes pages, styles, browser scripts, and assets; it excludes server code, credentials, databases, and workspace files. Installers are written to `desktop-dist`; installer binaries are uploaded to Releases rather than committed to Git.
 
-推送 `desktop-v*` 标签触发 `.github/workflows/desktop-release.yml`：Windows x64、Mac arm64、Mac x64 各自做原生窗口测试，再构建，全部成功后发布 Release。手动运行工作流只生成 Actions artifacts，不发布 Release。更新网页不会自动更新已安装客户端，需要发布新版本，用户通过菜单 Download updates 下载。
+Pushing a `desktop-v*` tag triggers `.github/workflows/desktop-release.yml`. Windows x64, Mac arm64, and Mac x64 each run native-window checks and build their installers. A release is published only after all three succeed. Manually running that workflow creates Actions artifacts without publishing a release.
 
-## 安全边界
+Updating the website does not automatically update installed clients. Publish a new desktop version, then use the application's **Download updates** menu to open the download page.
 
-Renderer 禁用 Node，开启 sandbox/contextIsolation/webSecurity。固定网站 origin 在 Electron 内映射到本地打包资源，使原网页的相对路径、存档和客户端代码保持一致；仅 `/api/chat`、`/api/friends` 转发到真实 HTTPS 服务。好友 cookie 只保存在主进程管理的 HttpOnly cookie jar 中。外部网页交给默认浏览器，不能在有 preload 的窗口里执行。没有关闭 TLS 检查，没有把 AI 或数据库密钥带到客户端。
+## Security boundaries
+
+Renderers have Node integration disabled and sandbox, context isolation, and web security enabled. The fixed website origin maps to packaged local resources inside Electron, preserving the web app's relative paths and storage behavior. Only `/api/chat` and `/api/friends` are forwarded to the actual HTTPS service.
+
+Friend credentials stay in the main process's HttpOnly cookie jar. External pages open in the default browser rather than running inside a window with the preload bridge. TLS validation remains enabled, and AI or database secrets are never included in the client.

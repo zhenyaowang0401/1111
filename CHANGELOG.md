@@ -1,245 +1,251 @@
-# 更新记录
+# Changelog
 
-这里记录项目实现阶段，不代表已创建对应 GitHub Release 或公开部署。
+These entries describe implementation milestones. Historical milestone names do not necessarily correspond to a published GitHub Release or a live deployment.
 
-## Eumo v3 — 精简重复页面与矿洞提示
+## Eumo 3.1.0 — Windows and macOS desktop apps
 
-- 删除 Inventory 页面及导航，旧 #rewards 链接转到 Home；保留游戏数据，宝箱继续管理物品、展示金色收藏和出售得 99 星。
-- Hide animation 改为眼镜图标开关，保留悬停提示、读屏名称、开关状态和保存偏好。
-- 删除矿洞 VIEW 范围和 Drag to explore 两条文字；保留深度、地层、拖动、键盘及地表/鼹鼠跳转。
-- 新手指引第三步只介绍装扮与家园；后续整体视觉优化另行处理。
+- Published installers for Windows x64, Mac Apple silicon, and Mac Intel, built and tested through GitHub Actions.
+- Added a native, draggable, always-on-top floating mole with no browser address bar. The main window continues to own the session and rewards while hidden.
+- Bundled the web game's local features and assets for offline desktop use; chat and friends continue to use the existing HTTPS backend.
+- Added progress export and import through Help. Backups exclude chat history and friend credentials.
+- Added installer checksums and documented the first release's signing and notarization limitations.
 
-## Eumo v3 — 明确的语言选择菜单
+## Eumo v3 — Simpler navigation and mine controls
 
-- 采用用户确认的 A 方案：地球图标＋当前语言＋下拉箭头，菜单显示 English / 简体中文，✓ 标记当前语言。
-- 设置页和新手指引使用同一组件；点击展开不改变语言，选择后切换并记住选择，支持方向键、Enter、Escape 与点击外部关闭。
-- 保留界面、聊天语言和浮动窗同步逻辑，三份离线构建同步更新。
+- Removed the Inventory page and navigation item; legacy `#rewards` links now open Home. The chest still manages finds, golden displays, and sales for 99 stars.
+- Replaced Hide animation text with a glasses icon, retaining tooltips, screen-reader labels, toggle state, and saved preferences.
+- Removed the VIEW range and Drag to explore labels while preserving depth, geology, dragging, keyboard controls, and Surface/Mole navigation.
+- Limited the third onboarding step to outfits and Home; broader visual changes were handled separately.
 
-## Eumo v3 — 小配饰替代衣服
+## Eumo v3 — Explicit language selection
 
-- 下架五款衣服与分类，移除实际角色衣服绘制；旧存档自动脱下并退回原价星星，刷新不重复退款。
-- 保留星星胸针，新增爱心、叶子、小花、月亮、蘑菇、铃铛、水晶；共 8 款，5～22 星，使用 6×6 像素以内的小图形，一次佩戴一种。
-- 商店图标与角色绘制共用形状；家园、矿洞、好友与浮动窗沿用同一装扮绘制。
-- 此阶段提供地球与文/A 两种独立预览；后续用户确认 A 方案，见上方实现记录。
+- Adopted the approved globe icon, current-language label, and dropdown arrow. The menu offers English and Simplified Chinese with a check beside the current choice.
+- Shared the component between setup and onboarding. Opening the menu does not change language; selecting an option saves the preference. Arrow keys, Enter, Escape, and outside clicks are supported.
+- Preserved interface, chat-language, and floating-window synchronization and rebuilt all three offline entry points.
 
-## Eumo v3 — 可选的新手指引
+## Eumo v3 — Small accessories replace clothes
 
-- 首次完成鼹鼠设置后，选择「带我看看」或「直接开始」。四步介绍主要入口，使用玩家自己的鼹鼠形象与区域高亮。
-- 音乐和 AI 同一步切换高亮；支持中英文、键盘、跳过、返回和 Help 重看，适配手机和较矮窗口。
-- 完成只聚焦开始按钮，不启动计时；指引不改变游戏进度。跳过/完成本地记忆，现有玩家不自动弹出。
+- Retired the five clothing items and category. Existing saves automatically unequip them and refund their original star prices once.
+- Kept the star pin and added heart, leaf, flower, moon, mushroom, bell, and crystal pins: eight accessories priced at 5–22 stars, using shapes no larger than 6×6 pixels, with one equipped at a time.
+- Shared accessory shapes between shop icons and character rendering across Home, the mine, friends, and floating windows.
+- Explored globe and text-based language icons; the globe option was subsequently selected.
 
-## Eumo v3 — 双语界面与真实好友列表
+## Eumo v3 — Optional onboarding
 
-- 移除四只演示好友，空列表显示邀请添加鼹鼠朋友的提示。
-- Mole setup 添加中文/English 切换，默认英文，记住偏好；界面、动态按钮、目录、弹窗、日期和浮动窗同步。
-- 鼹鼠开场和游戏反应使用界面语言，聊天依据当前消息选择中英文；服务器明确指定本次回复语言。
-- 用户名字、任务、笔记与聊天原文保留；旧存档、材料和好友关系不迁移。
-- 此阶段整理了新手指引方案，后续经确认实现，见上方记录。
+- After initial mole setup, players can take a four-step tour or start immediately. The tour uses their own mole and highlights the relevant interface areas.
+- Supported both languages, keyboard navigation, skipping, back navigation, Help replay, phones, and shorter windows. Music and AI share a step with separate highlights.
+- Completing the tour focuses the start button without starting a timer or changing progress. Completion and dismissal are remembered locally; existing players are not forced through the tour.
 
-## Eumo v3 — 用发现物制作家园装饰
+## Eumo v3 — Bilingual interface and real friends
 
-- 新增五款原创像素装饰：蘑菇盆栽、蘑菇灯、水晶风铃、化石画框、星空挂饰；1～2 个对应材料即可制作。
-- Home、宝箱和图鉴提供 Craft decor 入口，显示成品、配方与可用材料进度，确认后扣除；运行中入口会先暂停。
-- 预留已经摆放与顶在头上的材料，制作不扣星星，不消耗金色收藏。成品永久保留、可免费移动，不自动替换当前家具。
-- 普通图鉴新增持久发现记录，材料用完后仍显示已发现；兼容原背包和家园存档。
-- 新增奶牛猫帽 Tuxedo cat hat，15 星，黑白花色与尖耳朵，帽子总数为 14。
-- 增加原子材料扣除、重复/不足/状态变化及真实浏览器制作摆放测试；同步三个离线入口。
+- Removed the four demo friends and added an invitation to connect real friends when the list is empty.
+- Added English/Simplified Chinese selection in Mole setup, defaulting to English and remembering the choice across labels, buttons, catalogs, dialogs, dates, and floating windows.
+- Mole greetings and game reactions follow the interface language. Chat replies follow the current message's language, explicitly included in the server request.
+- Preserved names, tasks, notes, chat text, saves, materials, and friendships. Onboarding was proposed here and implemented in the later milestone above.
 
-## Eumo v3 — 动物帽扩充
+## Eumo v3 — Craft home decorations from discoveries
 
-- 新增六款用星星购买的像素帽子：小猫 24、狗狗 28、青蛙 32、熊猫 45、狐狸 50、狮子 60 星。
-- 商店图标与角色使用相同像素定义，沿用分类替换、跨类搭配、旧存档及好友外观目录。
-- 补齐中文换装反馈；同步三个离线入口。材料兑换家具仅记录建议，本次不改兑换机制。
+- Added five original pixel decorations: mushroom planter, mushroom lamp, crystal wind chime, fossil frame, and starry mobile. Each recipe uses one or two matching materials.
+- Added Craft decor entry points in Home, the chest, and collection views, with recipe previews, available-material counts, and confirmation. Entering while running pauses the session.
+- Reserved displayed and head-mounted materials. Crafting spends no stars or golden finds; crafted objects are permanent, free to move, and do not automatically replace furniture.
+- Added persistent discovery records so spent materials remain known in the collection, with compatibility for existing inventory and home saves.
+- Added the black-and-white Tuxedo cat hat for 15 stars, bringing the hat catalog to 14.
+- Added tests for atomic deductions, repeat crafting, insufficient materials, changing state, and real-browser placement; rebuilt offline entries.
 
-## Eumo v3 — 隧道陪伴窗
+## Eumo v3 — More animal hats
 
-- 浮动窗整体改为像素隧道，取消圆角卡片、光圈和时间胶囊；泥土两壁、梯子、洞底与角色组成完整场景。
-- 沿用真实地层绘制和实际深度，运行时有挖掘工具与土屑；暂停/休息停止挖掘，不另计进度。
-- 顶部紧凑时间/状态栏，底部操作栏；默认仍为 240×320，缩放适配长帽子、不同窗口比例和清晰角色点击区域。
-- 真实画中画回归通过，含 400×260 横向尺寸；离线入口同步更新。
+- Added Kitten (24 stars), Puppy (28), Frog (32), Panda (45), Fox (50), and Lion (60).
+- Shared pixel definitions across shop icons and character rendering, preserving category replacement, mixed outfits, older saves, and friend appearance catalogs.
+- Completed Chinese outfit reactions and rebuilt offline entries. Material crafting was only a proposal at this milestone.
 
-## Eumo v3 — 更小的默认气泡
+## Eumo v3 — Tunnel companion window
 
-- 浮动窗默认请求从 300×440 改为 240×320，仍可拖动调整大小。
-- 去掉专注运行时的固定陪伴句，并隐藏空对话气泡；暂停、休息和点击互动反馈保留。
-- 真实画中画回归通过，包括小尺寸布局和原有计时操作。
+- Replaced the rounded floating card, halo, and timer capsule with a complete pixel tunnel: soil walls, ladder, tunnel floor, and mole.
+- Used the actual geology renderer and digging depth. Tools and soil particles animate while running; pausing and Break stop digging without adding separate progress.
+- Used compact top status and bottom control bars. The requested default remained 240×320 at this milestone, with support for tall hats, different aspect ratios, and a clear character hit area.
+- Passed real Picture-in-Picture regression checks, including 400×260, and rebuilt offline entries.
 
-## Eumo v3 — 气泡陪伴窗
+## Eumo v3 — Smaller default bubble
 
-- 浮动窗改为圆角气泡卡片，大鼹鼠居中，默认画面从 112 像素扩大到 208 像素；保留装扮、动作和像素清晰度。
-- 去掉方形场景背景，使用透明角色、椭圆地面与柔和光圈；时间及状态放进胶囊，台词显示在小对话气泡中。
-- 返回按钮改为有文字辅助标签的图标，开始/暂停和结束采用圆角按钮；小窗口自动紧凑显示，保留系统标题栏。
-- 真实画中画回归通过，补充 300×440、320×310、240×340 布局检查。
+- Reduced the floating-window request from 300×440 to 240×320 while retaining resizing.
+- Removed the fixed running-session sentence and hid empty speech bubbles; pause, rest, and petting feedback remained.
+- Passed real Picture-in-Picture checks for the compact layout and timer controls.
 
-## Eumo v3 — 浮动陪伴窗
+## Eumo v3 — Bubble companion window
 
-- Focus 新增 Float mole 入口，使用桌面 Chrome / Edge 的 Document Picture-in-Picture，支持系统拖动、调整大小和跨标签陪伴。
-- 小窗独立绘制已有像素鼹鼠，保留颜色、服装、工具和互动；主页面不在前台时仍可绘制。
-- 共用原计时、暂停/继续、确认结束和奖励结算，不产生第二份进度；休息状态不挖掘。
-- 原标签页保持打开；关闭小窗不结束会话；原页面关闭时清理窗口，失败和不支持的浏览器有明确提示。
-- 同步离线构建；新增真实 Chromium 画中画窗口测试。
+- Introduced a rounded bubble card with a larger centered mole, increasing the character canvas from 112 to 208 pixels while preserving equipment, movement, and crisp pixels.
+- Replaced the rectangular scene with a transparent character, oval ground, and soft halo. Time and status used a capsule, with reactions in a small speech bubble.
+- Added a labeled return icon and rounded session controls, with compact layouts for small windows and the system title bar retained.
+- Passed real Picture-in-Picture checks at 300×440, 320×310, and 240×340.
 
-## Eumo v3 修正 — 房间宝箱的金色收藏
+## Eumo v3 — Floating companion
 
-- 宝箱接入已有金色库存，显示十种收藏的数量与展示状态，无需重挖或迁移存档。
-- 在宝箱中可展示到房间金色壁柜、收回、确认出售得 99 星；与图鉴共用操作和库存，展示副本仍保留。
-- 保留普通物品的头顶展示；宝箱支持纵向滚动，适配手机和较低窗口。
-- 新增真实计时获得金色物品后进入宝箱的浏览器回归，覆盖房间实际像素、刷新、出售去重和暂停/运行限制。
+- Added Float mole to Focus using desktop Chrome/Edge Document Picture-in-Picture, with system dragging, resizing, and cross-tab visibility.
+- Rendered the existing mole independently in the small window, including color, outfits, tools, and interactions while the main tab is in the background.
+- Shared the original timer, pause/resume, end confirmation, and reward settlement; resting does not dig or create a second progress record.
+- Required the original tab to remain open. Closing the small window does not end a session; closing the main page cleans it up. Unsupported browsers and failures receive clear messages.
+- Rebuilt offline files and added a real Chromium Picture-in-Picture test.
 
-## Eumo v3 修正 — 矿洞里的鼹鼠点击
+## Eumo v3 fix — Golden collectibles in the home chest
 
-- 矿洞拖拽改为实际移动超过 6 像素后才捕获指针，修复深矿洞空闲时单击和三连点击无法触发的问题。
-- 鼠标和触屏保留轻触交互，真正拖拽不误触；在画面外松开也会清理手势。
-- 增加 120 米深矿洞的真实鼠标/触屏回归，覆盖普通抚摸、三连旋转、从鼹鼠起拖与拖后再点。
+- Connected the chest to existing golden inventory, showing counts and display states for all ten collectibles without requiring new discoveries or save migration.
+- Added display, retrieve, and confirmed 99-star sale actions using shared inventory logic; displayed copies remain reserved.
+- Kept ordinary head displays and added vertical scrolling for phones and shorter windows.
+- Added browser coverage from a real timed golden discovery through chest display, canvas rendering, reload, duplicate-sale prevention, and session-state restrictions.
 
-## Eumo v3 — 新音乐、鼹鼠互动、矿洞浏览与金色收藏
+## Eumo v3 fix — Clicking the mole underground
 
-- 原样接入四个上传 MP3：两首白噪音、一首律动、一首轻音乐；保留 Warm Focus，五首均内嵌下载版。
-- 空闲时 1.1 秒内三连点击触发跳跃整圈旋转；衣服随角色旋转，减少动态效果偏好取消运动。
-- 暂停或结束后可拖动/滚轮/键盘查看当前已挖矿洞，提供 Surface / Mole；运行锁定自动跟随，不改变任何进度。
-- 十款原创金色像素收藏：正式发现物每十分钟节点合计 3% 额外掉落，固定种子与序号避免重抽；Demo/Break 排除。
-- 金色收藏可保留、在独立家园壁柜展示或确认出售得 99 星；展示副本保留、出售不重复，兼容旧存档。
-- 计时按毫秒累计，避免暂停继续后的浮点误差让完整 5 米显示为 4 米；历史深度使用整数展示。
-- 界面及包版本升级到 V3；后端好友配置沿用，无需数据库迁移。
+- Delayed pointer capture until a mine drag moves more than six pixels, restoring single and triple clicks on the idle mole in deep tunnels.
+- Preserved mouse/touch tapping without triggering petting during real drags, and cleared gestures when released outside the canvas.
+- Added mouse and touch regressions at 120 metres for petting, spinning, dragging from the mole, and clicking after dragging.
 
-## Eumo v2 — 真实好友与联网摘要
+## Eumo v3 — Music, interactions, tunnel exploration, and golden finds
 
-- Companions 改为 Friends，右上角改为加好友入口；提供自己的好友码、复制、请求/接受/拒绝/撤回及删除。
-- 成为好友后共享真实状态、专注摘要和鼹鼠外观/工具/动作；15–30秒更新，后台 Away、90秒无心跳 Offline，任务与聊天不共享。
-- 四只演示角色保留在独立 Demo moles；支持暂停共享，删除后双方立刻失去访问。
-- 新增 Supabase PostgreSQL 原子 RPC、RLS/执行权限、服务端 Cookie 哈希身份和摘要白名单；需要在 Supabase/Vercel 完成配置后才可上线。
-- 两个独立浏览器通过真实 PostgreSQL 测试完整流程；不以本地测试冒充已连接生产服务。
+- Added four supplied MP3s unchanged: two white-noise tracks, one groove track, and one soft-music track. Kept Warm Focus and embedded all five offline.
+- Added an idle jump and full spin on three clicks within 1.1 seconds; equipment follows the motion and reduced-motion preferences suppress it.
+- Added paused/ended tunnel exploration by dragging, wheel, and keyboard, plus Surface/Mole controls. Running follows the mole without changing progress.
+- Added ten original golden collectibles with a combined 3% bonus chance at each regular ten-minute discovery. Stable seeds and sequence numbers prevent rerolls; Demo and Break are excluded.
+- Added permanent storage, a dedicated home display, and confirmed 99-star sales with reserved display copies and duplicate-sale protection.
+- Changed timing to millisecond accumulation to prevent floating-point loss after pause/resume; historical depth displays as integers.
+- Updated the interface and package to V3 while retaining friend-backend configuration without a database migration.
 
-## Eumo v2 — 可扩充的音乐库与复古播放器
+## Eumo v2 — Real friends and online summaries
 
-- Music 行新增四格音乐库入口，高屏显示当前曲目卡片；紫色复古窗口内提供轻音乐、律动、白噪音分类。
-- 原 Warm Focus 音频保持不变，其余位置明确显示 Coming soon，不生成或伪造音频。
-- 单一音频播放器支持共享音量、进度、上下首、单曲/顺序循环；刷新记住偏好但不自动播放，不改变专注计时。
-- 曲目配置集中于 music-catalog.js，后续添加音频即可扩充；下载构建自动内嵌所有已配置文件，避免默认曲目重复存储。
-- 本地开发服务增加 Range 支持；新增真实播放、未来曲目、移动窗口、失败重试和离线打包检查，保留 100% 缩放完整布局。
+- Renamed Companions to Friends and added friend codes, copying, requests, acceptance, rejection, withdrawal, and removal.
+- Mutual friends share actual status, focus summaries, and mole appearance, tools, and animation. Updates occur every 15–30 seconds; background tabs become Away and missing heartbeats become Offline after 90 seconds. Tasks and chats are excluded.
+- Kept the four demo characters in a separate Demo moles area at this milestone. Sharing can be paused; removing a friendship revokes access for both parties.
+- Added Supabase PostgreSQL atomic RPCs, RLS/execution permissions, hashed cookie identity, and summary allowlists. Production use requires Supabase/Vercel configuration.
+- Tested the complete flow in two independent browsers against PostgreSQL; local testing was not presented as production verification.
 
-## Eumo v2 修正 — 同开工、同休息的人设与计时状态
+## Eumo v2 — Expandable music library and retro player
 
-- 修正反向陪伴：Study/Work 开始一起挖；暂停一起停；继续接着挖；手动结束和自然到时一起休息；完成 Today 总结才回地面。
-- 补齐暂停与继续事件，Break 和 Demo 单独表达；事件台词即时显示，不调用收费模型。
-- 当前状态放到聊天历史之后；旧版本的 AI 回答不再回传，保留本地可见历史。活动切换取消迟到回复并保留草稿。
-- 人设升级为 mole-companion-1.1；共 42 条双语示范与 28 条独立评测场景，SFT 导出包含活动状态。此为规则与提示词校准，没有进行权重训练。
-- 增加完整状态矩阵、真实按钮顺序、旧历史与异步回复竞态回归；更新三个下载入口。
+- Added the four-square library control and a current-track card on taller screens, with soft music, groove, and white-noise categories in a purple retro window.
+- Preserved the original Warm Focus audio. Unavailable tracks explicitly displayed Coming soon rather than using generated substitutes.
+- Used one audio player for volume, seeking, track navigation, and repeat modes. Reload remembers preferences without autoplay or timer changes.
+- Centralized tracks in `music-catalog.js`; standalone builds embed configured files without duplicating the default track.
+- Added byte-range support to the development server and tests for playback, unavailable tracks, mobile layouts, retries, and offline bundling.
 
-## Eumo v2 — 鼹鼠云端 AI 接入代码与角色设定
+## Eumo v2 fix — Working and resting together
 
-- 增加 Vercel /api/chat 服务端代理，默认 Qwen3-8B，可配置 OpenAI 兼容服务；Key 不进入网页。
-- 聊天支持多轮、完整窗口、草稿重试、共享开关与独立本地历史；游戏计时不受影响。
-- 从正式 Study/Work、当前任务和真实服装事件构造上下文，Demo/Break 不冒充正式学习。
-- 换装和共学事件使用本地台词即时反馈；只有主动发送才调用云端。
-- 提供实际使用的鼹鼠系统提示、20 条双语示范、SFT 种子导出与 16 条独立模型评测场景。
-- 增加接口契约与浏览器到代理的完整测试；尚缺服务商 Key，没有声称完成真实模型首聊或权重微调。
+- Aligned the companion with the timer: dig during Study/Work, stop when paused, resume together, rest after manual or timed completion, and return to the surface only after finishing the daily summary.
+- Added pause/resume reactions and distinct Break/Demo wording. Local event reactions do not call a paid model.
+- Placed current state after chat history in prompts, excluded obsolete model responses from outgoing history, and cancelled late replies when activity changes while preserving drafts.
+- Updated the persona to `mole-companion-1.1`, with 42 bilingual demonstrations, 28 independent evaluation scenarios, and activity state in SFT exports. This was prompt/rule calibration, not weight training.
+- Added state-matrix, button-sequence, stale-history, and asynchronous-race regressions; rebuilt all offline entries.
 
-## Eumo v2 修正 — 复古聊天窗口与紧凑计时栏
+## Eumo v2 — Cloud chat integration and persona
 
-- 左侧预留区改为紫色复古 Windows 聊天窗口，含窄标题栏、像素斜边、随角色变化的头像/名称和内凹输入栏。
-- 支持鼠标和键盘收起、展开；当前预写陪伴语，输入与发送标明尚未开放，不连接 AI。
-- 去掉计时区弹性撑高，缩小倒计时上下空隙，恢复左对齐的紧凑动画按钮。
-- 保留 72:28 双面板和 100% 适配，新增聊天边界、运行中交互、手机及断网下载版检查。
+- Added the Vercel `/api/chat` proxy, initially defaulting to Qwen3-8B with configurable OpenAI-compatible providers. Keys stay off the client.
+- Added multi-turn chat, a full conversation window, retry drafts, optional context sharing, and independent local history without interrupting the timer.
+- Built context from real Study/Work sessions, tasks, and outfit events; Demo and Break are not represented as formal study.
+- Kept outfit and focus-event reactions local; only actively sent messages call the cloud model.
+- Added the actual persona prompt, 20 bilingual demonstrations, SFT seed export, and 16 independent evaluation scenarios.
+- Added API contract and browser-to-proxy tests. No live-model conversation or weight fine-tuning was claimed without a configured provider key.
 
-## Eumo v2 修正 — 对话留白与双面板比例
+## Eumo v2 fix — Retro chat window and compact timer
 
-- 按参考图将桌面矿洞与计时面板调整为约 72:28，上下对齐。
-- 矿洞信息行下方预留 64–132px 的同色空白，供后续鼹鼠 AI 对话使用；当前不增加聊天功能。
-- 右侧计时区随高度分配空间，保留底部控制；可用高度计算包含留白，维持 100% 缩放适配。
-- 扩展 13 组桌面验证，检查面板对齐、比例和留白，重建三个下载入口。
+- Replaced the reserved left-side space with a purple retro desktop chat window, including a narrow title bar, pixel bevels, dynamic avatar/name, and inset composer.
+- Added mouse and keyboard collapse/expand. At this milestone, reactions were prewritten and sending was visibly unavailable; AI was not connected yet.
+- Removed excessive flexible height from the timer, reduced countdown spacing, and restored the compact, left-aligned animation control.
+- Preserved the 72:28 panels and full layout at 100% zoom, with chat-boundary, running-state, mobile, and offline checks.
 
-## Eumo v2 修正 — 100% 屏幕适配与两小时土层
+## Eumo v2 fix — Conversation space and panel proportions
 
-- 桌面同时按可用宽高限制游戏比例，收紧导航、标题和侧栏；短屏重排计时、时长与底部控制，保留清晰数字和完整画面。
-- 普通挖掘前两小时保持泥土；240/300/360/480/600/720 米依次进入石、沙、板岩、花岗岩、晶矿与玄武岩。
-- 未到达的地层不提前出现在镜头下方；去掉方框浮雕石头，改为柔和配色、稀疏扁平石子与土屑。
-- 新增 13 组桌面尺寸/DPI、三种计时状态的完整可见检查，以及实际 120 分钟流程的土层边界验证。
-- 今日总结返地面、已有奖励、服装、家园与音乐保持原有规则；重新构建所有下载入口。
+- Adjusted desktop mine and timer panels to approximately 72:28 with aligned top and bottom edges.
+- Reserved 64–132 pixels beneath the mine information row for future conversation without adding chat functionality at this stage.
+- Allocated timer-panel space by available height and included the reserved area in layout calculations.
+- Expanded validation to 13 desktop configurations and rebuilt offline entries.
 
-## Eumo v2 修正 — 适中尺寸与实际返地面画面
+## Eumo v2 fix — Screen fit and two hours of soil
 
-- 页面最大宽度从 1840px 调至 1480px，介于旧版和上一版之间；同步缩小侧栏、计时字号上限及商店高度。
-- 完成 Today 总结时统一提交返地面、恢复矿洞显示、清除跳跃并立即重绘，无需等待下一动画帧；主按钮、×、Escape 共用同一逻辑。
-- 明确显示 Surface / 000m，累计深度改标 All-time depth，避免与当前矿道深度混淆。
-- 增加隐藏动画、暂停动画帧与断网下载版的实际 Canvas 回归，累计成果保留。
+- Constrained desktop layout by both available width and height. Short screens rearrange controls while preserving readable numbers and the complete scene.
+- Kept ordinary digging in soil for two hours, then introduced stone, sand, slate, granite, crystal, and basalt at 240/300/360/480/600/720 metres.
+- Prevented unreached layers from appearing early. Replaced raised square rocks with softer colors, sparse flat pebbles, and soil flecks.
+- Added complete-visibility checks across 13 desktop size/DPI combinations and three timer states, plus geology-boundary checks through an actual 120-minute flow.
+- Preserved daily return, rewards, outfits, Home, and music rules; rebuilt downloads.
 
-## Eumo v2 更新 — 清晰字体、每日返地面与分层材质
+## Eumo v2 fix — Moderate sizing and visible surface return
 
-- 页面可用宽度扩大至 1840px，涵盖 Focus、家园、报告、商店与同伴；小屏计时区改为纵向，趋势坐标按实际容器宽度绘制。
-- 正文和计时恢复常规系统字体，计时采用清晰等宽数字，取消像素阴影；Logo 保留像素风格。
-- 创建页改为 Your mole / Mole name / Mole setup，删除 PREVIEW。
-- 今日只保留醒目的大 Finish，移除 Export；确认结束并保存今日成果后回到地面。累计奖励与学习历史保留，跨午夜任务不会被强制中断。
-- 新增矿道基准和设备日期字段；角色真正站在地表，眼睛略微缩小。
-- 改为七种明显材质：根土、石层、金黄沙层、蓝灰板岩、红花岗岩、紫晶矿和玄武岩；浅层加强藤蔓与根系。
-- 核对设备本地时区与分钟边界、页面恢复和夏令时变化，增加每日返地面的完整回归。
+- Reduced maximum page width from 1840 to 1480 pixels, with smaller sidebar/timer limits and shop height.
+- Made all daily-summary closing paths submit the surface return, clear jumping, and redraw immediately instead of waiting for the next animation frame.
+- Displayed Surface / 000m and renamed cumulative depth to All-time depth.
+- Added actual-canvas regressions with hidden animation, paused frames, and offline builds while preserving cumulative progress.
 
-## Eumo v2 — 有界商店、像素字体与五款新眼镜
+## Eumo v2 — Readable typography, daily return, and geology
 
-- 桌面左侧鼹鼠固定预览，右侧商品独立滚动，支持滚轮、原生拖动滚动条、键盘和触摸；分类栏保持可见，手机采用紧凑预览。
-- 增加 Sunglasses、Round glasses、Square frames、Heart frames、Star shades，价格 6/8/10/24/45 星；旧护目镜归入 Glasses，眼镜同类互斥。
-- 全站换为本地 Pixelify Sans 像素字体，小字至少 12px；字体与 SIL OFL 许可内嵌下载版，离线可用。
-- 界面品牌标为 Eumo v2；移除工具改变动画的提示，保留当前工具与恢复默认操作。
-- 新增 [开发记录](docs/DEVLOG.md)，保留旧存档和全部奖励规则。
-- 增加实际滚轮/滚动条、眼镜图形、最小字号和离线字体验证。以下 v7 等编号保留为此前的开发阶段记录。
+- Expanded the layout to 1840 pixels across Focus, Home, reports, shop, and companions. Small screens stack timer controls and size trend axes to their container.
+- Restored system fonts for body text and clear tabular timer digits without pixel shadows; retained the pixel logo.
+- Renamed setup labels to Your mole, Mole name, and Mole setup; removed PREVIEW.
+- Kept a prominent daily Finish action and removed Export. Confirming saves results and returns to the surface, preserving rewards/history and ongoing cross-midnight sessions.
+- Added mine-origin and local-date fields, positioned the mole on the actual surface, and slightly reduced eye size.
+- Introduced seven distinct geology materials, with more roots and vines in shallow soil.
+- Tested local timezones, minute boundaries, resume, daylight-saving changes, and the daily return flow.
 
-## v7 — Eumo、分类衣橱与游戏宝箱
+## Eumo v2 — Bounded shop, pixel font, and more glasses
 
-- 产品改名 Eumo，保留旧存储键及 Supermo / LOOP_PET 单文件兼容入口。
-- 发现物仅在家园顶在头上，按帽子高度定位；移除伸手动作，矿洞和试衣不展示发现物。
-- 宝箱改为木箱、搭扣与背包格子，选择物品后展示详情和操作，沿用真实数量和摆放约束。
-- 新增分类：7 顶帽子、5 件衣服、5 条围脖；同类替换、跨类搭配，旧眼镜和胸针保留。
-- 6 种独立兑换的工具只在挖掘时显示，各自绘制和动画；免费默认镐子不占商店位。不同价格和稀有度不影响奖励速度。
-- 新增逐件购买、分类互斥、旧档、头顶显示、工具实际动画像素和响应式宝箱回归检查。
-- 保留最新 Warm Focus (3)、睡眠表现、15 秒 Demo 每轮奖励和普通累计规则。
+- Kept a fixed mole preview beside an independently scrolling desktop shop, with wheel, scrollbar, keyboard, and touch support. Phones use a compact preview above the shop.
+- Added Sunglasses, Round glasses, Square frames, Heart frames, and Star shades at 6/8/10/24/45 stars; moved existing goggles into the mutually exclusive Glasses category.
+- Adopted local Pixelify Sans across the interface at this milestone, with small text at least 12 pixels and the SIL OFL license embedded offline.
+- Branded the interface Eumo v2 and removed redundant tool-animation wording while retaining current/default tool controls.
+- Added the [development log](docs/DEVLOG.md), preserving saves and reward rules.
+- Tested actual shop scrolling, glasses artwork, minimum font sizes, and offline fonts. Earlier v7-style names below refer to prior development milestones.
 
-## v6 — Supermo、圆洞家园与更清晰的陪伴
+## v7 — Eumo, categorized wardrobe, and game chest
 
-- 产品改名 Supermo，保留旧存储键与旧 HTML 入口的同版兼容副本。
-- 换入用户最新 Warm Focus (3) MP3；抚摸声改为柔化包络、轻泛音与气声的双音节。
-- 睡眠明确显示状态、漂浮 zzz、伸缩鼻涕泡和多级呼吸，暂停休息与睡眠区分。
-- 圆形土洞取代砖墙房间，家具按比例和落地基线重排，增加接触阴影、木纹与编织地垫。
-- 可点击宝箱管理发现物，支持拿在手里、放回、从摆放位置拿起；库存不重复，不改变奖励。
-- 新增六种深度地层、大色块混合、碎石、树根藤蔓、蚯蚓与昆虫，生态不引入新奖励或操作。
-- 增加睡眠实际像素、宝箱副本、手持展示、新歌时长、地层差异和手机布局验证。
+- Renamed the product Eumo while retaining the storage key and compatible Supermo / LOOP_PET standalone entry points.
+- Limited discovery displays to the mole's head at Home, positioned above hats. Removed hand displays and kept finds out of the mine/fitting preview.
+- Introduced a wooden chest with a clasp and inventory slots, item details, and actions using real quantities and placement constraints.
+- Added seven hats, five clothing items, and five scarves with category replacement and cross-category combinations; preserved existing glasses and the star pin.
+- Added six separately purchased tools with distinct digging artwork/animation and a free default pickaxe. Prices and rarity do not change reward speed.
+- Added purchase, category, legacy-save, head-display, tool-pixel, and responsive-chest regressions.
+- Kept Warm Focus (3), sleep behavior, repeatable demo rewards, and normal cumulative rules.
 
-## v5 — 家园、真实拾取与 Warm Focus
+## v6 — Supermo, round burrow, and clearer companionship
 
-- 按累计实际时间生成路径星星与发现物；拆轮不增加奖励，提前结束保存成果，刷新不重复结算。
-- 保留 15 秒开发者 Demo 每轮 1 星、5 米、1 件物品，可直接测试购买；不混入正式报告。
-- 第二个小房子进入家园：四个摆放位、家具与房间主题、发现物展示和暂停布置。
-- 用用户提供的 Warm Focus MP3 替换合成雨声，并内嵌离线 HTML；抚摸改为更响的两声嘟嘟。
-- 增加空闲困倦、睡觉与唤醒，保留跳跃和 `yeeeeee`，没有缺席惩罚。
-- 右上角 Today 整合 Study / Work、任务成果、日终总结与 JSON 导出。
-- 回访直接进计时，提供可选任务输入与简洁视图，专注中不弹掉落提示。
-- 增加连续奖励、家园、日终、音乐和音频波形回归检查。
+- Renamed the product Supermo while preserving the storage key and compatible legacy HTML copies.
+- Used the latest supplied Warm Focus (3) MP3 and softened the two-syllable petting sound with an envelope, gentle harmonics, and breathiness.
+- Made sleep explicit with floating zzz, a changing nose bubble, and layered breathing, distinct from paused rest.
+- Replaced the brick room with a round earthen burrow, proportioned furniture, floor alignment, contact shadows, wood grain, and a woven rug.
+- Added chest controls to hold, return, and pick up finds without duplicating inventory or changing rewards.
+- Added six geology layers, mixed color areas, pebbles, roots, vines, worms, and insects without new rewards or controls.
+- Tested sleep pixels, chest quantities, held displays, track duration, geology variation, and mobile layout.
 
-## v4 — 进入修复与无耳朵造型
+## v5 — Home, actual pickups, and Warm Focus
 
-- 修复内嵌预览禁止原生表单提交时 START 无反应的问题。
-- 按钮、箭头和名字输入中的 Enter 共用进入逻辑，支持中文和输入法组合状态。
-- 页面先直接切换，再尝试写入 URL 历史；历史操作受限不再阻止导航。
-- 创建、矿洞、装备、同伴页统一使用无耳朵角色。
-- 增加表单受限 iframe 和实际图形区域的回归测试。
-- 整理 GitHub 项目结构、双语入口文档、构建脚本和可下载单文件。
+- Generated path stars and discoveries from accumulated active time. Splitting sessions does not increase rewards; ending early keeps progress and reload does not settle twice.
+- Kept repeatable 15-second demos granting 1 star, 5 metres, and 1 item for purchase testing, excluded from formal reports.
+- Added Home through the second navigation icon, with four placement spots, furniture, room themes, display items, and paused decorating.
+- Replaced synthesized rain with the supplied Warm Focus MP3, embedded offline, and made petting use two louder doo-doo syllables.
+- Added idle drowsiness, sleep, and waking while keeping jumping and `yeeeeee`, with no absence penalty.
+- Combined Study/Work results, tasks, daily summary, and JSON export in Today.
+- Sent returning players directly to the timer, with optional tasks and a simple view; focus sessions do not show pickup popups.
+- Added continuous-reward, Home, daily-summary, music, and audio-waveform regressions.
 
-## v3 — 宠物创建、昼夜与同伴预览
+## v4 — Reliable entry and earless mole
 
-- 增加名字和颜色创建页、12 种预设、自选色和保存/取消。
-- 按设备本地时间切换四个时段的天空和主题。
-- 增加四个明确标记为示例的同伴，可看学习进度和展开物品数量。
-- 保存外观时保留已有学习和挖掘进度。
+- Fixed START when embedded previews prohibit native form submission.
+- Shared entry logic across the button, arrow, and Enter in the name field, including Chinese and IME composition.
+- Switched pages before attempting URL history updates so restricted History APIs no longer block navigation.
+- Used the same earless character in setup, the mine, Equipment, and companions.
+- Added restricted-iframe and actual-artwork regressions; organized the repository, bilingual entry docs, build script, and downloadable standalone file.
 
-## v2 — 精简英文界面与学习报告
+## v3 — Setup, daylight, and companion previews
 
-- 页面改为英文，精简装饰性文案。
-- 增加空闲抚摸跳跃、叫声和 `yeeeeee`，任务中禁用抚摸。
-- 支持四件装备同时穿戴并持久化。
-- 增加实际 Study 时间、趋势曲线、日历和日志，按本地午夜切分。
-- 调整雨滴声并增加音量设置。
+- Added name/color setup, 12 presets, custom colors, and save/cancel.
+- Used device-local time to select four sky/theme periods.
+- Added four clearly labeled example companions with progress and expandable item counts.
+- Preserved focus and digging progress when changing appearance.
 
-## v1 — 像素挖掘流程
+## v2 — Simpler English interface and focus reports
 
-- 改为深色像素风和原创网格角色。
-- 实现实际土层挖掘、向下镜头、暂停与完整结算。
-- 拆出宝库和装备页，提供试玩与本地存档。
+- Switched the interface to English and reduced decorative copy.
+- Added idle petting, jumping, sound, and `yeeeeee`, disabled during sessions.
+- Supported four simultaneous, persistent equipment items.
+- Added actual Study time, trends, calendar, and logs split at local midnight.
+- Adjusted rain sound and added volume controls.
+
+## v1 — Pixel digging loop
+
+- Introduced a dark pixel style and original grid-based character.
+- Implemented actual soil digging, a descending camera, pausing, and complete settlement.
+- Split out treasure and equipment pages, with a demo and local saves.
