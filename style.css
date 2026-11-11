@@ -315,3 +315,10 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
  .music-mini-player{height:48px;padding:6px 8px;margin-bottom:0}
  .control-panel>#simpleViewButton{bottom:60px}
 }
+
+/* Share spare sidebar height in small, bounded gaps; short screens keep their compact fit. */
+.focus-section-gap{display:none}
+@media(min-width:960px) and (min-height:721px){
+ #focus .control-panel>.focus-section-gap{display:block;flex:1 1 0;min-height:0;max-height:16px}
+ #focus .control-panel>.focus-section-gap.after-timer{max-height:8px}
+}

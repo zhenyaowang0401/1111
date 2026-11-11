@@ -2,6 +2,12 @@
 
 These entries describe implementation milestones. Historical milestone names do not necessarily correspond to a published GitHub Release or a live deployment.
 
+## Eumo 3.1.4 — More comfortable focus-panel spacing
+
+- Spread spare sidebar height across small, bounded gaps between the timer, statistics, progress, and music sections.
+- Reduced the empty area below the music card while keeping compact windows and mobile layouts unchanged.
+- Verified 13 desktop viewport/DPI combinations in idle, running, and paused states, plus mobile layout checks.
+
 ## Eumo 3.1.3 — Consistent music card on web and desktop
 
 - Restored the Music controls above the current-track card and removed viewport rules that hid the card in shorter windows.

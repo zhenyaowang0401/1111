@@ -1,10 +1,9 @@
 Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
-## What's new in 3.1.3
+## What's new in 3.1.4
 
-- Made the two-row music player consistent across web and desktop: Music/volume controls above a current-track card.
-- Kept the track card visible in shorter windows, with compact spacing and controls positioned clear of the card.
-- The card's vinyl record spins during playback and holds its angle when paused; the music room and playback-mode icons remain synchronized.
+- Redistributed spare focus-panel height into gentle gaps between the timer, statistics, progress, and music sections.
+- Capped the extra spacing so larger windows feel balanced, while shorter windows and mobile layouts retain their compact fit.
 
 ## Downloads
 
