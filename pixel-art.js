@@ -158,7 +158,11 @@ window.PixelArt=(()=>{
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,f=reduced?0:frame,running=s.session?.status==='running'&&Journey.eligible(s.session),w=viewport.width||c.canvas.clientWidth||c.canvas.width,h=viewport.height||c.canvas.clientHeight||c.canvas.height,depth=digMetrics(s).worldDepth;
   c.imageSmoothingEnabled=false;
   // Draw in window pixels. Terrain and the mole use integer scales, never a stretched 128px image.
-  const terrainScale=Math.max(1,Math.round(w/128)),camera=87+depth*6,front=Math.round(h-(viewport.bottom??58)+3),top=viewport.top??88;
+  const terrainScale=Math.max(1,Math.round(w/128)),camera=87+depth*6,top=viewport.top??88,bottom=viewport.bottom??58;
+  // Leave soil below the feet for downward cutting edges, clear of the controls.
+  const toolScale=Math.max(1,Math.min(Math.floor(w/50),Math.floor((h-bottom+3-top-8)/42)));
+  const toolClearance=running&&['spoon','drill','crystaldrill'].includes(s.tool)?toolScale*5+3:0;
+  const front=Math.round(h-bottom+3-toolClearance);
   c.save();c.scale(terrainScale,terrainScale);c.translate(Math.round(w/(2*terrainScale))-192,0);Terrain.paint(c,camera,Math.ceil(h/terrainScale),f,depth);c.restore();
   const center=y=>Math.round(w/2)+Math.round(Math.sin((front-y)*.045/terrainScale+depth*.035)*2)*terrainScale;
   for(let y=0;y<front;y+=4*terrainScale){const cx=center(y),wide=(y>front-20*terrainScale?43:39)*terrainScale;

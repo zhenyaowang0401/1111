@@ -2,6 +2,12 @@
 
 These entries describe implementation milestones. Historical milestone names do not necessarily correspond to a published GitHub Release or a live deployment.
 
+## Eumo 3.1.1 — Downward digging tools
+
+- Corrected the spoon to scoop downward and both drills to point into the ground, using the shared character and shop artwork.
+- Kept downward tool tips clear of floating-window controls at different sizes.
+- Rebuilt standalone web downloads and desktop installers with the corrected artwork.
+
 ## Eumo 3.1.0 — Windows and macOS desktop apps
 
 - Published installers for Windows x64, Mac Apple silicon, and Mac Intel, built and tested through GitHub Actions.

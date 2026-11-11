@@ -1697,19 +1697,20 @@ window.WardrobeArt=(()=>{
  };
  const extras={"star":[[22,18,2,2,"#ffe59b"],[20,20,6,2,"#ffe59b"],[22,22,2,2,"#e1b568"],[22,20,1,1,"#fff9d9"]],"heartpin":[[20,18,2,2,"#ef94b8"],[23,18,2,2,"#ef94b8"],[20,19,5,2,"#ef94b8"],[21,21,3,1,"#d56c9b"],[22,22,1,1,"#d56c9b"],[21,19,1,1,"#ffe2eb"]],"leafpin":[[23,18,2,1,"#c3df9d"],[21,19,4,2,"#95c793"],[20,21,4,2,"#70a77e"],[20,23,1,1,"#e0c291"],[21,21,1,1,"#e3edb5"],[22,20,1,1,"#e3edb5"]],"flowerpin":[[22,18,2,2,"#fff0d7"],[20,20,2,2,"#fff0d7"],[24,20,2,2,"#fff0d7"],[22,22,2,2,"#e7d8cd"],[22,20,2,2,"#e8bb60"]],"moonpin":[[22,18,3,1,"#ffe4a5"],[21,19,2,1,"#ffe4a5"],[20,20,2,3,"#eac580"],[21,23,4,1,"#eac580"],[23,22,2,1,"#ffe4a5"],[21,20,1,2,"#fff3cd"]],"mushroompin":[[21,18,4,1,"#d58db4"],[20,19,6,3,"#d58db4"],[21,19,1,1,"#ffe6dc"],[24,20,1,1,"#ffe6dc"],[22,22,2,2,"#f3dbb3"]],"bellpin":[[22,18,2,1,"#c1e4d5"],[21,19,4,3,"#e4bc72"],[20,22,6,1,"#ffe4a4"],[22,23,2,1,"#b68b5d"],[22,19,1,2,"#fff0be"]],"crystalpin":[[22,18,2,1,"#c9faf2"],[21,19,4,3,"#93d9e4"],[22,22,2,2,"#8499d0"],[21,20,2,2,"#c9faf2"],[24,20,1,2,"#6eafcd"]]};
  const tools={
-  spoon:[[24,15,2,15,'#b4c2c5'],[22,6,6,2,'#e2e9df'],[20,8,10,7,'#b4c8d0'],[22,9,6,5,'#e3eeea'],[24,29,2,2,'#8d9ba8']],
+  spoon:[[24,16,2,8,'#b4c2c5'],[24,16,2,1,'#8d9ba8'],[22,22,6,1,'#b4c8d0'],[21,23,8,4,'#b4c8d0'],[23,27,4,1,'#b4c8d0'],[23,22,4,1,'#e2e9df'],[23,23,4,3,'#e3eeea']],
   shovel:[[24,6,6,2,'#c1976c'],[23,8,2,5,'#c1976c'],[29,8,2,5,'#c1976c'],[24,12,6,2,'#c1976c'],[26,14,2,9,'#c1976c'],[22,22,10,6,'#87a8b4'],[24,28,6,3,'#72919e'],[26,23,2,5,'#c4dfe1']],
   fork:[[25,15,2,16,'#c5a17c'],[20,13,13,3,'#879ca2'],[20,5,2,10,'#a8c2c4'],[25,5,2,10,'#bed4d2'],[31,5,2,10,'#a8c2c4'],[25,28,2,3,'#8c755c']],
-  drill:[[22,14,10,8,'#d8ae64'],[24,21,4,8,'#866a54'],[23,15,5,2,'#ffe0a0'],[31,16,5,4,'#9cabb3'],[36,17,7,2,'#d6e7e6'],[28,17,2,3,'#6c7882']],
+  drill:[[22,17,6,3,'#866a54'],[22,18,2,5,'#866a54'],[26,13,8,9,'#d8ae64'],[27,14,2,7,'#ffe0a0'],[31,16,2,3,'#6c7882'],[27,22,6,2,'#9cabb3'],[28,24,4,3,'#d6e7e6'],[29,27,2,2,'#d6e7e6']],
   jackhammer:[[23,11,9,14,'#b998ba'],[20,13,15,3,'#6f7187'],[25,25,5,3,'#738596'],[26,28,3,6,'#bed8d8'],[25,15,2,7,'#e2c6db'],[29,16,2,5,'#8a728e']],
-  crystaldrill:[[22,14,11,8,'#9b8dc4'],[24,21,4,7,'#5b6885'],[24,15,6,2,'#d8c7ed'],[33,15,5,6,'#8dd7d4'],[38,16,3,4,'#b7f0e9'],[41,17,3,2,'#e6fff3'],[28,18,3,2,'#7489b7']]
+  crystaldrill:[[22,17,6,3,'#5b6885'],[22,18,2,5,'#5b6885'],[26,12,9,10,'#9b8dc4'],[27,13,2,8,'#d8c7ed'],[31,16,3,3,'#7489b7'],[27,22,7,2,'#8dd7d4'],[28,24,5,2,'#b7f0e9'],[29,26,3,2,'#b7f0e9'],[30,28,1,1,'#e6fff3']]
  };
  function draw(r,rects){for(const rect of rects||[])r(...rect);}
  function drawTool(r,id,frame){
   if(!id){const k=frame%2?2:0;r(23,15+k,2,14,'#e3b786');r(18,14+k,12,3,'#28214c');r(19,13+k,10,3,'#80e6eb');r(26,15+k,4,3,'#9ab4e6');r(28,17+k,2,3,'#badaef');return;}
   const vibration=id==='jackhammer'?(frame%2?1:-1):0,bob=['drill','crystaldrill'].includes(id)?frame%2:frame%2?2:0;
   draw((x,y,w,h,c)=>r(x+vibration,y+bob,w,h,c),tools[id]);
-  if(id==='drill'||id==='crystaldrill')r(36+frame%3,17+bob,1,2,frame%2?'#607c98':'#f0fff7');
+  // The cutting edge stays below the hand; travelling bands suggest downward drilling.
+  if(id==='drill'||id==='crystaldrill'){const band=frame%3;r(29,24+band+bob,band===2?2:3,1,frame%2?'#607c98':'#f0fff7');}
  }
  function iconSVG(id){const rs=hats[id]||extras[id]||scarves[id]||glasses[id]||tools[id];if(!rs)return null;const xs=rs.map(r=>r[0]),ys=rs.map(r=>r[1]),minX=Math.min(...xs),minY=Math.min(...ys),maxX=Math.max(...rs.map(r=>r[0]+r[2])),maxY=Math.max(...rs.map(r=>r[1]+r[3])),size=Math.max(maxX-minX,maxY-minY)+5,x=(minX+maxX-size)/2,y=(minY+maxY-size)/2;return `<svg viewBox="${x} ${y} ${size} ${size}" aria-hidden="true" shape-rendering="crispEdges">`+rs.map(([x,y,w,h,color])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${color}"/>`).join('')+'</svg>';}
  // Fitted wearing coordinates; catalog icons retain their original clear silhouettes.
@@ -2290,7 +2291,11 @@ window.PixelArt=(()=>{
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,f=reduced?0:frame,running=s.session?.status==='running'&&Journey.eligible(s.session),w=viewport.width||c.canvas.clientWidth||c.canvas.width,h=viewport.height||c.canvas.clientHeight||c.canvas.height,depth=digMetrics(s).worldDepth;
   c.imageSmoothingEnabled=false;
   // Draw in window pixels. Terrain and the mole use integer scales, never a stretched 128px image.
-  const terrainScale=Math.max(1,Math.round(w/128)),camera=87+depth*6,front=Math.round(h-(viewport.bottom??58)+3),top=viewport.top??88;
+  const terrainScale=Math.max(1,Math.round(w/128)),camera=87+depth*6,top=viewport.top??88,bottom=viewport.bottom??58;
+  // Leave soil below the feet for downward cutting edges, clear of the controls.
+  const toolScale=Math.max(1,Math.min(Math.floor(w/50),Math.floor((h-bottom+3-top-8)/42)));
+  const toolClearance=running&&['spoon','drill','crystaldrill'].includes(s.tool)?toolScale*5+3:0;
+  const front=Math.round(h-bottom+3-toolClearance);
   c.save();c.scale(terrainScale,terrainScale);c.translate(Math.round(w/(2*terrainScale))-192,0);Terrain.paint(c,camera,Math.ceil(h/terrainScale),f,depth);c.restore();
   const center=y=>Math.round(w/2)+Math.round(Math.sin((front-y)*.045/terrainScale+depth*.035)*2)*terrainScale;
   for(let y=0;y<front;y+=4*terrainScale){const cx=center(y),wide=(y>front-20*terrainScale?43:39)*terrainScale;

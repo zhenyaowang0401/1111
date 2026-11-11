@@ -1,5 +1,11 @@
 Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
+## What's new in 3.1.1
+
+- Turned the spoon bowl downward and shortened its handle so the mole scoops into the soil.
+- Pointed both the standard drill and crystal drill downward, with vertical drilling animation and matching shop icons.
+- Added clearance below the mole in floating windows so the cutting edge stays visible above the controls.
+
 ## Downloads
 
 - **Windows 10 / 11 (x64):** `Eumo-Windows-x64-Setup.exe`

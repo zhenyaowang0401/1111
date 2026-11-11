@@ -18,4 +18,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           version=$(node -p "require('./package.json').version")
-          gh release edit "desktop-v${version}" --notes-file desktop/RELEASE_NOTES.md --title "Eumo ${version} — Windows & macOS"
+          published=$(gh release list --limit 100 --json tagName --jq '.[].tagName')
+          if printf '%s\n' "$published" | grep -Fxq "desktop-v${version}"; then
+            gh release edit "desktop-v${version}" --notes-file desktop/RELEASE_NOTES.md --title "Eumo ${version} — Windows & macOS"
+          else
+            echo "Release desktop-v${version} is not published yet; the installer workflow will use these notes."
+          fi
