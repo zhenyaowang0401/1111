@@ -2,6 +2,13 @@
 
 These entries describe implementation milestones. Historical milestone names do not necessarily correspond to a published GitHub Release or a live deployment.
 
+## Eumo 3.1.2 — Playback icons and spinning vinyl
+
+- Added familiar repeat-one and sequential-play icons, with localized hover and screen-reader labels.
+- Replaced the main Music label and speaker with a vinyl record, sharing the artwork with the music room.
+- Tied rotation to actual audio playback, retaining the current angle on pause or buffering and honoring reduced-motion settings.
+- Preserved playback order, saved mode, keyboard controls, and responsive layouts across web and desktop builds.
+
 ## Eumo 3.1.1 — Downward digging tools
 
 - Corrected the spoon to scoop downward and both drills to point into the ground, using the shared character and shop artwork.

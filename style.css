@@ -285,3 +285,14 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
 #simpleViewButton .visibility-eye-closed { display: none; }
 .simple-view #simpleViewButton .visibility-eye-open { display: none; }
 .simple-view #simpleViewButton .visibility-eye-closed { display: block; }
+
+/* Familiar playback-mode icons with the same compact transport hit area. */
+#musicRepeat{display:grid;place-items:center;width:44px;min-width:44px;height:40px;padding:6px;flex-shrink:0}
+#musicRepeat svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;shape-rendering:geometricPrecision;pointer-events:none}
+
+/* A black vinyl indicator follows real playback without resetting its angle on pause. */
+#soundButton{min-height:40px;min-width:40px}
+#soundButton .music-vinyl{width:28px;height:28px}
+.music-vinyl{animation:eumo-vinyl-spin 4s linear infinite;animation-play-state:paused;transform-origin:50% 50%;transform-box:view-box}
+.is-playing .music-vinyl{animation-play-state:running}
+@keyframes eumo-vinyl-spin{to{transform:rotate(360deg)}}

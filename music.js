@@ -2,7 +2,7 @@
 'use strict';
 window.MusicLibrary=(()=>{
  const $=id=>document.getElementById(id);
- let onChange=()=>{},onError=()=>{},category='soft',busy=false,error='',initialized=false;
+ let onChange=()=>{},onError=()=>{},category='soft',busy=false,error='',initialized=false,advancing=false;
  const player=()=>$('focusMusic');
  const track=()=>MusicCatalog.tracks.find(t=>t.id===PetAudio.status().trackId);
  const group=id=>MusicCatalog.categories.find(c=>c.id===id);
@@ -20,17 +20,20 @@ window.MusicLibrary=(()=>{
  function update(){
   if(!initialized)return;
   const s=PetAudio.status(),t=track(),g=group(t?.category),playing=s.musicOn;
-  $('soundButton').setAttribute('aria-pressed',String(playing));$('soundButton').setAttribute('aria-label',playing?'Pause music':'Play music');
+  $('soundButton').setAttribute('aria-pressed',String(playing));$('soundButton').setAttribute('aria-label',playing?'Pause music':'Play music');$('soundButton').title=playing?'Pause music':'Play music';
   $('musicPlayButton').setAttribute('aria-pressed',String(playing));$('musicPlayButton').setAttribute('aria-label',playing?'Pause music':'Play music');$('musicPlayIcon').setAttribute('href',playing?'#i-pause':'#i-play');
   $('musicMiniTitle').textContent=$('musicNowTitle').textContent=t?.title||'Choose a sound';$('musicNowCategory').textContent=g?.name||'Music library';
   const label=error?'Unavailable':busy?'Loading…':playing?'Playing':'Paused';
   $('musicPlaybackState').textContent=label;$('musicMiniState').textContent=label+' · '+(g?.name||'Music');
-  $('musicMiniPlayer').classList.toggle('is-playing',playing);$('musicDialog').classList.toggle('is-playing',playing);
+  const spinning=playing&&advancing&&!player().ended;
+  for(const id of ['soundButton','musicMiniPlayer','musicDialog'])$(id).classList.toggle('is-playing',spinning);
   for(const id of ['soundButton','musicPlayButton'])$(id).disabled=busy||!playable(t);
   const multiple=PetAudio.tracks().length>1;
   for(const id of ['musicPrevious','musicNext'])$(id).disabled=busy||!multiple;
   for(const button of $('musicTracks').querySelectorAll('[data-music-track]')){const ready=playable(MusicCatalog.tracks.find(t=>t.id===button.dataset.musicTrack)),selected=ready&&button.dataset.musicTrack===s.trackId;button.classList.toggle('selected',selected);button.setAttribute('aria-pressed',String(selected));button.disabled=busy||!ready;const state=button.querySelector('.music-track-state');if(state)state.textContent=!ready?'Not added yet':selected?(playing?'Playing':'Selected'):'Play track';}
-  $('musicRepeat').textContent=s.repeat==='one'?'Repeat one':'Play all';$('musicRepeat').setAttribute('aria-pressed',String(s.repeat==='one'));$('musicRepeat').setAttribute('aria-label',s.repeat==='one'?'Repeat one track':'Play all tracks');
+  const repeatOne=s.repeat==='one',repeatLabel=repeatOne?'Repeat one track':'Play tracks in order';
+  $('musicRepeatIcon').setAttribute('href',repeatOne?'#i-repeat-one':'#i-sequential');
+  $('musicRepeat').setAttribute('aria-pressed',String(repeatOne));$('musicRepeat').setAttribute('aria-label',repeatLabel);$('musicRepeat').title=repeatLabel;
   for(const id of ['musicVolume','musicLibraryVolume'])$(id).value=Math.round(s.volume*100);
   $('musicMessage').textContent=error||'A little soundtrack for whatever you are working on.';$('musicMessage').classList.toggle('has-error',!!error);
   updateTime();
@@ -73,6 +76,8 @@ window.MusicLibrary=(()=>{
   $('musicCategories').addEventListener('click',e=>{const button=e.target.closest('[data-music-category]');if(button){category=button.dataset.musicCategory;renderShelf();}});
   $('musicTracks').addEventListener('click',e=>{const button=e.target.closest('[data-music-track]');if(button&&!button.disabled)action(()=>PetAudio.selectTrack(button.dataset.musicTrack,true));});
   for(const event of ['play','pause','loadedmetadata','durationchange','emptied'])player().addEventListener(event,update);
+  // Spin only once audio is actually advancing; pause at the current angle while buffering or stopped.
+  for(const event of ['playing','waiting','pause','ended','emptied','error'])player().addEventListener(event,()=>{advancing=event==='playing';update();});
   player().addEventListener('timeupdate',updateTime);
   for(const event of ['progress','canplay','seeked'])player().addEventListener(event,updateTime);
   player().addEventListener('error',()=>{error='This sound could not load. Choose another track or try again.';update();});

@@ -424,6 +424,7 @@ window.EumoI18n=(()=>{
  "Pause music": "暂停音乐",
  "Music library volume": "音乐库音量",
  "Repeat one track": "单曲循环",
+ "Play tracks in order": "顺序播放",
  "Play all tracks": "播放全部曲目",
  "Play all": "顺序播放",
  "Playing": "播放中",

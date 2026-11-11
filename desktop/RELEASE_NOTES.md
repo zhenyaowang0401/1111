@@ -1,10 +1,10 @@
 Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
-## What's new in 3.1.1
+## What's new in 3.1.2
 
-- Turned the spoon bowl downward and shortened its handle so the mole scoops into the soil.
-- Pointed both the standard drill and crystal drill downward, with vertical drilling animation and matching shop icons.
-- Added clearance below the mole in floating windows so the cutting edge stays visible above the controls.
+- Replaced playback-mode text with familiar repeat-one and sequential-play icons, including English and Chinese hover/accessibility labels.
+- Replaced the main Music label and speaker icon with a small vinyl record.
+- Vinyl records in the main player and music room rotate during actual playback, pause at their current angle when paused or buffering, and respect reduced-motion preferences.
 
 ## Downloads
 
