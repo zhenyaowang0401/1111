@@ -2,6 +2,11 @@
 
 These entries describe implementation milestones. Historical milestone names do not necessarily correspond to a published GitHub Release or a live deployment.
 
+## Eumo 3.1.5 — Countdown alignment
+
+- Raised the countdown by six pixels on desktop layouts at least 801 pixels tall, balancing the whitespace above and below the digits.
+- Kept the duration buttons, surrounding sections, compact windows, and mobile layouts in place.
+
 ## Eumo 3.1.4 — More comfortable focus-panel spacing
 
 - Spread spare sidebar height across small, bounded gaps between the timer, statistics, progress, and music sections.

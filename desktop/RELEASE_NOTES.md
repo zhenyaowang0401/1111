@@ -1,9 +1,9 @@
 Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
-## What's new in 3.1.4
+## What's new in 3.1.5
 
-- Redistributed spare focus-panel height into gentle gaps between the timer, statistics, progress, and music sections.
-- Capped the extra spacing so larger windows feel balanced, while shorter windows and mobile layouts retain their compact fit.
+- Raised the countdown slightly to balance its position between the task field and duration controls on taller desktop layouts.
+- Preserved the surrounding controls and compact-window and mobile layouts.
 
 ## Downloads
 

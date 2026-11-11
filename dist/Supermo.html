@@ -420,6 +420,10 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
  #focus .control-panel>.focus-section-gap{display:block;flex:1 1 0;min-height:0;max-height:16px}
  #focus .control-panel>.focus-section-gap.after-timer{max-height:8px}
 }
+/* Optically center the countdown between the task field and duration controls. */
+@media(min-width:960px) and (min-height:801px){
+ #focus .timer-digits{position:relative;top:-6px}
+}
 
 /* Eumo woodland desktop. Color and surface tokens follow the existing local clock.
    Layout, hit targets, game state and native form controls stay in their original owners. */
