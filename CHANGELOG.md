@@ -2,6 +2,12 @@
 
 These entries describe implementation milestones. Historical milestone names do not necessarily correspond to a published GitHub Release or a live deployment.
 
+## Eumo 3.1.3 — Consistent music card on web and desktop
+
+- Restored the Music controls above the current-track card and removed viewport rules that hid the card in shorter windows.
+- Kept the card's vinyl animation tied to actual playback and pause state.
+- Adjusted compact desktop spacing so the track card and animation toggle remain visible without overlapping.
+
 ## Eumo 3.1.2 — Playback icons and spinning vinyl
 
 - Added familiar repeat-one and sequential-play icons, with localized hover and screen-reader labels.

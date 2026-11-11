@@ -1,10 +1,10 @@
 Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
-## What's new in 3.1.2
+## What's new in 3.1.3
 
-- Replaced playback-mode text with familiar repeat-one and sequential-play icons, including English and Chinese hover/accessibility labels.
-- Replaced the main Music label and speaker icon with a small vinyl record.
-- Vinyl records in the main player and music room rotate during actual playback, pause at their current angle when paused or buffering, and respect reduced-motion preferences.
+- Made the two-row music player consistent across web and desktop: Music/volume controls above a current-track card.
+- Kept the track card visible in shorter windows, with compact spacing and controls positioned clear of the card.
+- The card's vinyl record spins during playback and holds its angle when paused; the music room and playback-mode icons remain synchronized.
 
 ## Downloads
 
