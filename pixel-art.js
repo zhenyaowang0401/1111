@@ -53,7 +53,7 @@ window.PixelArt=(()=>{
  if(s.session)for(const e of Journey.events(s.session)){
   if(e.at<=(s.session.elapsed||0)+1e-7)continue;
   const depth=Math.max(0,(s.session.baseDepth||0)-(s.surfaceDepth||0))+e.at/Journey.rate(s.session),yy=76+depth*6-camera+5,cx=192+Math.round(Math.sin(Math.max(0,depth)*.13)*3)*4;
-  if(yy>-30&&yy<h){const gold=RareTreasures.forEvent(e,s.session);if(gold)RareTreasures.draw(c,gold.id,cx+20,yy-5,.55);const id=e.kind==='star'?'star':['star','mushroom','crystal','fossil'][e.index];item(c,id,cx+(e.kind==='star'?-16:2),yy,e.kind==='star'?.5:.65);}
+  if(yy>-30&&yy<h){const gold=RareTreasures.forEvent(e,s.session);if(gold)RareTreasures.draw(c,gold.id,cx+20,yy-5,.55);const id=e.kind==='star'?'star':['star','mushroom','crystal','fossil'][e.index];if(e.material!==false)item(c,id,cx+(e.kind==='star'?-16:2),yy,e.kind==='star'?.5:.65);}
  }
  if(ground>-35){ // Surface base camp.
  for(const [xx,v] of [[18,0],[119,1],[276,0],[355,1]])garden(c,xx,ground-4,t,v);
@@ -104,8 +104,10 @@ window.PixelArt=(()=>{
  function renderHome(c,s,frame){
   const theme=HomeCatalog.themes.find(t=>t.id===s.home.theme)||HomeCatalog.themes[0],t=WorldClock.snapshot();
   c.save();c.setTransform(c.canvas.width/640,0,0,c.canvas.height/360,0,0);c.imageSmoothingEnabled=false;c.drawImage(HomeScenery.paint(theme,t,s.home.slots),0,0,640,360);
-  for(const [key,spot] of Object.entries(HomeCatalog.slots)){if(s.home.slots[key])HomeScenery.glow(c,s.home.slots[key],spot,t);}
-  for(const key of ['floor',...Object.keys(HomeCatalog.slots).filter(k=>k!=='floor')]){const spot=HomeCatalog.slots[key],id=s.home.slots[key];if(id)drawHomeItem(c,id,spot,t,theme);if(s.homeEditing){const wall=spot.kind==='wall',floor=spot.kind==='floor',w=floor?70:64,h=floor?16:wall?42:53,x=spot.x-w/2,y=spot.y-h,col=key===s.selectedSlot?'#fff0bc':'#d5c2a0';for(let xx=x;xx<x+w;xx+=8){box(c,xx,y,4,1,col);box(c,xx,spot.y+2,4,1,col);}for(let yy=y;yy<spot.y;yy+=8){box(c,x,yy,1,4,col);box(c,x+w,yy,1,4,col);}}}
+  for(const key of Object.keys(HomeCatalog.slots)){const spot=HomeCatalog.spot(s.home,key);if(s.home.slots[key])HomeScenery.glow(c,s.home.slots[key],spot,t);}
+  const order=Object.keys(HomeCatalog.slots).filter(k=>s.home.slots[k]).sort((a,b)=>a==='floor'?-1:b==='floor'?1:HomeCatalog.spot(s.home,a).y-HomeCatalog.spot(s.home,b).y);
+  for(const key of order){const spot=HomeCatalog.spot(s.home,key),id=s.home.slots[key];drawHomeItem(c,id,spot,t,theme);if(s.homeEditing&&key===s.selectedSlot){const w=60,h=id==='rug'?16:48;c.strokeStyle='#e8ba72';c.lineWidth=1;c.setLineDash([3,3]);c.strokeRect(spot.x-w/2,spot.y-h,w,h+3);c.setLineDash([]);}}
+
   if(s.displayedTreasure){box(c,464,276,32,3,'#aa8560');box(c,466,279,28,2,'#69503b');RareTreasures.draw(c,s.displayedTreasure,469,258,.5);}
   c.save();c.translate(340,66);chest(c,s.chestOpen);c.restore();
   const y=316-54-jump(s),rotation=playerMole(c,s,220,y,2,false,frame,()=>drawHeadDisplay(c,s,220,y,2,frame));

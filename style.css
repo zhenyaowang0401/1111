@@ -342,3 +342,9 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
 .desktop-updates progress{display:block;width:100%;height:12px;margin:10px 0;accent-color:#65836a}
 .desktop-update-action{margin:8px 0}.desktop-update-note{color:var(--muted)}
 #desktopUpdateNotice{color:var(--text);background:var(--panel);border:0;padding:0 6px;line-height:inherit;box-shadow:inset 0 -1px var(--line)}
+
+.is-decorating .home-slots{display:none}.is-decorating .chest-hotspot{pointer-events:none}
+.is-decorating #homeCanvas{touch-action:none;cursor:grab}.is-decorating #homeCanvas:active{cursor:grabbing}
+[data-home-drag]{touch-action:none;cursor:grab}.home-item-grid>h3,#homeItemGrid>h3{grid-column:1/-1;font-size:14px;margin:12px 0 4px}
+.home-drag-ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.85;outline:2px solid #83aa72;background:#d4e4ba22}.home-drag-ghost svg{width:100%;height:100%;image-rendering:pixelated}.home-drag-ghost.invalid{outline-color:#bb554b;opacity:.5}
+.home-theme[data-rarity="rare"]{border-color:#628ba0}.home-theme[data-rarity="epic"]{border-color:#9370a5}.home-theme[data-rarity="legendary"]{border-color:#b28b43}

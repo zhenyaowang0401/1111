@@ -57,9 +57,49 @@ window.HomeScenery=(()=>{
   }
   if(p.night){for(let k=0;k<12;k++)rect(c,12+k*53,4+k%3*3,1,1,t.sun);}
  }
+ function mural(theme,x,y,r,p){
+  if(!theme.biome||!r||y>=r.floor-5)return null;
+  const xx=x-r.x,yy=y-r.y,h=r.floor-r.y;
+  if(theme.biome==='stars'){
+   const band=Math.abs(yy-(h*.45+Math.sin(xx*.025)*12)),mx=xx-r.w*.76,my=yy-24;if(mx*mx+my*my<81&&(mx+4)*(mx+4)+(my-2)*(my-2)>64)return '#f4dfa5';
+   if(x%27<2&&y%19<2&&rand(Math.floor(x/27),Math.floor(y/19))>.55)return '#f7e4b1';
+   if(x%53===0&&y%31<5)return '#c9e3db';
+   return band<8?(rand(Math.floor(xx/3),Math.floor(yy/3))>.55?'#74708f':'#656084'):band<17?'#4e5078':p.wall;
+  }
+  if(theme.biome==='snow'){
+   const ridge=h*.18+Math.abs((xx%103)-48)*.8,far=h*.2+Math.abs(((xx+35)%77)-38)*.65;
+   const tree=((xx+5)%64)-32,ty=yy-h*.82;if(ty>0&&ty<18&&Math.abs(tree)<ty*.35)return '#527b85';
+   if(yy>h*.9)return '#dce8dd';
+   if(yy>ridge){if(yy<ridge+8+Math.sin(xx*.3)*2)return '#f2f1dd';return xx%103<48?'#91adbd':'#7392a3';}
+   if(yy>far)return '#b2c9d0';return p.wall;
+  }
+  if(theme.biome==='forest'){
+   const local=((xx+13)%48)-24,top=9+Math.floor(xx/48)%3*7,dy=yy-top;
+   if(Math.abs(local)<2&&dy>8)return '#526a5c';
+   const crown=dy<18?dy*.45:dy<32?(dy-10)*.6:dy<50?(dy-22)*.65:-1;
+   if(dy>0&&Math.abs(local)<crown)return local<0?'#557e6c':'#6b9580';
+   if(yy>h*.8&&Math.abs(((xx+7)%19)-9)<(yy-h*.8)*.6)return '#6a8d71';
+   if(x%31<2&&y%29<2)return '#d3d8a0';return yy>h*.7?'#7e9e87':p.wall;
+  }
+  const local=((xx+8)%56)-28,canopy=20+Math.round(Math.cos(local*.09)*12),vine=((xx+19)%43)-21;
+  if(Math.abs(local)<2&&yy>18)return '#345e4c';
+  if(yy<canopy)return (Math.floor(xx/6)+Math.floor(yy/5))%4===0?'#537e59':yy<12?'#315e50':'#477e60';
+  if(Math.abs(vine)<1&&yy<62)return '#a2bd7b';
+  if(yy<62&&yy%14<5&&Math.abs(vine-(yy%28<14?3:-3))<3)return '#7ca970';
+  const leafX=((xx+17)%36)-18,leafY=yy-h*.8;
+  if(leafY>0&&leafY<15&&Math.abs(leafX)<12-Math.abs(leafY-7))return leafX<0?'#3d7157':'#659a6b';
+  if(yy>h*.9)return '#477a5e';return p.wall;
+ }
+
+ function canPlace(id,x,y){
+  const item=HomeCatalog.items.find(i=>i.id===id),scale=item?.scale||.85,w=32*scale,h=id==='rug'?18:(item?.foot||32)*scale,g=caveGeometry();
+  const region=g.region[Math.floor(y-5)*W+Math.floor(x)];if(!region)return false;
+  for(let yy=Math.floor(y-h);yy<=y;yy+=3)for(let xx=Math.floor(x-w/2);xx<=x+w/2;xx+=3){if(xx<0||xx>=W||yy<0||yy>=H||!g.mask[yy*W+xx]||g.inner[yy*W+xx]<3)return false;}
+  return true;
+ }
  function paint(theme,t){
   const key=theme.id+':'+t.period+':'+t.sky;if(cache.has(key))return cache.get(key);
-  const cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');c.imageSmoothingEnabled=false;const p=palette(theme,t),g=caveGeometry();landscape(c,p,t);
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');c.imageSmoothingEnabled=false;const p=palette(theme,t),g=caveGeometry();if(theme.biome){p.wall=theme.wall;p.rim=theme.trim;}landscape(c,p,theme.biome?{...t,sky:theme.wall,skyLow:theme.wall,grass:theme.biome==='snow'?'#eeeede':theme.trim,grassShadow:theme.trim,mountain:theme.trim}:t);
   const image=c.getImageData(0,0,W,H),a=image.data,colors={};
   const rgb=hex=>colors[hex]||(colors[hex]=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)));
   const shade=mix(p.wall,p.rim,.45),floor=mix(p.wall,p.rim,.27),texture=mix(p.wall,p.rim,.18);
@@ -70,7 +110,7 @@ window.HomeScenery=(()=>{
    else if(g.inner[i]<4)col=shade;
    else{const r=rooms[g.region[i]-1];col=(r&&y>=r.floor)||(!r&&g.bottom[i]<6)?floor:p.wall;
     // Sparse two-pixel chips, not photographic grain or antialiased speckles.
-    if(x%13<3&&y%11===0&&rand(Math.floor(x/13),Math.floor(y/11))>.7)col=texture;
+    if(x%13<3&&y%11===0&&rand(Math.floor(x/13),Math.floor(y/11))>.7)col=texture;col=mural(theme,x,y,r,p)||col;
    }
    const color=rgb(col);a[i*4]=color[0];a[i*4+1]=color[1];a[i*4+2]=color[2];a[i*4+3]=255;
   }
@@ -163,5 +203,11 @@ window.HomeScenery=(()=>{
   });
   return all;
  })();
- return {paint,furniture,glow,drawDecor,ready:true};
+ Object.assign(furniture,{
+ television:[[3,7,26,20,'#473e36'],[4,8,24,17,'#b58254'],[6,10,17,12,'#293f48'],[7,11,15,9,'#8bb3ae'],[8,12,13,2,'#bad1b6'],[8,18,12,2,'#6e9390'],[25,12,2,2,'#ead29b'],[25,17,2,2,'#4e4639'],[7,27,3,4,'#574638'],[23,27,3,4,'#574638'],[13,3,2,4,'#574638'],[9,1,2,2,'#574638'],[19,1,2,2,'#574638'],[11,3,9,1,'#574638']],
+ mushroomSofa:[[2,14,28,14,'#573e46'],[4,8,24,15,'#a95f6a'],[7,6,18,3,'#c47c7e'],[2,17,6,10,'#d5a084'],[24,17,6,10,'#d5a084'],[8,21,16,5,'#e7b9a0'],[7,11,4,3,'#f2dfbf'],[19,10,4,3,'#f2dfbf'],[6,28,3,3,'#654d3f'],[24,28,3,3,'#654d3f']],
+ fossilClock:[[6,3,20,25,'#654e3c'],[8,5,16,21,'#c7b283'],[10,7,12,12,'#eee2b4'],[15,8,2,7,'#546c58'],[16,13,5,2,'#546c58'],[15,21,2,4,'#8c734e'],[13,24,6,2,'#e4c67e']],
+ starWindow:[[3,2,26,29,'#8f795b'],[5,4,22,25,'#ded09e'],[7,6,18,21,'#343d66'],[9,9,2,2,'#f1dfa0'],[19,14,3,3,'#f1dfa0'],[13,20,2,2,'#f1dfa0'],[12,10,6,1,'#8994af'],[17,11,1,4,'#8994af'],[14,18,5,1,'#8994af'],[15,5,2,23,'#c8ae83'],[5,16,22,2,'#c8ae83']]
+ });
+ return {paint,furniture,glow,drawDecor,canPlace,ready:true};
 })();

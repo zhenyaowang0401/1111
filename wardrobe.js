@@ -36,6 +36,16 @@
   {id:'bellpin',name:'Little bell',category:'extras',cost:18,rarity:'Uncommon'},
   {id:'crystalpin',name:'Crystal pin',category:'extras',cost:22,rarity:'Rare'}
  ];
+ items.push(
+  {id:'mushroomhat',name:'Forager mushroom hat',category:'hats',cost:0,recipe:{mushroom:40},rarity:'Epic',headTop:-9},
+  {id:'starhat',name:'Starlight hat',category:'hats',cost:0,recipe:{star:40},rarity:'Epic',headTop:-12},
+  {id:'fossilhat',name:'Spiral shell hat',category:'hats',cost:0,recipe:{fossil:30},rarity:'Rare',headTop:-8},
+  {id:'crystalhat',name:'Crystal bloom hat',category:'hats',cost:0,recipe:{crystal:30},rarity:'Rare',headTop:-10}
+ );
+ function redeem(s,id){const i=items.find(i=>i.id===id);if(!i?.recipe||s.owned.includes(id)||s.session?.status==='running')return false;const materials=['star','mushroom','crystal','fossil'];
+  for(const [id,n] of Object.entries(i.recipe)){const reserved=Object.values(s.home?.slots||{}).filter(v=>v==='find:'+id).length+(s.heldItem===id?1:0);const total=s.inventory[materials.indexOf(id)];if(!Number.isFinite(total)||total-reserved<n)return false;}
+  for(const [id,n] of Object.entries(i.recipe))s.inventory[materials.indexOf(id)]-=n;s.owned.push(i.id);return true;
+ }
  const tools=[
   {id:'spoon',name:'Giant spoon',cost:45,rarity:'Uncommon'},
   {id:'shovel',name:'Garden shovel',cost:60,rarity:'Uncommon'},
@@ -50,5 +60,5 @@
  function headTop(current){return items.find(i=>i.category==='hats'&&current.includes(i.id))?.headTop??5;}
  const retiredClothes={sweater:12,coat:15,hoodie:20,uniform:25,puffer:40};
  function clothingRefund(owned){return [...new Set(Array.isArray(owned)?owned:[])].reduce((n,id)=>n+(Object.hasOwn(retiredClothes,id)?retiredClothes[id]:0),0);}
- return {items,tools,categories,equip,normalize,headTop,clothingRefund};
+ return {items,redeem,tools,categories,equip,normalize,headTop,clothingRefund};
 });

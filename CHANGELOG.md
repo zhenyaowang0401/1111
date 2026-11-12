@@ -2,6 +2,13 @@
 
 These entries describe implementation milestones. Historical milestone names do not necessarily correspond to a published GitHub Release or a live deployment.
 
+## Eumo 3.4.0 — Direct decorating and material collections
+
+- Added mouse/touch furniture dragging with room-boundary validation, move-in-place, keyboard nudging, removal, and saved/shared coordinates. Legacy placements remain valid.
+- Added four tiered pixel mural backgrounds, a television, three material furniture recipes, and four material-exclusive hats.
+- Versioned new-session material drops at 40% per ten-minute checkpoint, independently of 3% golden rolls. Existing inventory, star earnings, and active legacy sessions are preserved; new demos no longer grant materials.
+- Tested drag/move/cancel, mobile touch, save reload, background purchases, shared coordinates, exact material redemption, reserved items, reward distribution, split-session equivalence, and legacy rewards.
+
 ## Eumo 3.3.0 — Built-in desktop updates
 
 - Added periodic update discovery, a desktop-only update notice, Help controls, and a native Check for updates menu.

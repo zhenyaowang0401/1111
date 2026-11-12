@@ -3,6 +3,14 @@
 window.EumoI18n=(()=>{
  const KEY='eumo-language';let language='en';try{if(localStorage.getItem(KEY)==='zh')language='zh';}catch{}
  const dictionary={
+ "Twilight forest":"暮色森林","Emerald rainforest":"翡翠雨林","Alpine snow":"雪山壁景","Celestial night":"璀璨星空",
+ "Retro television":"复古电视","Mushroom sofa":"蘑菇沙发","Spiral clock":"化石螺旋钟","Constellation window":"星座窗",
+ "Forager mushroom hat":"采集者蘑菇帽","Starlight hat":"星光帽","Spiral shell hat":"螺旋化石帽","Crystal bloom hat":"晶簇帽",
+ "Owned furniture · drag into your home":"已拥有的家具 · 拖进家中","Collected finds":"收集到的材料","Furniture shop":"家具商店","Drag / place":"拖动／放置","Put selected item away":"收起选中的装饰","Redeem":"兑换",
+ "Drag furniture into a room. Select to move or put away.":"将家具拖进房间，选中后可移动或收起。",
+ "Place in any room":"可放在任意房间",
+ "Collect enough spare materials and pause to redeem.":"请先攒够可用材料并暂停计时，再兑换。",
+
  "Move / back up progress":"迁移／备份进度","Windows / Mac downloads ↗":"Windows／Mac 客户端下载 ↗","Export progress":"导出进度","Import progress":"导入进度",
  "Export here, then import on your other device. This replaces that device’s progress. Friends reconnect separately; chat history stays on this device.":"在这里导出，再到另一台设备导入，会替换那台设备的进度。好友需重新连接，聊天记录保留在原设备。",
  "Pause your session before moving progress.":"请先暂停计时，再迁移进度。","Backup downloaded. Keep it somewhere safe.":"备份已下载，请妥善保存。","Could not save the backup.":"未能保存备份。",
@@ -401,8 +409,8 @@ window.EumoI18n=(()=>{
  "Conversation with your mole": "与鼹鼠对话",
  "Conversation ideas": "聊天话题",
  "· chat": "· 聊天",
- "Study or work while your mole digs. Every five minutes earns a star; every ten minutes brings a find. Pickups are automatic. Pausing stops progress. Ending early keeps what you earned.": "你学习或工作时，鼹鼠陪你挖掘。每五分钟获得一颗星，每十分钟获得一个发现物，自动拾取。暂停时停止进度，提前结束也能保留收获。",
- "Developer demo: 15 seconds, one star, five metres and one find per completed run. Demo rewards are spendable but excluded from focus reports.": "开发者试玩：每轮十五秒，获得一颗星、五米深度和一个发现物。奖励可以使用，但不计入专注报告。",
+ "Study or work while your mole digs. Every five minutes earns a star; every ten minutes has a 40% chance of a material find. Pickups are automatic. Pausing stops progress. Ending early keeps what you earned.": "你学习或工作时，鼹鼠陪你挖掘。每五分钟获得一颗星，每十分钟有 40% 概率获得一件材料，自动拾取。暂停时停止进度，提前结束也能保留收获。",
+ "Developer demo: 15 seconds, one star and five metres per completed run. Demos do not grant materials. Demo rewards are spendable but excluded from focus reports.": "开发者试玩：每轮十五秒，获得一颗星和五米深度，不产出材料。奖励可以使用，但不计入专注报告。",
  "Pet your mole while idle; tap three times quickly for a happy jump and spin. Pause or end your session to drag through the mine. Golden finds have a 3% bonus chance per ten-minute discovery, excluding demos; keep, display at home or sell for 99 stars. Display finds on your mole’s head at home. Craft decor with spare finds; each piece is yours to keep, and displayed finds stay safe. Mix hats, scarves and a small pin; tools appear only while digging. Music: soft music, groove and white noise, supplied by the creator.": "空闲时摸摸鼹鼠，快速点三下会跳起转圈。暂停或结束后可拖动查看矿洞。正式专注每十分钟的发现节点有 3% 机会额外获得金色收藏，可收藏、展示或出售得 99 星。普通物品可在家园顶在头上，多余材料可制作永久装饰。帽子、围巾和小胸针可搭配，工具只在挖掘时出现。音乐包含轻音乐、律动和白噪音。",
  "Choose a find to display on your mole's head.": "选择一个发现物，展示在鼹鼠头顶。",
  "Your recorded time, dug depth and collected items will be saved.": "已记录的时间、挖掘深度和收获都会保存。",

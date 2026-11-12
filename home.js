@@ -18,11 +18,37 @@
   {id:'fossilFrame',name:'Fossil frame',recipe:{fossil:1},slots:['wall'],scale:1.1,foot:30,description:'Your own little piece of natural history.'},
   {id:'starMobile',name:'Starry mobile',recipe:{star:2},slots:['wall'],scale:1.25,foot:30,description:'A small constellation for the burrow wall.'}
  );
+ catalog.themes.forEach(t=>t.rarity=t.cost===0?'Common':t.cost<40?'Uncommon':'Rare');
+ catalog.themes.push(
+  {id:'forest',name:'Twilight forest',cost:80,rarity:'Uncommon',biome:'forest',wall:'#9ab5a1',floor:'#879b81',trim:'#425e50'},
+  {id:'rainforest',name:'Emerald rainforest',cost:140,rarity:'Rare',biome:'rainforest',wall:'#68988a',floor:'#6b8664',trim:'#294e43'},
+  {id:'snow',name:'Alpine snow',cost:220,rarity:'Epic',biome:'snow',wall:'#cadfe3',floor:'#a8bec4',trim:'#577584'},
+  {id:'starlit',name:'Celestial night',cost:360,rarity:'Legendary',biome:'stars',wall:'#333c64',floor:'#606381',trim:'#262b49'}
+ );
+ catalog.items.push(
+  {id:'television',name:'Retro television',cost:35,slots:['left','right'],scale:1.8,foot:31},
+  {id:'mushroomSofa',name:'Mushroom sofa',recipe:{mushroom:8},slots:['left','right'],scale:2,foot:31,description:'A rosy seat for slow afternoons.'},
+  {id:'fossilClock',name:'Spiral clock',recipe:{fossil:6},slots:['wall'],scale:1.3,foot:30,description:'Little spirals, keeping burrow time.'},
+  {id:'starWindow',name:'Constellation window',recipe:{star:12,crystal:4},slots:['wall'],scale:1.7,foot:31,description:'A view of your own small galaxy.'}
+ );
+ for(let n=0;n<16;n++)catalog.slots['extra'+n]={x:140,y:300,label:'Furniture',kind:n%2?'wall':'left'};
  for(const item of catalog.items){item.slots=Object.keys(catalog.slots).filter(key=>item.slots.includes(catalog.slots[key].kind));}
  function sharedHome(raw){
   if(!raw||typeof raw!=='object'||!catalog.themes.some(t=>t.id===raw.theme))return null;
   const slots={};for(const key of Object.keys(catalog.slots)){const id=raw.slots?.[key];slots[key]=catalog.items.some(i=>i.id===id&&i.slots.includes(key))||key!=='floor'&&['find:star','find:mushroom','find:crystal','find:fossil'].includes(id)?id:null;}
-  return {theme:raw.theme,slots};
+  return {theme:raw.theme,slots,positions:positions(raw.positions)};
+ }
+ function positions(raw){const result={};for(const key of Object.keys(catalog.slots)){const p=raw?.[key];if(p&&Number.isFinite(p.x)&&Number.isFinite(p.y)&&p.x>=16&&p.x<=624&&p.y>=48&&p.y<=350)result[key]={x:Math.round(p.x),y:Math.round(p.y)};}return result;}
+ function spot(home,key){return {...catalog.slots[key],...positions(home.positions)[key]};}
+ function place(s,id,x,y,source){
+  if(s.session?.status==='running')return false;
+  const item=catalog.items.find(i=>i.id===id),material=catalog.materials.findIndex(m=>'find:'+m.id===id),h=s.home;
+  if(!h||!Number.isFinite(x)||!Number.isFinite(y)||x<16||x>624||y<48||y>350)return false;
+  if(item&&!h.owned.includes(id)||!item&&material<0)return false;
+  const existing=source&&h.slots[source]===id?source:item?Object.keys(h.slots).find(k=>h.slots[k]===id):null;
+  if(!item&&!existing&&spareMaterials(s)[material].available<1)return false;
+  const key=existing||Object.keys(catalog.slots).find(k=>!h.slots[k]&&(item?item.slots.includes(k):k!=='floor'));
+  if(!key)return false;h.slots[key]=id;h.positions=h.positions||{};h.positions[key]={x:Math.round(x),y:Math.round(y)};return key;
  }
  function spareMaterials(s){return catalog.materials.map((m,index)=>{
   const raw=Number(s.inventory?.[index]),total=Number.isFinite(raw)?Math.max(0,Math.floor(raw)):0;
@@ -41,5 +67,5 @@
   const next=[...s.inventory];for(const m of status.ingredients)next[m.index]=m.total-m.needed;
   rememberFinds(s);s.inventory=next;s.home.owned=[...s.home.owned,id];return true;
  }
- return {...catalog,sharedHome,spareMaterials,rememberFinds,recipeStatus,craft};
+ return {...catalog,positions,spot,place,sharedHome,spareMaterials,rememberFinds,recipeStatus,craft};
 });

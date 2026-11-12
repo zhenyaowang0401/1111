@@ -1,13 +1,14 @@
 Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
-## What's new in 3.3.0
+## What's new in 3.4.0
 
-- Added automatic update checks after launch and every six hours, with an update notice and controls in Help → App updates and Eumo → Check for updates.
-- Windows can download an update while you continue using Eumo, then restart and install when you choose. The timer pauses and progress is saved before installation; failed saving prevents the restart.
-- Downloads are checksum-verified. Failed downloads can be retried, and older versions are never installed automatically.
-- Mac checks for new releases and opens the matching DMG download. In-place automatic installation remains unavailable until releases have an Apple Developer ID signature.
+- Drag owned furniture directly from the decorating sidebar into a room, or move existing pieces by dragging them. Touch dragging and click-to-place are supported. Positions persist and sync to friends' home previews.
+- Added Twilight Forest (Uncommon, 80 stars), Emerald Rainforest (Rare, 140), Alpine Snow (Epic, 220), and Celestial Night (Legendary, 360) pixel wall backgrounds.
+- Added a retro television, plus a mushroom sofa, spiral clock, and constellation window crafted from materials.
+- Added material-exclusive mushroom and star hats (40 matching materials each), and fossil and crystal hats (30 each). Displayed materials are reserved.
+- New formal sessions have a 40% material-find chance per ten-minute checkpoint, while the independent 3% golden treasure chance and five-minute star earnings remain unchanged. Existing inventory and active legacy sessions keep their previous rewards. New demos do not grant materials.
 
-**Already using 3.2.0 or earlier?** Install 3.3.0 over your current copy once, without uninstalling. Older copies cannot acquire the updater automatically. Subsequent Windows releases can use the built-in update flow. Updates keep the existing Eumo data directory.
+Windows users on 3.3.0 or later can use Help → App updates to download this version and restart to install. Older Windows versions need one manual overwrite installation. Mac users can use the update check to download the matching DMG.
 
 ## Downloads
 

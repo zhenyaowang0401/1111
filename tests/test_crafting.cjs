@@ -26,7 +26,7 @@ test('consuming the last material keeps discovery history and furniture ownershi
  for(const id of ['mushroomPlanter','mushroomLamp','crystalChime','fossilFrame','starMobile'])assert.equal(Home.craft(s,id),true);
  assert.deepEqual(s.inventory,[0,1,0,0]);assert.deepEqual(s.foundDiscoveries,['star','mushroom','crystal','fossil']);
  const restored=JSON.parse(JSON.stringify(s));Home.rememberFinds(restored);assert.deepEqual(restored.foundDiscoveries,s.foundDiscoveries);
- for(const item of Home.items.filter(i=>i.recipe)){assert.equal(Home.recipeStatus(restored,item.id).owned,true);assert.equal(Home.craft(restored,item.id),false);}
+ for(const item of Home.items.filter(i=>restored.home.owned.includes(i.id)&&i.recipe)){assert.equal(Home.recipeStatus(restored,item.id).owned,true);assert.equal(Home.craft(restored,item.id),false);}
 });
 test('unavailable and corrupt counts cannot create free materials',()=>{
  const s=state();s.inventory=[NaN,Infinity,-1,0];

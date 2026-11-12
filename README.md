@@ -42,6 +42,14 @@ The interface supports English and Simplified Chinese. Choose a language in Mole
 
 Both versions display the same mole, equipment, tunnel, timer, and depth. They share the main view's session state and do not create a second reward counter.
 
+## Decorating and material collections
+
+Owned furniture can be dragged from the decorating sidebar into any room and moved again directly on the scene. You can also select an item and click a destination; arrow keys move a selected piece, and Delete or **Put selected item away** returns it to inventory. Buying furniture adds it to your owned collection before placement. Existing layouts and new positions are saved and shared with friends.
+
+Pixel wall backgrounds use the wardrobe rarity tiers: Twilight Forest costs 80 stars (Uncommon), Emerald Rainforest 140 (Rare), Alpine Snow 220 (Epic), and Celestial Night 360 (Legendary). Furniture includes a retro TV and material recipes for a mushroom sofa, spiral clock, and constellation window.
+
+Materials also redeem exclusive hats: 40 mushrooms for the mushroom hat, 40 star fragments for the starlight hat, or 30 fossils/crystals for their matching hats. Materials already displayed in the home or on your mole are reserved. New sessions use a 40% material chance per ten-minute checkpoint; old inventory and already-active legacy sessions are retained. Golden treasure rolls remain independently at 3% per checkpoint.
+
 ## Desktop updates
 
 Starting with 3.3.0, installed clients check for new releases automatically. Use **Help → App updates** or **Eumo → Check for updates**. Windows supports downloading inside Eumo and restarting to install after saving progress. Mac currently opens the matching DMG installer; automatic replacement requires Apple Developer ID signing.
@@ -56,10 +64,10 @@ The server reuses `AI_API_KEY` and `AI_BASE_URL` by default with SiliconFlow's `
 
 ## Progress and rewards
 
-- Study and Work earn **1 metre per 30 active seconds**, **1 star per 5 active minutes**, and **1 discovery per 10 active minutes**. Partial progress carries across sessions.
+- Study and Work earn **1 metre per 30 active seconds**, **1 star per 5 active minutes**, and **a 40% material-find chance per 10 active minutes**. Partial progress carries across sessions.
 - Pausing and Break do not earn digging rewards. Ending early keeps the time and rewards already recorded.
-- Each regular ten-minute discovery has a **3% total bonus chance** of a golden collectible. Keep it, display it, or sell it for **99 stars**. Demo and Break are excluded.
-- The repeatable **15-second developer demo** grants 5 metres, 1 spendable star, and 1 discovery. It is excluded from formal focus reports.
+- Each formal ten-minute checkpoint has an independent **3% total bonus chance** of a golden collectible. Keep it, display it, or sell it for **99 stars**. Demo and Break are excluded.
+- The repeatable **15-second developer demo** grants 5 metres and 1 spendable star, but no materials in newly started demos. It is excluded from formal focus reports.
 - Craft decorations with spare mushrooms, crystals, fossils, and star fragments. Displayed materials are reserved; crafting does not spend stars. Crafted decorations remain yours to move for free.
 - Pet the idle mole to make it jump; three quick taps trigger a full spin. An active or paused session disables petting.
 

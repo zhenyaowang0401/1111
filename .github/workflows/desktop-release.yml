@@ -33,6 +33,7 @@ jobs:
       - run: npm run test:desktop
       - run: npm run test:voice
       - run: npm run test:updates
+      - run: npm run test:home
       - name: Test real native windows and offline game
         run: npm run test:desktop:smoke
         timeout-minutes: 5
