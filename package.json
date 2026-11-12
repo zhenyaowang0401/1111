@@ -1,7 +1,7 @@
 {
   "name": "eumo-companion",
   "private": true,
-  "version": "3.1.5",
+  "version": "3.2.0",
   "engines": {
     "node": "22.x"
   },
@@ -15,7 +15,8 @@
     "desktop:dev": "npm run desktop:prepare && electron .",
     "desktop:pack": "npm run desktop:prepare && electron-builder --publish never",
     "test:desktop": "node --test tests/test_desktop.cjs",
-    "test:desktop:smoke": "npm run desktop:prepare && electron . --desktop-smoke"
+    "test:desktop:smoke": "npm run desktop:prepare && electron . --desktop-smoke",
+    "test:voice": "node --test tests/test_voice.cjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.12",
@@ -47,7 +48,10 @@
       "artifactName": "Eumo-macOS-${arch}.${ext}",
       "identity": "-",
       "hardenedRuntime": false,
-      "notarize": false
+      "notarize": false,
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "Eumo uses your microphone for voice input. Audio is sent for transcription when you finish recording."
+      }
     },
     "win": {
       "target": [

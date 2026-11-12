@@ -16,7 +16,7 @@ function createHandler({root,manifest,readFile,upstream}){
   if(API_PATHS.has(url.pathname)){
    if(request.method!=='POST')return new Response('Method not allowed',{status:405});
    try{
-    const body=await request.arrayBuffer();if(body.byteLength>48000)return new Response('Request too large',{status:413});
+    const body=await request.arrayBuffer();if(body.byteLength>(url.pathname==='/api/transcribe'?2000000:48000))return new Response('Request too large',{status:413});
     const response=await upstream(APP_ORIGIN+url.pathname,{method:'POST',headers:{'Content-Type':'application/json',Origin:APP_ORIGIN},body,credentials:'include',redirect:'error',signal:AbortSignal.timeout(60000),bypassCustomProtocolHandlers:true});
     // Preserve the response; createUpstream persists the HttpOnly friend credential.
     return response;

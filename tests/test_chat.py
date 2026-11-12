@@ -35,6 +35,7 @@ def run():
   with sync_playwright() as p:
    browser=p.chromium.launch(executable_path=os.environ.get('PLAYWRIGHT_CHROMIUM_EXECUTABLE') or shutil.which('chromium'),args=['--no-sandbox'])
    ctx=browser.new_context(locale='zh-CN',timezone_id='Asia/Shanghai',viewport={'width':1536,'height':800});page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+   page.add_init_script("localStorage.setItem('eumo-language','zh');")
    page.add_init_script(f"if(!localStorage.getItem('{KEY}'))localStorage.setItem('{KEY}',{json.dumps(json.dumps(seed))});")
    page.goto(url+'/#wardrobe');page.locator('[data-category="glasses"]').click();page.locator('[data-item="roundglasses"]').click()
    assert len(requests)==0,'Buying clothes must not silently call a paid model'

@@ -31,6 +31,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run test:desktop
+      - run: npm run test:voice
       - name: Test real native windows and offline game
         run: npm run test:desktop:smoke
         timeout-minutes: 5

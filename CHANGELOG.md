@@ -2,6 +2,14 @@
 
 These entries describe implementation milestones. Historical milestone names do not necessarily correspond to a published GitHub Release or a live deployment.
 
+## Eumo 3.2.0 — Voice input for chat
+
+- Added microphone controls to the inline and expanded chat composers, with editable transcripts and explicit sending.
+- Shared bounded recording and WAV conversion across browsers and Electron, with permission/error feedback and microphone cleanup on cancellation or navigation.
+- Added a server-only, rate-limited transcription endpoint using the existing AI provider settings or optional voice-specific overrides.
+- Added audio-only native desktop permission handling and the macOS microphone usage description.
+- Tested recording with synthetic microphone input in Chromium and Electron, API validation and permission boundaries, chat regression, and responsive layouts. Live provider recognition quality requires production credentials.
+
 ## Eumo 3.1.5 — Countdown alignment
 
 - Raised the countdown by six pixels on desktop layouts at least 801 pixels tall, balancing the whitespace above and below the digits.

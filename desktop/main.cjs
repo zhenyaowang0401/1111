@@ -1,5 +1,5 @@
 'use strict';
-const {app,BrowserWindow,Menu,session,shell,ipcMain,screen}=require('electron');
+const {app,BrowserWindow,Menu,session,shell,ipcMain,screen,dialog,systemPreferences}=require('electron');
 const path=require('node:path'),fs=require('node:fs');
 const {APP_ORIGIN,RELEASES,FLOAT_NAME}=require('./config.cjs');
 const {createHandler,createUpstream}=require('./protocol.cjs');
@@ -47,7 +47,7 @@ if(!app.requestSingleInstanceLock()){app.quit();}else{
   const ses=session.defaultSession,manifest=new Set(JSON.parse(fs.readFileSync(path.join(web,'manifest.json'),'utf8')));
   ses.protocol.handle('https',createHandler({root:web,manifest,readFile:fs.promises.readFile,upstream:createUpstream(ses)}));
   // No Node APIs in web content, no certificate exceptions, and no remote executable pages.
-  ses.setPermissionRequestHandler((_wc,permission,callback)=>callback(permission==='clipboard-sanitized-write'));
+  require('./microphone.cjs').installMicrophonePermissions({session:ses,getMain:()=>main,dialog,systemPreferences});
   ipcMain.on('eumo:focus-main',event=>{if(event.sender===main?.webContents||event.sender===floating?.webContents)showMain();});
   Menu.setApplicationMenu(Menu.buildFromTemplate([
    ...(process.platform==='darwin'?[{role:'appMenu'}]:[]),

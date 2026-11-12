@@ -42,6 +42,12 @@ The interface supports English and Simplified Chinese. Choose a language in Mole
 
 Both versions display the same mole, equipment, tunnel, timer, and depth. They share the main view's session state and do not create a second reward counter.
 
+## Voice input
+
+Click the microphone inside either chat input to dictate, then click again to finish. The first use asks for microphone access. Short recordings (up to 45 seconds) are sent to the speech service, and the transcript is added to your draft for review before you press Send. This works on the HTTPS website and desktop apps with microphone access and an internet connection. Eumo does not save audio recordings.
+
+The server reuses `AI_API_KEY` and `AI_BASE_URL` by default with SiliconFlow's `FunAudioLLM/SenseVoiceSmall` model. For another OpenAI-compatible transcription provider, configure `VOICE_API_KEY`, `VOICE_BASE_URL`, and `VOICE_MODEL` in the server environment; never add keys to browser or desktop files. A provider that only supports text chat will need these voice settings. Local file downloads cannot connect to transcription; use the website or desktop app.
+
 ## Progress and rewards
 
 - Study and Work earn **1 metre per 30 active seconds**, **1 star per 5 active minutes**, and **1 discovery per 10 active minutes**. Partial progress carries across sessions.

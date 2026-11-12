@@ -1,9 +1,13 @@
 Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
-## What's new in 3.1.5
+## What's new in 3.2.0
 
-- Raised the countdown slightly to balance its position between the task field and duration controls on taller desktop layouts.
-- Preserved the surrounding controls and compact-window and mobile layouts.
+- Added a pixel microphone button inside both chat inputs on web, Windows, and macOS.
+- Click to request microphone access and record; click again to turn up to 45 seconds of speech into an editable draft. Messages are sent only when you press Send.
+- Added recording, cancellation, permission-denied, and transcription-error states. Cancelling or leaving the chat releases the microphone.
+- Desktop permission requests are restricted to audio from Eumo's main window; macOS includes its system microphone permission description. Camera access remains blocked.
+
+Voice transcription requires an internet connection and a configured speech provider on the server. Audio is forwarded for transcription and is not stored by Eumo. Existing text input and offline gameplay remain available.
 
 ## Downloads
 
@@ -20,7 +24,7 @@ Float mole opens a native, draggable, always-on-top window with **no browser add
 
 ## Offline play and progress transfer
 
-Local gameplay works offline. Chat and friends require an internet connection. Web and desktop progress are stored separately; use **Help → Move / back up progress** to export and import a backup. Friend connections must be set up again on the new client. Chat history is not included in the backup.
+Local gameplay works offline. Chat, voice transcription, and friends require an internet connection. Web and desktop progress are stored separately; use **Help → Move / back up progress** to export and import a backup. Friend connections must be set up again on the new client. Chat history is not included in the backup.
 
 ## Installation notes
 

@@ -4,6 +4,7 @@ const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function until(test){for(let i=0;i<150;i++){if(await test())return;await wait(100);}throw Error('Desktop smoke timed out');}
 module.exports.runSmoke=async({win,app,session,getFloating,origin})=>{
  await until(()=>win.webContents.executeJavaScript('!!window.FloatingMole && !!window.MoleArt?.ready').catch(()=>false));
+ assert.equal(await win.webContents.executeJavaScript("typeof EumoVoice.init==='function' && !!document.getElementById('moleChatMic') && !!document.getElementById('chatDialogMic')"),true);
  assert.equal(await win.webContents.executeJavaScript("typeof require==='undefined' && typeof process==='undefined' && EumoDesktop.nativeFloating"),true);
  await win.webContents.executeJavaScript("localStorage.setItem('eumo-tour-v1','seen');state.profile={name:'Desktop test',color:'#a8b77a',configured:true};save();location.reload()");
  await until(()=>win.webContents.executeJavaScript("typeof state!=='undefined' && state.profile.name==='Desktop test'").catch(()=>false));

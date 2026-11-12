@@ -1,3 +1,13 @@
 {
-  "functions": { "api/chat.js": { "maxDuration": 60 }, "api/friends.js": { "maxDuration": 30 } }
+  "functions": {
+    "api/chat.js": {
+      "maxDuration": 60
+    },
+    "api/friends.js": {
+      "maxDuration": 30
+    },
+    "api/transcribe.js": {
+      "maxDuration": 60
+    }
+  }
 }

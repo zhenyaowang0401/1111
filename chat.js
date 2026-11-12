@@ -46,7 +46,7 @@ window.MoleChat=(()=>{
   return zh?'这次没连上聊天服务，文字已经保留，可以再试一次。':'I couldn’t reach the chat service. Your draft is safe—please try again.';
  }
  async function submit(input){
-  if(busy)return;const message=input.value.trim().slice(0,2000);if(!message)return;
+  if(busy)return;window.EumoVoice?.cancel();const message=input.value.trim().slice(0,2000);if(!message)return;
   if(location.protocol==='file:'){notice=errorCopy('FILE_MODE');render();return;}
   // Keep old conversations visible, but don't feed a previous persona's wrong replies back to the model.
   const previous=[];let budget=6000;for(const entry of entries.filter(x=>x.source!=='game'&&(x.role!=='assistant'||x.personaVersion===PERSONA_VERSION)).slice(-12).reverse()){if(!budget)break;const content=text(entry.content,Math.min(1800,budget));previous.unshift({role:entry.role,content});budget-=content.length;}
@@ -87,7 +87,7 @@ window.MoleChat=(()=>{
   if(reply){entries.push({role:'assistant',content:reply,source:'game'});entries=entries.slice(-24);lastReaction=now;notice='';render();}store();return reply;
  }
  function init(read){
-  getState=read;
+  getState=read;window.EumoVoice?.init();
   try{const saved=JSON.parse(localStorage.getItem(KEY));if(saved){sharing=saved.sharing!==false;entries=(Array.isArray(saved.entries)?saved.entries:[]).filter(x=>x&&['user','assistant'].includes(x.role)&&typeof x.content==='string').slice(-24).map(x=>({role:x.role,content:text(x.content,6500),source:['game','ai','user'].includes(x.source)?x.source:'user',personaVersion:text(x.personaVersion,40)}));events=(Array.isArray(saved.events)?saved.events:[]).slice(-5);lastActivityEvent=lifecycle.has(saved.lastActivityEvent?.type)?saved.lastActivityEvent:events.findLast(x=>lifecycle.has(x?.type))||null;}}catch{}
   for(const [form,input,button] of [['moleChatForm','moleChatInput','moleChatSend'],['chatDialogForm','chatDialogInput','chatDialogSend']]){
    const send=e=>{e.preventDefault();submit($(input));};$(form).addEventListener('submit',send);$(button).addEventListener('click',send);$(input).addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing&&e.keyCode!==229)send(e);});

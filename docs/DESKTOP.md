@@ -17,9 +17,15 @@ Windows builds target Windows 10 / 11 x64. Mac builds require a macOS version su
 - The main window uses native Windows or Mac window controls and adapts to the screen.
 - Float mole is a native, frameless, always-on-top window. Drag the name area to move it. The return icon restores the main window; × closes only the floating window.
 - Closing the main window while the floating window is open hides the main window. The original session still owns the timer and reward state; there is no second counter. Use the application menu's Quit command to exit completely.
-- The installer includes local focus timers, outfits, home decoration, music, and reports for offline use. Chat and friends connect to the existing HTTPS services. Offline or certificate failures produce a connection error; certificate verification is never bypassed.
+- The installer includes local focus timers, outfits, home decoration, music, and reports for offline use. Chat, voice transcription, and friends connect to the existing HTTPS services. Offline or certificate failures produce a connection error; certificate verification is never bypassed.
 - Web and desktop saves are separate and do not automatically sync. Pause your session, then use **Help → Move / back up progress** to export a JSON backup and import it on another device. Importing replaces that device's progress after confirmation. Chat history and friend credentials are not exported; reconnect friends separately.
 - Normal application updates reuse Eumo's data directory. Back up your progress before uninstalling or clearing application data.
+
+## Microphone and voice input
+
+The microphone button is available in both chat composers. Click to request access and start recording, then click again to transcribe into an editable draft. Eumo asks through a native permission dialog; macOS also requests system microphone access. Windows microphone privacy settings must allow desktop applications. Previously granted permissions may not prompt again.
+
+Recordings stop at 45 seconds. Closing or hiding the chat, switching pages, or hiding the app cancels recording and releases the microphone. Audio is sent only after finishing a recording and is not saved by Eumo. Transcription requires the online speech endpoint; the offline timer remains available. Camera access stays blocked.
 
 ## Building and publishing
 
