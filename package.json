@@ -1,7 +1,7 @@
 {
   "name": "eumo-companion",
   "private": true,
-  "version": "3.2.0",
+  "version": "3.3.0",
   "engines": {
     "node": "22.x"
   },
@@ -16,7 +16,8 @@
     "desktop:pack": "npm run desktop:prepare && electron-builder --publish never",
     "test:desktop": "node --test tests/test_desktop.cjs",
     "test:desktop:smoke": "npm run desktop:prepare && electron . --desktop-smoke",
-    "test:voice": "node --test tests/test_voice.cjs"
+    "test:voice": "node --test tests/test_voice.cjs",
+    "test:updates": "node --test tests/test_updates.cjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.12",
@@ -70,8 +71,15 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true
     },
-    "publish": null,
+    "publish": {
+      "provider": "generic",
+      "url": "https://github.com/zhenyaowang0401/1111/releases/latest/download",
+      "channel": "latest"
+    },
     "icon": "desktop/icon.png"
   },
-  "productName": "Eumo"
+  "productName": "Eumo",
+  "dependencies": {
+    "electron-updater": "6.8.11"
+  }
 }

@@ -300,3 +300,7 @@ if(retiredClothingRefund){save();toast(EumoI18n.language==='zh'?`已下架衣服
 window.addEventListener('eumo-appearance',()=>{lastClockStamp='';syncClock();PixelArt.refreshFocus();});
 
 SaveTransfer.init({read:()=>state,flush:()=>{trackStudy();save();},beforeReload:()=>{canSave=false;FloatingMole.close();}});
+
+// Called only by the native updater after the user confirms restarting.
+window.EumoPrepareUpdate=()=>{if(!canSave)return false;window.EumoVoice?.cancel();if(state.session?.status==='running')pauseSession();else{trackStudy();save();}return canSave;};
+DesktopUpdates.init();

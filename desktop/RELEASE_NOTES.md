@@ -1,13 +1,13 @@
 Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
-## What's new in 3.2.0
+## What's new in 3.3.0
 
-- Added a pixel microphone button inside both chat inputs on web, Windows, and macOS.
-- Click to request microphone access and record; click again to turn up to 45 seconds of speech into an editable draft. Messages are sent only when you press Send.
-- Added recording, cancellation, permission-denied, and transcription-error states. Cancelling or leaving the chat releases the microphone.
-- Desktop permission requests are restricted to audio from Eumo's main window; macOS includes its system microphone permission description. Camera access remains blocked.
+- Added automatic update checks after launch and every six hours, with an update notice and controls in Help → App updates and Eumo → Check for updates.
+- Windows can download an update while you continue using Eumo, then restart and install when you choose. The timer pauses and progress is saved before installation; failed saving prevents the restart.
+- Downloads are checksum-verified. Failed downloads can be retried, and older versions are never installed automatically.
+- Mac checks for new releases and opens the matching DMG download. In-place automatic installation remains unavailable until releases have an Apple Developer ID signature.
 
-Voice transcription requires an internet connection and a configured speech provider on the server. Audio is forwarded for transcription and is not stored by Eumo. Existing text input and offline gameplay remain available.
+**Already using 3.2.0 or earlier?** Install 3.3.0 over your current copy once, without uninstalling. Older copies cannot acquire the updater automatically. Subsequent Windows releases can use the built-in update flow. Updates keep the existing Eumo data directory.
 
 ## Downloads
 

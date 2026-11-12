@@ -2,6 +2,14 @@
 
 These entries describe implementation milestones. Historical milestone names do not necessarily correspond to a published GitHub Release or a live deployment.
 
+## Eumo 3.3.0 — Built-in desktop updates
+
+- Added periodic update discovery, a desktop-only update notice, Help controls, and a native Check for updates menu.
+- Added explicit Windows download and restart/install actions using electron-updater, with saved progress, paused timers, retries, checksum verification, and downgrade prevention.
+- Added architecture-specific Mac feeds with a DMG download fallback while releases remain ad-hoc signed.
+- Published verified, version-pinned update metadata alongside installers, keeping each release a draft until all assets are uploaded.
+- Tested real updater downloads against local fixtures, corrupt-file rejection, downgrade rejection, trusted IPC, UI states, and saving before restart.
+
 ## Eumo 3.2.0 — Voice input for chat
 
 - Added microphone controls to the inline and expanded chat composers, with editable transcripts and explicit sending.

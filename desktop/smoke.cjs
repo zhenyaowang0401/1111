@@ -3,12 +3,15 @@ const assert=require('node:assert/strict');
 const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function until(test){for(let i=0;i<150;i++){if(await test())return;await wait(100);}throw Error('Desktop smoke timed out');}
 module.exports.runSmoke=async({win,app,session,getFloating,origin})=>{
+ await require('./update-smoke.cjs').runUpdateSmoke();
  await until(()=>win.webContents.executeJavaScript('!!window.FloatingMole && !!window.MoleArt?.ready').catch(()=>false));
  assert.equal(await win.webContents.executeJavaScript("typeof EumoVoice.init==='function' && !!document.getElementById('moleChatMic') && !!document.getElementById('chatDialogMic')"),true);
  assert.equal(await win.webContents.executeJavaScript("typeof require==='undefined' && typeof process==='undefined' && EumoDesktop.nativeFloating"),true);
  await win.webContents.executeJavaScript("localStorage.setItem('eumo-tour-v1','seen');state.profile={name:'Desktop test',color:'#a8b77a',configured:true};save();location.reload()");
  await until(()=>win.webContents.executeJavaScript("typeof state!=='undefined' && state.profile.name==='Desktop test'").catch(()=>false));
  await until(()=>win.webContents.executeJavaScript('!!MoleArt.ready').catch(()=>false));
+ assert.equal(await win.webContents.executeJavaScript("document.querySelector('.desktop-updates')!==null && document.getElementById('desktopUpdateNotice').hidden"),true);
+ assert.equal((await win.webContents.executeJavaScript("EumoDesktop.getUpdateState()")).status,'unavailable');
  await win.webContents.executeJavaScript("document.getElementById('floatMoleButton').click()",true);
  await until(()=>getFloating()&&!getFloating().isDestroyed());const pip=getFloating();
  await until(()=>pip.webContents.executeJavaScript("!!document.getElementById('toggle')").catch(()=>false));
@@ -21,6 +24,11 @@ module.exports.runSmoke=async({win,app,session,getFloating,origin})=>{
  await until(()=>win.webContents.executeJavaScript("state.session?.status==='paused'"));
  await pip.webContents.executeJavaScript("document.getElementById('return').click()",true);
  await until(()=>!getFloating());assert.equal(win.isVisible(),true);
+ await win.webContents.executeJavaScript("document.getElementById('startButton').click()",true);
+ assert.equal(await win.webContents.executeJavaScript("state.session.status"),'running');
+ assert.equal(await win.webContents.executeJavaScript("EumoPrepareUpdate()"),true);
+ assert.equal(await win.webContents.executeJavaScript("state.session.status"),'paused');
+ assert.equal(await win.webContents.executeJavaScript("JSON.parse(localStorage.getItem('loop-pet-soft-universe-v1')).session.status"),'paused');
  // Static views still work with networking disabled; the persistent partition retains progress.
  await session.defaultSession.enableNetworkEmulation({offline:true});
  await win.webContents.executeJavaScript("state.home.slots.floor='rug';save();location.reload()");

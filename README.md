@@ -42,6 +42,12 @@ The interface supports English and Simplified Chinese. Choose a language in Mole
 
 Both versions display the same mole, equipment, tunnel, timer, and depth. They share the main view's session state and do not create a second reward counter.
 
+## Desktop updates
+
+Starting with 3.3.0, installed clients check for new releases automatically. Use **Help → App updates** or **Eumo → Check for updates**. Windows supports downloading inside Eumo and restarting to install after saving progress. Mac currently opens the matching DMG installer; automatic replacement requires Apple Developer ID signing.
+
+Already using 3.2.0 or earlier? Install the current package over your existing copy once to get the updater. There is no need to uninstall or remove your progress.
+
 ## Voice input
 
 Click the microphone inside either chat input to dictate, then click again to finish. The first use asks for microphone access. Short recordings (up to 45 seconds) are sent to the speech service, and the transcript is added to your draft for review before you press Send. This works on the HTTPS website and desktop apps with microphone access and an internet connection. Eumo does not save audio recordings.

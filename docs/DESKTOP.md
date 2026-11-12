@@ -21,6 +21,16 @@ Windows builds target Windows 10 / 11 x64. Mac builds require a macOS version su
 - Web and desktop saves are separate and do not automatically sync. Pause your session, then use **Help → Move / back up progress** to export a JSON backup and import it on another device. Importing replaces that device's progress after confirmation. Chat history and friend credentials are not exported; reconnect friends separately.
 - Normal application updates reuse Eumo's data directory. Back up your progress before uninstalling or clearing application data.
 
+## Updating an installed app
+
+Version 3.3.0 introduces the updater. If you have an older version, close Eumo and install the new package over it once; you do not need to uninstall or clear your saved progress.
+
+Installed apps check for updates after launch and every six hours. Use **Help → App updates** or **Eumo → Check for updates** to check manually. An update notice appears when a newer stable version is available.
+
+On Windows, choose **Download update**, continue using the app, then choose **Restart and install**. Eumo asks for confirmation, pauses an active timer, saves progress, and installs the checksum-verified package before reopening. Downloading does not interrupt the timer. Declining installation keeps the current version running; ordinary quitting does not silently install it. Failed checks or downloads can be retried.
+
+Mac currently checks for updates and links to the matching Apple silicon or Intel DMG. Quit Eumo and replace the app in Applications after the download finishes. Automatic in-place Mac updates require Apple Developer ID signing, which these releases do not yet have.
+
 ## Microphone and voice input
 
 The microphone button is available in both chat composers. Click to request access and start recording, then click again to transcribe into an editable draft. Eumo asks through a native permission dialog; macOS also requests system microphone access. Windows microphone privacy settings must allow desktop applications. Previously granted permissions may not prompt again.
@@ -47,3 +57,7 @@ Updating the website does not automatically update installed clients. Publish a 
 Renderers have Node integration disabled and sandbox, context isolation, and web security enabled. The fixed website origin maps to packaged local resources inside Electron, preserving the web app's relative paths and storage behavior. Only `/api/chat` and `/api/friends` are forwarded to the actual HTTPS service.
 
 Friend credentials stay in the main process's HttpOnly cookie jar. External pages open in the default browser rather than running inside a window with the preload bridge. TLS validation remains enabled, and AI or database secrets are never included in the client.
+
+## Update feed and release integrity
+
+`electron-updater` reads stable metadata from the public GitHub Release assets: `latest.yml` for Windows, `latest-arm64-mac.yml` for Apple silicon, and `latest-x64-mac.yml` for Intel Mac. The release job validates each installer's SHA-512 hash and pins its metadata URL to that release tag. All assets are uploaded to a draft before the release becomes latest. Keep these metadata files with the installers when publishing future versions. No GitHub token is embedded in the app. Development and smoke-test runs do not poll production updates.
