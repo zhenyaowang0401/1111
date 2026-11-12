@@ -4,6 +4,8 @@ window.HomeEditor=(()=>{
  const canvas=()=>document.getElementById('homeCanvas');
  const text=(en,zh)=>EumoI18n.language==='zh'?zh:en;
  function point(e){const r=canvas().getBoundingClientRect();return {x:(e.clientX-r.left)*640/r.width,y:(e.clientY-r.top)*360/r.height};}
+ function outside(e){const r=canvas().getBoundingClientRect();return e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom;}
+ function putAway(key){if(!HomeCatalog.putAway(bridge.read(),key))return;armed=null;bridge.commit();bridge.message(text('Put away. You can place it again any time.','已收回物品栏，随时可以再摆放。'));}
  function target(e,d){const p=point(e);return {x:p.x+(d.offset?.x||0),y:p.y+(d.offset?.y||0)};}
  function choose(id){armed=id;bridge.message(text('Drag into a room, or click a position in your home.','拖进房间，或点击家中的位置放置。'));}
  function hit(p){return Object.keys(HomeCatalog.slots).filter(k=>bridge.read().home.slots[k]).sort((a,b)=>a==='floor'?1:b==='floor'?-1:HomeCatalog.spot(bridge.read().home,b).y-HomeCatalog.spot(bridge.read().home,a).y).find(k=>{const h=bridge.read().home,id=h.slots[k],spot=HomeCatalog.spot(h,k),i=HomeCatalog.items.find(i=>i.id===id),scale=i?.scale||.85;return Math.abs(p.x-spot.x)<16*scale&&p.y<=spot.y+4&&p.y>=spot.y-(id==='rug'?18:(i?.foot||32)*scale);});}
@@ -20,15 +22,15 @@ window.HomeEditor=(()=>{
   });
   document.addEventListener('pointermove',e=>{
    if(!drag||e.pointerId!==drag.pointerId)return;if(!bridge.editing()){cleanup();return;}if(Math.hypot(e.clientX-drag.startX,e.clientY-drag.startY)>5)drag.moved=true;if(!drag.moved)return;e.preventDefault();
-   if(!ghost){ghost=document.createElement('div');ghost.className='home-drag-ghost';ghost.innerHTML=PixelArt.homeIcon(drag.id);document.body.append(ghost);}
+   if(!ghost){ghost=document.createElement('div');ghost.className='home-drag-ghost';ghost.innerHTML=PixelArt.homeIcon(drag.id)+'<span class="home-drag-label"></span>';document.body.append(ghost);canvas().setPointerCapture(e.pointerId);}
    const p=target(e,drag),item=HomeCatalog.items.find(i=>i.id===drag.id),scale=canvas().getBoundingClientRect().width/640*(item?.scale||.85),w=32*scale;
-   ghost.style.cssText=`left:${e.clientX+(drag.offset.x||0)*canvas().getBoundingClientRect().width/640-w/2}px;top:${e.clientY+(drag.offset.y||0)*canvas().getBoundingClientRect().height/360-32*scale}px;width:${w}px;height:${w}px`;ghost.classList.toggle('invalid',!HomeScenery.canPlace(drag.id,p.x,p.y));
+   ghost.style.cssText=`left:${e.clientX+(drag.offset.x||0)*canvas().getBoundingClientRect().width/640-w/2}px;top:${e.clientY+(drag.offset.y||0)*canvas().getBoundingClientRect().height/360-32*scale}px;width:${w}px;height:${w}px`;const storing=!!drag.source&&outside(e);ghost.classList.toggle('is-storing',storing);ghost.classList.toggle('invalid',!storing&&!HomeScenery.canPlace(drag.id,p.x,p.y));const label=ghost.querySelector('.home-drag-label');label.hidden=!storing;label.textContent=text('Release to put away','松手收回物品栏');
   },{passive:false});
   document.addEventListener('pointerup',e=>{
-   if(!drag||e.pointerId!==drag.pointerId)return;const d=drag;cleanup();if(!bridge.editing())return;if(d.moved){lastDrag=Date.now();setTimeout(()=>lastDrag=0,0);place(d.id,target(e,d),d.source);}else if(d.onCanvas&&armed)place(armed,point(e));
+   if(!drag||e.pointerId!==drag.pointerId)return;const d=drag;cleanup();if(!bridge.editing())return;if(d.moved){lastDrag=Date.now();setTimeout(()=>lastDrag=0,0);if(outside(e)){armed=null;if(d.source)putAway(d.source);}else place(d.id,target(e,d),d.source);}else if(d.onCanvas&&armed)place(armed,point(e));
   });
-  document.addEventListener('pointercancel',cleanup);window.addEventListener('blur',cleanup);window.addEventListener('hashchange',()=>{cleanup();armed=null;});
-  document.getElementById('homePetButton').addEventListener('keydown',e=>{if(!bridge.editing())return;const key=bridge.selected(),home=bridge.read().home;if(e.key==='Escape'){armed=null;cleanup();return;}if(e.key==='Delete'||e.key==='Backspace'){if(home.slots[key]){home.slots[key]=null;delete home.positions?.[key];bridge.commit();e.preventDefault();}return;}const delta={ArrowLeft:[-4,0],ArrowRight:[4,0],ArrowUp:[0,-4],ArrowDown:[0,4]}[e.key];if(delta&&home.slots[key]){const p=HomeCatalog.spot(home,key);place(home.slots[key],{x:p.x+delta[0],y:p.y+delta[1]},key);e.preventDefault();}if(e.key==='Enter'&&armed){place(armed,{x:145,y:145});e.preventDefault();}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drag){armed=null;cleanup();}});document.addEventListener('pointercancel',cleanup);window.addEventListener('blur',cleanup);window.addEventListener('hashchange',()=>{cleanup();armed=null;});
+  document.getElementById('homePetButton').addEventListener('keydown',e=>{if(!bridge.editing())return;const key=bridge.selected(),home=bridge.read().home;if(e.key==='Escape'){armed=null;cleanup();return;}if(e.key==='Delete'||e.key==='Backspace'){if(home.slots[key]){putAway(key);e.preventDefault();}return;}const delta={ArrowLeft:[-4,0],ArrowRight:[4,0],ArrowUp:[0,-4],ArrowDown:[0,4]}[e.key];if(delta&&home.slots[key]){const p=HomeCatalog.spot(home,key);place(home.slots[key],{x:p.x+delta[0],y:p.y+delta[1]},key);e.preventDefault();}if(e.key==='Enter'&&armed){place(armed,{x:145,y:145});e.preventDefault();}});
  }
  return {init,choose,consumeClick:()=>Date.now()-lastDrag<300};
 })();

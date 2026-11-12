@@ -348,3 +348,8 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
 [data-home-drag]{touch-action:none;cursor:grab}.home-item-grid>h3,#homeItemGrid>h3{grid-column:1/-1;font-size:14px;margin:12px 0 4px}
 .home-drag-ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.85;outline:2px solid #83aa72;background:#d4e4ba22}.home-drag-ghost svg{width:100%;height:100%;image-rendering:pixelated}.home-drag-ghost.invalid{outline-color:#bb554b;opacity:.5}
 .home-theme[data-rarity="rare"]{border-color:#628ba0}.home-theme[data-rarity="epic"]{border-color:#9370a5}.home-theme[data-rarity="legendary"]{border-color:#b28b43}
+
+.home-drag-ghost.is-storing{outline:2px dashed #b39862;opacity:.75;background:#fff6df55}
+.home-drag-label{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;padding:5px 8px;background:var(--paper,#fff8e6);border:1px solid var(--line,#5d6e54);color:var(--text,#34483c);font-size:12px}
+
+.home-editor-hint{font-size:13px;line-height:1.6;color:var(--muted);margin:12px 0}.home-theme .home-theme-motion{font-size:12px}

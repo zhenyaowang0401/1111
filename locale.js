@@ -3,11 +3,12 @@
 window.EumoI18n=(()=>{
  const KEY='eumo-language';let language='en';try{if(localStorage.getItem(KEY)==='zh')language='zh';}catch{}
  const dictionary={
+ "Fireflies & leaves":"萤火与落叶","Gentle rainfall":"轻柔细雨","Drifting snow":"缓缓飘雪","Twinkling stars & meteors":"闪烁星光与流星",
  "Twilight forest":"暮色森林","Emerald rainforest":"翡翠雨林","Alpine snow":"雪山壁景","Celestial night":"璀璨星空",
  "Retro television":"复古电视","Mushroom sofa":"蘑菇沙发","Spiral clock":"化石螺旋钟","Constellation window":"星座窗",
- "Forager mushroom hat":"采集者蘑菇帽","Starlight hat":"星光帽","Spiral shell hat":"螺旋化石帽","Crystal bloom hat":"晶簇帽",
+ "Forager mushroom beret":"蘑菇贝雷帽","Starlight sorcerer hat":"星月巫师帽","Spiral explorer hat":"螺旋探险帽","Crystal circlet":"水晶冠",
  "Owned furniture · drag into your home":"已拥有的家具 · 拖进家中","Collected finds":"收集到的材料","Furniture shop":"家具商店","Drag / place":"拖动／放置","Put selected item away":"收起选中的装饰","Redeem":"兑换",
- "Drag furniture into a room. Select to move or put away.":"将家具拖进房间，选中后可移动或收起。",
+ "Drag to move. Drop outside the home to put away.":"拖动调整位置，拖出家园画面即可收回物品栏。",
  "Place in any room":"可放在任意房间",
  "Collect enough spare materials and pause to redeem.":"请先攒够可用材料并暂停计时，再兑换。",
 

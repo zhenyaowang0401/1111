@@ -8,3 +8,21 @@ test('new material rolls reduce drops without reducing stars or independent lege
 test('background rarity prices ascend and every material has a long-term hat sink',()=>{const themes=['forest','rainforest','snow','starlit'].map(id=>H.themes.find(t=>t.id===id));assert.deepEqual(themes.map(t=>t.rarity),['Uncommon','Rare','Epic','Legendary']);assert(themes.every((t,i)=>!i||t.cost>themes[i-1].cost));for(const m of H.materials)assert(W.items.some(i=>i.recipe?.[m.id]>=30));});
 
 test('new demos do not grant materials, while active legacy demos retain their rewards',()=>{const demo={id:'demo',demo:true,mode:'study',plannedSeconds:15,elapsed:15};const next=J.rewards({...demo,rewardVersion:2});assert.equal(next.finds.reduce((a,b)=>a+b,0),0);assert.equal(next.stars,1);assert.equal(next.depth,5);assert.equal(J.rewards(demo).finds.reduce((a,b)=>a+b,0),1);});
+
+test('putting away keeps ownership and materials, releases only that displayed copy',()=>{
+ const s=state(),before=[...s.inventory];assert.equal(H.putAway(s,'wall'),true);assert.equal(s.home.slots.wall,null);assert.deepEqual(s.inventory,before);assert.equal(H.spareMaterials(s)[1].reserved,1);assert.equal(s.balance,500);
+ H.place(s,'lamp',150,140);const key=Object.keys(s.home.slots).find(k=>s.home.slots[k]==='lamp');assert(H.putAway(s,key));assert(s.home.owned.includes('lamp'));assert(!s.home.positions[key]);assert.equal(H.putAway(s,key),false);
+ s.session={status:'running'};assert.equal(H.putAway(s,'floor'),false);assert.equal(s.home.slots.floor,'rug');
+});
+test('lower background prices credit existing owners once, never future purchases',()=>{
+ const s=state();s.home.ownedThemes=['cave','forest','rainforest','snow','starlit','starlit'];assert.equal(H.applyThemePrices(s),240);assert.equal(s.balance,740);assert.equal(H.applyThemePrices(JSON.parse(JSON.stringify(s))),0);
+ const fresh=state();assert.equal(H.applyThemePrices(fresh),0);fresh.home.ownedThemes.push('starlit');assert.equal(H.applyThemePrices(fresh),0);assert.equal(fresh.balance,500);
+ assert.deepEqual(['forest','rainforest','snow','starlit'].map(id=>H.themes.find(t=>t.id===id).cost),[60,100,160,240]);
+});
+test('material hats align to the head centre and keep their compact wearable bounds',()=>{
+ const artContext={window:{}};vm.runInNewContext(fs.readFileSync(require.resolve('../wardrobe-art.js'),'utf8'),artContext);const art=artContext.window.WardrobeArt;
+ for(const id of ['mushroomhat','starhat','fossilhat','crystalhat']){
+  const rects=[];art.hat((...r)=>rects.push(r),id);const left=Math.min(...rects.map(r=>r[0])),right=Math.max(...rects.map(r=>r[0]+r[2])),top=Math.min(...rects.map(r=>r[1])),bottom=Math.max(...rects.map(r=>r[1]+r[3]));
+  assert.equal((left+right)/2,13,id);assert(right-left<=26,id);assert(bottom<=8&&top>=-9,id);assert.equal(W.items.find(i=>i.id===id).headTop,top,id);
+ }
+});

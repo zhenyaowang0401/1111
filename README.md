@@ -44,11 +44,11 @@ Both versions display the same mole, equipment, tunnel, timer, and depth. They s
 
 ## Decorating and material collections
 
-Owned furniture can be dragged from the decorating sidebar into any room and moved again directly on the scene. You can also select an item and click a destination; arrow keys move a selected piece, and Delete or **Put selected item away** returns it to inventory. Buying furniture adds it to your owned collection before placement. Existing layouts and new positions are saved and shared with friends.
+Owned furniture can be dragged from the decorating sidebar into any room and moved again directly on the scene. You can also select an item and click a destination; arrow keys move a selected piece, and dragging a placed piece outside the home frame, Delete, or **Put selected item away** returns it to inventory without consuming it. Buying furniture adds it to your owned collection before placement. Existing layouts and new positions are saved and shared with friends.
 
-Pixel wall backgrounds use the wardrobe rarity tiers: Twilight Forest costs 80 stars (Uncommon), Emerald Rainforest 140 (Rare), Alpine Snow 220 (Epic), and Celestial Night 360 (Legendary). Furniture includes a retro TV and material recipes for a mushroom sofa, spiral clock, and constellation window.
+Pixel wall backgrounds use the wardrobe rarity tiers: Twilight Forest costs 60 stars (Uncommon), Emerald Rainforest 100 (Rare), Alpine Snow 160 (Epic), and Celestial Night 240 (Legendary). Existing owners receive the price difference once. Fireflies and leaves, gentle rain, drifting snow, and twinkling stars with occasional meteors animate behind furniture, including during friend visits; reduced-motion preferences keep the wallpaper still. Furniture includes a retro TV and material recipes for a mushroom sofa, spiral clock, and constellation window.
 
-Materials also redeem exclusive hats: 40 mushrooms for the mushroom hat, 40 star fragments for the starlight hat, or 30 fossils/crystals for their matching hats. Materials already displayed in the home or on your mole are reserved. New sessions use a 40% material chance per ten-minute checkpoint; old inventory and already-active legacy sessions are retained. Golden treasure rolls remain independently at 3% per checkpoint.
+Materials also redeem exclusive hats: 40 mushrooms for the mushroom beret, 40 star fragments for the starlight sorcerer hat, or 30 fossils/crystals for the spiral explorer hat/crystal circlet. Each uses compact pixel artwork centred on the mole’s head. Materials already displayed in the home or on your mole are reserved. New sessions use a 40% material chance per ten-minute checkpoint; old inventory and already-active legacy sessions are retained. Golden treasure rolls remain independently at 3% per checkpoint.
 
 ## Desktop updates
 

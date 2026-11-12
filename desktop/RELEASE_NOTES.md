@@ -1,12 +1,11 @@
 Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
-## What's new in 3.4.0
+## What's new in 3.4.1
 
-- Drag owned furniture directly from the decorating sidebar into a room, or move existing pieces by dragging them. Touch dragging and click-to-place are supported. Positions persist and sync to friends' home previews.
-- Added Twilight Forest (Uncommon, 80 stars), Emerald Rainforest (Rare, 140), Alpine Snow (Epic, 220), and Celestial Night (Legendary, 360) pixel wall backgrounds.
-- Added a retro television, plus a mushroom sofa, spiral clock, and constellation window crafted from materials.
-- Added material-exclusive mushroom and star hats (40 matching materials each), and fossil and crystal hats (30 each). Displayed materials are reserved.
-- New formal sessions have a 40% material-find chance per ten-minute checkpoint, while the independent 3% golden treasure chance and five-minute star earnings remain unchanged. Existing inventory and active legacy sessions keep their previous rewards. New demos do not grant materials.
+- Refined the four material hats into a mushroom beret, starlight sorcerer hat, spiral explorer hat, and crystal circlet. Their compact silhouettes and bands now sit centred on the mole's head. Existing hats update automatically; recipes are unchanged.
+- Rare pixel backgrounds now feature fireflies and leaves, gentle rain, drifting snow, or twinkling stars and occasional meteors. Friends see the same effects when visiting. Reduced-motion settings keep the wallpaper still.
+- Lowered background prices: Twilight Forest 60 stars, Emerald Rainforest 100, Alpine Snow 160, and Celestial Night 240. Existing owners receive the difference once.
+- Drag placed furniture outside the home frame to put it back in your inventory. A release hint appears while dragging. Furniture and displayed materials remain yours; mouse and touch are supported.
 
 Windows users on 3.3.0 or later can use Help → App updates to download this version and restart to install. Older Windows versions need one manual overwrite installation. Mac users can use the update check to download the matching DMG.
 

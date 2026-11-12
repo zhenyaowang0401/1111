@@ -20,10 +20,10 @@
  );
  catalog.themes.forEach(t=>t.rarity=t.cost===0?'Common':t.cost<40?'Uncommon':'Rare');
  catalog.themes.push(
-  {id:'forest',name:'Twilight forest',cost:80,rarity:'Uncommon',biome:'forest',wall:'#9ab5a1',floor:'#879b81',trim:'#425e50'},
-  {id:'rainforest',name:'Emerald rainforest',cost:140,rarity:'Rare',biome:'rainforest',wall:'#68988a',floor:'#6b8664',trim:'#294e43'},
-  {id:'snow',name:'Alpine snow',cost:220,rarity:'Epic',biome:'snow',wall:'#cadfe3',floor:'#a8bec4',trim:'#577584'},
-  {id:'starlit',name:'Celestial night',cost:360,rarity:'Legendary',biome:'stars',wall:'#333c64',floor:'#606381',trim:'#262b49'}
+  {id:'forest',name:'Twilight forest',cost:60,previousCost:80,rarity:'Uncommon',biome:'forest',motion:'Fireflies & leaves',wall:'#9ab5a1',floor:'#879b81',trim:'#425e50'},
+  {id:'rainforest',name:'Emerald rainforest',cost:100,previousCost:140,rarity:'Rare',biome:'rainforest',motion:'Gentle rainfall',wall:'#68988a',floor:'#6b8664',trim:'#294e43'},
+  {id:'snow',name:'Alpine snow',cost:160,previousCost:220,rarity:'Epic',biome:'snow',motion:'Drifting snow',wall:'#cadfe3',floor:'#a8bec4',trim:'#577584'},
+  {id:'starlit',name:'Celestial night',cost:240,previousCost:360,rarity:'Legendary',biome:'stars',motion:'Twinkling stars & meteors',wall:'#333c64',floor:'#606381',trim:'#262b49'}
  );
  catalog.items.push(
   {id:'television',name:'Retro television',cost:35,slots:['left','right'],scale:1.8,foot:31},
@@ -50,6 +50,16 @@
   const key=existing||Object.keys(catalog.slots).find(k=>!h.slots[k]&&(item?item.slots.includes(k):k!=='floor'));
   if(!key)return false;h.slots[key]=id;h.positions=h.positions||{};h.positions[key]={x:Math.round(x),y:Math.round(y)};return key;
  }
+ // Apply the background reduction once, including existing owners.
+ function applyThemePrices(s){
+  const h=s.home;if(!h||h.backgroundPriceVersion>=2)return 0;
+  const refund=catalog.themes.filter(t=>h.ownedThemes?.includes(t.id)&&t.previousCost).reduce((n,t)=>n+t.previousCost-t.cost,0);
+  s.balance+=refund;h.backgroundPriceVersion=2;return refund;
+ }
+ function putAway(s,key){
+  if(s.session?.status==='running'||!Object.hasOwn(catalog.slots,key)||!s.home?.slots?.[key])return false;
+  s.home.slots[key]=null;delete s.home.positions?.[key];return true;
+ }
  function spareMaterials(s){return catalog.materials.map((m,index)=>{
   const raw=Number(s.inventory?.[index]),total=Number.isFinite(raw)?Math.max(0,Math.floor(raw)):0;
   const reserved=Object.values(s.home?.slots||{}).filter(id=>id==='find:'+m.id).length+(s.heldItem===m.id?1:0);
@@ -67,5 +77,5 @@
   const next=[...s.inventory];for(const m of status.ingredients)next[m.index]=m.total-m.needed;
   rememberFinds(s);s.inventory=next;s.home.owned=[...s.home.owned,id];return true;
  }
- return {...catalog,positions,spot,place,sharedHome,spareMaterials,rememberFinds,recipeStatus,craft};
+ return {...catalog,positions,spot,place,putAway,applyThemePrices,sharedHome,spareMaterials,rememberFinds,recipeStatus,craft};
 });

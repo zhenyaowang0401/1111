@@ -120,6 +120,54 @@ window.HomeScenery=(()=>{
   for(let y=41;y<210;y+=13){rect(c,301,y+1,23,3,p.ink);rect(c,301,y,23,2,p.light);rect(c,303,y+1,19,1,p.wood);}
   if(cache.size>12)cache.clear();cache.set(key,cv);return cv;
  }
+ // Cache the exact pixel wall silhouette once; effects cannot spill into soil,
+ // passages or furnishings. The existing 8 fps scene loop supplies the clock.
+ let wallClip;
+ function animate(c,theme,frame){
+  if(!theme.biome||!frame)return;
+  if(!wallClip){
+   wallClip=new Path2D();const g=caveGeometry();
+   for(let y=0;y<H;y++){let start=-1;for(let x=0;x<=W;x++){
+    const i=y*W+x,r=x<W?rooms[g.region[i]-1]:null,inside=r&&g.inner[i]>=4&&y<r.floor-5;
+    if(inside&&start<0)start=x;else if(!inside&&start>=0){wallClip.rect(start,y,x-start,1);start=-1;}
+   }}
+   wallClip.rect(0,0,W,28);
+  }
+  c.save();c.clip(wallClip);
+  const scenes=[...rooms,{x:0,y:0,w:W,floor:28}];
+  scenes.forEach((r,n)=>{
+   const height=r.floor-r.y-5;
+   if(theme.biome==='stars'){
+    for(let k=0;k<18;k++){
+     const x=r.x+Math.floor(rand(k,n+31)*r.w),y=r.y+Math.floor(rand(k,n+44)*height),pulse=(frame+k*7+n*11)%56;
+     rect(c,x,y,1,1,pulse<10?'#fff2c4':pulse<24?'#c8d2d3':'#8c95b2');
+     if(pulse<7&&k%3===0){rect(c,x-1,y,3,1,'#f1deb2');rect(c,x,y-1,1,3,'#f1deb2');rect(c,x,y,1,1,'#fff9e3');}
+    }
+    const shoot=(frame+n*43)%180;
+    if(shoot<18){const x=r.x+r.w*.18+shoot*4,y=r.y+14+shoot;for(let j=5;j>=0;j--)rect(c,x-j*3,y-j,2,1,['#fff6d5','#e4ddc2','#b4c4ce','#8e9dbb','#717da5','#555e8b'][j]);}
+   }else if(theme.biome==='rainforest'){
+    for(let k=0;k<16;k++){
+     const fall=(frame*(1+k%3*.25)+k*13+n*17)%(height+12),x=r.x+rand(k,n+50)*r.w-fall*.13,y=r.y+fall;
+     rect(c,x,y,1,3+k%3,k%3?'#b6dac966':'#d9ede390');
+     if(fall>height-4&&fall<height){rect(c,x-2,r.floor-7,5,1,'#b6dac966');}
+    }
+   }else if(theme.biome==='snow'){
+    for(let k=0;k<22;k++){
+     const x=r.x+rand(k,n+70)*r.w+Math.sin(frame*.035+k)*4,y=r.y+(frame*(.3+k%3*.15)+k*17)%(height+5),big=k%7===0;
+     rect(c,x,y,big?2:1,big?2:1,k%2?'#f9f8ebdd':'#e4f2edaa');
+     if(big&&k%2===0){rect(c,x-1,y,4,1,'#f9f8eb99');rect(c,x,y-1,1,4,'#f9f8eb99');}
+    }
+   }else{
+    for(let k=0;k<9;k++){
+     const x=r.x+rand(k,n+90)*r.w+Math.sin(frame*.04+k)*4,y=r.y+height*.25+rand(k,n+99)*height*.65+Math.sin(frame*.025+k*2)*3,pulse=(frame+k*9)%48;
+     if(pulse<28){rect(c,x-1,y-1,3,3,'#dfde9240');rect(c,x,y,1,1,pulse<12?'#fff0ad':'#c8d891');}
+    }
+    for(let k=0;k<2;k++){const y=r.y+(frame*.3+k*47+n*13)%height,x=r.x+r.w*(.3+k*.4)+Math.sin(frame*.035+k)*8;rect(c,x,y,3,1,'#c6b778');rect(c,x+1,y+1,2,1,'#90a46b');}
+   }
+  });
+  c.restore();
+ }
+
  function roomAt(spot){return spot.y<200?(spot.x<320?1:2):(spot.x<400?3:4);}
  function glow(c,id,spot,t){
   if(!['lamp','mushroomLamp','hangingLantern','archedWindow'].includes(id))return;
@@ -209,5 +257,5 @@ window.HomeScenery=(()=>{
  fossilClock:[[6,3,20,25,'#654e3c'],[8,5,16,21,'#c7b283'],[10,7,12,12,'#eee2b4'],[15,8,2,7,'#546c58'],[16,13,5,2,'#546c58'],[15,21,2,4,'#8c734e'],[13,24,6,2,'#e4c67e']],
  starWindow:[[3,2,26,29,'#8f795b'],[5,4,22,25,'#ded09e'],[7,6,18,21,'#343d66'],[9,9,2,2,'#f1dfa0'],[19,14,3,3,'#f1dfa0'],[13,20,2,2,'#f1dfa0'],[12,10,6,1,'#8994af'],[17,11,1,4,'#8994af'],[14,18,5,1,'#8994af'],[15,5,2,23,'#c8ae83'],[5,16,22,2,'#c8ae83']]
  });
- return {paint,furniture,glow,drawDecor,canPlace,ready:true};
+ return {paint,animate,furniture,glow,drawDecor,canPlace,ready:true};
 })();

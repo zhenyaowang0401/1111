@@ -37,10 +37,10 @@
   {id:'crystalpin',name:'Crystal pin',category:'extras',cost:22,rarity:'Rare'}
  ];
  items.push(
-  {id:'mushroomhat',name:'Forager mushroom hat',category:'hats',cost:0,recipe:{mushroom:40},rarity:'Epic',headTop:-9},
-  {id:'starhat',name:'Starlight hat',category:'hats',cost:0,recipe:{star:40},rarity:'Epic',headTop:-12},
-  {id:'fossilhat',name:'Spiral shell hat',category:'hats',cost:0,recipe:{fossil:30},rarity:'Rare',headTop:-8},
-  {id:'crystalhat',name:'Crystal bloom hat',category:'hats',cost:0,recipe:{crystal:30},rarity:'Rare',headTop:-10}
+  {id:'mushroomhat',name:'Forager mushroom beret',category:'hats',cost:0,recipe:{mushroom:40},rarity:'Epic',headTop:-4},
+  {id:'starhat',name:'Starlight sorcerer hat',category:'hats',cost:0,recipe:{star:40},rarity:'Epic',headTop:-9},
+  {id:'fossilhat',name:'Spiral explorer hat',category:'hats',cost:0,recipe:{fossil:30},rarity:'Rare',headTop:-4},
+  {id:'crystalhat',name:'Crystal circlet',category:'hats',cost:0,recipe:{crystal:30},rarity:'Rare',headTop:-7}
  );
  function redeem(s,id){const i=items.find(i=>i.id===id);if(!i?.recipe||s.owned.includes(id)||s.session?.status==='running')return false;const materials=['star','mushroom','crystal','fossil'];
   for(const [id,n] of Object.entries(i.recipe)){const reserved=Object.values(s.home?.slots||{}).filter(v=>v==='find:'+id).length+(s.heldItem===id?1:0);const total=s.inventory[materials.indexOf(id)];if(!Number.isFinite(total)||total-reserved<n)return false;}

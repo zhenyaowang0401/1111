@@ -2,6 +2,13 @@
 
 These entries describe implementation milestones. Historical milestone names do not necessarily correspond to a published GitHub Release or a live deployment.
 
+## Eumo 3.4.1 — Fitted hats and living wallpapers
+
+- Redrew the four material hats with compact, centred silhouettes, fitted bands, fabric shading, gemstone facets, and small decorative details. Existing ownership and recipes are retained.
+- Added pixel fireflies/leaves, rainfall, snow, and twinkling stars/meteors to the four rare backgrounds, including friend visits. Effects stay behind furniture and respect reduced motion.
+- Reduced background prices to 60/100/160/240 stars; existing owners receive their price difference once.
+- Dragging a placed item outside the home frame now puts it away without deleting the item or spending materials. The drag preview explains the action; mouse and touch are supported.
+
 ## Eumo 3.4.0 — Direct decorating and material collections
 
 - Added mouse/touch furniture dragging with room-boundary validation, move-in-place, keyboard nudging, removal, and saved/shared coordinates. Legacy placements remain valid.

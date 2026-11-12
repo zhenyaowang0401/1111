@@ -447,6 +447,11 @@ dialog.friends-dialog{width:min(600px,calc(100% - 28px));max-width:600px;max-hei
 .home-drag-ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.85;outline:2px solid #83aa72;background:#d4e4ba22}.home-drag-ghost svg{width:100%;height:100%;image-rendering:pixelated}.home-drag-ghost.invalid{outline-color:#bb554b;opacity:.5}
 .home-theme[data-rarity="rare"]{border-color:#628ba0}.home-theme[data-rarity="epic"]{border-color:#9370a5}.home-theme[data-rarity="legendary"]{border-color:#b28b43}
 
+.home-drag-ghost.is-storing{outline:2px dashed #b39862;opacity:.75;background:#fff6df55}
+.home-drag-label{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;padding:5px 8px;background:var(--paper,#fff8e6);border:1px solid var(--line,#5d6e54);color:var(--text,#34483c);font-size:12px}
+
+.home-editor-hint{font-size:13px;line-height:1.6;color:var(--muted);margin:12px 0}.home-theme .home-theme-motion{font-size:12px}
+
 /* Eumo woodland desktop. Color and surface tokens follow the existing local clock.
    Layout, hit targets, game state and native form controls stay in their original owners. */
 :root, body, body[data-period="day"], body[data-period="morning"], body[data-period="evening"] {
@@ -996,7 +1001,7 @@ body[data-period="night"]:has(#home:not([hidden])) .painted-backdrop{opacity:.09
 <section id="home" class="page home-page" hidden aria-labelledby="homeTitle">
 <div class="page-heading"><h1 id="homeTitle">Home</h1><span class="page-meta">UNDERGROUND HOME</span></div>
 <div class="home-layout"><div class="home-room"><div class="control-heading"><span><span id="homePetName">MOMO</span> <small id="homeMoodLabel">Idle</small></span><span id="homeThemeName">Cozy cave</span></div><div class="home-stage"><button id="homePetButton" class="pet-button" aria-label="Pet Momo at home"><canvas id="homeCanvas" width="1280" height="720" aria-label="Your underground home"></canvas></button><button id="openChestButton" class="chest-hotspot" aria-label="Open treasure chest" title="Open chest"></button><div id="homeSpeech" class="pet-speech" hidden>yeeeeee</div></div><div class="home-actions"><button id="editHomeButton" class="quiet-button" aria-controls="homeEditor" aria-expanded="false">Decorate</button><button id="openChestShortcut" class="quiet-button">Open chest</button><button id="openCraftingButton" class="quiet-button">Craft decor</button><span id="homeEditHint">Place your finds here.</span><button id="visitFriendsButton" class="quiet-button">Visit friends</button></div></div>
-<aside class="home-shop"><div id="heldItemBar" class="held-item-bar" hidden><span id="heldItemLabel"></span><button id="putBackButton" class="quiet-button">Put back</button></div><div class="closet-heading"><h2>Room &amp; finds</h2><span class="closet-balance">✦ <b id="homeBalance">0</b></span></div><div id="goldenDisplayBar" class="golden-display-bar"><span id="goldenDisplayLabel">Golden shelf · nothing on display yet</span><button id="putBackTreasure" class="quiet-button" hidden>Put back</button></div><div id="homeViewNote" class="home-view-note">Bring your discoveries home. Craft decor with spare finds between sessions.</div><div id="homeEditor" hidden><div class="home-slots" aria-label="Placement spot"><button data-slot="left">Living room</button><button data-slot="floor">Living rug</button><button data-slot="study">Study</button><button data-slot="studyWall">Study wall</button><button data-slot="right">Bedroom</button><button data-slot="bedWall">Bedroom wall</button><button data-slot="gallery">Gallery</button><button data-slot="wall">Gallery wall</button><button data-slot="livingWall">Living wall</button><button data-slot="livingWindow">Living nook</button><button data-slot="studyWindow">Study nook</button><button data-slot="bedWindow">Bedroom nook</button></div><button id="clearHomeSlot" class="quiet-button">Put selected item away</button><div id="homeItemGrid" class="home-item-grid"></div><h3 class="home-theme-heading">Room themes</h3><div id="homeThemeGrid" class="home-theme-grid"></div></div></aside></div></section>
+<aside class="home-shop"><div id="heldItemBar" class="held-item-bar" hidden><span id="heldItemLabel"></span><button id="putBackButton" class="quiet-button">Put back</button></div><div class="closet-heading"><h2>Room &amp; finds</h2><span class="closet-balance">✦ <b id="homeBalance">0</b></span></div><div id="goldenDisplayBar" class="golden-display-bar"><span id="goldenDisplayLabel">Golden shelf · nothing on display yet</span><button id="putBackTreasure" class="quiet-button" hidden>Put back</button></div><div id="homeViewNote" class="home-view-note">Bring your discoveries home. Craft decor with spare finds between sessions.</div><div id="homeEditor" hidden><p class="home-editor-hint">Drag to move. Drop outside the home to put away.</p><div class="home-slots" aria-label="Placement spot"><button data-slot="left">Living room</button><button data-slot="floor">Living rug</button><button data-slot="study">Study</button><button data-slot="studyWall">Study wall</button><button data-slot="right">Bedroom</button><button data-slot="bedWall">Bedroom wall</button><button data-slot="gallery">Gallery</button><button data-slot="wall">Gallery wall</button><button data-slot="livingWall">Living wall</button><button data-slot="livingWindow">Living nook</button><button data-slot="studyWindow">Study nook</button><button data-slot="bedWindow">Bedroom nook</button></div><button id="clearHomeSlot" class="quiet-button">Put selected item away</button><div id="homeItemGrid" class="home-item-grid"></div><h3 class="home-theme-heading">Room themes</h3><div id="homeThemeGrid" class="home-theme-grid"></div></div></aside></div></section>
 <section id="wardrobe" class="page wardrobe-page" hidden aria-labelledby="equipmentTitle"><div class="page-heading"><h1 id="equipmentTitle">Equipment</h1></div><div class="wardrobe-layout"><div class="fitting-room"><div class="control-heading"><span id="equipmentPetName">MOMO</span></div><div class="fitting-pet"><button id="wardrobePetButton" class="pet-button" aria-label="Pet Momo in equipment preview"><canvas id="wardrobeCanvas" width="192" height="160" aria-label="Equipped items preview"></canvas></button><div id="wardrobeSpeech" class="pet-speech" hidden>yeeeeee</div></div><div class="equipped-list" id="equippedList">No equipment</div><button id="removeOutfit" class="quiet-button">Unequip all</button></div><div class="closet"><div class="closet-heading"><h2>Shop</h2><span class="closet-balance">✦ <b id="closetBalance">0</b></span></div><div class="closet-tabs"><button class="active" data-filter="all">All</button><button data-filter="owned">Owned <span id="ownedCount">0</span></button></div><div id="categoryTabs" class="category-tabs" aria-label="Equipment categories"></div><div id="toolShopNote" class="tool-shop-note" hidden><span id="activeToolName">No tool selected</span><button id="resetTool" class="quiet-button">Use default tool</button></div><div id="shopScroll" class="shop-scroll" tabindex="0" role="region" aria-label="Shop items"><div id="outfitGrid" class="outfit-grid"></div></div></div></div></section>
 <section id="reports" class="page reports-page" hidden aria-labelledby="reportTitle"><div class="page-heading"><h1 id="reportTitle">Today</h1><span class="page-meta" id="reportDate"></span></div><div class="report-stats"><article><span>TODAY</span><strong id="reportToday">0m</strong><small id="reportTodaySessions">0 completed</small></article><article><span>THIS WEEK</span><strong id="reportWeek">0m</strong><small>Mon – Sun</small></article><article><span>ALL TIME</span><strong id="reportTotal">0m</strong><small>Study + Work</small></article></div><div class="today-details"><span>Study <b id="todayStudy">0m</b></span><span>Work <b id="todayWork">0m</b></span><button id="finishTodayButton" class="finish-today-button" aria-label="Finish today">Finish <span aria-hidden="true">✓</span></button></div><div class="trend-panel"><div class="panel-heading"><h2>Focus trend</h2><div class="range-tabs" aria-label="Trend range"><button class="active" data-range="7">7 days</button><button data-range="30">30 days</button></div></div><div id="trendChart" class="trend-chart"></div><div class="chart-foot"><span id="trendTotal">0m total</span><span id="chartTooltip" role="status">Minutes per day</span></div></div><div class="calendar-layout"><div class="calendar-panel"><div class="panel-heading"><h2 id="calendarMonth"></h2><div class="month-controls"><button id="previousMonth" aria-label="Previous month">‹</button><button id="currentMonth">Today</button><button id="nextMonth" aria-label="Next month">›</button></div></div><div class="weekdays" aria-hidden="true"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div><div id="calendarGrid" class="calendar-grid" role="group" aria-label="Select a date"></div><div class="calendar-key"><span>Focus time</span><i></i><i></i><i></i><i></i></div></div><div class="daily-log"><div class="panel-heading"><h2 id="logDate">Daily log</h2><strong id="logTotal">0m</strong></div><div id="logEntries"></div></div></div><p class="report-note">Study and Work use actual running time. Pauses, breaks and demos are excluded. Stored in this browser.</p></section>
 
@@ -1044,11 +1049,12 @@ body[data-period="night"]:has(#home:not([hidden])) .painted-backdrop{opacity:.09
 window.EumoI18n=(()=>{
  const KEY='eumo-language';let language='en';try{if(localStorage.getItem(KEY)==='zh')language='zh';}catch{}
  const dictionary={
+ "Fireflies & leaves":"萤火与落叶","Gentle rainfall":"轻柔细雨","Drifting snow":"缓缓飘雪","Twinkling stars & meteors":"闪烁星光与流星",
  "Twilight forest":"暮色森林","Emerald rainforest":"翡翠雨林","Alpine snow":"雪山壁景","Celestial night":"璀璨星空",
  "Retro television":"复古电视","Mushroom sofa":"蘑菇沙发","Spiral clock":"化石螺旋钟","Constellation window":"星座窗",
- "Forager mushroom hat":"采集者蘑菇帽","Starlight hat":"星光帽","Spiral shell hat":"螺旋化石帽","Crystal bloom hat":"晶簇帽",
+ "Forager mushroom beret":"蘑菇贝雷帽","Starlight sorcerer hat":"星月巫师帽","Spiral explorer hat":"螺旋探险帽","Crystal circlet":"水晶冠",
  "Owned furniture · drag into your home":"已拥有的家具 · 拖进家中","Collected finds":"收集到的材料","Furniture shop":"家具商店","Drag / place":"拖动／放置","Put selected item away":"收起选中的装饰","Redeem":"兑换",
- "Drag furniture into a room. Select to move or put away.":"将家具拖进房间，选中后可移动或收起。",
+ "Drag to move. Drop outside the home to put away.":"拖动调整位置，拖出家园画面即可收回物品栏。",
  "Place in any room":"可放在任意房间",
  "Collect enough spare materials and pause to redeem.":"请先攒够可用材料并暂停计时，再兑换。",
 
@@ -1652,10 +1658,10 @@ window.Journey=(()=>{
  );
  catalog.themes.forEach(t=>t.rarity=t.cost===0?'Common':t.cost<40?'Uncommon':'Rare');
  catalog.themes.push(
-  {id:'forest',name:'Twilight forest',cost:80,rarity:'Uncommon',biome:'forest',wall:'#9ab5a1',floor:'#879b81',trim:'#425e50'},
-  {id:'rainforest',name:'Emerald rainforest',cost:140,rarity:'Rare',biome:'rainforest',wall:'#68988a',floor:'#6b8664',trim:'#294e43'},
-  {id:'snow',name:'Alpine snow',cost:220,rarity:'Epic',biome:'snow',wall:'#cadfe3',floor:'#a8bec4',trim:'#577584'},
-  {id:'starlit',name:'Celestial night',cost:360,rarity:'Legendary',biome:'stars',wall:'#333c64',floor:'#606381',trim:'#262b49'}
+  {id:'forest',name:'Twilight forest',cost:60,previousCost:80,rarity:'Uncommon',biome:'forest',motion:'Fireflies & leaves',wall:'#9ab5a1',floor:'#879b81',trim:'#425e50'},
+  {id:'rainforest',name:'Emerald rainforest',cost:100,previousCost:140,rarity:'Rare',biome:'rainforest',motion:'Gentle rainfall',wall:'#68988a',floor:'#6b8664',trim:'#294e43'},
+  {id:'snow',name:'Alpine snow',cost:160,previousCost:220,rarity:'Epic',biome:'snow',motion:'Drifting snow',wall:'#cadfe3',floor:'#a8bec4',trim:'#577584'},
+  {id:'starlit',name:'Celestial night',cost:240,previousCost:360,rarity:'Legendary',biome:'stars',motion:'Twinkling stars & meteors',wall:'#333c64',floor:'#606381',trim:'#262b49'}
  );
  catalog.items.push(
   {id:'television',name:'Retro television',cost:35,slots:['left','right'],scale:1.8,foot:31},
@@ -1682,6 +1688,16 @@ window.Journey=(()=>{
   const key=existing||Object.keys(catalog.slots).find(k=>!h.slots[k]&&(item?item.slots.includes(k):k!=='floor'));
   if(!key)return false;h.slots[key]=id;h.positions=h.positions||{};h.positions[key]={x:Math.round(x),y:Math.round(y)};return key;
  }
+ // Apply the background reduction once, including existing owners.
+ function applyThemePrices(s){
+  const h=s.home;if(!h||h.backgroundPriceVersion>=2)return 0;
+  const refund=catalog.themes.filter(t=>h.ownedThemes?.includes(t.id)&&t.previousCost).reduce((n,t)=>n+t.previousCost-t.cost,0);
+  s.balance+=refund;h.backgroundPriceVersion=2;return refund;
+ }
+ function putAway(s,key){
+  if(s.session?.status==='running'||!Object.hasOwn(catalog.slots,key)||!s.home?.slots?.[key])return false;
+  s.home.slots[key]=null;delete s.home.positions?.[key];return true;
+ }
  function spareMaterials(s){return catalog.materials.map((m,index)=>{
   const raw=Number(s.inventory?.[index]),total=Number.isFinite(raw)?Math.max(0,Math.floor(raw)):0;
   const reserved=Object.values(s.home?.slots||{}).filter(id=>id==='find:'+m.id).length+(s.heldItem===m.id?1:0);
@@ -1699,7 +1715,7 @@ window.Journey=(()=>{
   const next=[...s.inventory];for(const m of status.ingredients)next[m.index]=m.total-m.needed;
   rememberFinds(s);s.inventory=next;s.home.owned=[...s.home.owned,id];return true;
  }
- return {...catalog,positions,spot,place,sharedHome,spareMaterials,rememberFinds,recipeStatus,craft};
+ return {...catalog,positions,spot,place,putAway,applyThemePrices,sharedHome,spareMaterials,rememberFinds,recipeStatus,craft};
 });
 
 </script><script>
@@ -1709,6 +1725,8 @@ window.HomeEditor=(()=>{
  const canvas=()=>document.getElementById('homeCanvas');
  const text=(en,zh)=>EumoI18n.language==='zh'?zh:en;
  function point(e){const r=canvas().getBoundingClientRect();return {x:(e.clientX-r.left)*640/r.width,y:(e.clientY-r.top)*360/r.height};}
+ function outside(e){const r=canvas().getBoundingClientRect();return e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom;}
+ function putAway(key){if(!HomeCatalog.putAway(bridge.read(),key))return;armed=null;bridge.commit();bridge.message(text('Put away. You can place it again any time.','已收回物品栏，随时可以再摆放。'));}
  function target(e,d){const p=point(e);return {x:p.x+(d.offset?.x||0),y:p.y+(d.offset?.y||0)};}
  function choose(id){armed=id;bridge.message(text('Drag into a room, or click a position in your home.','拖进房间，或点击家中的位置放置。'));}
  function hit(p){return Object.keys(HomeCatalog.slots).filter(k=>bridge.read().home.slots[k]).sort((a,b)=>a==='floor'?1:b==='floor'?-1:HomeCatalog.spot(bridge.read().home,b).y-HomeCatalog.spot(bridge.read().home,a).y).find(k=>{const h=bridge.read().home,id=h.slots[k],spot=HomeCatalog.spot(h,k),i=HomeCatalog.items.find(i=>i.id===id),scale=i?.scale||.85;return Math.abs(p.x-spot.x)<16*scale&&p.y<=spot.y+4&&p.y>=spot.y-(id==='rug'?18:(i?.foot||32)*scale);});}
@@ -1725,15 +1743,15 @@ window.HomeEditor=(()=>{
   });
   document.addEventListener('pointermove',e=>{
    if(!drag||e.pointerId!==drag.pointerId)return;if(!bridge.editing()){cleanup();return;}if(Math.hypot(e.clientX-drag.startX,e.clientY-drag.startY)>5)drag.moved=true;if(!drag.moved)return;e.preventDefault();
-   if(!ghost){ghost=document.createElement('div');ghost.className='home-drag-ghost';ghost.innerHTML=PixelArt.homeIcon(drag.id);document.body.append(ghost);}
+   if(!ghost){ghost=document.createElement('div');ghost.className='home-drag-ghost';ghost.innerHTML=PixelArt.homeIcon(drag.id)+'<span class="home-drag-label"></span>';document.body.append(ghost);canvas().setPointerCapture(e.pointerId);}
    const p=target(e,drag),item=HomeCatalog.items.find(i=>i.id===drag.id),scale=canvas().getBoundingClientRect().width/640*(item?.scale||.85),w=32*scale;
-   ghost.style.cssText=`left:${e.clientX+(drag.offset.x||0)*canvas().getBoundingClientRect().width/640-w/2}px;top:${e.clientY+(drag.offset.y||0)*canvas().getBoundingClientRect().height/360-32*scale}px;width:${w}px;height:${w}px`;ghost.classList.toggle('invalid',!HomeScenery.canPlace(drag.id,p.x,p.y));
+   ghost.style.cssText=`left:${e.clientX+(drag.offset.x||0)*canvas().getBoundingClientRect().width/640-w/2}px;top:${e.clientY+(drag.offset.y||0)*canvas().getBoundingClientRect().height/360-32*scale}px;width:${w}px;height:${w}px`;const storing=!!drag.source&&outside(e);ghost.classList.toggle('is-storing',storing);ghost.classList.toggle('invalid',!storing&&!HomeScenery.canPlace(drag.id,p.x,p.y));const label=ghost.querySelector('.home-drag-label');label.hidden=!storing;label.textContent=text('Release to put away','松手收回物品栏');
   },{passive:false});
   document.addEventListener('pointerup',e=>{
-   if(!drag||e.pointerId!==drag.pointerId)return;const d=drag;cleanup();if(!bridge.editing())return;if(d.moved){lastDrag=Date.now();setTimeout(()=>lastDrag=0,0);place(d.id,target(e,d),d.source);}else if(d.onCanvas&&armed)place(armed,point(e));
+   if(!drag||e.pointerId!==drag.pointerId)return;const d=drag;cleanup();if(!bridge.editing())return;if(d.moved){lastDrag=Date.now();setTimeout(()=>lastDrag=0,0);if(outside(e)){armed=null;if(d.source)putAway(d.source);}else place(d.id,target(e,d),d.source);}else if(d.onCanvas&&armed)place(armed,point(e));
   });
-  document.addEventListener('pointercancel',cleanup);window.addEventListener('blur',cleanup);window.addEventListener('hashchange',()=>{cleanup();armed=null;});
-  document.getElementById('homePetButton').addEventListener('keydown',e=>{if(!bridge.editing())return;const key=bridge.selected(),home=bridge.read().home;if(e.key==='Escape'){armed=null;cleanup();return;}if(e.key==='Delete'||e.key==='Backspace'){if(home.slots[key]){home.slots[key]=null;delete home.positions?.[key];bridge.commit();e.preventDefault();}return;}const delta={ArrowLeft:[-4,0],ArrowRight:[4,0],ArrowUp:[0,-4],ArrowDown:[0,4]}[e.key];if(delta&&home.slots[key]){const p=HomeCatalog.spot(home,key);place(home.slots[key],{x:p.x+delta[0],y:p.y+delta[1]},key);e.preventDefault();}if(e.key==='Enter'&&armed){place(armed,{x:145,y:145});e.preventDefault();}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drag){armed=null;cleanup();}});document.addEventListener('pointercancel',cleanup);window.addEventListener('blur',cleanup);window.addEventListener('hashchange',()=>{cleanup();armed=null;});
+  document.getElementById('homePetButton').addEventListener('keydown',e=>{if(!bridge.editing())return;const key=bridge.selected(),home=bridge.read().home;if(e.key==='Escape'){armed=null;cleanup();return;}if(e.key==='Delete'||e.key==='Backspace'){if(home.slots[key]){putAway(key);e.preventDefault();}return;}const delta={ArrowLeft:[-4,0],ArrowRight:[4,0],ArrowUp:[0,-4],ArrowDown:[0,4]}[e.key];if(delta&&home.slots[key]){const p=HomeCatalog.spot(home,key);place(home.slots[key],{x:p.x+delta[0],y:p.y+delta[1]},key);e.preventDefault();}if(e.key==='Enter'&&armed){place(armed,{x:145,y:145});e.preventDefault();}});
  }
  return {init,choose,consumeClick:()=>Date.now()-lastDrag<300};
 })();
@@ -1778,10 +1796,10 @@ window.HomeEditor=(()=>{
   {id:'crystalpin',name:'Crystal pin',category:'extras',cost:22,rarity:'Rare'}
  ];
  items.push(
-  {id:'mushroomhat',name:'Forager mushroom hat',category:'hats',cost:0,recipe:{mushroom:40},rarity:'Epic',headTop:-9},
-  {id:'starhat',name:'Starlight hat',category:'hats',cost:0,recipe:{star:40},rarity:'Epic',headTop:-12},
-  {id:'fossilhat',name:'Spiral shell hat',category:'hats',cost:0,recipe:{fossil:30},rarity:'Rare',headTop:-8},
-  {id:'crystalhat',name:'Crystal bloom hat',category:'hats',cost:0,recipe:{crystal:30},rarity:'Rare',headTop:-10}
+  {id:'mushroomhat',name:'Forager mushroom beret',category:'hats',cost:0,recipe:{mushroom:40},rarity:'Epic',headTop:-4},
+  {id:'starhat',name:'Starlight sorcerer hat',category:'hats',cost:0,recipe:{star:40},rarity:'Epic',headTop:-9},
+  {id:'fossilhat',name:'Spiral explorer hat',category:'hats',cost:0,recipe:{fossil:30},rarity:'Rare',headTop:-4},
+  {id:'crystalhat',name:'Crystal circlet',category:'hats',cost:0,recipe:{crystal:30},rarity:'Rare',headTop:-7}
  );
  function redeem(s,id){const i=items.find(i=>i.id===id);if(!i?.recipe||s.owned.includes(id)||s.session?.status==='running')return false;const materials=['star','mushroom','crystal','fossil'];
   for(const [id,n] of Object.entries(i.recipe)){const reserved=Object.values(s.home?.slots||{}).filter(v=>v==='find:'+id).length+(s.heldItem===id?1:0);const total=s.inventory[materials.indexOf(id)];if(!Number.isFinite(total)||total-reserved<n)return false;}
@@ -1809,10 +1827,36 @@ window.HomeEditor=(()=>{
 'use strict';
 window.WardrobeArt=(()=>{
  const hats={
- mushroomhat:[[4,-3,20,10,'#4c3544'],[7,-7,14,5,'#4c3544'],[9,-9,10,3,'#4c3544'],[5,-2,18,7,'#bd626a'],[8,-6,12,5,'#bd626a'],[10,-8,8,3,'#d5877f'],[7,0,4,3,'#f0e3bd'],[16,-4,4,3,'#f0e3bd'],[11,5,7,4,'#e4cea4']],
- starhat:[[12,-12,4,5,'#755649'],[10,-7,8,3,'#e6b66c'],[3,-5,22,3,'#755649'],[5,-4,18,3,'#f5d78c'],[8,-1,12,3,'#f5d78c'],[7,2,5,5,'#e6b66c'],[17,2,5,5,'#e6b66c'],[12,-8,4,8,'#fff0bc'],[7,6,15,3,'#847295']],
- fossilhat:[[7,-5,16,12,'#6a6045'],[10,-8,11,4,'#6a6045'],[8,-4,14,10,'#b6bf83'],[11,-7,9,6,'#d9d8a2'],[11,-3,8,7,'#7c8a60'],[13,-2,6,4,'#d9d8a2'],[14,-1,2,2,'#7c8a60'],[4,6,22,3,'#8d9e72']],
- crystalhat:[[5,-1,6,7,'#557b90'],[7,-6,3,9,'#94d6d2'],[12,-10,4,14,'#bbede0'],[11,-5,7,11,'#6aa7b7'],[18,-5,5,11,'#8ecad4'],[20,-8,2,7,'#c3e9de'],[4,6,22,3,'#7a7c9d'],[7,7,16,1,'#b2b4cf']],
+ // Material hats share the mole's x=13 head centre and a fitted y=5–8 band.
+ // Separate stepped silhouettes, fabric shadows and tiny fittings keep them wearable.
+ mushroomhat:[
+  [9,-4,8,1,'#513443'],[5,-3,16,1,'#513443'],[3,-2,20,2,'#513443'],[1,0,24,4,'#513443'],[0,3,26,2,'#513443'],
+  [9,-3,8,1,'#eab69a'],[5,-2,16,2,'#d8877e'],[3,0,20,3,'#b96168'],[2,3,22,1,'#c77876'],[5,-1,9,1,'#e4a18c'],[3,1,2,2,'#d8877e'],[21,1,2,3,'#8d4b5c'],[17,3,5,1,'#a55264'],
+  [2,5,22,1,'#6c4850'],[4,4,18,1,'#efd3a9'],[5,5,16,1,'#d5ad87'],[6,6,14,2,'#513443'],[7,6,12,1,'#85675b'],[8,7,10,1,'#aa8b69'],
+  [6,0,3,2,'#fff0cc'],[7,0,2,1,'#fff9df'],[13,-1,2,2,'#fff0cc'],[17,1,3,2,'#ead5b6'],[10,3,2,1,'#fff0cc'],
+  [18,4,4,2,'#355d51'],[19,3,3,1,'#7fa579'],[18,4,2,1,'#b3c693'],[20,5,1,2,'#dfbc74']
+ ],
+ starhat:[
+  [15,-9,4,1,'#323449'],[12,-8,7,1,'#323449'],[10,-7,6,2,'#323449'],[8,-5,9,3,'#323449'],[6,-2,13,4,'#323449'],[4,2,18,3,'#323449'],
+  [14,-8,4,1,'#b5a8c5'],[11,-7,4,1,'#9891b8'],[10,-6,5,2,'#797ba8'],[9,-4,7,2,'#797ba8'],[7,-1,11,3,'#626b97'],[5,2,16,2,'#59608c'],[15,-5,1,5,'#4c527b'],[17,0,2,3,'#4c527b'],
+  [0,5,26,1,'#323449'],[2,4,22,1,'#323449'],[1,6,24,1,'#323449'],[4,7,18,1,'#323449'],[3,5,20,1,'#d2ad75'],[2,6,22,1,'#f0d69a'],[5,7,16,1,'#9b795e'],
+  [6,3,14,1,'#a78c70'],[7,3,5,1,'#f4dda0'],[13,-3,2,1,'#f9e5ae'],[12,-2,1,2,'#f9e5ae'],[13,0,2,1,'#e9c789'],[15,-2,1,2,'#e9c789'],
+  [8,0,1,1,'#f8e7b9'],[10,1,1,1,'#f8e7b9'],[18,2,1,1,'#f8e7b9'],[16,4,1,3,'#fff0bd'],[15,5,3,1,'#fff0bd']
+ ],
+ fossilhat:[
+  [9,-4,8,1,'#344b48'],[6,-3,14,1,'#344b48'],[4,-2,18,2,'#344b48'],[3,0,20,5,'#344b48'],[1,4,24,2,'#344b48'],[3,6,20,2,'#344b48'],
+  [9,-3,8,1,'#c6c59a'],[6,-2,14,2,'#a3b18a'],[4,0,18,3,'#7d9b80'],[5,0,3,2,'#b7c49a'],[18,-1,3,4,'#5c7e6d'],[4,3,18,2,'#526f60'],
+  [2,5,22,1,'#b49664'],[4,6,18,1,'#e2c28a'],[5,7,16,1,'#8c7557'],[6,4,14,1,'#c9af7b'],[5,5,1,1,'#f0d5a1'],[9,5,1,1,'#f0d5a1'],[17,5,1,1,'#f0d5a1'],[21,5,1,1,'#f0d5a1'],
+  [10,-1,6,1,'#715e48'],[9,0,8,4,'#715e48'],[10,4,6,1,'#715e48'],[10,0,6,1,'#f0d8a1'],[10,1,1,3,'#e4c58d'],[11,3,5,1,'#cfad74'],[15,1,1,2,'#e4c58d'],[12,1,3,1,'#cfad74'],[12,2,1,1,'#f0d8a1'],
+  [4,1,2,1,'#d2d3a9'],[20,1,2,1,'#91ae8c']
+ ],
+ crystalhat:[
+  [12,-7,2,2,'#3d526d'],[11,-5,4,2,'#3d526d'],[10,-3,6,7,'#3d526d'],[12,-6,2,3,'#edfff1'],[11,-3,2,5,'#a3e4d9'],[13,-3,2,5,'#5aa9be'],[12,2,2,2,'#7ec7cf'],[12,-4,2,2,'#c9f7e7'],
+  [5,-3,2,2,'#3d526d'],[4,-1,4,5,'#3d526d'],[5,-2,2,3,'#b9ecdf'],[5,1,2,2,'#77bac6'],[6,0,1,2,'#4c899f'],
+  [19,-3,2,2,'#3d526d'],[18,-1,4,5,'#3d526d'],[19,-2,2,3,'#b9ecdf'],[19,1,2,2,'#77bac6'],[20,0,1,2,'#4c899f'],
+  [2,3,22,3,'#3d526d'],[3,6,20,2,'#3d526d'],[3,4,20,1,'#b3c5ce'],[4,5,18,1,'#e5e9d7'],[5,6,16,1,'#819aa9'],[5,7,16,1,'#526b82'],
+  [8,3,2,2,'#d4c09b'],[16,3,2,2,'#d4c09b'],[11,4,4,3,'#dfc995'],[12,4,2,1,'#fff0be'],[12,5,2,2,'#689fab'],[5,5,1,1,'#ffffff'],[20,5,1,1,'#ffffff']
+ ],
   hat:[[6,1,14,5,'#28214c'],[8,-1,10,3,'#28214c'],[7,1,12,5,'#f2c776'],[9,0,8,2,'#ffe89c'],[4,6,19,3,'#28214c'],[5,6,17,2,'#cf9f5d'],[7,4,12,2,'#bb71af']],
   sunhat:[[7,-1,12,7,'#b2864e'],[9,-2,8,2,'#f4d395'],[8,0,10,5,'#edc77e'],[6,4,14,2,'#b8ab80'],[0,6,26,3,'#b2864e'],[2,6,22,2,'#f6d99a'],[4,8,18,1,'#9d764b']],
   bucket:[[5,-1,16,3,'#4e7471'],[6,-2,14,2,'#b2d2bc'],[5,1,16,5,'#7baa9a'],[4,5,18,2,'#628e85'],[2,7,22,2,'#3e6262'],[3,6,20,2,'#abd0b4'],[8,1,2,4,'#a1c6ae']],
@@ -2232,6 +2276,54 @@ window.HomeScenery=(()=>{
   for(let y=41;y<210;y+=13){rect(c,301,y+1,23,3,p.ink);rect(c,301,y,23,2,p.light);rect(c,303,y+1,19,1,p.wood);}
   if(cache.size>12)cache.clear();cache.set(key,cv);return cv;
  }
+ // Cache the exact pixel wall silhouette once; effects cannot spill into soil,
+ // passages or furnishings. The existing 8 fps scene loop supplies the clock.
+ let wallClip;
+ function animate(c,theme,frame){
+  if(!theme.biome||!frame)return;
+  if(!wallClip){
+   wallClip=new Path2D();const g=caveGeometry();
+   for(let y=0;y<H;y++){let start=-1;for(let x=0;x<=W;x++){
+    const i=y*W+x,r=x<W?rooms[g.region[i]-1]:null,inside=r&&g.inner[i]>=4&&y<r.floor-5;
+    if(inside&&start<0)start=x;else if(!inside&&start>=0){wallClip.rect(start,y,x-start,1);start=-1;}
+   }}
+   wallClip.rect(0,0,W,28);
+  }
+  c.save();c.clip(wallClip);
+  const scenes=[...rooms,{x:0,y:0,w:W,floor:28}];
+  scenes.forEach((r,n)=>{
+   const height=r.floor-r.y-5;
+   if(theme.biome==='stars'){
+    for(let k=0;k<18;k++){
+     const x=r.x+Math.floor(rand(k,n+31)*r.w),y=r.y+Math.floor(rand(k,n+44)*height),pulse=(frame+k*7+n*11)%56;
+     rect(c,x,y,1,1,pulse<10?'#fff2c4':pulse<24?'#c8d2d3':'#8c95b2');
+     if(pulse<7&&k%3===0){rect(c,x-1,y,3,1,'#f1deb2');rect(c,x,y-1,1,3,'#f1deb2');rect(c,x,y,1,1,'#fff9e3');}
+    }
+    const shoot=(frame+n*43)%180;
+    if(shoot<18){const x=r.x+r.w*.18+shoot*4,y=r.y+14+shoot;for(let j=5;j>=0;j--)rect(c,x-j*3,y-j,2,1,['#fff6d5','#e4ddc2','#b4c4ce','#8e9dbb','#717da5','#555e8b'][j]);}
+   }else if(theme.biome==='rainforest'){
+    for(let k=0;k<16;k++){
+     const fall=(frame*(1+k%3*.25)+k*13+n*17)%(height+12),x=r.x+rand(k,n+50)*r.w-fall*.13,y=r.y+fall;
+     rect(c,x,y,1,3+k%3,k%3?'#b6dac966':'#d9ede390');
+     if(fall>height-4&&fall<height){rect(c,x-2,r.floor-7,5,1,'#b6dac966');}
+    }
+   }else if(theme.biome==='snow'){
+    for(let k=0;k<22;k++){
+     const x=r.x+rand(k,n+70)*r.w+Math.sin(frame*.035+k)*4,y=r.y+(frame*(.3+k%3*.15)+k*17)%(height+5),big=k%7===0;
+     rect(c,x,y,big?2:1,big?2:1,k%2?'#f9f8ebdd':'#e4f2edaa');
+     if(big&&k%2===0){rect(c,x-1,y,4,1,'#f9f8eb99');rect(c,x,y-1,1,4,'#f9f8eb99');}
+    }
+   }else{
+    for(let k=0;k<9;k++){
+     const x=r.x+rand(k,n+90)*r.w+Math.sin(frame*.04+k)*4,y=r.y+height*.25+rand(k,n+99)*height*.65+Math.sin(frame*.025+k*2)*3,pulse=(frame+k*9)%48;
+     if(pulse<28){rect(c,x-1,y-1,3,3,'#dfde9240');rect(c,x,y,1,1,pulse<12?'#fff0ad':'#c8d891');}
+    }
+    for(let k=0;k<2;k++){const y=r.y+(frame*.3+k*47+n*13)%height,x=r.x+r.w*(.3+k*.4)+Math.sin(frame*.035+k)*8;rect(c,x,y,3,1,'#c6b778');rect(c,x+1,y+1,2,1,'#90a46b');}
+   }
+  });
+  c.restore();
+ }
+
  function roomAt(spot){return spot.y<200?(spot.x<320?1:2):(spot.x<400?3:4);}
  function glow(c,id,spot,t){
   if(!['lamp','mushroomLamp','hangingLantern','archedWindow'].includes(id))return;
@@ -2321,7 +2413,7 @@ window.HomeScenery=(()=>{
  fossilClock:[[6,3,20,25,'#654e3c'],[8,5,16,21,'#c7b283'],[10,7,12,12,'#eee2b4'],[15,8,2,7,'#546c58'],[16,13,5,2,'#546c58'],[15,21,2,4,'#8c734e'],[13,24,6,2,'#e4c67e']],
  starWindow:[[3,2,26,29,'#8f795b'],[5,4,22,25,'#ded09e'],[7,6,18,21,'#343d66'],[9,9,2,2,'#f1dfa0'],[19,14,3,3,'#f1dfa0'],[13,20,2,2,'#f1dfa0'],[12,10,6,1,'#8994af'],[17,11,1,4,'#8994af'],[14,18,5,1,'#8994af'],[15,5,2,23,'#c8ae83'],[5,16,22,2,'#c8ae83']]
  });
- return {paint,furniture,glow,drawDecor,canPlace,ready:true};
+ return {paint,animate,furniture,glow,drawDecor,canPlace,ready:true};
 })();
 
 </script><script>
@@ -2430,7 +2522,7 @@ window.PixelArt=(()=>{
  }
  function renderHome(c,s,frame){
   const theme=HomeCatalog.themes.find(t=>t.id===s.home.theme)||HomeCatalog.themes[0],t=WorldClock.snapshot();
-  c.save();c.setTransform(c.canvas.width/640,0,0,c.canvas.height/360,0,0);c.imageSmoothingEnabled=false;c.drawImage(HomeScenery.paint(theme,t,s.home.slots),0,0,640,360);
+  c.save();c.setTransform(c.canvas.width/640,0,0,c.canvas.height/360,0,0);c.imageSmoothingEnabled=false;c.drawImage(HomeScenery.paint(theme,t,s.home.slots),0,0,640,360);HomeScenery.animate(c,theme,frame);
   for(const key of Object.keys(HomeCatalog.slots)){const spot=HomeCatalog.spot(s.home,key);if(s.home.slots[key])HomeScenery.glow(c,s.home.slots[key],spot,t);}
   const order=Object.keys(HomeCatalog.slots).filter(k=>s.home.slots[k]).sort((a,b)=>a==='floor'?-1:b==='floor'?1:HomeCatalog.spot(s.home,a).y-HomeCatalog.spot(s.home,b).y);
   for(const key of order){const spot=HomeCatalog.spot(s.home,key),id=s.home.slots[key];drawHomeItem(c,id,spot,t,theme);if(s.homeEditing&&key===s.selectedSlot){const w=60,h=id==='rug'?16:48;c.strokeStyle='#e8ba72';c.lineWidth=1;c.setLineDash([3,3]);c.strokeRect(spot.x-w/2,spot.y-h,w,h+3);c.setLineDash([]);}}
@@ -2508,9 +2600,11 @@ window.PixelArt=(()=>{
   return {x:x-3*size,y:y-14*size,w:34*size,h:42*size,rotation,scale:size};
  }
 
- let getState,frame=0,last=0;
- function loop(now){if(now-last>120){last=now;frame++;if(getState){const s=getState(),f=matchMedia('(prefers-reduced-motion: reduce)').matches?0:frame;if(!document.getElementById('setupScreen').hidden)renderSetup(document.getElementById('setupCanvas').getContext('2d'),s,f);if(!document.getElementById('home').hidden)renderHome(document.getElementById('homeCanvas').getContext('2d'),s,f);if(!document.getElementById('focus').hidden&&!s.simpleView)renderMine(document.getElementById('miningCanvas').getContext('2d'),s,f);if(!document.getElementById('wardrobe').hidden)renderWardrobe(document.getElementById('wardrobeCanvas').getContext('2d'),s,f);if(!document.getElementById('companions').hidden)for(const friend of s.companions||[]){const canvas=document.getElementById('friend-'+friend.id);if(canvas)renderFriend(canvas.getContext('2d'),friend,f);}}}requestAnimationFrame(loop);}
- return {drawHomePreview(canvas,s){const saved={...bounds};renderHome(canvas.getContext('2d'),{...s,visiting:true,homeEditing:false,session:null,idleMood:'awake'},0);Object.assign(bounds,saved);},drawPortrait(canvas,s){const c=canvas.getContext('2d');c.clearRect(0,0,128,128);mole(c,23,40,3,s.equipped,false,0,s.profile.color,'awake',null);},iconSVG,homeIcon,digMetrics,renderFloating,refreshFocus(){if(getState)renderMine(document.getElementById('miningCanvas').getContext('2d'),getState(),matchMedia('(prefers-reduced-motion: reduce)').matches?0:frame);},hitTest(id,x,y){const b=bounds[id];return !!b&&x>=b.x&&x<=b.x+b.w&&y>=b.y&&y<=b.y+b.h;},getBounds:id=>bounds[id]?{...bounds[id]}:null,init(get){getState=get;requestAnimationFrame(loop);}};
+ let getState,frame=0,last=0,visitingHome=null;
+ function drawHomePreview(canvas,s,f=0){const saved={...bounds};renderHome(canvas.getContext('2d'),{...s,visiting:true,homeEditing:false,session:null,idleMood:'awake'},f);Object.assign(bounds,saved);}
+
+ function loop(now){if(now-last>120){last=now;frame++;if(getState){const s=getState(),f=matchMedia('(prefers-reduced-motion: reduce)').matches?0:frame;if(visitingHome&&document.getElementById('friendHomeDialog').open)drawHomePreview(document.getElementById('friendHomeCanvas'),visitingHome,f);if(!document.getElementById('setupScreen').hidden)renderSetup(document.getElementById('setupCanvas').getContext('2d'),s,f);if(!document.getElementById('home').hidden)renderHome(document.getElementById('homeCanvas').getContext('2d'),s,f);if(!document.getElementById('focus').hidden&&!s.simpleView)renderMine(document.getElementById('miningCanvas').getContext('2d'),s,f);if(!document.getElementById('wardrobe').hidden)renderWardrobe(document.getElementById('wardrobeCanvas').getContext('2d'),s,f);if(!document.getElementById('companions').hidden)for(const friend of s.companions||[]){const canvas=document.getElementById('friend-'+friend.id);if(canvas)renderFriend(canvas.getContext('2d'),friend,f);}}}requestAnimationFrame(loop);}
+ return {drawHomePreview(canvas,s){if(canvas.id==='friendHomeCanvas')visitingHome=s;drawHomePreview(canvas,s);},drawPortrait(canvas,s){const c=canvas.getContext('2d');c.clearRect(0,0,128,128);mole(c,23,40,3,s.equipped,false,0,s.profile.color,'awake',null);},iconSVG,homeIcon,digMetrics,renderFloating,refreshFocus(){if(getState)renderMine(document.getElementById('miningCanvas').getContext('2d'),getState(),matchMedia('(prefers-reduced-motion: reduce)').matches?0:frame);},hitTest(id,x,y){const b=bounds[id];return !!b&&x>=b.x&&x<=b.x+b.w&&y>=b.y&&y<=b.y+b.h;},getBounds:id=>bounds[id]?{...bounds[id]}:null,init(get){getState=get;requestAnimationFrame(loop);}};
 })();
 
 </script><script>
@@ -3192,7 +3286,7 @@ const dateKey=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-$
 const parseDay=key=>{const [y,m,d]=key.split('-').map(Number);return new Date(y,m-1,d,12);};
 const todayKey=()=>dateKey(new Date());
 function duration(seconds,withSeconds=false){seconds=Math.max(0,Math.floor(seconds));if(seconds===0)return '0m';if(withSeconds&&seconds<60)return `${seconds}s`;const min=Math.floor(seconds/60);return min>=60?`${Math.floor(min/60)}h ${min%60}m`:`${min}m`;}
-let state={profile:{name:'Momo',color:'#a9b4c6',configured:false},depth:0,surfaceDepth:0,digDay:todayKey(),inventory:[0,0,0,0],balance:0,owned:[],equipped:[],ownedTools:[],tool:null,sessions:0,totalSeconds:0,history:[],session:null,minutes:25,mode:'study',reportDays:{},musicVolume:.45,musicTrack:MusicCatalog.defaultTrack,musicRepeat:'one',eligibleSeconds:0,lastTask:'',idleAt:Date.now(),heldItem:null,simpleView:false,home:{theme:'cave',ownedThemes:['cave'],owned:['rug'],slots:{floor:'rug',left:null,right:null,wall:null}}};
+let state={profile:{name:'Momo',color:'#a9b4c6',configured:false},depth:0,surfaceDepth:0,digDay:todayKey(),inventory:[0,0,0,0],balance:0,owned:[],equipped:[],ownedTools:[],tool:null,sessions:0,totalSeconds:0,history:[],session:null,minutes:25,mode:'study',reportDays:{},musicVolume:.45,musicTrack:MusicCatalog.defaultTrack,musicRepeat:'one',eligibleSeconds:0,lastTask:'',idleAt:Date.now(),heldItem:null,simpleView:false,home:{backgroundPriceVersion:2,theme:'cave',ownedThemes:['cave'],owned:['rug'],slots:{floor:'rug',left:null,right:null,wall:null}}};
 state.progressVersion=2;
 state.rareSeed=Array.from(crypto.getRandomValues(new Uint8Array(16)),v=>v.toString(16).padStart(2,'0')).join('');state.rareInventory={};state.rareClaimed=0;state.displayedTreasure=null;
 let canSave=true,storageWarning=false,retiredClothingRefund=0;
@@ -3215,7 +3309,7 @@ try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));if(saved&&typeof s
  else{for(const h of state.history){if(h.mode==='study'&&!h.demo){const key=dateKey(new Date(h.at)),day=state.reportDays[key]||(state.reportDays[key]={seconds:0,completed:0});day.seconds+=h.seconds;day.completed+=h.outcome==='complete'?1:0;}}}
  const s=saved.session;if(s&&['running','paused'].includes(s.status)&&modes[s.mode]&&Number.isFinite(s.plannedSeconds)&&s.plannedSeconds>0&&((s.status==='running'&&Number.isFinite(s.deadline))||(s.status==='paused'&&Number.isFinite(s.remaining)))){state.session=s;if(!Number.isFinite(s.trackedAt))s.trackedAt=Date.now();}
  if(saved.home&&typeof saved.home==='object'){
-  const h=saved.home;state.home.positions=HomeCatalog.positions(h.positions);state.home.owned=Array.isArray(h.owned)?[...new Set(['rug',...h.owned.filter(id=>HomeCatalog.items.some(i=>i.id===id))])]:['rug'];
+  const h=saved.home;state.home.backgroundPriceVersion=h.backgroundPriceVersion===2?2:1;state.home.positions=HomeCatalog.positions(h.positions);state.home.owned=Array.isArray(h.owned)?[...new Set(['rug',...h.owned.filter(id=>HomeCatalog.items.some(i=>i.id===id))])]:['rug'];
   state.home.ownedThemes=Array.isArray(h.ownedThemes)?[...new Set(['cave',...h.ownedThemes.filter(id=>HomeCatalog.themes.some(i=>i.id===id))])]:['cave'];state.home.theme=state.home.ownedThemes.includes(h.theme)?h.theme:'cave';
   for(const slot of Object.keys(HomeCatalog.slots)){const id=h.slots?.[slot],f=HomeCatalog.items.find(i=>i.id===id),find=discoveries.findIndex(i=>'find:'+i.id===id);if(f&&f.slots.includes(slot)&&state.home.owned.includes(id))state.home.slots[slot]=id;else if(find>=0&&slot!=='floor'&&state.inventory[find]>0)state.home.slots[slot]=id;else state.home.slots[slot]=null;}
  }
@@ -3224,6 +3318,7 @@ try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));if(saved&&typeof s
  // Existing Study totals stay intact; old Work history was not previously counted.
  if(!saved.progressVersion){for(const h of state.history){if(h.mode==='work'&&!h.demo){const key=dateKey(new Date(h.at)),d=state.reportDays[key]||(state.reportDays[key]={seconds:0,completed:0,workSeconds:0,workCompleted:0});d.workSeconds=(d.workSeconds||0)+h.seconds;d.workCompleted=(d.workCompleted||0)+(h.outcome==='complete'?1:0);}}}
 }}catch(e){try{localStorage.removeItem(STORAGE_KEY);}catch(_){canSave=false;}}
+const themePriceRefund=HomeCatalog.applyThemePrices(state);
 HomeCatalog.rememberFinds(state);
 let pendingCraft=null;
 let draftColor=state.profile.color,draftName=state.profile.name,afterSetup='focus',currentGamePage='focus',lastClockStamp='';
@@ -3356,15 +3451,15 @@ $('#chestItems').addEventListener('click',e=>{
  state.heldItem=id;state.idleAt=Date.now();save();renderStats();$('#chestDialog').close();
 });
 $('#putBackButton').addEventListener('click',()=>{if(state.session)return;state.heldItem=null;save();renderStats();});
-function updateHomeMode(){const entering=homeEditing&&!$('#home').classList.contains('is-decorating');renderHeldState();updateCraftControls();$('#editHomeButton').textContent=homeEditing?'Done decorating':state.session?.status==='running'?'Pause & decorate':'Decorate';$('#homeEditor').hidden=!homeEditing;$('#editHomeButton').setAttribute('aria-expanded',String(homeEditing));$('#homeViewNote').hidden=true;$('#home').classList.toggle('is-decorating',homeEditing);$('#homePetButton').disabled=!!state.session&&!homeEditing;$('#homeEditHint').textContent=homeEditing?'Drag furniture into a room. Select to move or put away.':'Place your finds here.';if(entering)requestAnimationFrame(()=>{if(homeEditing&&!$('#home').hidden){$('.home-stage').scrollLeft=0;$('.home-layout').scrollIntoView({block:'start',behavior:'instant'});}});}
+function updateHomeMode(){const entering=homeEditing&&!$('#home').classList.contains('is-decorating');renderHeldState();updateCraftControls();$('#editHomeButton').textContent=homeEditing?'Done decorating':state.session?.status==='running'?'Pause & decorate':'Decorate';$('#homeEditor').hidden=!homeEditing;$('#editHomeButton').setAttribute('aria-expanded',String(homeEditing));$('#homeViewNote').hidden=true;$('#home').classList.toggle('is-decorating',homeEditing);$('#homePetButton').disabled=!!state.session&&!homeEditing;$('#homeEditHint').textContent=homeEditing?'Drag to move. Drop outside the home to put away.':'Place your finds here.';if(entering)requestAnimationFrame(()=>{if(homeEditing&&!$('#home').hidden){$('.home-stage').scrollLeft=0;$('.home-layout').scrollIntoView({block:'start',behavior:'instant'});}});}
 function renderHome(){const h=state.home;$('#homeBalance').textContent=state.balance;$('#homeThemeName').textContent=HomeCatalog.themes.find(t=>t.id===h.theme).name;updateHomeMode();$('#clearHomeSlot').disabled=!h.slots[selectedSlot];
  const owned=HomeCatalog.items.filter(i=>h.owned.includes(i.id)),shop=HomeCatalog.items.filter(i=>!h.owned.includes(i.id));
  const card=(i,isOwned)=>`<article class="home-item"><div class="home-item-art" ${isOwned?'data-home-drag="'+i.id+'"':''}>${PixelArt.homeIcon(i.id)}</div><div><strong>${i.name}</strong><small>${isOwned?'Owned':i.recipe?Object.entries(i.recipe).map(([id,n])=>n+' × '+HomeCatalog.materials.find(m=>m.id===id).name).join(' + '):'✦ '+i.cost}</small></div><button data-home-item="${i.id}" ${isOwned?'data-home-drag="'+i.id+'"':''} ${!isOwned&&!i.recipe&&state.balance<i.cost?'disabled':''}>${isOwned?'Drag / place':i.recipe?'View recipe':'Buy'}</button></article>`;
  $('#homeItemGrid').innerHTML='<h3>Owned furniture · drag into your home</h3>'+owned.map(i=>card(i,true)).join('')+'<h3>Collected finds</h3>'+HomeCatalog.spareMaterials(state).filter(m=>m.total>0).map(m=>`<article class="home-item"><div class="home-item-art">${PixelArt.iconSVG(m.id)}</div><div><strong>${m.name}</strong><small>${m.available} spare</small></div><button data-home-item="find:${m.id}" data-home-drag="find:${m.id}" ${m.available?'':'disabled'}>Drag / place</button></article>`).join('')+'<h3>Furniture shop</h3>'+shop.map(i=>card(i,false)).join('');
- $('#homeThemeGrid').innerHTML=HomeCatalog.themes.map(t=>{const owned=h.ownedThemes.includes(t.id),selected=h.theme===t.id;return `<button data-theme="${t.id}" data-rarity="${t.rarity.toLowerCase()}" class="home-theme ${selected?'selected':''}" style="--swatch:${t.wall}" ${selected||(!owned&&state.balance<t.cost)?'disabled':''}><i></i><span>${t.name}<small>${t.rarity} · ${selected?'Selected':owned?'Owned':'✦ '+t.cost}</small></span></button>`;}).join('');if($('#chestDialog').open)renderChest();if($('#craftingDialog').open)renderCrafting();}
+ $('#homeThemeGrid').innerHTML=HomeCatalog.themes.map(t=>{const owned=h.ownedThemes.includes(t.id),selected=h.theme===t.id;return `<button data-theme="${t.id}" data-rarity="${t.rarity.toLowerCase()}" class="home-theme ${selected?'selected':''}" style="--swatch:${t.wall}" ${selected||(!owned&&state.balance<t.cost)?'disabled':''}><i></i><span>${t.name}<small>${t.rarity} · ${selected?'Selected':owned?'Owned':'✦ '+t.cost}</small>${t.motion?'<small class="home-theme-motion">'+t.motion+'</small>':''}</span></button>`;}).join('');if($('#chestDialog').open)renderChest();if($('#craftingDialog').open)renderCrafting();}
 $('#visitFriendsButton').addEventListener('click',()=>FriendsClient.openHomes());
 $('#editHomeButton').addEventListener('click',()=>{if(!homeEditing&&state.session?.status==='running')pauseSession();homeEditing=!homeEditing;renderHome();});
-$$('[data-slot]').forEach(b=>b.addEventListener('click',()=>{selectedSlot=b.dataset.slot;renderHome();}));$('#clearHomeSlot').addEventListener('click',()=>{if(!homeEditing)return;state.home.slots[selectedSlot]=null;delete state.home.positions?.[selectedSlot];save();renderHome();FriendsClient.notify();});
+$$('[data-slot]').forEach(b=>b.addEventListener('click',()=>{selectedSlot=b.dataset.slot;renderHome();}));$('#clearHomeSlot').addEventListener('click',()=>{if(!homeEditing)return;HomeCatalog.putAway(state,selectedSlot);save();renderHome();FriendsClient.notify();});
 $('#homeItemGrid').addEventListener('click',e=>{const b=e.target.closest('[data-home-item]');if(!b||!homeEditing||state.session?.status==='running'||HomeEditor.consumeClick())return;const id=b.dataset.homeItem,f=HomeCatalog.items.find(i=>i.id===id),h=state.home;
  if(f&&!h.owned.includes(id)){if(f.recipe){openCrafting(id);return;}if(state.balance<f.cost)return;state.balance-=f.cost;h.owned.push(id);save();renderStats();}
  HomeEditor.choose(id);
@@ -3466,6 +3561,8 @@ EumoI18n.observe(document);
 EumoI18n.mountPicker(document.getElementById("languageSwitch"));
 
 Onboarding.init({read:()=>state,navigate:navigateTo});
+
+if(themePriceRefund){save();toast(EumoI18n.language==='zh'?`背景降价，已补回 ${themePriceRefund} 星币。`:`Background price drop: ${themePriceRefund} stars returned.`);}
 
 if(retiredClothingRefund){save();toast(EumoI18n.language==='zh'?`已下架衣服，退回 ${retiredClothingRefund} 星。`:`Retired clothes refunded: ${retiredClothingRefund} stars.`);}
 
