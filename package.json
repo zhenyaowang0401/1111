@@ -1,7 +1,7 @@
 {
   "name": "eumo-companion",
   "private": true,
-  "version": "3.4.1",
+  "version": "3.5.0",
   "engines": {
     "node": "22.x"
   },
@@ -18,7 +18,7 @@
     "test:desktop:smoke": "npm run desktop:prepare && electron . --desktop-smoke",
     "test:voice": "node --test tests/test_voice.cjs",
     "test:updates": "node --test tests/test_updates.cjs",
-    "test:home": "node --test tests/test_home_design.cjs tests/test_crafting.cjs tests/test_treasures.cjs"
+    "test:home": "node --test tests/test_home_design.cjs tests/test_crafting.cjs tests/test_treasures.cjs tests/test_home_navigation.cjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.12",
@@ -26,7 +26,7 @@
     "electron-builder": "26.18.0"
   },
   "main": "desktop/main.cjs",
-  "description": "Eumo — a little mole for focus, collecting and decorating",
+  "description": "Eumo \u2014 a little mole for focus, collecting and decorating",
   "author": "Eumo",
   "build": {
     "appId": "app.eumo.companion",

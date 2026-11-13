@@ -42,6 +42,12 @@ The interface supports English and Simplified Chinese. Choose a language in Mole
 
 Both versions display the same mole, equipment, tunnel, timer, and depth. They share the main view's session state and do not create a second reward counter.
 
+## Walking and visiting
+
+Single-click or tap inside a room to walk to that spot on its floor. Click another room to take the connecting passages and ladder automatically; click again to change direction while moving. The mole turns sideways to walk and faces the ladder to climb, keeping its outfit. The ladder reaches the lower floor. Clicking an idle mole still pets it; entering Decorate switches the same canvas to furniture editing.
+
+Visit a friend's home to bring your own mole along. The host stays in their home, and your mole has a **You** label. Explore with the same controls. Movement is local to your visit; it does not move the host, edit their furniture, or broadcast a live multiplayer presence. A new visit starts at the foot of the ladder. Walking works offline in your own home and does not change focus rewards.
+
 ## Decorating and material collections
 
 Owned furniture can be dragged from the decorating sidebar into any room and moved again directly on the scene. You can also select an item and click a destination; arrow keys move a selected piece, and dragging a placed piece outside the home frame, Delete, or **Put selected item away** returns it to inventory without consuming it. Buying furniture adds it to your owned collection before placement. Existing layouts and new positions are saved and shared with friends.

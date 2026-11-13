@@ -39,10 +39,34 @@ window.MoleArt=(()=>{
   hand(0,18-arm);hand(20,18+arm);
   return true;
  }
+ // Side and rear silhouettes share the front sprite's 27px foot/equipment anchors.
+ function paintTravel(c,{color='#a9b4c6',phase=0,climbing=false}={}){
+  const ink='#28214c',light=tint(color,.20),shadow=tint(color,-.18),paw='#ffb5a8';
+  const r=(x,y,w,h,col)=>{c.fillStyle=col;c.fillRect(x,y,w,h);},stride=[-1,0,1,0][phase%4];
+  function limb(x,y,w=5){r(x,y,w,3,ink);r(x+1,y,w-2,2,paw);r(x+1,y,2,1,'#ffd1bd');}
+  if(climbing){
+   // Hands alternate above the shoulders; feet alternate on the ladder rungs.
+   r(7,10-stride*2,3,9,shadow);r(17,10+stride*2,3,9,shadow);
+   limb(6,8-stride*2);limb(17,8+stride*2);
+   r(10,5,7,1,ink);r(8,6,11,2,ink);r(7,8,13,13,ink);r(8,21,11,3,ink);
+   r(10,6,7,2,light);r(8,8,11,12,color);r(9,20,9,3,shadow);r(8,8,2,10,light);r(17,9,2,12,shadow);
+   r(12,20,3,5,ink);r(13,21,1,3,shadow);
+   limb(7,24-stride);limb(15,24+stride);
+  }else{
+   // The nose, rear tail and visible cheek make direction readable at small sizes.
+   r(3,21,6,2,ink);r(1,23,8,2,ink);r(2,23,6,1,shadow);
+   r(10-stride,23,5,4,ink);limb(9-stride,24);
+   r(10,5,9,1,ink);r(8,6,13,2,ink);r(7,8,15,12,ink);r(6,17,17,6,ink);r(8,23,13,2,ink);
+   r(10,6,9,2,light);r(8,8,13,12,color);r(7,18,14,4,color);r(8,8,2,10,light);r(7,20,5,3,shadow);
+   r(19,12,5,5,ink);r(20,13,3,3,light);r(23,13,2,2,'#e7473f');r(19,10,2,2,ink);
+   r(18,17,4,6,'#fff1c8');r(16,20,5,4,'#fff1c8');
+   r(13+stride,23,5,4,ink);limb(13+stride,24);limb(13-stride,18+stride);
+  }
+ }
  function drawAvatar(canvas,color){
   const c=canvas.getContext('2d'),scale=Math.min(canvas.width/27,canvas.height/24);
   c.clearRect(0,0,canvas.width,canvas.height);c.save();c.imageSmoothingEnabled=false;
   c.translate((canvas.width-27*scale)/2,(canvas.height-22*scale)/2-5*scale);c.scale(scale,scale);paint(c,{color});c.restore();return true;
  }
- return {paint,drawAvatar,ready:true,landmarks:{left:9,right:18,eyeY:12,headY:5}};
+ return {paint,paintTravel,drawAvatar,ready:true,landmarks:{left:9,right:18,eyeY:12,headY:5}};
 })();

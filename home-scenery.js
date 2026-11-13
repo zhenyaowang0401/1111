@@ -14,10 +14,10 @@ window.HomeScenery=(()=>{
  ];
  // The curved passages overlap the rooms before their shared border is rasterized.
  const passages=[
-  'M299 30 Q297 72 299 110 Q296 155 298 207 L299 219 L326 219 L325 174 Q329 133 325 97 L326 30 Z',
-  'M213 108 C234 116 241 122 259 120 C278 119 286 113 310 117 L311 154 C291 149 282 159 264 155 C244 151 229 153 213 151 Z',
-  'M315 139 C339 145 344 134 365 137 C380 141 385 136 386 124 C387 114 389 105 399 99 L410 179 C390 174 377 181 361 178 C343 174 335 184 315 179 Z',
-  'M325 235 C347 242 347 269 370 273 C390 279 406 271 421 264 C433 250 445 246 459 250 L457 315 C435 310 410 319 394 314 C374 309 355 320 332 322 Z'
+  'M289 30 Q288 75 290 110 Q287 164 289 213 L289 318 L335 318 L335 212 Q338 158 335 97 L336 30 Z',
+  'M206 91 C230 99 241 104 259 102 C278 101 286 97 312 99 L313 157 C291 153 282 161 264 158 C244 156 228 157 206 154 Z',
+  'M312 117 C339 124 347 115 366 119 C384 123 388 115 399 99 L420 184 C397 180 378 185 361 183 C343 180 335 188 312 184 Z',
+  'M325 235 C347 240 350 251 370 253 C391 259 407 251 421 248 C433 242 445 240 459 244 L457 320 C435 317 410 323 394 319 C374 315 355 324 332 326 Z'
  ];
  let geometry;
  function distances(mask,inside){
@@ -35,6 +35,14 @@ window.HomeScenery=(()=>{
   });
   const bottom=new Uint16Array(W*H);for(let y=H-1;y>=0;y--)for(let x=0;x<W;x++){const i=y*W+x;if(mask[i])bottom[i]=1+(y<H-1?bottom[i+W]:0);}
   geometry={mask,region,bottom,inner:distances(mask,true),outer:distances(mask,false)};return geometry;
+ }
+ function destination(x,y){
+  if(!Number.isFinite(x)||!Number.isFinite(y)||x<0||x>=W||y<30||y>=H)return null;
+  const g=caveGeometry(),i=Math.floor(y)*W+Math.floor(x);if(!g.mask[i]||g.inner[i]<3)return null;
+  if(x>=289&&x<=336&&y<=316)return {x:312,y:Math.max(104,Math.min(316,y))};
+  const room=g.region[i],ranges=[[65,210,149],[420,566,177],[115,312,316],[452,566,310]];
+  if(room){const [min,max,floor]=ranges[room-1];return {x:Math.max(min,Math.min(max,x)),y:floor};}
+  const p=HomeNavigation.project({x,y});return {x:p.x,y:p.y};
  }
  function palette(theme,t){
   const night=t.period==='night',cool=theme.id==='rain'||theme.id==='moon',moss=theme.id==='moss';
@@ -116,8 +124,8 @@ window.HomeScenery=(()=>{
   }
   c.putImageData(image,0,0);
   // Flat pixel rails and treads, using the focus scene's wood and highlight colours.
-  for(const x of [302,320]){rect(c,x,31,3,181,p.ink);rect(c,x,31,2,180,p.wood);rect(c,x,31,1,179,p.light);}
-  for(let y=41;y<210;y+=13){rect(c,301,y+1,23,3,p.ink);rect(c,301,y,23,2,p.light);rect(c,303,y+1,19,1,p.wood);}
+  for(const x of [302,320]){rect(c,x,31,3,287,p.ink);rect(c,x,31,2,286,p.wood);rect(c,x,31,1,285,p.light);}
+  for(let y=41;y<316;y+=13){rect(c,301,y+1,23,3,p.ink);rect(c,301,y,23,2,p.light);rect(c,303,y+1,19,1,p.wood);}
   if(cache.size>12)cache.clear();cache.set(key,cv);return cv;
  }
  // Cache the exact pixel wall silhouette once; effects cannot spill into soil,
@@ -257,5 +265,5 @@ window.HomeScenery=(()=>{
  fossilClock:[[6,3,20,25,'#654e3c'],[8,5,16,21,'#c7b283'],[10,7,12,12,'#eee2b4'],[15,8,2,7,'#546c58'],[16,13,5,2,'#546c58'],[15,21,2,4,'#8c734e'],[13,24,6,2,'#e4c67e']],
  starWindow:[[3,2,26,29,'#8f795b'],[5,4,22,25,'#ded09e'],[7,6,18,21,'#343d66'],[9,9,2,2,'#f1dfa0'],[19,14,3,3,'#f1dfa0'],[13,20,2,2,'#f1dfa0'],[12,10,6,1,'#8994af'],[17,11,1,4,'#8994af'],[14,18,5,1,'#8994af'],[15,5,2,23,'#c8ae83'],[5,16,22,2,'#c8ae83']]
  });
- return {paint,animate,furniture,glow,drawDecor,canPlace,ready:true};
+ return {paint,animate,destination,furniture,glow,drawDecor,canPlace,ready:true};
 })();

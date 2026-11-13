@@ -3,6 +3,11 @@
 window.EumoI18n=(()=>{
  const KEY='eumo-language';let language='en';try{if(localStorage.getItem(KEY)==='zh')language='zh';}catch{}
  const dictionary={
+ "Click a room to walk. The ladder connects floors.":"单击房间即可走动，鼹鼠会沿梯子上下楼。",
+ "Click a room to walk. Click your mole to pet.":"单击房间走动，点击鼹鼠摸摸它。",
+ "Last synced home · Click a room to explore":"最近同步的家园 · 单击房间即可探索",
+ "Layout not synced yet · Showing the starter burrow · Click a room to explore":"布置尚未同步 · 展示基础洞穴 · 单击房间即可探索",
+ "You":"你",
  "Fireflies & leaves":"萤火与落叶","Gentle rainfall":"轻柔细雨","Drifting snow":"缓缓飘雪","Twinkling stars & meteors":"闪烁星光与流星",
  "Twilight forest":"暮色森林","Emerald rainforest":"翡翠雨林","Alpine snow":"雪山壁景","Celestial night":"璀璨星空",
  "Retro television":"复古电视","Mushroom sofa":"蘑菇沙发","Spiral clock":"化石螺旋钟","Constellation window":"星座窗",

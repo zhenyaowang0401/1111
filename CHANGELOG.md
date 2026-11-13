@@ -2,6 +2,13 @@
 
 These entries describe implementation milestones. Historical milestone names do not necessarily correspond to a published GitHub Release or a live deployment.
 
+## Eumo 3.5.0 — Walk around your home and visit friends
+
+- Added single-click/tap destinations, automatic room-and-ladder routes, mid-walk retargeting, side-facing walk cycles and rear-facing climbing. The ladder now reaches the lower floor, with passages sized for the moving mole.
+- Friend visits show the host and the player's equipped mole together, with a You label. Visitors explore locally without editing the host's home; friend refreshes preserve their current route.
+- Kept petting, furniture dragging, mobile panning, focus timers and reward accounting separate from walking. Reduced motion removes limb/bob animation while retaining navigation.
+- Verified route continuity and room reachability, mouse/touch interaction, native packaged offline movement, and independent visits through the real local friends API and PostgreSQL fixture.
+
 ## Eumo 3.4.1 — Fitted hats and living wallpapers
 
 - Redrew the four material hats with compact, centred silhouettes, fitted bands, fabric shading, gemstone facets, and small decorative details. Existing ownership and recipes are retained.

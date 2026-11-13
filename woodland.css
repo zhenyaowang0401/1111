@@ -494,3 +494,9 @@ body[data-period="night"]:has(#home:not([hidden])) .painted-backdrop{opacity:.09
  #home.is-decorating .home-actions button{font-size:12px;padding:7px 9px;min-height:34px}
  #home.is-decorating .home-shop{height:min(48dvh,480px);padding:12px}
 }
+
+/* Walking and decorating share the canvas, with one active gesture at a time. */
+.home-walk-hint{font-size:12px;color:var(--muted);margin:12px 0 0;line-height:1.5}
+#home.is-decorating .home-walk-hint{display:none}
+#friendHomeCanvas{cursor:pointer;touch-action:pan-y}
+.friend-home-dialog .home-visitor-label{display:inline-block;margin:0 0 10px;padding:4px 9px;background:var(--board-light);border:1px solid var(--edge)}

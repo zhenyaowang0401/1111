@@ -48,10 +48,10 @@ window.FriendsClient=(()=>{
   $('homeFriendsList').innerHTML=players.map(f=>`<article class="home-friend-row"><canvas width="640" height="360" data-home-preview="${f.id}" aria-label="${escape(f.name)}"></canvas><div><strong>${escape(f.name)}</strong><small>${!f.home?'Layout not synced yet':f.availability==='online'?'Online':'Last shared home'}</small></div><button class="quiet-button" data-visit-home="${f.id}">Visit home</button></article>`).join('');
   for(const f of players){const cv=$('homeFriendsList').querySelector(`[data-home-preview="${f.id}"]`);PixelArt.drawHomePreview(cv,{profile:{name:f.name,color:f.color},equipped:f.equipped,home:f.home||starterHome(),tool:f.tool});}
  }
- function visitHome(id){const f=players.find(f=>f.id===id);if(!f)return;visitingId=f.id;drawVisit(f);$('friendHomeDialog').showModal();}
+ function visitHome(id){const f=players.find(f=>f.id===id);if(!f)return;visitingId=f.id;HomeWalk.visit(f.id);drawVisit(f);$('friendHomeDialog').showModal();}
  function openHomes(){$('homeFriendsDialog').showModal();renderHomeList();activate();}
  function starterHome(){return {theme:'cave',slots:{floor:'rug'}};}
- function drawVisit(f){$('friendHomeNote').textContent=f.home?'Last synced home · View only':'Layout not synced yet · Showing the starter burrow';$('friendHomeTitle').textContent=f.name+' · '+EumoI18n.t('Home');PixelArt.drawHomePreview($('friendHomeCanvas'),{profile:{name:f.name,color:f.color},equipped:f.equipped,home:f.home||starterHome(),tool:f.tool});}
+ function drawVisit(f){const own=read();$('friendHomeNote').textContent=f.home?'Last synced home · Click a room to explore':'Layout not synced yet · Showing the starter burrow · Click a room to explore';$('friendHomeTitle').textContent=f.name+' · '+EumoI18n.t('Home');$('friendHomeVisitor').textContent=EumoI18n.t('You')+' · '+own.profile.name;PixelArt.drawHomePreview($('friendHomeCanvas'),{profile:{name:f.name,color:f.color},equipped:f.equipped,home:f.home||starterHome(),tool:f.tool,visitor:{profile:{...own.profile},equipped:[...own.equipped]}});}
  function renderRequests(){
   for(const [id,list,incoming] of [['incomingFriendRequests',model?.incoming||[],true],['outgoingFriendRequests',model?.outgoing||[],false]]){
    $(id).innerHTML=list.length?list.filter(r=>UUID.test(r.linkId)).map(r=>`<div class="friend-request-row"><span>${escape(r.profile?.name||'Momo')}</span><div>${incoming?`<button type="button" data-friend-action="accept" data-link="${r.linkId}" ${busy?'disabled':''}>Accept</button><button type="button" data-friend-action="decline" data-link="${r.linkId}" ${busy?'disabled':''}>Decline</button>`:`<button type="button" data-friend-action="cancel" data-link="${r.linkId}" ${busy?'disabled':''}>Cancel request</button>`}</div></div>`).join(''):'<p class="friend-request-empty">No requests yet.</p>';
@@ -102,7 +102,7 @@ window.FriendsClient=(()=>{
   $('homeFriendsRefresh').addEventListener('click',activate);
   $('homeFriendsAdd').addEventListener('click',()=>{$('homeFriendsDialog').close();open();});
   $('homeFriendsList').addEventListener('click',e=>{const b=e.target.closest('[data-visit-home]');if(b)visitHome(b.dataset.visitHome);});
-  $('closeFriendHome').addEventListener('click',()=>$('friendHomeDialog').close());$('friendHomeDialog').addEventListener('close',()=>{visitingId=null;});
+  $('closeFriendHome').addEventListener('click',()=>$('friendHomeDialog').close());$('friendHomeDialog').addEventListener('close',()=>{visitingId=null;HomeWalk.leaveVisit();});
   $('openFriends').addEventListener('click',open);$('closeFriends').addEventListener('click',()=>$('friendsDialog').close());
   $('friendsRetry').addEventListener('click',()=>model?.self?call(model.self.sharing?'sync':'state'):open());
   $('enableFriends').addEventListener('click',()=>call('connect'));

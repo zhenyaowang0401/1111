@@ -57,6 +57,23 @@ def run():
    a.locator('#homeFriendsList [data-visit-home]').click()
    expect(a.locator('#friendHomeDialog')).to_be_visible();expect(a.locator('#friendHomeTitle')).to_contain_text('Momo')
    assert a.locator('#friendHomeDialog [data-home-item]').count()==0
+   # The visitor uses our appearance, explores independently, and survives sync.
+   expect(a.locator('#friendHomeVisitor')).to_contain_text('Yami')
+   assert a.evaluate("HomeWalk.snapshot('visit').x")==312
+   home_before=a.evaluate('JSON.stringify(FriendsClient.getPlayers()[0].home)')
+   def visit_click(x,y):
+    r=a.locator('#friendHomeCanvas').bounding_box();a.mouse.click(r['x']+x*r['width']/640,r['y']+y*r['height']/360)
+   visit_click(150,110)
+   a.wait_for_function("HomeWalk.snapshot('visit').motion==='climb' && HomeWalk.snapshot('visit').moving")
+   # A normal friend heartbeat redraws the scene without moving the guest to spawn.
+   y=a.evaluate("HomeWalk.snapshot('visit').y");a.evaluate('FriendsClient.activate()');settled(a)
+   assert a.evaluate("HomeWalk.snapshot('visit').y")<=y
+   a.wait_for_function("!HomeWalk.snapshot('visit').moving",timeout=12000)
+   assert abs(a.evaluate("HomeWalk.snapshot('visit').x")-150)<1
+   assert a.evaluate('JSON.stringify(FriendsClient.getPlayers()[0].home)')==home_before
+   # Count each avatar's fur in separate rooms, not just the visitor label.
+   colors=a.locator('#friendHomeCanvas').evaluate("c=>{const g=c.getContext('2d'),count=(rect,col)=>{const d=g.getImageData(...rect).data;let n=0;for(let i=0;i<d.length;i+=4)if(col.every((v,k)=>d[i+k]===v))n++;return n;};return [count([200,180,200,150],[183,132,207]),count([400,490,180,160],[125,203,180])];}")
+   assert min(colors)>20,colors
    a.screenshot(path=str(ROOT/'docs/images/eumo-friend-home.png'))
    a.locator('#closeFriendHome').click();assert a.evaluate('JSON.stringify(state.home)')==original
    expect(a.locator('#homeFriendsDialog')).to_be_visible();a.locator('#closeHomeFriends').click();expect(a.locator('#home')).to_be_visible()

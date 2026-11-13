@@ -35,5 +35,11 @@ module.exports.runSmoke=async({win,app,session,getFloating,origin})=>{
  await until(()=>win.webContents.executeJavaScript("typeof state!=='undefined' && state.profile.name==='Desktop test' && state.home.slots.floor==='rug'").catch(()=>false));
  await win.webContents.executeJavaScript("navigateTo('home')");
  assert.equal(await win.webContents.executeJavaScript("!document.getElementById('home').hidden && HomeScenery.ready"),true);
+ // The packaged/offline app shares the exact click route and climbing animation.
+ const clickHome=async(x,y)=>win.webContents.executeJavaScript(`(()=>{const c=document.getElementById('homeCanvas'),r=c.getBoundingClientRect();c.dispatchEvent(new MouseEvent('click',{bubbles:true,button:0,detail:1,clientX:r.left+${x}*r.width/640,clientY:r.top+${y}*r.height/360}));})()`);
+ await clickHome(140,110);
+ await until(()=>win.webContents.executeJavaScript("HomeWalk.snapshot().moving && HomeWalk.snapshot().motion==='climb'"));
+ await until(()=>win.webContents.executeJavaScript("!HomeWalk.snapshot().moving"));
+ assert.equal(await win.webContents.executeJavaScript("Math.abs(HomeWalk.snapshot().x-140)<1 && HomeWalk.snapshot().y===149 && state.home.slots.floor==='rug' && state.session.status==='paused'"),true);
  await session.defaultSession.disableNetworkEmulation();
 };
