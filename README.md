@@ -48,6 +48,10 @@ Single-click or tap inside a room to walk to that spot on its floor. Click anoth
 
 Visit a friend's home to bring your own mole along. The host stays in their home, and your mole has a **You** label. Explore with the same controls. Movement is local to your visit; it does not move the host, edit their furniture, or broadcast a live multiplayer presence. A new visit starts at the foot of the ladder. Walking works offline in your own home and does not change focus rewards.
 
+## Shop and Owned
+
+The wardrobe has two separate views. **Shop** contains only pieces you do not own, with Buy or Redeem actions. Purchased pieces move to **Owned**, where you can equip or remove outfits and select tools. Hats, scarves, glasses, tools and extras filter the current view; counts reflect that view. **All types** includes tools as well as outfits. Empty categories link to the matching category in the other view.
+
 ## Decorating and material collections
 
 Owned furniture can be dragged from the decorating sidebar into any room and moved again directly on the scene. You can also select an item and click a destination; arrow keys move a selected piece, and dragging a placed piece outside the home frame, Delete, or **Put selected item away** returns it to inventory without consuming it. Buying furniture adds it to your owned collection before placement. Existing layouts and new positions are saved and shared with friends.

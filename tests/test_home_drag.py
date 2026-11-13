@@ -38,7 +38,7 @@ try:
   assert page.evaluate("state.home.positions["+json.dumps(key)+"]")==pos
   page.goto(url+'/#wardrobe');page.locator('[data-category="hats"]').click();page.locator('[data-item="mushroomhat"]').click()
   assert page.evaluate("state.owned.includes('mushroomhat') && state.inventory[1]===5 && state.balance===405")
-  page.locator('[data-item="mushroomhat"]').click();assert page.evaluate('state.inventory[1]')==5
+  page.locator('[data-filter="owned"]').click();page.locator('[data-item="mushroomhat"]').click();assert page.evaluate('state.inventory[1]')==5
   # Touch drag on the compact layout keeps the home and inventory visible together.
   page.goto(url+'/#home');page.set_viewport_size({'width':390,'height':844});page.locator('#editHomeButton').click()
   button=page.locator('button[data-home-drag="crockeryShelf"]');button.scroll_into_view_if_needed();r=button.bounding_box();start=(r['x']+r['width']/2,r['y']+r['height']/2);end=xy(500,140)

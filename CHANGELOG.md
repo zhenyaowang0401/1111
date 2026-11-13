@@ -2,6 +2,12 @@
 
 These entries describe implementation milestones. Historical milestone names do not necessarily correspond to a published GitHub Release or a live deployment.
 
+## Eumo 3.6.1 — Separate Shop and Owned wardrobes
+
+- Replaced the mixed All/Owned filter with two clear Shop/Owned views. Shop lists only unowned items; Owned contains equipment actions for items already collected.
+- Category counts follow the active view, All types includes tools, and buying/redemption immediately removes the piece from Shop. Empty and bought-out categories link to the corresponding collection.
+- Updated the heading, selected state and accessible labels together. Verified purchases, material redemption, equipment, saved ownership, tools, mobile Chinese UI and native offline views.
+
 ## Eumo 3.6.0 — Material outfit sets and rounder movement sprites
 
 - Added nine material-exclusive wearables: mushroom, spiral fossil and crystal spectacles, scarves, and brooches/pendant. Recipes use 24/28/18 of the matching material and reserve displayed copies; focus drop rates are unchanged.

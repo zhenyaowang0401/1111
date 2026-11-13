@@ -1,10 +1,10 @@
 Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
-## What's new in 3.6.0
+## What's new in 3.6.1
 
-- Complete your mushroom, spiral fossil or crystal outfit with matching spectacles, a scarf and a brooch/pendant. Nine new pieces redeem for 24, 28 or 18 of their matching material. Displayed finds are reserved; star balances and material drop rates stay the same.
-- All material-exclusive wearables now share the amber **Relic** tier, including the hats you already own. Existing hat prices and ownership are retained.
-- Walking and climbing moles now have broad, rounded bodies. Side-facing glasses use one lens and a temple, with a separate profile for every frame style. Scarves fit the wider back view.
+- **Shop** now shows only items you do not own, ready to buy or redeem.
+- **Owned** shows your collection, ready to equip, remove or use. A purchase immediately moves the item out of Shop and into Owned.
+- Category counts reflect the selected view, and **All types** includes tools. Clear empty-state links help you switch between browsing and your collection.
 
 Windows users on 3.3.0 or later can use Help → App updates to download this version and restart to install. Older Windows versions need one manual overwrite installation. Mac users can use the update check to download the matching DMG.
 

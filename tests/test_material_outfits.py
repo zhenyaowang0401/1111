@@ -8,19 +8,23 @@ try:
   seed={'profile':{'name':'Luka','color':'#a9b4c6','configured':True},'balance':11,'inventory':[1,72,72,72],'owned':['mushroomhat','fossilhat','crystalhat'],'equipped':['mushroomhat'],'home':{'theme':'cave','owned':['rug'],'slots':{'floor':'rug','wall':'find:mushroom'}}}
   page.add_init_script("localStorage.setItem('eumo-tour-v1','seen');if(!localStorage.getItem('loop-pet-soft-universe-v1'))localStorage.setItem('loop-pet-soft-universe-v1',"+json.dumps(json.dumps(seed))+");")
   page.goto(url+'/#wardrobe');page.wait_for_timeout(150)
-  assert page.locator('.outfit-card[data-rarity="relic"]').count()==13
+  assert page.locator('.outfit-card[data-rarity="relic"]').count()==10
   assert len(set(page.locator('.outfit-card[data-rarity="relic"]').evaluate_all('els=>els.map(e=>getComputedStyle(e).borderTopColor)')))==1
   additions=page.evaluate("WardrobeCatalog.items.filter(i=>i.recipe&&i.category!=='hats')")
   for item in additions:
+   page.locator('[data-filter="shop"]').click()
    page.locator('[data-category="'+item['category']+'"]').click();button=page.locator('[data-item="'+item['id']+'"]');button.click()
    assert page.evaluate('id=>state.owned.includes(id)&&state.equipped.includes(id)',item['id'])
    # Toggling ownership never charges a recipe again.
+   assert button.count()==0
+   page.locator('[data-filter="owned"]').click()
    before=page.evaluate('state.inventory');button.click();button.click();assert page.evaluate('state.inventory')==before
   assert page.evaluate('state.inventory')==[1,2,2,2];assert page.evaluate('state.balance')==11
   assert page.evaluate("state.home.slots.wall==='find:mushroom'")
   page.reload();assert page.evaluate("state.equipped.includes('prismglasses')&&state.equipped.includes('prismscarf')&&state.equipped.includes('prismpendant')")
   # Exhausted stock cannot redeem an unowned hat or consume a displayed copy.
   page.locator('[data-category="hats"]').click();page.locator('[data-item="starhat"]').click();assert not page.evaluate("state.owned.includes('starhat')")
+  page.locator('[data-filter="owned"]').click()
   # Three matching outfits in the real preview, including material tier styling.
   for prefix,hat in [('forager','mushroomhat'),('spiral','fossilhat'),('prism','crystalhat')]:
    extra=prefix+('pendant' if prefix=='prism' else 'brooch')

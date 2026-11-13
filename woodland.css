@@ -504,3 +504,10 @@ body[data-period="night"]:has(#home:not([hidden])) .painted-backdrop{opacity:.09
 #home.is-decorating .home-walk-hint{display:none}
 #friendHomeCanvas{cursor:pointer;touch-action:pan-y}
 .friend-home-dialog .home-visitor-label{display:inline-block;margin:0 0 10px;padding:4px 9px;background:var(--board-light);border:1px solid var(--edge)}
+
+/* Separate acquisition from the owned collection; categories refine either view. */
+.closet .closet-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 10px;padding:0 0 12px}
+.closet .closet-tabs button{min-height:42px;padding:8px 12px;border:2px solid var(--edge-soft);background:var(--raised);color:var(--muted);font-weight:600;text-align:center}
+.closet .closet-tabs button.active{border-color:var(--edge);background:var(--selected);color:var(--selected-ink);box-shadow:inset 1px 1px var(--window-highlight),1px 2px var(--drop-shadow)}
+.closet .closet-tabs button span{margin-left:5px;font-weight:400;color:inherit}
+.closet-empty p{margin:4px 0 14px}

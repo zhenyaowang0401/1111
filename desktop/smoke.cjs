@@ -42,5 +42,10 @@ module.exports.runSmoke=async({win,app,session,getFloating,origin})=>{
  await until(()=>win.webContents.executeJavaScript("HomeWalk.snapshot().moving && HomeWalk.snapshot().motion==='climb'"));
  await until(()=>win.webContents.executeJavaScript("!HomeWalk.snapshot().moving"));
  assert.equal(await win.webContents.executeJavaScript("Math.abs(HomeWalk.snapshot().x-140)<1 && HomeWalk.snapshot().y===149 && state.home.slots.floor==='rug' && state.session.status==='paused'"),true);
+ // The same exclusive wardrobe views work in the packaged, offline app.
+ await win.webContents.executeJavaScript("state.owned=[...new Set([...state.owned,'hat'])];renderStats();navigateTo('wardrobe');document.querySelector('[data-filter=shop]').click()");
+ assert.equal(await win.webContents.executeJavaScript("document.getElementById('closetTitle').textContent==='Shop' && !document.querySelector('[data-item=hat]')"),true);
+ await win.webContents.executeJavaScript("document.querySelector('[data-filter=owned]').click()");
+ assert.equal(await win.webContents.executeJavaScript("document.getElementById('closetTitle').textContent==='Owned' && !!document.querySelector('[data-item=hat]') && [...document.querySelectorAll('#outfitGrid .item-action button')].every(b=>!['Buy','Redeem'].includes(b.textContent))"),true);
  await session.defaultSession.disableNetworkEmulation();
 };

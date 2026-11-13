@@ -3,6 +3,10 @@
 window.EumoI18n=(()=>{
  const KEY='eumo-language';let language='en';try{if(localStorage.getItem(KEY)==='zh')language='zh';}catch{}
  const dictionary={
+ "Wardrobe collection":"装扮收藏","Owned items":"已拥有的物品","All types":"全部类别",
+ "Your wardrobe is empty.":"你还没有装扮物品。","No owned items in this category.":"你还没有这个类别的物品。",
+ "You own everything here.":"这里的物品你都已经拥有了。","You own everything in this category.":"这个类别的物品你都已经拥有了。",
+ "Browse shop":"逛逛商店","View owned":"查看已拥有",
  "Relic":"珍藏","Material exchange":"材料兑换限定",
  "Forager spectacles":"林间采集眼镜","Spiral spectacles":"螺旋雕纹眼镜","Prism spectacles":"棱晶眼镜",
  "Forager neckerchief":"林间刺绣领巾","Spiral woven scarf":"螺旋编织围巾","Crystal ribbon scarf":"冰晶缎带围巾",

@@ -1,7 +1,7 @@
 {
   "name": "eumo-companion",
   "private": true,
-  "version": "3.6.0",
+  "version": "3.6.1",
   "engines": {
     "node": "22.x"
   },
