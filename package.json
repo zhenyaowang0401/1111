@@ -1,7 +1,7 @@
 {
   "name": "eumo-companion",
   "private": true,
-  "version": "3.5.0",
+  "version": "3.6.0",
   "engines": {
     "node": "22.x"
   },
@@ -18,7 +18,7 @@
     "test:desktop:smoke": "npm run desktop:prepare && electron . --desktop-smoke",
     "test:voice": "node --test tests/test_voice.cjs",
     "test:updates": "node --test tests/test_updates.cjs",
-    "test:home": "node --test tests/test_home_design.cjs tests/test_crafting.cjs tests/test_treasures.cjs tests/test_home_navigation.cjs"
+    "test:home": "node --test tests/test_home_design.cjs tests/test_crafting.cjs tests/test_treasures.cjs tests/test_home_navigation.cjs tests/test_material_outfits.cjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.12",

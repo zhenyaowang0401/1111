@@ -36,11 +36,21 @@
   {id:'bellpin',name:'Little bell',category:'extras',cost:18,rarity:'Uncommon'},
   {id:'crystalpin',name:'Crystal pin',category:'extras',cost:22,rarity:'Rare'}
  ];
+ // Every material-exclusive wearable belongs to the same amber Relic tier.
  items.push(
-  {id:'mushroomhat',name:'Forager mushroom beret',category:'hats',cost:0,recipe:{mushroom:40},rarity:'Epic',headTop:-4},
-  {id:'starhat',name:'Starlight sorcerer hat',category:'hats',cost:0,recipe:{star:40},rarity:'Epic',headTop:-9},
-  {id:'fossilhat',name:'Spiral explorer hat',category:'hats',cost:0,recipe:{fossil:30},rarity:'Rare',headTop:-4},
-  {id:'crystalhat',name:'Crystal circlet',category:'hats',cost:0,recipe:{crystal:30},rarity:'Rare',headTop:-7}
+  {id:'mushroomhat',name:'Forager mushroom beret',category:'hats',cost:0,recipe:{mushroom:40},rarity:'Relic',headTop:-4},
+  {id:'starhat',name:'Starlight sorcerer hat',category:'hats',cost:0,recipe:{star:40},rarity:'Relic',headTop:-9},
+  {id:'fossilhat',name:'Spiral explorer hat',category:'hats',cost:0,recipe:{fossil:30},rarity:'Relic',headTop:-4},
+  {id:'crystalhat',name:'Crystal circlet',category:'hats',cost:0,recipe:{crystal:30},rarity:'Relic',headTop:-7},
+  {id:'foragerglasses',name:'Forager spectacles',category:'glasses',cost:0,recipe:{mushroom:24},rarity:'Relic'},
+  {id:'spiralglasses',name:'Spiral spectacles',category:'glasses',cost:0,recipe:{fossil:24},rarity:'Relic'},
+  {id:'prismglasses',name:'Prism spectacles',category:'glasses',cost:0,recipe:{crystal:24},rarity:'Relic'},
+  {id:'foragerscarf',name:'Forager neckerchief',category:'scarves',cost:0,recipe:{mushroom:28},rarity:'Relic'},
+  {id:'spiralscarf',name:'Spiral woven scarf',category:'scarves',cost:0,recipe:{fossil:28},rarity:'Relic'},
+  {id:'prismscarf',name:'Crystal ribbon scarf',category:'scarves',cost:0,recipe:{crystal:28},rarity:'Relic'},
+  {id:'foragerbrooch',name:'Forager enamel brooch',category:'extras',cost:0,recipe:{mushroom:18},rarity:'Relic'},
+  {id:'spiralbrooch',name:'Amber spiral brooch',category:'extras',cost:0,recipe:{fossil:18},rarity:'Relic'},
+  {id:'prismpendant',name:'Prism pendant',category:'extras',cost:0,recipe:{crystal:18},rarity:'Relic'}
  );
  function redeem(s,id){const i=items.find(i=>i.id===id);if(!i?.recipe||s.owned.includes(id)||s.session?.status==='running')return false;const materials=['star','mushroom','crystal','fossil'];
   for(const [id,n] of Object.entries(i.recipe)){const reserved=Object.values(s.home?.slots||{}).filter(v=>v==='find:'+id).length+(s.heldItem===id?1:0);const total=s.inventory[materials.indexOf(id)];if(!Number.isFinite(total)||total-reserved<n)return false;}

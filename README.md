@@ -44,7 +44,7 @@ Both versions display the same mole, equipment, tunnel, timer, and depth. They s
 
 ## Walking and visiting
 
-Single-click or tap inside a room to walk to that spot on its floor. Click another room to take the connecting passages and ladder automatically; click again to change direction while moving. The mole turns sideways to walk and faces the ladder to climb, keeping its outfit. The ladder reaches the lower floor. Clicking an idle mole still pets it; entering Decorate switches the same canvas to furniture editing.
+Single-click or tap inside a room to walk to that spot on its floor. Click another room to take the connecting passages and ladder automatically; click again to change direction while moving. The mole turns sideways to walk and faces the ladder to climb, keeping its outfit. Both views use a round, broad silhouette; side-facing glasses show one lens and an ear temple. The ladder reaches the lower floor. Clicking an idle mole still pets it; entering Decorate switches the same canvas to furniture editing.
 
 Visit a friend's home to bring your own mole along. The host stays in their home, and your mole has a **You** label. Explore with the same controls. Movement is local to your visit; it does not move the host, edit their furniture, or broadcast a live multiplayer presence. A new visit starts at the foot of the ladder. Walking works offline in your own home and does not change focus rewards.
 
@@ -54,7 +54,7 @@ Owned furniture can be dragged from the decorating sidebar into any room and mov
 
 Pixel wall backgrounds use the wardrobe rarity tiers: Twilight Forest costs 60 stars (Uncommon), Emerald Rainforest 100 (Rare), Alpine Snow 160 (Epic), and Celestial Night 240 (Legendary). Existing owners receive the price difference once. Fireflies and leaves, gentle rain, drifting snow, and twinkling stars with occasional meteors animate behind furniture, including during friend visits; reduced-motion preferences keep the wallpaper still. Furniture includes a retro TV and material recipes for a mushroom sofa, spiral clock, and constellation window.
 
-Materials also redeem exclusive hats: 40 mushrooms for the mushroom beret, 40 star fragments for the starlight sorcerer hat, or 30 fossils/crystals for the spiral explorer hat/crystal circlet. Each uses compact pixel artwork centred on the mole’s head. Materials already displayed in the home or on your mole are reserved. New sessions use a 40% material chance per ten-minute checkpoint; old inventory and already-active legacy sessions are retained. Golden treasure rolls remain independently at 3% per checkpoint.
+Materials also redeem exclusive hats: 40 mushrooms for the mushroom beret, 40 star fragments for the starlight sorcerer hat, or 30 fossils/crystals for the spiral explorer hat/crystal circlet. Each uses compact pixel artwork centred on the mole’s head. The three non-star materials also redeem matching spectacles (24 materials), scarves (28), and brooches or a pendant (18). Mushroom enamel, woven spiral motifs, and faceted crystal details coordinate with their hats. All material-exclusive wearables, including the four existing hats, share an amber **Relic** tier; existing ownership and hat costs are retained. Materials already displayed in the home or on your mole are reserved. New sessions use a 40% material chance per ten-minute checkpoint; old inventory and already-active legacy sessions are retained. Golden treasure rolls remain independently at 3% per checkpoint.
 
 ## Desktop updates
 

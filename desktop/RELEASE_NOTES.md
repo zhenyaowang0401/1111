@@ -1,11 +1,10 @@
 Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
-## What's new in 3.5.0
+## What's new in 3.6.0
 
-- Walk around your underground home with a single click or tap. Choose another room and your mole follows the passages and ladder automatically. Click again to change its destination.
-- New side-facing walking and rear-facing climbing animations keep your mole's outfit. The ladder now extends to the lower floor.
-- Bring your mole to a friend's home. Both moles appear together, and yours is marked **You**. Click to explore without changing the host's furniture. Movement is local to your visit, not live multiplayer presence.
-- Decorating retains furniture dragging and drag-out storage. Clicking an idle mole still pets it; mobile swipes pan the home instead of accidentally walking. Reduced-motion preferences are respected.
+- Complete your mushroom, spiral fossil or crystal outfit with matching spectacles, a scarf and a brooch/pendant. Nine new pieces redeem for 24, 28 or 18 of their matching material. Displayed finds are reserved; star balances and material drop rates stay the same.
+- All material-exclusive wearables now share the amber **Relic** tier, including the hats you already own. Existing hat prices and ownership are retained.
+- Walking and climbing moles now have broad, rounded bodies. Side-facing glasses use one lens and a temple, with a separate profile for every frame style. Scarves fit the wider back view.
 
 Windows users on 3.3.0 or later can use Help → App updates to download this version and restart to install. Older Windows versions need one manual overwrite installation. Mac users can use the update check to download the matching DMG.
 

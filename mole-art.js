@@ -43,24 +43,28 @@ window.MoleArt=(()=>{
  function paintTravel(c,{color='#a9b4c6',phase=0,climbing=false}={}){
   const ink='#28214c',light=tint(color,.20),shadow=tint(color,-.18),paw='#ffb5a8';
   const r=(x,y,w,h,col)=>{c.fillStyle=col;c.fillRect(x,y,w,h);},stride=[-1,0,1,0][phase%4];
-  function limb(x,y,w=5){r(x,y,w,3,ink);r(x+1,y,w-2,2,paw);r(x+1,y,2,1,'#ffd1bd');}
+  function limb(x,y,w=6){r(x+1,y,w-2,1,ink);r(x,y+1,w,3,ink);r(x+1,y+1,w-2,2,paw);r(x+1,y+1,2,1,'#ffd1bd');r(x+w-3,y+2,2,1,'#df9291');}
+  // Rounded, connected silhouettes keep the same foot and hat anchors as idle.
+  // The widest part is the tummy/haunches, rather than a tall rectangular torso.
+  const rows=climbing?
+   [[9,18],[6,21],[5,22],[4,23],[4,23],[3,24],[3,24],[3,24],[3,24],[3,24],[3,24],[3,24],[3,24],[4,23],[4,23],[5,22],[6,21],[7,20],[9,18]]:
+   [[10,19],[8,21],[6,22],[5,23],[5,23],[4,24],[4,24],[4,24],[3,24],[3,24],[3,24],[3,24],[3,24],[4,24],[4,23],[5,23],[6,22],[7,21],[8,20]];
+  if(!climbing){r(4,21,6,2,ink);r(2,23,8,2,ink);r(0,24,10,2,ink);r(2,24,7,1,shadow);limb(8-stride,23);}
+  const inside=(x,y)=>rows[y-5]&&x>=rows[y-5][0]&&x<rows[y-5][1];
+  for(let y=5;y<24;y++)for(let x=rows[y-5][0];x<rows[y-5][1];x++){
+   const edge=!inside(x-1,y)||!inside(x+1,y)||!inside(x,y-1)||!inside(x,y+1),lit=x<rows[y-5][0]+4&&y<19,shade=x>=rows[y-5][1]-3||y>=21;
+   r(x,y,1,1,edge?ink:shade?shadow:lit?light:color);
+  }
   if(climbing){
-   // Hands alternate above the shoulders; feet alternate on the ladder rungs.
-   r(7,10-stride*2,3,9,shadow);r(17,10+stride*2,3,9,shadow);
-   limb(6,8-stride*2);limb(17,8+stride*2);
-   r(10,5,7,1,ink);r(8,6,11,2,ink);r(7,8,13,13,ink);r(8,21,11,3,ink);
-   r(10,6,7,2,light);r(8,8,11,12,color);r(9,20,9,3,shadow);r(8,8,2,10,light);r(17,9,2,12,shadow);
-   r(12,20,3,5,ink);r(13,21,1,3,shadow);
-   limb(7,24-stride);limb(15,24+stride);
+   r(8,9,2,3,light);r(10,8,3,1,light);r(9,18,2,1,light);
+   r(12,21,3,4,ink);r(13,21,1,3,shadow);
+   // Visible paws reach around the round shoulders, alternating on the rungs.
+   limb(4,10-stride*2);limb(18,10+stride*2);
+   limb(6,23-stride);limb(16,23+stride);
   }else{
-   // The nose, rear tail and visible cheek make direction readable at small sizes.
-   r(3,21,6,2,ink);r(1,23,8,2,ink);r(2,23,6,1,shadow);
-   r(10-stride,23,5,4,ink);limb(9-stride,24);
-   r(10,5,9,1,ink);r(8,6,13,2,ink);r(7,8,15,12,ink);r(6,17,17,6,ink);r(8,23,13,2,ink);
-   r(10,6,9,2,light);r(8,8,13,12,color);r(7,18,14,4,color);r(8,8,2,10,light);r(7,20,5,3,shadow);
-   r(19,12,5,5,ink);r(20,13,3,3,light);r(23,13,2,2,'#e7473f');r(19,10,2,2,ink);
-   r(18,17,4,6,'#fff1c8');r(16,20,5,4,'#fff1c8');
-   r(13+stride,23,5,4,ink);limb(13+stride,24);limb(13-stride,18+stride);
+   r(20,12,4,5,ink);r(21,13,3,3,light);r(24,14,2,2,'#e7473f');r(20,11,2,2,ink);
+   r(18,16,5,5,'#fff1c8');r(16,18,6,5,'#fff1c8');r(17,19,3,3,'#fff8df');r(15,21,5,2,'#fff1c8');
+   limb(15+stride,23);limb(11-stride,17+stride);
   }
  }
  function drawAvatar(canvas,color){

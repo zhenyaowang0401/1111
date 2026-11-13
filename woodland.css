@@ -446,6 +446,10 @@ body[data-period="night"] .painted-night { display: block; }
 .outfit-card[data-rarity="rare"]{--rarity:#61988c;--rarity-tint:#d2e6dc}
 .outfit-card[data-rarity="epic"]{--rarity:#aa87ab;--rarity-tint:#e6d9e6}
 .outfit-card[data-rarity="legendary"]{--rarity:#be7896;--rarity-tint:#eed7e1}
+.outfit-card[data-rarity="relic"]{--rarity:#b5814d;--rarity-tint:#f0e0c5}
+.outfit-card[data-rarity="relic"] .outfit-art{position:relative}
+.material-series{position:absolute;top:5px;left:6px;padding:1px 5px;border:1px solid #b5814d;background:#f9edd7;color:#755029;font-size:10px;line-height:1.4;letter-spacing:.3px}
+
 .outfit-card[data-rarity] .outfit-art{background:var(--rarity-tint);border-color:var(--rarity)}
 .outfit-card.equipped{box-shadow:inset 0 0 0 1px var(--edge),2px 2px var(--drop-shadow)}
 @media(max-width:480px){.focus-meta{gap:7px}.focus-status{gap:6px;padding:3px 5px}.focus-status #focusMode{padding-right:5px}.focus-status .device-time{font-size:14px}}

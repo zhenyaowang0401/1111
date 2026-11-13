@@ -111,9 +111,9 @@ window.PixelArt=(()=>{
   const r=(xx,yy,w,h,col)=>box(c,xx,yy,w,h,col),side=(xx,yy,w,h,col)=>r(4+Math.round(xx*.8),yy,Math.max(1,Math.round((xx+w)*.8)-Math.round(xx*.8)),h,col);
   const hat=get('hats'),scarf=get('scarves'),glasses=get('glasses'),extra=get('extras');
   if(hat)WardrobeArt.hat(climbing?r:side,hat.id);
-  if(climbing){if(scarf)WardrobeArt.scarf((xx,yy,w,h,col)=>r(8+Math.round(xx*.4),yy,Math.max(1,Math.round(w*.4)),Math.min(h,3),col),scarf.id);}
+  if(climbing){if(scarf)WardrobeArt.scarfBack(r,scarf.id);}
   else{
-   if(glasses)WardrobeArt.glasses((xx,yy,w,h,col)=>r(8+Math.round(xx*.65),yy,Math.max(1,Math.round(w*.65)),h,col),glasses.id);
+   if(glasses)WardrobeArt.glassesSide(r,glasses.id);
    if(scarf)WardrobeArt.scarf(side,scarf.id);
    if(extra)WardrobeArt.extra(side,extra.id);
   }

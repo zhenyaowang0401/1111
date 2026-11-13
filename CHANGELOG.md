@@ -2,6 +2,13 @@
 
 These entries describe implementation milestones. Historical milestone names do not necessarily correspond to a published GitHub Release or a live deployment.
 
+## Eumo 3.6.0 — Material outfit sets and rounder movement sprites
+
+- Added nine material-exclusive wearables: mushroom, spiral fossil and crystal spectacles, scarves, and brooches/pendant. Recipes use 24/28/18 of the matching material and reserve displayed copies; focus drop rates are unchanged.
+- Unified all material wearables, including existing hats, under the amber Relic tier with an exchange label. Existing hat ownership and recipes remain intact.
+- Redrew walking and climbing bodies with broad, round silhouettes, shaded haunches and alternating paws. Every glasses style now has a dedicated one-lens profile and temple; scarves have a fitted rear band.
+- Verified exact material spending, category replacement and reload persistence, single-lens profiles, silhouette clearance along every home route, mobile controls and native offline walking.
+
 ## Eumo 3.5.0 — Walk around your home and visit friends
 
 - Added single-click/tap destinations, automatic room-and-ladder routes, mid-walk retargeting, side-facing walk cycles and rear-facing climbing. The ladder now reaches the lower floor, with passages sized for the moving mole.

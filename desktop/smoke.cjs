@@ -35,6 +35,7 @@ module.exports.runSmoke=async({win,app,session,getFloating,origin})=>{
  await until(()=>win.webContents.executeJavaScript("typeof state!=='undefined' && state.profile.name==='Desktop test' && state.home.slots.floor==='rug'").catch(()=>false));
  await win.webContents.executeJavaScript("navigateTo('home')");
  assert.equal(await win.webContents.executeJavaScript("!document.getElementById('home').hidden && HomeScenery.ready"),true);
+ assert.equal(await win.webContents.executeJavaScript("WardrobeCatalog.items.filter(i=>i.recipe && i.category!=='hats').length===9 && WardrobeCatalog.items.filter(i=>i.recipe).every(i=>i.rarity==='Relic') && typeof WardrobeArt.glassesSide==='function' && !!WardrobeArt.iconSVG('prismglasses')"),true);
  // The packaged/offline app shares the exact click route and climbing animation.
  const clickHome=async(x,y)=>win.webContents.executeJavaScript(`(()=>{const c=document.getElementById('homeCanvas'),r=c.getBoundingClientRect();c.dispatchEvent(new MouseEvent('click',{bubbles:true,button:0,detail:1,clientX:r.left+${x}*r.width/640,clientY:r.top+${y}*r.height/360}));})()`);
  await clickHome(140,110);

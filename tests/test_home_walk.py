@@ -15,7 +15,7 @@ try:
   def arrive(key='home'):page.wait_for_function('key=>!HomeWalk.snapshot(key).moving',arg=key,timeout=15000)
   original=page.evaluate('JSON.stringify(state.home)');balance=page.evaluate('state.balance')
   # Independently rasterized cave geometry must clear the mole along every route.
-  assert page.evaluate("""()=>HomeNavigation.edges.every(edge=>{const a=HomeNavigation.nodes[edge.a],b=HomeNavigation.nodes[edge.b];for(let n=0;n<=40;n++){const x=a[0]+(b[0]-a[0])*n/40,y=a[1]+(b[1]-a[1])*n/40;for(const [dx,dy] of [[0,-2],[-10,-24],[10,-24],[0,-42]])if(!HomeScenery.destination(x+dx,y+dy))return false;}return true;})""")
+  assert page.evaluate("""()=>HomeNavigation.edges.every(edge=>{const a=HomeNavigation.nodes[edge.a],b=HomeNavigation.nodes[edge.b];for(let n=0;n<=40;n++){const x=a[0]+(b[0]-a[0])*n/40,y=a[1]+(b[1]-a[1])*n/40;for(const [dx,dy] of [[0,-2],[-18,-24],[18,-24],[-14,-38],[14,-38],[0,-42]])if(!HomeScenery.destination(x+dx,y+dy))return false;}return true;})""")
   click(170,270);page.wait_for_timeout(180);assert snap()['moving'] and snap()['facing']==-1
   page.locator('#homeCanvas').screenshot(path='/tmp/eumo-walk-left.png');arrive();assert abs(snap()['x']-170)<1
   click(540,280);page.wait_for_timeout(180);assert snap()['facing']==1;page.locator('#homeCanvas').screenshot(path='/tmp/eumo-walk-right.png')

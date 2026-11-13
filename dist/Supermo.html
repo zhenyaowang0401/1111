@@ -900,6 +900,10 @@ body[data-period="night"] .painted-night { display: block; }
 .outfit-card[data-rarity="rare"]{--rarity:#61988c;--rarity-tint:#d2e6dc}
 .outfit-card[data-rarity="epic"]{--rarity:#aa87ab;--rarity-tint:#e6d9e6}
 .outfit-card[data-rarity="legendary"]{--rarity:#be7896;--rarity-tint:#eed7e1}
+.outfit-card[data-rarity="relic"]{--rarity:#b5814d;--rarity-tint:#f0e0c5}
+.outfit-card[data-rarity="relic"] .outfit-art{position:relative}
+.material-series{position:absolute;top:5px;left:6px;padding:1px 5px;border:1px solid #b5814d;background:#f9edd7;color:#755029;font-size:10px;line-height:1.4;letter-spacing:.3px}
+
 .outfit-card[data-rarity] .outfit-art{background:var(--rarity-tint);border-color:var(--rarity)}
 .outfit-card.equipped{box-shadow:inset 0 0 0 1px var(--edge),2px 2px var(--drop-shadow)}
 @media(max-width:480px){.focus-meta{gap:7px}.focus-status{gap:6px;padding:3px 5px}.focus-status #focusMode{padding-right:5px}.focus-status .device-time{font-size:14px}}
@@ -1055,6 +1059,10 @@ body[data-period="night"]:has(#home:not([hidden])) .painted-backdrop{opacity:.09
 window.EumoI18n=(()=>{
  const KEY='eumo-language';let language='en';try{if(localStorage.getItem(KEY)==='zh')language='zh';}catch{}
  const dictionary={
+ "Relic":"珍藏","Material exchange":"材料兑换限定",
+ "Forager spectacles":"林间采集眼镜","Spiral spectacles":"螺旋雕纹眼镜","Prism spectacles":"棱晶眼镜",
+ "Forager neckerchief":"林间刺绣领巾","Spiral woven scarf":"螺旋编织围巾","Crystal ribbon scarf":"冰晶缎带围巾",
+ "Forager enamel brooch":"蘑菇珐琅胸针","Amber spiral brooch":"琥珀螺旋胸针","Prism pendant":"棱晶吊坠",
  "Click a room to walk. The ladder connects floors.":"单击房间即可走动，鼹鼠会沿梯子上下楼。",
  "Click a room to walk. Click your mole to pet.":"单击房间走动，点击鼹鼠摸摸它。",
  "Last synced home · Click a room to explore":"最近同步的家园 · 单击房间即可探索",
@@ -1806,11 +1814,21 @@ window.HomeEditor=(()=>{
   {id:'bellpin',name:'Little bell',category:'extras',cost:18,rarity:'Uncommon'},
   {id:'crystalpin',name:'Crystal pin',category:'extras',cost:22,rarity:'Rare'}
  ];
+ // Every material-exclusive wearable belongs to the same amber Relic tier.
  items.push(
-  {id:'mushroomhat',name:'Forager mushroom beret',category:'hats',cost:0,recipe:{mushroom:40},rarity:'Epic',headTop:-4},
-  {id:'starhat',name:'Starlight sorcerer hat',category:'hats',cost:0,recipe:{star:40},rarity:'Epic',headTop:-9},
-  {id:'fossilhat',name:'Spiral explorer hat',category:'hats',cost:0,recipe:{fossil:30},rarity:'Rare',headTop:-4},
-  {id:'crystalhat',name:'Crystal circlet',category:'hats',cost:0,recipe:{crystal:30},rarity:'Rare',headTop:-7}
+  {id:'mushroomhat',name:'Forager mushroom beret',category:'hats',cost:0,recipe:{mushroom:40},rarity:'Relic',headTop:-4},
+  {id:'starhat',name:'Starlight sorcerer hat',category:'hats',cost:0,recipe:{star:40},rarity:'Relic',headTop:-9},
+  {id:'fossilhat',name:'Spiral explorer hat',category:'hats',cost:0,recipe:{fossil:30},rarity:'Relic',headTop:-4},
+  {id:'crystalhat',name:'Crystal circlet',category:'hats',cost:0,recipe:{crystal:30},rarity:'Relic',headTop:-7},
+  {id:'foragerglasses',name:'Forager spectacles',category:'glasses',cost:0,recipe:{mushroom:24},rarity:'Relic'},
+  {id:'spiralglasses',name:'Spiral spectacles',category:'glasses',cost:0,recipe:{fossil:24},rarity:'Relic'},
+  {id:'prismglasses',name:'Prism spectacles',category:'glasses',cost:0,recipe:{crystal:24},rarity:'Relic'},
+  {id:'foragerscarf',name:'Forager neckerchief',category:'scarves',cost:0,recipe:{mushroom:28},rarity:'Relic'},
+  {id:'spiralscarf',name:'Spiral woven scarf',category:'scarves',cost:0,recipe:{fossil:28},rarity:'Relic'},
+  {id:'prismscarf',name:'Crystal ribbon scarf',category:'scarves',cost:0,recipe:{crystal:28},rarity:'Relic'},
+  {id:'foragerbrooch',name:'Forager enamel brooch',category:'extras',cost:0,recipe:{mushroom:18},rarity:'Relic'},
+  {id:'spiralbrooch',name:'Amber spiral brooch',category:'extras',cost:0,recipe:{fossil:18},rarity:'Relic'},
+  {id:'prismpendant',name:'Prism pendant',category:'extras',cost:0,recipe:{crystal:18},rarity:'Relic'}
  );
  function redeem(s,id){const i=items.find(i=>i.id===id);if(!i?.recipe||s.owned.includes(id)||s.session?.status==='running')return false;const materials=['star','mushroom','crystal','fossil'];
   for(const [id,n] of Object.entries(i.recipe)){const reserved=Object.values(s.home?.slots||{}).filter(v=>v==='find:'+id).length+(s.heldItem===id?1:0);const total=s.inventory[materials.indexOf(id)];if(!Number.isFinite(total)||total-reserved<n)return false;}
@@ -1899,6 +1917,66 @@ window.WardrobeArt=(()=>{
   starglasses:[[8,8,2,2,'#f7d27c'],[6,10,6,1,'#f7d27c'],[4,11,10,2,'#f7d27c'],[6,13,6,1,'#e2ae62'],[6,14,2,2,'#e2ae62'],[10,14,2,2,'#e2ae62'],[8,11,2,3,'#8293ca'],[18,8,2,2,'#f7d27c'],[16,10,6,1,'#f7d27c'],[14,11,10,2,'#f7d27c'],[16,13,6,1,'#e2ae62'],[16,14,2,2,'#e2ae62'],[20,14,2,2,'#e2ae62'],[18,11,2,3,'#8293ca'],[13,11,2,1,'#f7d27c']]
  };
  const extras={"star":[[22,18,2,2,"#ffe59b"],[20,20,6,2,"#ffe59b"],[22,22,2,2,"#e1b568"],[22,20,1,1,"#fff9d9"]],"heartpin":[[20,18,2,2,"#ef94b8"],[23,18,2,2,"#ef94b8"],[20,19,5,2,"#ef94b8"],[21,21,3,1,"#d56c9b"],[22,22,1,1,"#d56c9b"],[21,19,1,1,"#ffe2eb"]],"leafpin":[[23,18,2,1,"#c3df9d"],[21,19,4,2,"#95c793"],[20,21,4,2,"#70a77e"],[20,23,1,1,"#e0c291"],[21,21,1,1,"#e3edb5"],[22,20,1,1,"#e3edb5"]],"flowerpin":[[22,18,2,2,"#fff0d7"],[20,20,2,2,"#fff0d7"],[24,20,2,2,"#fff0d7"],[22,22,2,2,"#e7d8cd"],[22,20,2,2,"#e8bb60"]],"moonpin":[[22,18,3,1,"#ffe4a5"],[21,19,2,1,"#ffe4a5"],[20,20,2,3,"#eac580"],[21,23,4,1,"#eac580"],[23,22,2,1,"#ffe4a5"],[21,20,1,2,"#fff3cd"]],"mushroompin":[[21,18,4,1,"#d58db4"],[20,19,6,3,"#d58db4"],[21,19,1,1,"#ffe6dc"],[24,20,1,1,"#ffe6dc"],[22,22,2,2,"#f3dbb3"]],"bellpin":[[22,18,2,1,"#c1e4d5"],[21,19,4,3,"#e4bc72"],[20,22,6,1,"#ffe4a4"],[22,23,2,1,"#b68b5d"],[22,19,1,2,"#fff0be"]],"crystalpin":[[22,18,2,1,"#c9faf2"],[21,19,4,3,"#93d9e4"],[22,22,2,2,"#8499d0"],[21,20,2,2,"#c9faf2"],[24,20,1,2,"#6eafcd"]]};
+ // Coordinated material sets: enamel/brass, woven olive/amber and faceted ice.
+ Object.assign(glasses,{
+  foragerglasses:[
+   [5,9,7,1,'#513443'],[14,9,7,1,'#513443'],[5,10,1,5,'#b96168'],[11,10,1,5,'#8d4b5c'],[14,10,1,5,'#b96168'],[20,10,1,5,'#8d4b5c'],[6,15,5,1,'#8d4b5c'],[15,15,5,1,'#8d4b5c'],
+   [6,10,5,1,'#efd3a9'],[15,10,5,1,'#efd3a9'],[6,14,5,1,'#d5ad87'],[15,14,5,1,'#d5ad87'],[7,11,2,1,'#eff5db'],[16,11,2,1,'#eff5db'],[12,11,2,1,'#d5ad87'],[3,11,2,1,'#355d51'],[21,11,2,1,'#355d51'],[4,10,1,1,'#7fa579'],[22,10,1,1,'#7fa579'],[5,9,1,1,'#fff0cc'],[20,9,1,1,'#fff0cc']
+  ],
+  spiralglasses:[
+   [7,9,4,1,'#f0d8a1'],[6,10,1,5,'#715e48'],[11,10,1,5,'#715e48'],[7,15,4,1,'#715e48'],[7,10,4,1,'#cfad74'],[7,14,4,1,'#cfad74'],
+   [16,9,4,1,'#f0d8a1'],[15,10,1,5,'#715e48'],[20,10,1,5,'#715e48'],[16,15,4,1,'#715e48'],[16,10,4,1,'#cfad74'],[16,14,4,1,'#cfad74'],[12,11,3,1,'#c9af7b'],[7,11,1,2,'#e9f2cf'],[16,11,1,2,'#e9f2cf'],
+   [3,10,3,3,'#526f60'],[4,10,2,1,'#e2c28a'],[4,12,2,1,'#c9af7b'],[21,10,3,3,'#526f60'],[21,10,2,1,'#e2c28a'],[21,12,2,1,'#c9af7b']
+  ],
+  prismglasses:[
+   [6,9,5,1,'#e5e9d7'],[5,10,1,5,'#819aa9'],[11,10,1,5,'#3d526d'],[6,15,5,1,'#526b82'],[6,10,5,1,'#a3e4d9'],[6,13,1,2,'#5aa9be'],[7,14,4,1,'#7ec7cf'],[7,11,2,1,'#edfff1'],
+   [15,9,5,1,'#e5e9d7'],[14,10,1,5,'#819aa9'],[20,10,1,5,'#3d526d'],[15,15,5,1,'#526b82'],[15,10,5,1,'#a3e4d9'],[15,13,1,2,'#5aa9be'],[16,14,4,1,'#7ec7cf'],[16,11,2,1,'#edfff1'],[12,11,2,1,'#dfc995'],[3,11,2,1,'#819aa9'],[21,11,2,1,'#819aa9'],[4,10,1,1,'#edfff1'],[21,10,1,1,'#edfff1']
+  ]
+ });
+ Object.assign(scarves,{
+  foragerscarf:[
+   [4,17,19,1,'#344b48'],[3,18,21,3,'#344b48'],[4,18,19,2,'#7d9b80'],[5,18,16,1,'#b7c49a'],[5,21,17,1,'#344b48'],[6,20,15,2,'#526f60'],[7,22,13,2,'#526f60'],[9,24,9,2,'#526f60'],[11,26,5,1,'#344b48'],
+   [7,21,12,1,'#9daf86'],[9,23,8,1,'#7d9b80'],[11,25,4,1,'#c9af7b'],[4,20,3,1,'#e2c28a'],[20,20,3,1,'#e2c28a'],[17,20,4,1,'#b96168'],[16,21,6,2,'#b96168'],[18,21,1,1,'#fff0cc'],[20,22,1,1,'#fff0cc'],[18,23,2,2,'#efd3a9']
+  ],
+  spiralscarf:[
+   [4,17,19,1,'#344b48'],[3,18,21,3,'#344b48'],[4,18,19,2,'#a3b18a'],[5,18,17,1,'#d2d3a9'],[5,20,17,2,'#7d9b80'],[6,21,15,1,'#526f60'],[6,19,2,2,'#c9af7b'],[11,19,2,2,'#c9af7b'],[19,19,2,2,'#c9af7b'],
+   [16,21,6,8,'#526f60'],[17,22,4,6,'#a3b18a'],[17,23,4,1,'#e2c28a'],[17,26,4,1,'#e2c28a'],[17,28,1,2,'#c9af7b'],[20,28,1,2,'#c9af7b'],[14,19,5,4,'#715e48'],[15,19,3,1,'#f0d8a1'],[15,20,1,2,'#e4c58d'],[16,21,2,1,'#cfad74'],[17,20,1,1,'#e4c58d']
+  ],
+  prismscarf:[
+   [4,17,19,1,'#3d526d'],[3,18,21,3,'#526b82'],[4,18,19,2,'#7ec7cf'],[5,18,17,1,'#c9f7e7'],[5,20,17,1,'#5aa9be'],[6,21,15,1,'#3d526d'],[7,20,4,3,'#a3e4d9'],[17,20,4,3,'#a3e4d9'],[8,20,2,1,'#edfff1'],[18,20,2,1,'#edfff1'],
+   [10,23,3,5,'#819aa9'],[16,23,3,5,'#819aa9'],[10,23,2,3,'#b3c5ce'],[17,23,2,3,'#b3c5ce'],[10,27,2,1,'#dfc995'],[17,27,2,1,'#dfc995'],[12,19,5,5,'#3d526d'],[13,19,3,1,'#dfc995'],[13,20,3,3,'#7ec7cf'],[13,20,1,2,'#edfff1'],[14,22,2,1,'#5aa9be']
+  ]
+ });
+ Object.assign(extras,{
+  foragerbrooch:[
+   [22,18,5,1,'#513443'],[20,19,8,1,'#513443'],[19,20,10,4,'#513443'],[20,24,8,1,'#513443'],[21,19,6,1,'#efd3a9'],[20,20,8,3,'#b96168'],[21,20,3,1,'#e4a18c'],[20,23,8,1,'#d5ad87'],[21,21,2,1,'#fff0cc'],[25,22,2,1,'#fff0cc'],[23,24,2,3,'#efd3a9'],[22,27,4,1,'#d5ad87'],[19,25,3,1,'#355d51'],[20,26,3,1,'#7fa579'],[26,25,3,1,'#355d51'],[26,26,2,1,'#7fa579']
+  ],
+  spiralbrooch:[
+   [22,18,5,1,'#715e48'],[20,19,9,2,'#715e48'],[19,21,11,5,'#715e48'],[20,26,9,1,'#715e48'],[22,27,5,1,'#715e48'],[22,19,5,1,'#f0d8a1'],[21,20,7,1,'#e4c58d'],[20,21,9,4,'#a3b18a'],[21,25,7,1,'#cfad74'],[22,26,5,1,'#cfad74'],[22,21,5,1,'#f0d8a1'],[22,22,1,3,'#f0d8a1'],[23,24,4,1,'#e4c58d'],[26,22,1,2,'#e4c58d'],[24,22,2,1,'#e4c58d'],[24,23,1,1,'#f0d8a1']
+  ],
+  prismpendant:[
+   [20,18,1,2,'#dfc995'],[28,18,1,2,'#dfc995'],[21,20,2,1,'#dfc995'],[26,20,2,1,'#dfc995'],[23,21,3,1,'#fff0be'],[22,22,5,1,'#3d526d'],[21,23,7,4,'#3d526d'],[22,27,5,1,'#3d526d'],[23,28,3,1,'#3d526d'],[24,29,1,1,'#3d526d'],[23,22,3,1,'#b3c5ce'],[22,23,3,3,'#a3e4d9'],[25,23,2,3,'#5aa9be'],[23,26,3,2,'#7ec7cf'],[24,28,1,1,'#819aa9'],[23,23,1,3,'#edfff1'],[24,27,1,1,'#c9f7e7']
+  ]
+ });
+ // A true profile has one lens in front of the visible eye and a temple to the ear.
+ // These are separate silhouettes, never a squeezed copy of the front-facing pair.
+ const sideFrames={
+  glasses:[[17,10,7,1,'#28214c'],[17,11,1,4,'#28214c'],[23,11,1,4,'#28214c'],[18,15,5,1,'#28214c'],[18,11,2,1,'#b4f2ed']],
+  sunglasses:[[16,10,8,1,'#252a43'],[17,11,7,4,'#252a43'],[18,12,5,3,'#364359'],[18,11,3,1,'#a6d4de'],[18,15,4,1,'#252a43']],
+  roundglasses:[[18,9,4,1,'#d7ac76'],[17,10,1,5,'#d7ac76'],[22,10,1,5,'#d7ac76'],[18,15,4,1,'#a8805d'],[18,10,1,2,'#fff2c7']],
+  squareglasses:[[16,9,8,1,'#e5e1cb'],[16,10,1,6,'#e5e1cb'],[23,10,1,6,'#b5cbbf'],[17,16,6,1,'#b5cbbf'],[18,10,2,1,'#a0f0e9']],
+  heartglasses:[[17,9,2,1,'#f39bb7'],[21,9,2,1,'#f39bb7'],[16,10,8,1,'#f39bb7'],[16,11,1,2,'#f39bb7'],[23,11,1,2,'#f39bb7'],[17,13,1,1,'#d86e9b'],[22,13,1,1,'#d86e9b'],[18,14,4,1,'#d86e9b'],[19,15,2,1,'#d86e9b'],[18,10,2,1,'#ffe0da']],
+  starglasses:[[19,8,2,2,'#f7d27c'],[17,10,6,1,'#f7d27c'],[16,11,8,2,'#f7d27c'],[18,13,4,1,'#e2ae62'],[17,14,2,2,'#e2ae62'],[21,14,2,2,'#e2ae62'],[19,11,2,3,'#8293ca']],
+  foragerglasses:[[17,9,7,1,'#513443'],[17,10,1,5,'#b96168'],[23,10,1,5,'#8d4b5c'],[18,15,5,1,'#8d4b5c'],[18,10,5,1,'#efd3a9'],[18,14,5,1,'#d5ad87'],[19,11,2,1,'#eff5db'],[16,10,1,1,'#7fa579']],
+  spiralglasses:[[18,9,4,1,'#f0d8a1'],[17,10,1,5,'#715e48'],[22,10,1,5,'#715e48'],[18,15,4,1,'#715e48'],[18,10,4,1,'#cfad74'],[18,14,4,1,'#cfad74'],[18,11,1,2,'#e9f2cf'],[16,10,1,2,'#526f60']],
+  prismglasses:[[18,9,5,1,'#e5e9d7'],[17,10,1,5,'#819aa9'],[23,10,1,5,'#3d526d'],[18,15,5,1,'#526b82'],[18,10,5,1,'#a3e4d9'],[18,13,1,2,'#5aa9be'],[19,14,4,1,'#7ec7cf'],[19,11,2,1,'#edfff1']]
+ };
+ const sideTemple={glasses:'#28214c',sunglasses:'#252a43',roundglasses:'#d7ac76',squareglasses:'#b5cbbf',heartglasses:'#d86e9b',starglasses:'#e2ae62',foragerglasses:'#d5ad87',spiralglasses:'#c9af7b',prismglasses:'#819aa9'};
+ function glassesSide(r,id){if(!sideFrames[id])return;r(10,11,8,1,sideTemple[id]);r(10,12,1,1,sideTemple[id]);draw(r,sideFrames[id]);}
+ function scarfBack(r,id){
+  const colors={scarf:['#69cac5','#c2ffdf','#3e9eac'],striped:['#d7ab82','#f6dfb6','#bc8f70'],checkered:['#7995aa','#c3d5cf','#628296'],bow:['#d38da9','#ffe0e1','#ab688f'],fur:['#d7ccbb','#f7ebd6','#cfbea6'],foragerscarf:['#7d9b80','#b7c49a','#344b48'],spiralscarf:['#a3b18a','#e2c28a','#526f60'],prismscarf:['#7ec7cf','#c9f7e7','#526b82']}[id];
+  if(!colors)return;const [base,light,shade]=colors;r(4,15,19,3,base);r(5,15,17,1,light);r(5,18,17,1,shade);r(4,16,2,3,shade);r(21,16,2,3,shade);
+ }
  const tools={
   spoon:[[24,16,2,8,'#b4c2c5'],[24,16,2,1,'#8d9ba8'],[22,22,6,1,'#b4c8d0'],[21,23,8,4,'#b4c8d0'],[23,27,4,1,'#b4c8d0'],[23,22,4,1,'#e2e9df'],[23,23,4,3,'#e3eeea']],
   shovel:[[24,6,6,2,'#c1976c'],[23,8,2,5,'#c1976c'],[29,8,2,5,'#c1976c'],[24,12,6,2,'#c1976c'],[26,14,2,9,'#c1976c'],[22,22,10,6,'#87a8b4'],[24,28,6,3,'#72919e'],[26,23,2,5,'#c4dfe1']],
@@ -1920,7 +1998,7 @@ window.WardrobeArt=(()=>{
  function extra(r,id){draw((x,y,w,h,c)=>{const a=16+Math.round((x-20)*2/3),b=17+Math.round((y-18)*2/3);r(a,b,Math.max(1,Math.round((x+w-20)*2/3)+16-a),Math.max(1,Math.round((y+h-18)*2/3)+17-b),c);},extras[id]);}
  function scarf(r,id){const yy=y=>Math.round(y<=21?y-1:20+(y-21)/2);draw((x,y,w,h,c)=>r(x,yy(y),w,Math.max(1,yy(y+h)-yy(y)),c),scarves[id]);}
  function eyewear(r,id){const align=['squareglasses','heartglasses','starglasses'].includes(id);draw((x,y,w,h,c)=>r(align&&x>=14?x-1:x,y,w,h,c),glasses[id]);}
- return {hat:(r,id)=>draw(r,hats[id]),extra,scarf,glasses:eyewear,drawTool,iconSVG};
+ return {hat:(r,id)=>draw(r,hats[id]),extra,scarf,glasses:eyewear,glassesSide,scarfBack,drawTool,iconSVG};
 })();
 
 </script><script>
@@ -2160,24 +2238,28 @@ window.MoleArt=(()=>{
  function paintTravel(c,{color='#a9b4c6',phase=0,climbing=false}={}){
   const ink='#28214c',light=tint(color,.20),shadow=tint(color,-.18),paw='#ffb5a8';
   const r=(x,y,w,h,col)=>{c.fillStyle=col;c.fillRect(x,y,w,h);},stride=[-1,0,1,0][phase%4];
-  function limb(x,y,w=5){r(x,y,w,3,ink);r(x+1,y,w-2,2,paw);r(x+1,y,2,1,'#ffd1bd');}
+  function limb(x,y,w=6){r(x+1,y,w-2,1,ink);r(x,y+1,w,3,ink);r(x+1,y+1,w-2,2,paw);r(x+1,y+1,2,1,'#ffd1bd');r(x+w-3,y+2,2,1,'#df9291');}
+  // Rounded, connected silhouettes keep the same foot and hat anchors as idle.
+  // The widest part is the tummy/haunches, rather than a tall rectangular torso.
+  const rows=climbing?
+   [[9,18],[6,21],[5,22],[4,23],[4,23],[3,24],[3,24],[3,24],[3,24],[3,24],[3,24],[3,24],[3,24],[4,23],[4,23],[5,22],[6,21],[7,20],[9,18]]:
+   [[10,19],[8,21],[6,22],[5,23],[5,23],[4,24],[4,24],[4,24],[3,24],[3,24],[3,24],[3,24],[3,24],[4,24],[4,23],[5,23],[6,22],[7,21],[8,20]];
+  if(!climbing){r(4,21,6,2,ink);r(2,23,8,2,ink);r(0,24,10,2,ink);r(2,24,7,1,shadow);limb(8-stride,23);}
+  const inside=(x,y)=>rows[y-5]&&x>=rows[y-5][0]&&x<rows[y-5][1];
+  for(let y=5;y<24;y++)for(let x=rows[y-5][0];x<rows[y-5][1];x++){
+   const edge=!inside(x-1,y)||!inside(x+1,y)||!inside(x,y-1)||!inside(x,y+1),lit=x<rows[y-5][0]+4&&y<19,shade=x>=rows[y-5][1]-3||y>=21;
+   r(x,y,1,1,edge?ink:shade?shadow:lit?light:color);
+  }
   if(climbing){
-   // Hands alternate above the shoulders; feet alternate on the ladder rungs.
-   r(7,10-stride*2,3,9,shadow);r(17,10+stride*2,3,9,shadow);
-   limb(6,8-stride*2);limb(17,8+stride*2);
-   r(10,5,7,1,ink);r(8,6,11,2,ink);r(7,8,13,13,ink);r(8,21,11,3,ink);
-   r(10,6,7,2,light);r(8,8,11,12,color);r(9,20,9,3,shadow);r(8,8,2,10,light);r(17,9,2,12,shadow);
-   r(12,20,3,5,ink);r(13,21,1,3,shadow);
-   limb(7,24-stride);limb(15,24+stride);
+   r(8,9,2,3,light);r(10,8,3,1,light);r(9,18,2,1,light);
+   r(12,21,3,4,ink);r(13,21,1,3,shadow);
+   // Visible paws reach around the round shoulders, alternating on the rungs.
+   limb(4,10-stride*2);limb(18,10+stride*2);
+   limb(6,23-stride);limb(16,23+stride);
   }else{
-   // The nose, rear tail and visible cheek make direction readable at small sizes.
-   r(3,21,6,2,ink);r(1,23,8,2,ink);r(2,23,6,1,shadow);
-   r(10-stride,23,5,4,ink);limb(9-stride,24);
-   r(10,5,9,1,ink);r(8,6,13,2,ink);r(7,8,15,12,ink);r(6,17,17,6,ink);r(8,23,13,2,ink);
-   r(10,6,9,2,light);r(8,8,13,12,color);r(7,18,14,4,color);r(8,8,2,10,light);r(7,20,5,3,shadow);
-   r(19,12,5,5,ink);r(20,13,3,3,light);r(23,13,2,2,'#e7473f');r(19,10,2,2,ink);
-   r(18,17,4,6,'#fff1c8');r(16,20,5,4,'#fff1c8');
-   r(13+stride,23,5,4,ink);limb(13+stride,24);limb(13-stride,18+stride);
+   r(20,12,4,5,ink);r(21,13,3,3,light);r(24,14,2,2,'#e7473f');r(20,11,2,2,ink);
+   r(18,16,5,5,'#fff1c8');r(16,18,6,5,'#fff1c8');r(17,19,3,3,'#fff8df');r(15,21,5,2,'#fff1c8');
+   limb(15+stride,23);limb(11-stride,17+stride);
   }
  }
  function drawAvatar(canvas,color){
@@ -2625,9 +2707,9 @@ window.PixelArt=(()=>{
   const r=(xx,yy,w,h,col)=>box(c,xx,yy,w,h,col),side=(xx,yy,w,h,col)=>r(4+Math.round(xx*.8),yy,Math.max(1,Math.round((xx+w)*.8)-Math.round(xx*.8)),h,col);
   const hat=get('hats'),scarf=get('scarves'),glasses=get('glasses'),extra=get('extras');
   if(hat)WardrobeArt.hat(climbing?r:side,hat.id);
-  if(climbing){if(scarf)WardrobeArt.scarf((xx,yy,w,h,col)=>r(8+Math.round(xx*.4),yy,Math.max(1,Math.round(w*.4)),Math.min(h,3),col),scarf.id);}
+  if(climbing){if(scarf)WardrobeArt.scarfBack(r,scarf.id);}
   else{
-   if(glasses)WardrobeArt.glasses((xx,yy,w,h,col)=>r(8+Math.round(xx*.65),yy,Math.max(1,Math.round(w*.65)),h,col),glasses.id);
+   if(glasses)WardrobeArt.glassesSide(r,glasses.id);
    if(scarf)WardrobeArt.scarf(side,scarf.id);
    if(extra)WardrobeArt.extra(side,extra.id);
   }
@@ -3497,7 +3579,7 @@ function renderCloset(){
  const toolMode=selectedCategory==='tools',source=toolMode?tools:outfits.filter(o=>selectedCategory==='all'||o.category===selectedCategory),ownedIDs=toolMode?state.ownedTools:state.owned,items=selectedFilter==='owned'?source.filter(o=>ownedIDs.includes(o.id)):source;
  $('#categoryTabs').innerHTML=WardrobeCatalog.categories.map(c=>`<button data-category="${c.id}" aria-pressed="${selectedCategory===c.id}">${c.label}${c.id==='all'?'':` <small>${c.id==='tools'?tools.length:outfits.filter(o=>o.category===c.id).length}</small>`}</button>`).join('');
  $('#toolShopNote').hidden=!toolMode;$('#activeToolName').textContent=state.tool?'Using: '+tools.find(t=>t.id===state.tool).name:'Default digging tool';$('#resetTool').disabled=!state.tool;
- $('#outfitGrid').innerHTML=items.length?items.map(o=>{const owned=ownedIDs.includes(o.id),equipped=toolMode?state.tool===o.id:state.equipped.includes(o.id);return `<article class="outfit-card ${equipped?'equipped':''}" data-rarity="${o.rarity.toLowerCase()}"><span class="sr-only">${o.rarity}</span><div class="outfit-art">${PixelArt.iconSVG(o.id)}</div><h3>${o.name}</h3><div class="item-action"><span>${owned?'Owned':o.recipe?Object.entries(o.recipe).map(([id,n])=>HomeCatalog.spareMaterials(state).find(m=>m.id===id).available+'/'+n+' '+HomeCatalog.materials.find(m=>m.id===id).name).join(' + '):'✦ '+o.cost}</span><button ${toolMode?'data-tool':'data-item'}="${o.id}" class="${equipped?'equipped-button':''}" aria-pressed="${equipped}" ${toolMode&&equipped?'disabled':''} aria-label="${equipped?(toolMode?'Using':'Remove'):owned?(toolMode?'Use':'Equip'):o.recipe?'Redeem':'Buy'} ${o.name}">${equipped?(toolMode?'Using':'Remove'):owned?(toolMode?'Use':'Equip'):o.recipe?'Redeem':'Buy'}</button></div></article>`;}).join(''):'<div class="closet-empty">No owned items.<br><button id="browseAll" class="quiet-button">Browse items</button></div>';
+ $('#outfitGrid').innerHTML=items.length?items.map(o=>{const owned=ownedIDs.includes(o.id),equipped=toolMode?state.tool===o.id:state.equipped.includes(o.id);return `<article class="outfit-card ${equipped?'equipped':''}" data-rarity="${o.rarity.toLowerCase()}"><span class="sr-only">${o.rarity}</span><div class="outfit-art">${o.recipe?'<span class="material-series" title="Material exchange">Relic</span>':''}${PixelArt.iconSVG(o.id)}</div><h3>${o.name}</h3><div class="item-action"><span>${owned?'Owned':o.recipe?Object.entries(o.recipe).map(([id,n])=>HomeCatalog.spareMaterials(state).find(m=>m.id===id).available+'/'+n+' '+HomeCatalog.materials.find(m=>m.id===id).name).join(' + '):'✦ '+o.cost}</span><button ${toolMode?'data-tool':'data-item'}="${o.id}" class="${equipped?'equipped-button':''}" aria-pressed="${equipped}" ${toolMode&&equipped?'disabled':''} aria-label="${equipped?(toolMode?'Using':'Remove'):owned?(toolMode?'Use':'Equip'):o.recipe?'Redeem':'Buy'} ${o.name}">${equipped?(toolMode?'Using':'Remove'):owned?(toolMode?'Use':'Equip'):o.recipe?'Redeem':'Buy'}</button></div></article>`;}).join(''):'<div class="closet-empty">No owned items.<br><button id="browseAll" class="quiet-button">Browse items</button></div>';
 }
 function navigate(page){trackStudy();syncClock();const requested=typeof page==='string'?page:location.hash.slice(1),allowed=['focus','home','wardrobe','reports','companions'];let target=requested==='rewards'?'home':allowed.includes(requested)?requested:(requested==='start'?'start':state.profile.configured?'focus':'start');if(!state.profile.configured&&target!=='start'){afterSetup=target;target='start';}else if(target==='start')afterSetup=currentGamePage;document.body.dataset.screen=target==='start'?'start':'game';$('#setupScreen').hidden=target!=='start';$('#gameShell').hidden=target==='start';$$('.page').forEach(p=>p.hidden=p.id!==target);$$('[data-page]').forEach(a=>{const active=a.dataset.page===target;a.classList.toggle('active',active);if(active)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});document.title=`Eumo v3 — ${{start:'Mole setup',focus:'Focus',home:'Home',wardrobe:'Equipment',reports:'Today',companions:'Friends'}[target]}`;if(requested==='rewards'){try{history.replaceState(null,'','#home');}catch{}}if(target==='start')prepareSetup();else currentGamePage=target;if(target==='reports')renderReports();if(target==='home')renderHome();if(target==='companions')FriendsClient.activate();window.scrollTo({top:0,behavior:'instant'});}
 window.addEventListener('hashchange',navigate);

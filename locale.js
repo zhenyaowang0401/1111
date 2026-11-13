@@ -3,6 +3,10 @@
 window.EumoI18n=(()=>{
  const KEY='eumo-language';let language='en';try{if(localStorage.getItem(KEY)==='zh')language='zh';}catch{}
  const dictionary={
+ "Relic":"珍藏","Material exchange":"材料兑换限定",
+ "Forager spectacles":"林间采集眼镜","Spiral spectacles":"螺旋雕纹眼镜","Prism spectacles":"棱晶眼镜",
+ "Forager neckerchief":"林间刺绣领巾","Spiral woven scarf":"螺旋编织围巾","Crystal ribbon scarf":"冰晶缎带围巾",
+ "Forager enamel brooch":"蘑菇珐琅胸针","Amber spiral brooch":"琥珀螺旋胸针","Prism pendant":"棱晶吊坠",
  "Click a room to walk. The ladder connects floors.":"单击房间即可走动，鼹鼠会沿梯子上下楼。",
  "Click a room to walk. Click your mole to pet.":"单击房间走动，点击鼹鼠摸摸它。",
  "Last synced home · Click a room to explore":"最近同步的家园 · 单击房间即可探索",
