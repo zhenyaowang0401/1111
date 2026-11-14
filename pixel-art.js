@@ -125,7 +125,7 @@ window.PixelArt=(()=>{
   else rotation=playerMole(c,s,x,y,2,false,frame,()=>drawHeadDisplay(c,s,x,y,2,frame));
   if(visitor){
    const text=EumoI18n.t('You'),top=y+WardrobeCatalog.headTop(s.equipped||[])*2-17;
-   c.font='bold 9px sans-serif';c.textAlign='center';const w=Math.ceil(c.measureText(text).width)+10;
+   c.font='9px '+getComputedStyle(document.body).fontFamily;c.textAlign='center';const w=Math.ceil(c.measureText(text).width)+10;
    box(c,a.x-w/2,top,w,13,'#314b43');c.fillStyle='#fff1c8';c.fillText(text,Math.round(a.x),top+10);box(c,a.x-2,top+13,4,2,'#314b43');
   }
   return {x,y:y-3,w:56,h:60,rotation};

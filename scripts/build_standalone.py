@@ -58,12 +58,14 @@ def build(output: Path) -> Path:
         raise ValueError('Expected exactly one woodland.css stylesheet tag')
     css += '\n' + (ROOT / 'woodland.css').read_text(encoding='utf-8')
     page = page.replace(woodland_tag, '')
-    font_path = 'assets/fonts/pixelify-sans.ttf'
-    font_url = f'url("{font_path}")'
-    if css.count(font_url) != 1:
-        raise ValueError('Expected one local Pixelify Sans font source')
-    font_data = base64.b64encode((ROOT / font_path).read_bytes()).decode('ascii')
-    css = css.replace(font_url, f'url("data:font/ttf;base64,{font_data}")')
+    for font_path, mime in [('assets/fonts/pixelify-sans.ttf', 'font/ttf'),
+                            ('assets/fonts/brick-sans.otf', 'font/otf'),
+                            ('assets/fonts/brick-sans.ttf', 'font/ttf')]:
+        font_url = f'url("{font_path}")'
+        if css.count(font_url) != 1:
+            raise ValueError('Expected one local font source: ' + font_path)
+        font_data = base64.b64encode((ROOT / font_path).read_bytes()).decode('ascii')
+        css = css.replace(font_url, f'url("data:{mime};base64,{font_data}")')
     # Preserve the font's redistribution license inside the downloadable file.
     css = '/*\n' + (ROOT / 'assets/fonts/OFL.txt').read_text(encoding='utf-8') + '\n*/\n' + css
     page = page.replace(style_tag, '<style>\n' + css + '\n</style>')

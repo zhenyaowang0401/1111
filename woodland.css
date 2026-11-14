@@ -538,3 +538,16 @@ body[data-period="night"]:has(#home:not([hidden])) .painted-backdrop{opacity:.09
   /* The base stylesheet disables all animation, so skip the overlay entirely. */
   .startup-splash { display: none; }
 }
+
+/* Brick Sans has wider letters and digits; keep labels and time controls clear. */
+#focus .control-panel { container-type: inline-size; }
+#focus .timer-digits { font-size: clamp(44px, 20cqw, 64px); }
+#focus .mission-stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); }
+#focus .mission-stats > div > span { display: block; }
+#focus .screen-hud > span:last-child { white-space: nowrap; }
+@media (min-width: 960px) and (min-height: 600px) and (max-height: 720px) {
+  #focus .timer-card { grid-template-columns: minmax(0, 1fr); padding-block: 2px; }
+  #focus .timer-digits { font-size: 44px; text-align: center; }
+  #focus .duration-controls { justify-content: center; margin-top: 2px; }
+  #focus .mission-stats > div { display: block; }
+}

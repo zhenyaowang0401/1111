@@ -1,11 +1,10 @@
 Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
-## What's new in 3.7.0
+## What's new in 3.7.1
 
-- A brief **EUMO** startup greeting pairs pixel lettering, flowers and mushrooms with the familiar daylight meadow. **VG** sits in the corner. It fades away in under a second, respects reduced motion, and never repeats when switching pages or opening the floating companion.
-- Home now reserves room for its bottom controls when the window is resized. The selected wallpaper name sits beside the **Home** heading; the duplicate name/status row and **UNDERGROUND HOME** label are gone. Mobile homes scale to the screen, including the chest's click target.
-- Music sliders now use pixel mushroom handles. The loop icon uses plain repeat arrows without a numeral; repeat-one and sequential playback continue to work as before.
-- The mining frame has a slimmer upper edge without the extra name/number row. Depth keeps its number and unit, and the expanded conversation has a clean title bar. **Mole setup** moves to the setup header's upper-right corner.
+- **NT Brick Sans Regular** now supplies the interface lettering, including headings, buttons, chat, timer digits, reports and the floating companion. The existing EUMO startup artwork and its VG credit keep their previous appearance.
+- The original OTF is the primary font, with the original TTF as a fallback. Both are bundled with desktop and standalone downloads for offline use.
+- Chinese and symbols outside the font's character set continue to use system fallback fonts. Timer controls and statistics adapt to the wider lettering in compact windows.
 
 Windows users on 3.3.0 or later can use Help → App updates to download this version and restart to install. Older Windows versions need one manual overwrite installation. Mac users can use the update check to download the matching DMG.
 
