@@ -1,10 +1,11 @@
 Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
-## What's new in 3.6.1
+## What's new in 3.7.0
 
-- **Shop** now shows only items you do not own, ready to buy or redeem.
-- **Owned** shows your collection, ready to equip, remove or use. A purchase immediately moves the item out of Shop and into Owned.
-- Category counts reflect the selected view, and **All types** includes tools. Clear empty-state links help you switch between browsing and your collection.
+- A brief **EUMO** startup greeting pairs pixel lettering, flowers and mushrooms with the familiar daylight meadow. **VG** sits in the corner. It fades away in under a second, respects reduced motion, and never repeats when switching pages or opening the floating companion.
+- Home now reserves room for its bottom controls when the window is resized. The selected wallpaper name sits beside the **Home** heading; the duplicate name/status row and **UNDERGROUND HOME** label are gone. Mobile homes scale to the screen, including the chest's click target.
+- Music sliders now use pixel mushroom handles. The loop icon uses plain repeat arrows without a numeral; repeat-one and sequential playback continue to work as before.
+- The mining frame has a slimmer upper edge without the extra name/number row. Depth keeps its number and unit, and the expanded conversation has a clean title bar. **Mole setup** moves to the setup header's upper-right corner.
 
 Windows users on 3.3.0 or later can use Help → App updates to download this version and restart to install. Older Windows versions need one manual overwrite installation. Mac users can use the update check to download the matching DMG.
 

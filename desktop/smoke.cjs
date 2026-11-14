@@ -17,6 +17,7 @@ module.exports.runSmoke=async({win,app,session,getFloating,origin})=>{
  await until(()=>pip.webContents.executeJavaScript("!!document.getElementById('toggle')").catch(()=>false));
  if(app.commandLine.getSwitchValue('ozone-platform')!=='headless')assert.equal(pip.isAlwaysOnTop(),true);assert.equal(pip.isResizable(),true);assert.deepEqual(pip.getSize(),pip.getContentSize());
  assert.equal(await pip.webContents.executeJavaScript("document.body.dataset.desktop==='true' && !!document.getElementById('closeNative')"),true);
+ assert.equal(await pip.webContents.executeJavaScript("document.getElementById('startupSplash')===null"),true);
  await pip.webContents.executeJavaScript("document.getElementById('toggle').click()",true);
  await until(()=>win.webContents.executeJavaScript("state.session?.status==='running'"));
  win.close();assert.equal(win.isVisible(),false);assert.equal(pip.isDestroyed(),false);
@@ -35,6 +36,14 @@ module.exports.runSmoke=async({win,app,session,getFloating,origin})=>{
  await until(()=>win.webContents.executeJavaScript("typeof state!=='undefined' && state.profile.name==='Desktop test' && state.home.slots.floor==='rug'").catch(()=>false));
  await win.webContents.executeJavaScript("navigateTo('home')");
  assert.equal(await win.webContents.executeJavaScript("!document.getElementById('home').hidden && HomeScenery.ready"),true);
+ // The packaged home keeps its canvas and action row inside resized native windows.
+ const originalSize=win.getContentSize();
+ for(const [width,height] of [[1280,720],[1024,600]]){
+  win.setContentSize(width,height);
+  await until(()=>win.webContents.executeJavaScript("(()=>{const c=document.getElementById('homeCanvas').getBoundingClientRect(),a=document.querySelector('.home-actions').getBoundingClientRect();return c.top>=0 && a.bottom<=innerHeight && c.right<=innerWidth && Math.abs(c.width/c.height-16/9)<.01;})()"));
+ }
+ win.setContentSize(...originalSize);
+ await until(()=>win.webContents.executeJavaScript("document.getElementById('startupSplash')===null"));
  assert.equal(await win.webContents.executeJavaScript("WardrobeCatalog.items.filter(i=>i.recipe && i.category!=='hats').length===9 && WardrobeCatalog.items.filter(i=>i.recipe).every(i=>i.rarity==='Relic') && typeof WardrobeArt.glassesSide==='function' && !!WardrobeArt.iconSVG('prismglasses')"),true);
  // The packaged/offline app shares the exact click route and climbing animation.
  const clickHome=async(x,y)=>win.webContents.executeJavaScript(`(()=>{const c=document.getElementById('homeCanvas'),r=c.getBoundingClientRect();c.dispatchEvent(new MouseEvent('click',{bubbles:true,button:0,detail:1,clientX:r.left+${x}*r.width/640,clientY:r.top+${y}*r.height/360}));})()`);

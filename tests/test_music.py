@@ -64,12 +64,15 @@ def run():
    page.screenshot(path=str(ROOT/'docs/images/eumo-music-player.png'),full_page=True)
    page.reload();expect(page.locator('#musicVolume')).to_have_value('25');assert not page.evaluate('PetAudio.status().musicOn');page.locator('#openMusicLibrary').click();expect(page.locator('#musicLibraryVolume')).to_have_value('25');page.keyboard.press('Escape')
    # The new soft track joins the same transport and keeps its selection after reload.
-   future=ctx.new_page();future.goto(url+'/#focus');future.locator('#openMusicLibrary').click()
+   # Isolate this saved selection from the running timer in the first tab, which saves its own state.
+   future_ctx=browser.new_context();future_ctx.add_init_script(f"localStorage.setItem('eumo-tour-v1','seen');if(!localStorage.getItem('{KEY}'))localStorage.setItem('{KEY}',JSON.stringify({{profile:{{name:'Momo',color:'#b784cf',configured:true}}}}));")
+   future=future_ctx.new_page();future.goto(url+'/#focus');future.locator('#openMusicLibrary').click()
    future.locator('[data-music-track="soft-next"]').click();future.wait_for_function('PetAudio.status().trackId==="soft-next" && document.querySelector("#focusMusic").currentTime>0');expect(future.locator('#musicNowTitle')).to_have_text('Litte ridge');expect(future.locator('#musicNext')).to_be_enabled();assert future.locator('audio').count()==1
    future.locator('#musicPrevious').click();future.wait_for_function('PetAudio.status().trackId==="warm-focus" && document.querySelector("#focusMusic").currentTime>0')
    future.locator('#musicRepeat').click();assert not future.evaluate('document.querySelector("#focusMusic").loop')
    future.evaluate('document.querySelector("#focusMusic").currentTime=document.querySelector("#focusMusic").duration-.15');future.wait_for_function('PetAudio.status().trackId==="soft-next"')
    future.reload();assert future.evaluate('PetAudio.status().trackId')=='soft-next' and not future.evaluate('PetAudio.status().musicOn')
+   future_ctx.close()
    # Network failure gives a retryable real error, never a fake playing state.
    broken=browser.new_page();broken.add_init_script(f"localStorage.setItem('{KEY}',JSON.stringify({{profile:{{name:'Momo',configured:true}}}}));")
    broken.route('**/assets/audio/*.mp3',lambda r:r.fulfill(status=404,body='Not available'));broken.goto(url+'/#focus');broken.locator('#openMusicLibrary').click();broken.locator('#musicPlayButton').click()
