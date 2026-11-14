@@ -59,8 +59,7 @@ def build(output: Path) -> Path:
     css += '\n' + (ROOT / 'woodland.css').read_text(encoding='utf-8')
     page = page.replace(woodland_tag, '')
     for font_path, mime in [('assets/fonts/pixelify-sans.ttf', 'font/ttf'),
-                            ('assets/fonts/brick-sans.otf', 'font/otf'),
-                            ('assets/fonts/brick-sans.ttf', 'font/ttf')]:
+                            ('assets/fonts/madou-futo-maru-gothic.ttf', 'font/ttf')]:
         font_url = f'url("{font_path}")'
         if css.count(font_url) != 1:
             raise ValueError('Expected one local font source: ' + font_path)

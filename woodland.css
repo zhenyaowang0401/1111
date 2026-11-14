@@ -539,7 +539,7 @@ body[data-period="night"]:has(#home:not([hidden])) .painted-backdrop{opacity:.09
   .startup-splash { display: none; }
 }
 
-/* Brick Sans has wider letters and digits; keep labels and time controls clear. */
+/* Keep interface labels and time controls clear in compact windows. */
 #focus .control-panel { container-type: inline-size; }
 #focus .timer-digits { font-size: clamp(44px, 20cqw, 64px); }
 #focus .mission-stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); }
