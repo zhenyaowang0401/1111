@@ -6,7 +6,7 @@ window.FloatingMole=(()=>{
  const native=()=>window.EumoDesktop?.nativeFloating===true;
  const supported=()=>native()||window.isSecureContext&&typeof window.documentPictureInPicture?.requestWindow==='function';
  const css=`
- :root{color-scheme:dark;font-family:'Madou Futo Maru Gothic','Segoe UI',Arial,'Microsoft YaHei',sans-serif;color:#f3eafa;background:#1c1b37}
+ :root{color-scheme:dark;font-family:'Silver','Eumo Silver Complement','Segoe UI',Arial,'Microsoft YaHei',sans-serif;color:#f3eafa;background:#1c1b37}
  *{box-sizing:border-box}body{margin:0;min-width:210px}button{font:inherit;cursor:pointer;color:inherit;border:1px solid #ad8eb0;background:#443653;padding:6px 10px;min-height:32px;border-radius:2px;box-shadow:inset 0 1px #e4c9e52b,1px 2px #15132866}
  button:hover:not(:disabled){filter:brightness(1.12)}button:focus-visible{outline:2px solid #91dfdf;outline-offset:2px}button:disabled{opacity:.45;cursor:default}[hidden]{display:none!important}
  .tunnel-window{position:relative;width:100%;height:100dvh;min-height:240px;overflow:hidden;background:#1c1b37}
@@ -40,7 +40,7 @@ window.FloatingMole=(()=>{
   for(const sheet of document.styleSheets){
    let rules;try{rules=sheet.cssRules;}catch{continue;}
    for(const rule of rules){
-    if(rule.type!==CSSRule.FONT_FACE_RULE||!rule.style.fontFamily.includes('Madou Futo Maru Gothic'))continue;
+    if(rule.type!==CSSRule.FONT_FACE_RULE||!['Silver','Eumo Silver Complement'].some(name=>rule.style.fontFamily.includes(name)))continue;
     fonts.push(rule.cssText.replace(/url\(["']?([^"')]+)["']?\)/g,(_,url)=>`url("${new URL(url,sheet.href||document.baseURI).href}")`));
    }
   }

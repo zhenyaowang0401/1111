@@ -59,14 +59,17 @@ def build(output: Path) -> Path:
     css += '\n' + (ROOT / 'woodland.css').read_text(encoding='utf-8')
     page = page.replace(woodland_tag, '')
     for font_path, mime in [('assets/fonts/pixelify-sans.ttf', 'font/ttf'),
-                            ('assets/fonts/madou-futo-maru-gothic.ttf', 'font/ttf')]:
+                            ('assets/fonts/silver.woff', 'font/woff'),
+                            ('assets/fonts/silver-complement.woff', 'font/woff')]:
         font_url = f'url("{font_path}")'
         if css.count(font_url) != 1:
             raise ValueError('Expected one local font source: ' + font_path)
         font_data = base64.b64encode((ROOT / font_path).read_bytes()).decode('ascii')
         css = css.replace(font_url, f'url("data:{mime};base64,{font_data}")')
-    # Preserve the font's redistribution license inside the downloadable file.
-    css = '/*\n' + (ROOT / 'assets/fonts/OFL.txt').read_text(encoding='utf-8') + '\n*/\n' + css
+    # Preserve each bundled font's notices in the standalone download.
+    notices = [ROOT / 'assets/fonts/README.md', ROOT / 'assets/fonts/OFL.txt']
+    notices += sorted((ROOT / 'assets/fonts/licenses').glob('*.txt'))
+    css = ''.join('/*\n' + p.read_text(encoding='utf-8').replace('*/', '* /') + '\n*/\n' for p in notices) + css
     page = page.replace(style_tag, '<style>\n' + css + '\n</style>')
     for background_path in ['assets/backgrounds/flower-meadow.png', 'assets/backgrounds/flower-night.png']:
         background_data = base64.b64encode((ROOT / background_path).read_bytes()).decode('ascii')

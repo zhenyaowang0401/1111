@@ -1,10 +1,10 @@
 Eumo for Windows and macOS brings the web game's focus timer, mole companion, outfits, underground home, and reports to your desktop.
 
-## What's new in 3.7.2
+## What's new in 3.7.3
 
-- **Madou Futo Maru Gothic** replaces Brick Sans throughout the interface, including headings, buttons, chat, timer digits, reports and the floating companion. The existing EUMO startup artwork and its VG credit remain unchanged.
-- The original TrueType font is bundled with desktop and standalone downloads for offline use. The previous Brick Sans files are no longer bundled.
-- English, digits and supported CJK characters use the new font. Its Japanese-oriented character set does not cover all Simplified Chinese characters; missing characters and symbols continue to use system fallback fonts.
+- **Silver** now supplies the interface lettering, with a matching pixel supplement for its missing Chinese characters and symbols. All 711 distinct Han characters in the current Chinese interface are covered, including mole, digging, home and decoration labels.
+- The supplement aligns its pixel size, character widths and baseline with Silver. Existing Silver glyphs stay unchanged. Chat, timer digits, reports and the floating companion share the same font pair.
+- Both fonts are bundled for offline use on web, Windows and Mac. The EUMO startup artwork and its VG credit keep their previous appearance.
 
 Windows users on 3.3.0 or later can use Help → App updates to download this version and restart to install. Older Windows versions need one manual overwrite installation. Mac users can use the update check to download the matching DMG.
 
